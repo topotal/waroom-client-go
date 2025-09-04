@@ -1,0 +1,1 @@
+# sho2010-waroom-client-go
