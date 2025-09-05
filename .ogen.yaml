@@ -1,0 +1,11 @@
+# see: https://github.com/ogen-go/ogen/blob/main/examples/_config/example_all.yml#
+generator:
+  features:
+    enable:
+      # Enables paths client generation
+      - "paths/client"
+      # Enables client usage in security source implementations
+      - 'client/security/reentrant'
+      # Enables validation of client requests
+      - "client/request/validation"
+    disable_all: true
