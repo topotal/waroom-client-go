@@ -3,7 +3,7 @@ package waroom
 import (
 	"context"
 
-	gen "waroom-client-go/internal/ogen"
+	gen "github.com/topotal/waroom-client-go/internal/ogen"
 
 	"github.com/go-faster/errors"
 	"github.com/google/uuid"

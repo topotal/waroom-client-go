@@ -1,6 +1,6 @@
 package waroom
 
-import gen "waroom-client-go/internal/ogen"
+import gen "github.com/topotal/waroom-client-go/internal/ogen"
 
 // Generateした型から Exposeする型だけ書いていく
 type Incident = gen.Incident

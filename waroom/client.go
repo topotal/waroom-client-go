@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	httpx "waroom-client-go/internal"
-	gen "waroom-client-go/internal/ogen"
+	httpx "github.com/topotal/waroom-client-go/internal"
+	gen "github.com/topotal/waroom-client-go/internal/ogen"
 )
 
 type Option func(*config)

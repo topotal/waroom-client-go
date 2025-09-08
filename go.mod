@@ -1,4 +1,4 @@
-module waroom-client-go
+module github.com/topotal/waroom-client-go
 
 go 1.25.1
 
