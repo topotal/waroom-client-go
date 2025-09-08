@@ -15,7 +15,7 @@ services:
       - redis
 
   db:
-    image: mysql:8.0 # 8.0.mysql_aurora.3.08.2
+    image: mysql:9.4 # 8.0.mysql_aurora.3.08.2
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app_development
