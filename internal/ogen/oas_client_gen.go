@@ -22,24 +22,60 @@ func trimTrailingSlashes(u *url.URL) {
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
-	// IncidentsGet invokes GET /incidents operation.
+	// CreateIncidentMetrics invokes createIncidentMetrics operation.
 	//
-	// List incidents.
+	// Create a new activity to track incident metrics.
+	//
+	// POST /incidents/{uuid}/metrics
+	CreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (CreateIncidentMetricsRes, error)
+	// CreatePostmortem invokes createPostmortem operation.
+	//
+	// Create a new postmortem.
+	//
+	// POST /postmortems
+	CreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (CreatePostmortemRes, error)
+	// GetIncident invokes getIncident operation.
+	//
+	// Retrieve a specific incident by its UUID.
+	//
+	// GET /incidents/{uuid}
+	GetIncident(ctx context.Context, params GetIncidentParams) (GetIncidentRes, error)
+	// ListIncidents invokes listIncidents operation.
+	//
+	// Retrieve a paginated list of incidents.
 	//
 	// GET /incidents
-	IncidentsGet(ctx context.Context, params IncidentsGetParams) (IncidentsGetRes, error)
-	// IncidentsIncidentUUIDGet invokes GET /incidents/{incident_uuid} operation.
+	ListIncidents(ctx context.Context, params ListIncidentsParams) (ListIncidentsRes, error)
+	// ListPostmortems invokes listPostmortems operation.
 	//
-	// Get incident.
+	// Retrieve a paginated list of postmortems.
 	//
-	// GET /incidents/{incident_uuid}
-	IncidentsIncidentUUIDGet(ctx context.Context, params IncidentsIncidentUUIDGetParams) (IncidentsIncidentUUIDGetRes, error)
-	// IncidentsPost invokes POST /incidents operation.
+	// GET /postmortems
+	ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error)
+	// ListServices invokes listServices operation.
 	//
-	// Create incident.
+	// Retrieve a paginated list of services.
 	//
-	// POST /incidents
-	IncidentsPost(ctx context.Context, request *IncidentsPostReq) (IncidentsPostRes, error)
+	// GET /services
+	ListServices(ctx context.Context, params ListServicesParams) (ListServicesRes, error)
+	// UpdateIncidentLabels invokes updateIncidentLabels operation.
+	//
+	// Update the labels associated with an incident.
+	//
+	// PATCH /incidents/{uuid}/labels
+	UpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (UpdateIncidentLabelsRes, error)
+	// UpdateIncidentSeverity invokes updateIncidentSeverity operation.
+	//
+	// Update the severity of an incident.
+	//
+	// PATCH /incidents/{uuid}/severity
+	UpdateIncidentSeverity(ctx context.Context, request *UpdateIncidentSeverityReq, params UpdateIncidentSeverityParams) (UpdateIncidentSeverityRes, error)
+	// UpdateIncidentStatus invokes updateIncidentStatus operation.
+	//
+	// Update the status of an incident.
+	//
+	// PATCH /incidents/{uuid}/status
+	UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error)
 }
 
 // Client implements OAS client.
@@ -83,80 +119,48 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
-// IncidentsGet invokes GET /incidents operation.
+// CreateIncidentMetrics invokes createIncidentMetrics operation.
 //
-// List incidents.
+// Create a new activity to track incident metrics.
 //
-// GET /incidents
-func (c *Client) IncidentsGet(ctx context.Context, params IncidentsGetParams) (IncidentsGetRes, error) {
-	res, err := c.sendIncidentsGet(ctx, params)
+// POST /incidents/{uuid}/metrics
+func (c *Client) CreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (CreateIncidentMetricsRes, error) {
+	res, err := c.sendCreateIncidentMetrics(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendIncidentsGet(ctx context.Context, params IncidentsGetParams) (res IncidentsGetRes, err error) {
+func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (res CreateIncidentMetricsRes, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/incidents"
+	var pathParts [3]string
+	pathParts[0] = "/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/metrics"
 	uri.AddPathParts(u, pathParts[:]...)
 
-	q := uri.NewQueryEncoder()
-	{
-		// Encode "per_page" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "per_page",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.PerPage.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "page" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "page",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.Page.Get(); ok {
-				return e.EncodeValue(conv.IntToString(val))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	{
-		// Encode "sort_order" parameter.
-		cfg := uri.QueryParameterEncodingConfig{
-			Name:    "sort_order",
-			Style:   uri.QueryStyleForm,
-			Explode: true,
-		}
-
-		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
-			if val, ok := params.SortOrder.Get(); ok {
-				return e.EncodeValue(conv.StringToString(string(val)))
-			}
-			return nil
-		}); err != nil {
-			return res, errors.Wrap(err, "encode query")
-		}
-	}
-	u.RawQuery = q.Values().Encode()
-
-	r, err := ht.NewRequest(ctx, "GET", u)
+	r, err := ht.NewRequest(ctx, "POST", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateIncidentMetricsRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
 	}
 
 	{
@@ -164,13 +168,13 @@ func (c *Client) sendIncidentsGet(ctx context.Context, params IncidentsGetParams
 		var satisfied bitset
 		{
 
-			switch err := c.securityBearerAuth(ctx, IncidentsGetOperation, r); {
+			switch err := c.securityApiKeyAuth(ctx, CreateIncidentMetricsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
 			}
 		}
 
@@ -198,7 +202,7 @@ func (c *Client) sendIncidentsGet(ctx context.Context, params IncidentsGetParams
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeIncidentsGetResponse(resp)
+	result, err := decodeCreateIncidentMetricsResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -206,30 +210,111 @@ func (c *Client) sendIncidentsGet(ctx context.Context, params IncidentsGetParams
 	return result, nil
 }
 
-// IncidentsIncidentUUIDGet invokes GET /incidents/{incident_uuid} operation.
+// CreatePostmortem invokes createPostmortem operation.
 //
-// Get incident.
+// Create a new postmortem.
 //
-// GET /incidents/{incident_uuid}
-func (c *Client) IncidentsIncidentUUIDGet(ctx context.Context, params IncidentsIncidentUUIDGetParams) (IncidentsIncidentUUIDGetRes, error) {
-	res, err := c.sendIncidentsIncidentUUIDGet(ctx, params)
+// POST /postmortems
+func (c *Client) CreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (CreatePostmortemRes, error) {
+	res, err := c.sendCreatePostmortem(ctx, request)
 	return res, err
 }
 
-func (c *Client) sendIncidentsIncidentUUIDGet(ctx context.Context, params IncidentsIncidentUUIDGetParams) (res IncidentsIncidentUUIDGetRes, err error) {
+func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (res CreatePostmortemRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/postmortems"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePostmortemRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, CreatePostmortemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeCreatePostmortemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetIncident invokes getIncident operation.
+//
+// Retrieve a specific incident by its UUID.
+//
+// GET /incidents/{uuid}
+func (c *Client) GetIncident(ctx context.Context, params GetIncidentParams) (GetIncidentRes, error) {
+	res, err := c.sendGetIncident(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) (res GetIncidentRes, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
 	pathParts[0] = "/incidents/"
 	{
-		// Encode "incident_uuid" parameter.
+		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
-			Param:   "incident_uuid",
+			Param:   "uuid",
 			Style:   uri.PathStyleSimple,
 			Explode: false,
 		})
 		if err := func() error {
-			return e.EncodeValue(conv.UUIDToString(params.IncidentUUID))
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
 		}(); err != nil {
 			return res, errors.Wrap(err, "encode path")
 		}
@@ -251,13 +336,13 @@ func (c *Client) sendIncidentsIncidentUUIDGet(ctx context.Context, params Incide
 		var satisfied bitset
 		{
 
-			switch err := c.securityBearerAuth(ctx, IncidentsIncidentUUIDGetOperation, r); {
+			switch err := c.securityApiKeyAuth(ctx, GetIncidentOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
 			}
 		}
 
@@ -285,12 +370,7 @@ func (c *Client) sendIncidentsIncidentUUIDGet(ctx context.Context, params Incide
 	}
 	defer resp.Body.Close()
 
-	println(resp.Header.Get("Content-Type"))
-	println(resp.Status)
-	println(r.Header.Get("Authorization"))
-	println(r.Host)
-
-	result, err := decodeIncidentsIncidentUUIDGetResponse(resp)
+	result, err := decodeGetIncidentResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -298,17 +378,335 @@ func (c *Client) sendIncidentsIncidentUUIDGet(ctx context.Context, params Incide
 	return result, nil
 }
 
-// IncidentsPost invokes POST /incidents operation.
+// ListIncidents invokes listIncidents operation.
 //
-// Create incident.
+// Retrieve a paginated list of incidents.
 //
-// POST /incidents
-func (c *Client) IncidentsPost(ctx context.Context, request *IncidentsPostReq) (IncidentsPostRes, error) {
-	res, err := c.sendIncidentsPost(ctx, request)
+// GET /incidents
+func (c *Client) ListIncidents(ctx context.Context, params ListIncidentsParams) (ListIncidentsRes, error) {
+	res, err := c.sendListIncidents(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendIncidentsPost(ctx context.Context, request *IncidentsPostReq) (res IncidentsPostRes, err error) {
+func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsParams) (res ListIncidentsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/incidents"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, ListIncidentsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListIncidentsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListPostmortems invokes listPostmortems operation.
+//
+// Retrieve a paginated list of postmortems.
+//
+// GET /postmortems
+func (c *Client) ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error) {
+	res, err := c.sendListPostmortems(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortemsParams) (res ListPostmortemsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/postmortems"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, ListPostmortemsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListPostmortemsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListServices invokes listServices operation.
+//
+// Retrieve a paginated list of services.
+//
+// GET /services
+func (c *Client) ListServices(ctx context.Context, params ListServicesParams) (ListServicesRes, error) {
+	res, err := c.sendListServices(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListServices(ctx context.Context, params ListServicesParams) (res ListServicesRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/services"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, ListServicesOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListServicesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentLabels invokes updateIncidentLabels operation.
+//
+// Update the labels associated with an incident.
+//
+// PATCH /incidents/{uuid}/labels
+func (c *Client) UpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (UpdateIncidentLabelsRes, error) {
+	res, err := c.sendUpdateIncidentLabels(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (res UpdateIncidentLabelsRes, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
@@ -320,15 +718,34 @@ func (c *Client) sendIncidentsPost(ctx context.Context, request *IncidentsPostRe
 	}
 
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/incidents"
+	var pathParts [3]string
+	pathParts[0] = "/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/labels"
 	uri.AddPathParts(u, pathParts[:]...)
 
-	r, err := ht.NewRequest(ctx, "POST", u)
+	r, err := ht.NewRequest(ctx, "PATCH", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
 	}
-	if err := encodeIncidentsPostRequest(request, r); err != nil {
+	if err := encodeUpdateIncidentLabelsRequest(request, r); err != nil {
 		return res, errors.Wrap(err, "encode request")
 	}
 
@@ -337,13 +754,13 @@ func (c *Client) sendIncidentsPost(ctx context.Context, request *IncidentsPostRe
 		var satisfied bitset
 		{
 
-			switch err := c.securityBearerAuth(ctx, IncidentsPostOperation, r); {
+			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentLabelsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"BearerAuth\"")
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
 			}
 		}
 
@@ -371,7 +788,207 @@ func (c *Client) sendIncidentsPost(ctx context.Context, request *IncidentsPostRe
 	}
 	defer resp.Body.Close()
 
-	result, err := decodeIncidentsPostResponse(resp)
+	result, err := decodeUpdateIncidentLabelsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentSeverity invokes updateIncidentSeverity operation.
+//
+// Update the severity of an incident.
+//
+// PATCH /incidents/{uuid}/severity
+func (c *Client) UpdateIncidentSeverity(ctx context.Context, request *UpdateIncidentSeverityReq, params UpdateIncidentSeverityParams) (UpdateIncidentSeverityRes, error) {
+	res, err := c.sendUpdateIncidentSeverity(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *UpdateIncidentSeverityReq, params UpdateIncidentSeverityParams) (res UpdateIncidentSeverityRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/severity"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentSeverityRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentSeverityOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeUpdateIncidentSeverityResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentStatus invokes updateIncidentStatus operation.
+//
+// Update the status of an incident.
+//
+// PATCH /incidents/{uuid}/status
+func (c *Client) UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error) {
+	res, err := c.sendUpdateIncidentStatus(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (res UpdateIncidentStatusRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/status"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentStatusRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentStatusOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeUpdateIncidentStatusResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

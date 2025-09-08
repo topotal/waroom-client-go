@@ -10,6 +10,40 @@ import (
 	"github.com/ogen-go/ogen/validate"
 )
 
+func (s *CreatePostmortemReq) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Status.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s CreatePostmortemReqStatus) Validate() error {
+	switch s {
+	case "draft":
+		return nil
+	case "published":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *Incident) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -27,43 +61,53 @@ func (s *Incident) Validate() error {
 			Error: err,
 		})
 	}
-	if len(failures) > 0 {
-		return &validate.Error{Fields: failures}
-	}
-	return nil
-}
-
-func (s IncidentSeverity) Validate() error {
-	switch s {
-	case "UNKNOWN":
-		return nil
-	case "INFO":
-		return nil
-	case "LOW":
-		return nil
-	case "HIGH":
-		return nil
-	case "CRITICAL":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s *IncidentSummary) Validate() error {
-	if s == nil {
-		return validate.ErrNilPointer
-	}
-
-	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.Severity.Validate(); err != nil {
+		if err := s.Status.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "severity",
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.RootCause.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "root_cause",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if s.Labels == nil {
+			return errors.New("nil is invalid value")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.Labels {
+			if err := func() error {
+				if err := elem.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
+			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "labels",
 			Error: err,
 		})
 	}
@@ -73,24 +117,85 @@ func (s *IncidentSummary) Validate() error {
 	return nil
 }
 
-func (s IncidentSummarySeverity) Validate() error {
-	switch s {
-	case "UNKNOWN":
-		return nil
-	case "INFO":
-		return nil
-	case "LOW":
-		return nil
-	case "HIGH":
-		return nil
-	case "CRITICAL":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
+func (s *IncidentLabel) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
 	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if value, ok := s.Color.Get(); ok {
+			if err := func() error {
+				if err := (validate.String{
+					MinLength:    0,
+					MinLengthSet: false,
+					MaxLength:    0,
+					MaxLengthSet: false,
+					Email:        false,
+					Hostname:     false,
+					Regex:        regexMap["^[0-9a-fA-F]{6}$"],
+				}).Validate(string(value)); err != nil {
+					return errors.Wrap(err, "string")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "color",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
 }
 
-func (s *IncidentsGetOK) Validate() error {
+func (s *IncidentLabelsUpdateResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Labels == nil {
+			return errors.New("nil is invalid value")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.Labels {
+			if err := func() error {
+				if err := elem.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
+			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "labels",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *IncidentListResponse) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -124,14 +229,83 @@ func (s *IncidentsGetOK) Validate() error {
 			Error: err,
 		})
 	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s IncidentRootCause) Validate() error {
+	switch s {
+	case "unspecified":
+		return nil
+	case "code_bug":
+		return nil
+	case "configuration_error":
+		return nil
+	case "deployment_failure":
+		return nil
+	case "infrastructure_failure":
+		return nil
+	case "operational_failure":
+		return nil
+	case "third_party_outage":
+		return nil
+	case "other":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s IncidentSeverity) Validate() error {
+	switch s {
+	case "critical":
+		return nil
+	case "high":
+		return nil
+	case "low":
+		return nil
+	case "info":
+		return nil
+	case "unknown":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s IncidentStatus) Validate() error {
+	switch s {
+	case "detected":
+		return nil
+	case "investigating":
+		return nil
+	case "fixing":
+		return nil
+	case "resolved":
+		return nil
+	case "close":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *IncidentStatusUpdateResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.ResponseMetadata.Validate(); err != nil {
+		if err := s.Status.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "response_metadata",
+			Name:  "status",
 			Error: err,
 		})
 	}
@@ -141,18 +315,24 @@ func (s *IncidentsGetOK) Validate() error {
 	return nil
 }
 
-func (s IncidentsGetSortOrder) Validate() error {
+func (s IncidentStatusUpdateResponseStatus) Validate() error {
 	switch s {
-	case "asc":
+	case "detected":
 		return nil
-	case "desc":
+	case "investigating":
+		return nil
+	case "fixing":
+		return nil
+	case "resolved":
+		return nil
+	case "close":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
 	}
 }
 
-func (s *IncidentsPostReq) Validate() error {
+func (s *IncidentUpdateResponse) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
@@ -175,86 +355,37 @@ func (s *IncidentsPostReq) Validate() error {
 	return nil
 }
 
-func (s IncidentsPostReqSeverity) Validate() error {
+func (s IncidentUpdateResponseSeverity) Validate() error {
 	switch s {
-	case "UNKNOWN":
+	case "critical":
 		return nil
-	case "INFO":
+	case "high":
 		return nil
-	case "LOW":
+	case "low":
 		return nil
-	case "HIGH":
+	case "info":
 		return nil
-	case "CRITICAL":
+	case "unknown":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
 	}
 }
 
-func (s *Pagination) Validate() error {
+func (s *ListPostmortemsOK) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
 	}
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Int{
-			MinSet:        true,
-			Min:           1,
-			MaxSet:        false,
-			Max:           0,
-			MinExclusive:  false,
-			MaxExclusive:  false,
-			MultipleOfSet: false,
-			MultipleOf:    0,
-		}).Validate(int64(s.CurrentPage)); err != nil {
-			return errors.Wrap(err, "int")
+		if s.Postmortems == nil {
+			return errors.New("nil is invalid value")
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "current_page",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := (validate.Int{
-			MinSet:        true,
-			Min:           0,
-			MaxSet:        false,
-			Max:           0,
-			MinExclusive:  false,
-			MaxExclusive:  false,
-			MultipleOfSet: false,
-			MultipleOf:    0,
-		}).Validate(int64(s.TotalPages)); err != nil {
-			return errors.Wrap(err, "int")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "total_pages",
-			Error: err,
-		})
-	}
-	if err := func() error {
-		if err := (validate.Int{
-			MinSet:        true,
-			Min:           0,
-			MaxSet:        false,
-			Max:           0,
-			MinExclusive:  false,
-			MaxExclusive:  false,
-			MultipleOfSet: false,
-			MultipleOf:    0,
-		}).Validate(int64(s.TotalCount)); err != nil {
-			return errors.Wrap(err, "int")
-		}
-		return nil
-	}(); err != nil {
-		failures = append(failures, validate.FieldError{
-			Name:  "total_count",
+			Name:  "postmortems",
 			Error: err,
 		})
 	}
@@ -262,4 +393,130 @@ func (s *Pagination) Validate() error {
 		return &validate.Error{Fields: failures}
 	}
 	return nil
+}
+
+func (s *ServicesListResponse) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.Services == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "services",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *UpdateIncidentLabelsReq) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if s.LabelUuids == nil {
+			return errors.New("nil is invalid value")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "label_uuids",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *UpdateIncidentSeverityReq) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Severity.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "severity",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s UpdateIncidentSeverityReqSeverity) Validate() error {
+	switch s {
+	case "critical":
+		return nil
+	case "high":
+		return nil
+	case "low":
+		return nil
+	case "info":
+		return nil
+	case "unknown":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *UpdateIncidentStatusReq) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Status.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s UpdateIncidentStatusReqStatus) Validate() error {
+	switch s {
+	case "detected":
+		return nil
+	case "investigating":
+		return nil
+	case "fixing":
+		return nil
+	case "resolved":
+		return nil
+	case "close":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
 }

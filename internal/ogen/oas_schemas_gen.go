@@ -9,77 +9,207 @@ import (
 	"github.com/google/uuid"
 )
 
-type BearerAuth struct {
-	Token string
-	Roles []string
+type ApiKeyAuth struct {
+	APIKey string
+	Roles  []string
 }
 
-// GetToken returns the value of Token.
-func (s *BearerAuth) GetToken() string {
-	return s.Token
+// GetAPIKey returns the value of APIKey.
+func (s *ApiKeyAuth) GetAPIKey() string {
+	return s.APIKey
 }
 
 // GetRoles returns the value of Roles.
-func (s *BearerAuth) GetRoles() []string {
+func (s *ApiKeyAuth) GetRoles() []string {
 	return s.Roles
 }
 
-// SetToken sets the value of Token.
-func (s *BearerAuth) SetToken(val string) {
-	s.Token = val
+// SetAPIKey sets the value of APIKey.
+func (s *ApiKeyAuth) SetAPIKey(val string) {
+	s.APIKey = val
 }
 
 // SetRoles sets the value of Roles.
-func (s *BearerAuth) SetRoles(val []string) {
+func (s *ApiKeyAuth) SetRoles(val []string) {
 	s.Roles = val
 }
 
-// Ref: #/components/schemas/Error
-type Error struct {
-	Code    OptString `json:"code"`
-	Message string    `json:"message"`
+type BadRequestError struct {
+	Error OptString `json:"error"`
 }
 
-// GetCode returns the value of Code.
-func (s *Error) GetCode() OptString {
-	return s.Code
+// GetError returns the value of Error.
+func (s *BadRequestError) GetError() OptString {
+	return s.Error
 }
 
-// GetMessage returns the value of Message.
-func (s *Error) GetMessage() string {
-	return s.Message
+// SetError sets the value of Error.
+func (s *BadRequestError) SetError(val OptString) {
+	s.Error = val
 }
 
-// SetCode sets the value of Code.
-func (s *Error) SetCode(val OptString) {
-	s.Code = val
+func (*BadRequestError) updateIncidentSeverityRes() {}
+func (*BadRequestError) updateIncidentStatusRes()   {}
+
+type CreateIncidentMetricsBadRequest MessageError
+
+func (*CreateIncidentMetricsBadRequest) createIncidentMetricsRes() {}
+
+type CreateIncidentMetricsNotFound MessageError
+
+func (*CreateIncidentMetricsNotFound) createIncidentMetricsRes() {}
+
+type CreateIncidentMetricsReq struct {
+	// Incident UUID.
+	IncidentUUID uuid.UUID `json:"incident_uuid"`
+	// Activity action.
+	ActivityAction string `json:"activity_action"`
+	// When the activity was triggered.
+	TriggeredAt time.Time `json:"triggered_at"`
 }
 
-// SetMessage sets the value of Message.
-func (s *Error) SetMessage(val string) {
-	s.Message = val
+// GetIncidentUUID returns the value of IncidentUUID.
+func (s *CreateIncidentMetricsReq) GetIncidentUUID() uuid.UUID {
+	return s.IncidentUUID
 }
 
-func (*Error) incidentsIncidentUUIDGetRes() {}
+// GetActivityAction returns the value of ActivityAction.
+func (s *CreateIncidentMetricsReq) GetActivityAction() string {
+	return s.ActivityAction
+}
 
-// Merged schema.
+// GetTriggeredAt returns the value of TriggeredAt.
+func (s *CreateIncidentMetricsReq) GetTriggeredAt() time.Time {
+	return s.TriggeredAt
+}
+
+// SetIncidentUUID sets the value of IncidentUUID.
+func (s *CreateIncidentMetricsReq) SetIncidentUUID(val uuid.UUID) {
+	s.IncidentUUID = val
+}
+
+// SetActivityAction sets the value of ActivityAction.
+func (s *CreateIncidentMetricsReq) SetActivityAction(val string) {
+	s.ActivityAction = val
+}
+
+// SetTriggeredAt sets the value of TriggeredAt.
+func (s *CreateIncidentMetricsReq) SetTriggeredAt(val time.Time) {
+	s.TriggeredAt = val
+}
+
+type CreatePostmortemReq struct {
+	// Postmortem title.
+	Title string `json:"title"`
+	// Postmortem content.
+	Blob string `json:"blob"`
+	// Postmortem status.
+	Status CreatePostmortemReqStatus `json:"status"`
+	// Associated incident UUIDs.
+	IncidentUuids []uuid.UUID `json:"incident_uuids"`
+}
+
+// GetTitle returns the value of Title.
+func (s *CreatePostmortemReq) GetTitle() string {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreatePostmortemReq) GetBlob() string {
+	return s.Blob
+}
+
+// GetStatus returns the value of Status.
+func (s *CreatePostmortemReq) GetStatus() CreatePostmortemReqStatus {
+	return s.Status
+}
+
+// GetIncidentUuids returns the value of IncidentUuids.
+func (s *CreatePostmortemReq) GetIncidentUuids() []uuid.UUID {
+	return s.IncidentUuids
+}
+
+// SetTitle sets the value of Title.
+func (s *CreatePostmortemReq) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreatePostmortemReq) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreatePostmortemReq) SetStatus(val CreatePostmortemReqStatus) {
+	s.Status = val
+}
+
+// SetIncidentUuids sets the value of IncidentUuids.
+func (s *CreatePostmortemReq) SetIncidentUuids(val []uuid.UUID) {
+	s.IncidentUuids = val
+}
+
+// Postmortem status.
+type CreatePostmortemReqStatus string
+
+const (
+	CreatePostmortemReqStatusDraft     CreatePostmortemReqStatus = "draft"
+	CreatePostmortemReqStatusPublished CreatePostmortemReqStatus = "published"
+)
+
+// AllValues returns all CreatePostmortemReqStatus values.
+func (CreatePostmortemReqStatus) AllValues() []CreatePostmortemReqStatus {
+	return []CreatePostmortemReqStatus{
+		CreatePostmortemReqStatusDraft,
+		CreatePostmortemReqStatusPublished,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreatePostmortemReqStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreatePostmortemReqStatusDraft:
+		return []byte(s), nil
+	case CreatePostmortemReqStatusPublished:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreatePostmortemReqStatus) UnmarshalText(data []byte) error {
+	switch CreatePostmortemReqStatus(data) {
+	case CreatePostmortemReqStatusDraft:
+		*s = CreatePostmortemReqStatusDraft
+		return nil
+	case CreatePostmortemReqStatusPublished:
+		*s = CreatePostmortemReqStatusPublished
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 // Ref: #/components/schemas/Incident
 type Incident struct {
-	UUID     uuid.UUID        `json:"uuid"`
-	Title    string           `json:"title"`
+	// Unique identifier for the incident.
+	UUID uuid.UUID `json:"uuid"`
+	// Incident title.
+	Title string `json:"title"`
+	// Severity level of the incident.
 	Severity IncidentSeverity `json:"severity"`
-	// 値は暫定。実APIに合わせて確定.
-	Status       string               `json:"status"`
-	RootCause    OptNilString         `json:"root_cause"`
-	Metrics      OptIncidentMetrics   `json:"metrics"`
-	Experimental OptBool              `json:"experimental"`
-	Service      OptIncidentService   `json:"service"`
-	Labels       []IncidentLabelsItem `json:"labels"`
-	CreatedAt    time.Time            `json:"created_at"`
-	// Markdown.
-	StateDocument        OptString                 `json:"state_document"`
-	Postmortems          []IncidentPostmortemsItem `json:"postmortems"`
-	IncidentSlackChannel OptNilString              `json:"incident_slack_channel"`
+	// Current status of the incident.
+	Status IncidentStatus `json:"status"`
+	// Root cause category.
+	RootCause IncidentRootCause `json:"root_cause"`
+	// Whether this is an experimental incident.
+	Experimental bool `json:"experimental"`
+	// Creation timestamp.
+	CreatedAt time.Time       `json:"created_at"`
+	Metrics   IncidentMetrics `json:"metrics"`
+	Service   Service         `json:"service"`
+	Labels    []IncidentLabel `json:"labels"`
 }
 
 // GetUUID returns the value of UUID.
@@ -98,33 +228,18 @@ func (s *Incident) GetSeverity() IncidentSeverity {
 }
 
 // GetStatus returns the value of Status.
-func (s *Incident) GetStatus() string {
+func (s *Incident) GetStatus() IncidentStatus {
 	return s.Status
 }
 
 // GetRootCause returns the value of RootCause.
-func (s *Incident) GetRootCause() OptNilString {
+func (s *Incident) GetRootCause() IncidentRootCause {
 	return s.RootCause
 }
 
-// GetMetrics returns the value of Metrics.
-func (s *Incident) GetMetrics() OptIncidentMetrics {
-	return s.Metrics
-}
-
 // GetExperimental returns the value of Experimental.
-func (s *Incident) GetExperimental() OptBool {
+func (s *Incident) GetExperimental() bool {
 	return s.Experimental
-}
-
-// GetService returns the value of Service.
-func (s *Incident) GetService() OptIncidentService {
-	return s.Service
-}
-
-// GetLabels returns the value of Labels.
-func (s *Incident) GetLabels() []IncidentLabelsItem {
-	return s.Labels
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -132,19 +247,19 @@ func (s *Incident) GetCreatedAt() time.Time {
 	return s.CreatedAt
 }
 
-// GetStateDocument returns the value of StateDocument.
-func (s *Incident) GetStateDocument() OptString {
-	return s.StateDocument
+// GetMetrics returns the value of Metrics.
+func (s *Incident) GetMetrics() IncidentMetrics {
+	return s.Metrics
 }
 
-// GetPostmortems returns the value of Postmortems.
-func (s *Incident) GetPostmortems() []IncidentPostmortemsItem {
-	return s.Postmortems
+// GetService returns the value of Service.
+func (s *Incident) GetService() Service {
+	return s.Service
 }
 
-// GetIncidentSlackChannel returns the value of IncidentSlackChannel.
-func (s *Incident) GetIncidentSlackChannel() OptNilString {
-	return s.IncidentSlackChannel
+// GetLabels returns the value of Labels.
+func (s *Incident) GetLabels() []IncidentLabel {
+	return s.Labels
 }
 
 // SetUUID sets the value of UUID.
@@ -163,33 +278,18 @@ func (s *Incident) SetSeverity(val IncidentSeverity) {
 }
 
 // SetStatus sets the value of Status.
-func (s *Incident) SetStatus(val string) {
+func (s *Incident) SetStatus(val IncidentStatus) {
 	s.Status = val
 }
 
 // SetRootCause sets the value of RootCause.
-func (s *Incident) SetRootCause(val OptNilString) {
+func (s *Incident) SetRootCause(val IncidentRootCause) {
 	s.RootCause = val
 }
 
-// SetMetrics sets the value of Metrics.
-func (s *Incident) SetMetrics(val OptIncidentMetrics) {
-	s.Metrics = val
-}
-
 // SetExperimental sets the value of Experimental.
-func (s *Incident) SetExperimental(val OptBool) {
+func (s *Incident) SetExperimental(val bool) {
 	s.Experimental = val
-}
-
-// SetService sets the value of Service.
-func (s *Incident) SetService(val OptIncidentService) {
-	s.Service = val
-}
-
-// SetLabels sets the value of Labels.
-func (s *Incident) SetLabels(val []IncidentLabelsItem) {
-	s.Labels = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
@@ -197,212 +297,442 @@ func (s *Incident) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
 }
 
-// SetStateDocument sets the value of StateDocument.
-func (s *Incident) SetStateDocument(val OptString) {
-	s.StateDocument = val
+// SetMetrics sets the value of Metrics.
+func (s *Incident) SetMetrics(val IncidentMetrics) {
+	s.Metrics = val
 }
 
-// SetPostmortems sets the value of Postmortems.
-func (s *Incident) SetPostmortems(val []IncidentPostmortemsItem) {
-	s.Postmortems = val
+// SetService sets the value of Service.
+func (s *Incident) SetService(val Service) {
+	s.Service = val
 }
 
-// SetIncidentSlackChannel sets the value of IncidentSlackChannel.
-func (s *Incident) SetIncidentSlackChannel(val OptNilString) {
-	s.IncidentSlackChannel = val
+// SetLabels sets the value of Labels.
+func (s *Incident) SetLabels(val []IncidentLabel) {
+	s.Labels = val
 }
 
-func (*Incident) incidentsIncidentUUIDGetRes() {}
-func (*Incident) incidentsPostRes()            {}
+func (*Incident) getIncidentRes() {}
 
-type IncidentLabelsItem struct {
-	UUID  OptUUID   `json:"uuid"`
-	Key   OptString `json:"key"`
-	Value OptString `json:"value"`
+// Ref: #/components/schemas/IncidentLabel
+type IncidentLabel struct {
+	// Label ID.
+	ID int64 `json:"id"`
+	// Label name.
+	Name string `json:"name"`
+	// Label color in hex format (without.
+	Color OptString `json:"color"`
+	// Creation timestamp.
+	CreatedAt time.Time `json:"created_at"`
 }
 
-// GetUUID returns the value of UUID.
-func (s *IncidentLabelsItem) GetUUID() OptUUID {
-	return s.UUID
+// GetID returns the value of ID.
+func (s *IncidentLabel) GetID() int64 {
+	return s.ID
 }
 
-// GetKey returns the value of Key.
-func (s *IncidentLabelsItem) GetKey() OptString {
-	return s.Key
+// GetName returns the value of Name.
+func (s *IncidentLabel) GetName() string {
+	return s.Name
 }
 
-// GetValue returns the value of Value.
-func (s *IncidentLabelsItem) GetValue() OptString {
-	return s.Value
+// GetColor returns the value of Color.
+func (s *IncidentLabel) GetColor() OptString {
+	return s.Color
 }
 
-// SetUUID sets the value of UUID.
-func (s *IncidentLabelsItem) SetUUID(val OptUUID) {
-	s.UUID = val
+// GetCreatedAt returns the value of CreatedAt.
+func (s *IncidentLabel) GetCreatedAt() time.Time {
+	return s.CreatedAt
 }
 
-// SetKey sets the value of Key.
-func (s *IncidentLabelsItem) SetKey(val OptString) {
-	s.Key = val
+// SetID sets the value of ID.
+func (s *IncidentLabel) SetID(val int64) {
+	s.ID = val
 }
 
-// SetValue sets the value of Value.
-func (s *IncidentLabelsItem) SetValue(val OptString) {
-	s.Value = val
+// SetName sets the value of Name.
+func (s *IncidentLabel) SetName(val string) {
+	s.Name = val
 }
+
+// SetColor sets the value of Color.
+func (s *IncidentLabel) SetColor(val OptString) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *IncidentLabel) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// Ref: #/components/schemas/IncidentLabelsUpdateResponse
+type IncidentLabelsUpdateResponse struct {
+	// Updated incident labels.
+	Labels []IncidentLabel `json:"labels"`
+}
+
+// GetLabels returns the value of Labels.
+func (s *IncidentLabelsUpdateResponse) GetLabels() []IncidentLabel {
+	return s.Labels
+}
+
+// SetLabels sets the value of Labels.
+func (s *IncidentLabelsUpdateResponse) SetLabels(val []IncidentLabel) {
+	s.Labels = val
+}
+
+func (*IncidentLabelsUpdateResponse) updateIncidentLabelsRes() {}
+
+// Ref: #/components/schemas/IncidentListResponse
+type IncidentListResponse struct {
+	Incidents        []Incident       `json:"incidents"`
+	ResponseMetadata ResponseMetadata `json:"response_metadata"`
+}
+
+// GetIncidents returns the value of Incidents.
+func (s *IncidentListResponse) GetIncidents() []Incident {
+	return s.Incidents
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *IncidentListResponse) GetResponseMetadata() ResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetIncidents sets the value of Incidents.
+func (s *IncidentListResponse) SetIncidents(val []Incident) {
+	s.Incidents = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *IncidentListResponse) SetResponseMetadata(val ResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*IncidentListResponse) listIncidentsRes() {}
 
 type IncidentMetrics struct {
-	Ttd OptInt64 `json:"ttd"`
-	Tta OptInt64 `json:"tta"`
-	Tti OptInt64 `json:"tti"`
-	Ttf OptInt64 `json:"ttf"`
-	Ttr OptInt64 `json:"ttr"`
+	// Time to detect (in seconds).
+	Ttd OptNilInt `json:"ttd"`
+	// Time to acknowledge (in seconds).
+	Tta OptNilInt `json:"tta"`
+	// Time to investigate (in seconds).
+	Tti OptNilInt `json:"tti"`
+	// Time to fix (in seconds).
+	Ttf OptNilInt `json:"ttf"`
+	// Time to repair (in seconds).
+	Ttr OptNilInt `json:"ttr"`
 }
 
 // GetTtd returns the value of Ttd.
-func (s *IncidentMetrics) GetTtd() OptInt64 {
+func (s *IncidentMetrics) GetTtd() OptNilInt {
 	return s.Ttd
 }
 
 // GetTta returns the value of Tta.
-func (s *IncidentMetrics) GetTta() OptInt64 {
+func (s *IncidentMetrics) GetTta() OptNilInt {
 	return s.Tta
 }
 
 // GetTti returns the value of Tti.
-func (s *IncidentMetrics) GetTti() OptInt64 {
+func (s *IncidentMetrics) GetTti() OptNilInt {
 	return s.Tti
 }
 
 // GetTtf returns the value of Ttf.
-func (s *IncidentMetrics) GetTtf() OptInt64 {
+func (s *IncidentMetrics) GetTtf() OptNilInt {
 	return s.Ttf
 }
 
 // GetTtr returns the value of Ttr.
-func (s *IncidentMetrics) GetTtr() OptInt64 {
+func (s *IncidentMetrics) GetTtr() OptNilInt {
 	return s.Ttr
 }
 
 // SetTtd sets the value of Ttd.
-func (s *IncidentMetrics) SetTtd(val OptInt64) {
+func (s *IncidentMetrics) SetTtd(val OptNilInt) {
 	s.Ttd = val
 }
 
 // SetTta sets the value of Tta.
-func (s *IncidentMetrics) SetTta(val OptInt64) {
+func (s *IncidentMetrics) SetTta(val OptNilInt) {
 	s.Tta = val
 }
 
 // SetTti sets the value of Tti.
-func (s *IncidentMetrics) SetTti(val OptInt64) {
+func (s *IncidentMetrics) SetTti(val OptNilInt) {
 	s.Tti = val
 }
 
 // SetTtf sets the value of Ttf.
-func (s *IncidentMetrics) SetTtf(val OptInt64) {
+func (s *IncidentMetrics) SetTtf(val OptNilInt) {
 	s.Ttf = val
 }
 
 // SetTtr sets the value of Ttr.
-func (s *IncidentMetrics) SetTtr(val OptInt64) {
+func (s *IncidentMetrics) SetTtr(val OptNilInt) {
 	s.Ttr = val
 }
 
-type IncidentPostmortemsItem struct {
-	UUID   OptUUID   `json:"uuid"`
-	Title  OptString `json:"title"`
-	Blob   OptString `json:"blob"`
-	Status OptString `json:"status"`
+// Ref: #/components/schemas/IncidentMetricsResponse
+type IncidentMetricsResponse struct {
+	// Activity UUID.
+	UUID uuid.UUID `json:"uuid"`
+	// Activity action.
+	Action string `json:"action"`
+	// When the activity was triggered.
+	TriggeredAt time.Time                       `json:"triggered_at"`
+	Incident    IncidentMetricsResponseIncident `json:"incident"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *IncidentPostmortemsItem) GetUUID() OptUUID {
+func (s *IncidentMetricsResponse) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetAction returns the value of Action.
+func (s *IncidentMetricsResponse) GetAction() string {
+	return s.Action
+}
+
+// GetTriggeredAt returns the value of TriggeredAt.
+func (s *IncidentMetricsResponse) GetTriggeredAt() time.Time {
+	return s.TriggeredAt
+}
+
+// GetIncident returns the value of Incident.
+func (s *IncidentMetricsResponse) GetIncident() IncidentMetricsResponseIncident {
+	return s.Incident
+}
+
+// SetUUID sets the value of UUID.
+func (s *IncidentMetricsResponse) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetAction sets the value of Action.
+func (s *IncidentMetricsResponse) SetAction(val string) {
+	s.Action = val
+}
+
+// SetTriggeredAt sets the value of TriggeredAt.
+func (s *IncidentMetricsResponse) SetTriggeredAt(val time.Time) {
+	s.TriggeredAt = val
+}
+
+// SetIncident sets the value of Incident.
+func (s *IncidentMetricsResponse) SetIncident(val IncidentMetricsResponseIncident) {
+	s.Incident = val
+}
+
+func (*IncidentMetricsResponse) createIncidentMetricsRes() {}
+
+type IncidentMetricsResponseIncident struct {
+	// Incident UUID.
+	UUID uuid.UUID `json:"uuid"`
+	// Incident title.
+	Title string `json:"title"`
+	// Time to detect (in seconds).
+	Ttd OptNilInt `json:"ttd"`
+	// Time to acknowledge (in seconds).
+	Tta OptNilInt `json:"tta"`
+	// Time to investigate (in seconds).
+	Tti OptNilInt `json:"tti"`
+	// Time to fix (in seconds).
+	Ttf OptNilInt `json:"ttf"`
+	// Time to repair (in seconds).
+	Ttr OptNilInt `json:"ttr"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *IncidentMetricsResponseIncident) GetUUID() uuid.UUID {
 	return s.UUID
 }
 
 // GetTitle returns the value of Title.
-func (s *IncidentPostmortemsItem) GetTitle() OptString {
+func (s *IncidentMetricsResponseIncident) GetTitle() string {
 	return s.Title
 }
 
-// GetBlob returns the value of Blob.
-func (s *IncidentPostmortemsItem) GetBlob() OptString {
-	return s.Blob
+// GetTtd returns the value of Ttd.
+func (s *IncidentMetricsResponseIncident) GetTtd() OptNilInt {
+	return s.Ttd
 }
 
-// GetStatus returns the value of Status.
-func (s *IncidentPostmortemsItem) GetStatus() OptString {
-	return s.Status
+// GetTta returns the value of Tta.
+func (s *IncidentMetricsResponseIncident) GetTta() OptNilInt {
+	return s.Tta
+}
+
+// GetTti returns the value of Tti.
+func (s *IncidentMetricsResponseIncident) GetTti() OptNilInt {
+	return s.Tti
+}
+
+// GetTtf returns the value of Ttf.
+func (s *IncidentMetricsResponseIncident) GetTtf() OptNilInt {
+	return s.Ttf
+}
+
+// GetTtr returns the value of Ttr.
+func (s *IncidentMetricsResponseIncident) GetTtr() OptNilInt {
+	return s.Ttr
 }
 
 // SetUUID sets the value of UUID.
-func (s *IncidentPostmortemsItem) SetUUID(val OptUUID) {
+func (s *IncidentMetricsResponseIncident) SetUUID(val uuid.UUID) {
 	s.UUID = val
 }
 
 // SetTitle sets the value of Title.
-func (s *IncidentPostmortemsItem) SetTitle(val OptString) {
+func (s *IncidentMetricsResponseIncident) SetTitle(val string) {
 	s.Title = val
 }
 
-// SetBlob sets the value of Blob.
-func (s *IncidentPostmortemsItem) SetBlob(val OptString) {
-	s.Blob = val
+// SetTtd sets the value of Ttd.
+func (s *IncidentMetricsResponseIncident) SetTtd(val OptNilInt) {
+	s.Ttd = val
 }
 
-// SetStatus sets the value of Status.
-func (s *IncidentPostmortemsItem) SetStatus(val OptString) {
-	s.Status = val
+// SetTta sets the value of Tta.
+func (s *IncidentMetricsResponseIncident) SetTta(val OptNilInt) {
+	s.Tta = val
 }
 
-type IncidentService struct {
-	Name OptString `json:"name"`
+// SetTti sets the value of Tti.
+func (s *IncidentMetricsResponseIncident) SetTti(val OptNilInt) {
+	s.Tti = val
 }
 
-// GetName returns the value of Name.
-func (s *IncidentService) GetName() OptString {
-	return s.Name
+// SetTtf sets the value of Ttf.
+func (s *IncidentMetricsResponseIncident) SetTtf(val OptNilInt) {
+	s.Ttf = val
 }
 
-// SetName sets the value of Name.
-func (s *IncidentService) SetName(val OptString) {
-	s.Name = val
+// SetTtr sets the value of Ttr.
+func (s *IncidentMetricsResponseIncident) SetTtr(val OptNilInt) {
+	s.Ttr = val
 }
 
+// Root cause category.
+type IncidentRootCause string
+
+const (
+	IncidentRootCauseUnspecified           IncidentRootCause = "unspecified"
+	IncidentRootCauseCodeBug               IncidentRootCause = "code_bug"
+	IncidentRootCauseConfigurationError    IncidentRootCause = "configuration_error"
+	IncidentRootCauseDeploymentFailure     IncidentRootCause = "deployment_failure"
+	IncidentRootCauseInfrastructureFailure IncidentRootCause = "infrastructure_failure"
+	IncidentRootCauseOperationalFailure    IncidentRootCause = "operational_failure"
+	IncidentRootCauseThirdPartyOutage      IncidentRootCause = "third_party_outage"
+	IncidentRootCauseOther                 IncidentRootCause = "other"
+)
+
+// AllValues returns all IncidentRootCause values.
+func (IncidentRootCause) AllValues() []IncidentRootCause {
+	return []IncidentRootCause{
+		IncidentRootCauseUnspecified,
+		IncidentRootCauseCodeBug,
+		IncidentRootCauseConfigurationError,
+		IncidentRootCauseDeploymentFailure,
+		IncidentRootCauseInfrastructureFailure,
+		IncidentRootCauseOperationalFailure,
+		IncidentRootCauseThirdPartyOutage,
+		IncidentRootCauseOther,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s IncidentRootCause) MarshalText() ([]byte, error) {
+	switch s {
+	case IncidentRootCauseUnspecified:
+		return []byte(s), nil
+	case IncidentRootCauseCodeBug:
+		return []byte(s), nil
+	case IncidentRootCauseConfigurationError:
+		return []byte(s), nil
+	case IncidentRootCauseDeploymentFailure:
+		return []byte(s), nil
+	case IncidentRootCauseInfrastructureFailure:
+		return []byte(s), nil
+	case IncidentRootCauseOperationalFailure:
+		return []byte(s), nil
+	case IncidentRootCauseThirdPartyOutage:
+		return []byte(s), nil
+	case IncidentRootCauseOther:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *IncidentRootCause) UnmarshalText(data []byte) error {
+	switch IncidentRootCause(data) {
+	case IncidentRootCauseUnspecified:
+		*s = IncidentRootCauseUnspecified
+		return nil
+	case IncidentRootCauseCodeBug:
+		*s = IncidentRootCauseCodeBug
+		return nil
+	case IncidentRootCauseConfigurationError:
+		*s = IncidentRootCauseConfigurationError
+		return nil
+	case IncidentRootCauseDeploymentFailure:
+		*s = IncidentRootCauseDeploymentFailure
+		return nil
+	case IncidentRootCauseInfrastructureFailure:
+		*s = IncidentRootCauseInfrastructureFailure
+		return nil
+	case IncidentRootCauseOperationalFailure:
+		*s = IncidentRootCauseOperationalFailure
+		return nil
+	case IncidentRootCauseThirdPartyOutage:
+		*s = IncidentRootCauseThirdPartyOutage
+		return nil
+	case IncidentRootCauseOther:
+		*s = IncidentRootCauseOther
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Severity level of the incident.
 type IncidentSeverity string
 
 const (
-	IncidentSeverityUNKNOWN  IncidentSeverity = "UNKNOWN"
-	IncidentSeverityINFO     IncidentSeverity = "INFO"
-	IncidentSeverityLOW      IncidentSeverity = "LOW"
-	IncidentSeverityHIGH     IncidentSeverity = "HIGH"
-	IncidentSeverityCRITICAL IncidentSeverity = "CRITICAL"
+	IncidentSeverityCritical IncidentSeverity = "critical"
+	IncidentSeverityHigh     IncidentSeverity = "high"
+	IncidentSeverityLow      IncidentSeverity = "low"
+	IncidentSeverityInfo     IncidentSeverity = "info"
+	IncidentSeverityUnknown  IncidentSeverity = "unknown"
 )
 
 // AllValues returns all IncidentSeverity values.
 func (IncidentSeverity) AllValues() []IncidentSeverity {
 	return []IncidentSeverity{
-		IncidentSeverityUNKNOWN,
-		IncidentSeverityINFO,
-		IncidentSeverityLOW,
-		IncidentSeverityHIGH,
-		IncidentSeverityCRITICAL,
+		IncidentSeverityCritical,
+		IncidentSeverityHigh,
+		IncidentSeverityLow,
+		IncidentSeverityInfo,
+		IncidentSeverityUnknown,
 	}
 }
 
 // MarshalText implements encoding.TextMarshaler.
 func (s IncidentSeverity) MarshalText() ([]byte, error) {
 	switch s {
-	case IncidentSeverityUNKNOWN:
+	case IncidentSeverityCritical:
 		return []byte(s), nil
-	case IncidentSeverityINFO:
+	case IncidentSeverityHigh:
 		return []byte(s), nil
-	case IncidentSeverityLOW:
+	case IncidentSeverityLow:
 		return []byte(s), nil
-	case IncidentSeverityHIGH:
+	case IncidentSeverityInfo:
 		return []byte(s), nil
-	case IncidentSeverityCRITICAL:
+	case IncidentSeverityUnknown:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -412,489 +742,246 @@ func (s IncidentSeverity) MarshalText() ([]byte, error) {
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (s *IncidentSeverity) UnmarshalText(data []byte) error {
 	switch IncidentSeverity(data) {
-	case IncidentSeverityUNKNOWN:
-		*s = IncidentSeverityUNKNOWN
+	case IncidentSeverityCritical:
+		*s = IncidentSeverityCritical
 		return nil
-	case IncidentSeverityINFO:
-		*s = IncidentSeverityINFO
+	case IncidentSeverityHigh:
+		*s = IncidentSeverityHigh
 		return nil
-	case IncidentSeverityLOW:
-		*s = IncidentSeverityLOW
+	case IncidentSeverityLow:
+		*s = IncidentSeverityLow
 		return nil
-	case IncidentSeverityHIGH:
-		*s = IncidentSeverityHIGH
+	case IncidentSeverityInfo:
+		*s = IncidentSeverityInfo
 		return nil
-	case IncidentSeverityCRITICAL:
-		*s = IncidentSeverityCRITICAL
+	case IncidentSeverityUnknown:
+		*s = IncidentSeverityUnknown
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
 	}
 }
 
-// Ref: #/components/schemas/IncidentSummary
-type IncidentSummary struct {
-	UUID     uuid.UUID               `json:"uuid"`
-	Title    string                  `json:"title"`
-	Severity IncidentSummarySeverity `json:"severity"`
-	// 値は暫定。実APIに合わせて確定.
-	Status       string                      `json:"status"`
-	RootCause    OptNilString                `json:"root_cause"`
-	Metrics      OptIncidentSummaryMetrics   `json:"metrics"`
-	Experimental OptBool                     `json:"experimental"`
-	Service      OptIncidentSummaryService   `json:"service"`
-	Labels       []IncidentSummaryLabelsItem `json:"labels"`
-	CreatedAt    time.Time                   `json:"created_at"`
+// Current status of the incident.
+type IncidentStatus string
+
+const (
+	IncidentStatusDetected      IncidentStatus = "detected"
+	IncidentStatusInvestigating IncidentStatus = "investigating"
+	IncidentStatusFixing        IncidentStatus = "fixing"
+	IncidentStatusResolved      IncidentStatus = "resolved"
+	IncidentStatusClose         IncidentStatus = "close"
+)
+
+// AllValues returns all IncidentStatus values.
+func (IncidentStatus) AllValues() []IncidentStatus {
+	return []IncidentStatus{
+		IncidentStatusDetected,
+		IncidentStatusInvestigating,
+		IncidentStatusFixing,
+		IncidentStatusResolved,
+		IncidentStatusClose,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s IncidentStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case IncidentStatusDetected:
+		return []byte(s), nil
+	case IncidentStatusInvestigating:
+		return []byte(s), nil
+	case IncidentStatusFixing:
+		return []byte(s), nil
+	case IncidentStatusResolved:
+		return []byte(s), nil
+	case IncidentStatusClose:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *IncidentStatus) UnmarshalText(data []byte) error {
+	switch IncidentStatus(data) {
+	case IncidentStatusDetected:
+		*s = IncidentStatusDetected
+		return nil
+	case IncidentStatusInvestigating:
+		*s = IncidentStatusInvestigating
+		return nil
+	case IncidentStatusFixing:
+		*s = IncidentStatusFixing
+		return nil
+	case IncidentStatusResolved:
+		*s = IncidentStatusResolved
+		return nil
+	case IncidentStatusClose:
+		*s = IncidentStatusClose
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Ref: #/components/schemas/IncidentStatusUpdateResponse
+type IncidentStatusUpdateResponse struct {
+	// Incident UUID.
+	UUID uuid.UUID `json:"uuid"`
+	// Updated status.
+	Status IncidentStatusUpdateResponseStatus `json:"status"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *IncidentSummary) GetUUID() uuid.UUID {
+func (s *IncidentStatusUpdateResponse) GetUUID() uuid.UUID {
 	return s.UUID
-}
-
-// GetTitle returns the value of Title.
-func (s *IncidentSummary) GetTitle() string {
-	return s.Title
-}
-
-// GetSeverity returns the value of Severity.
-func (s *IncidentSummary) GetSeverity() IncidentSummarySeverity {
-	return s.Severity
 }
 
 // GetStatus returns the value of Status.
-func (s *IncidentSummary) GetStatus() string {
+func (s *IncidentStatusUpdateResponse) GetStatus() IncidentStatusUpdateResponseStatus {
 	return s.Status
 }
 
-// GetRootCause returns the value of RootCause.
-func (s *IncidentSummary) GetRootCause() OptNilString {
-	return s.RootCause
-}
-
-// GetMetrics returns the value of Metrics.
-func (s *IncidentSummary) GetMetrics() OptIncidentSummaryMetrics {
-	return s.Metrics
-}
-
-// GetExperimental returns the value of Experimental.
-func (s *IncidentSummary) GetExperimental() OptBool {
-	return s.Experimental
-}
-
-// GetService returns the value of Service.
-func (s *IncidentSummary) GetService() OptIncidentSummaryService {
-	return s.Service
-}
-
-// GetLabels returns the value of Labels.
-func (s *IncidentSummary) GetLabels() []IncidentSummaryLabelsItem {
-	return s.Labels
-}
-
-// GetCreatedAt returns the value of CreatedAt.
-func (s *IncidentSummary) GetCreatedAt() time.Time {
-	return s.CreatedAt
-}
-
 // SetUUID sets the value of UUID.
-func (s *IncidentSummary) SetUUID(val uuid.UUID) {
+func (s *IncidentStatusUpdateResponse) SetUUID(val uuid.UUID) {
 	s.UUID = val
-}
-
-// SetTitle sets the value of Title.
-func (s *IncidentSummary) SetTitle(val string) {
-	s.Title = val
-}
-
-// SetSeverity sets the value of Severity.
-func (s *IncidentSummary) SetSeverity(val IncidentSummarySeverity) {
-	s.Severity = val
 }
 
 // SetStatus sets the value of Status.
-func (s *IncidentSummary) SetStatus(val string) {
+func (s *IncidentStatusUpdateResponse) SetStatus(val IncidentStatusUpdateResponseStatus) {
 	s.Status = val
 }
 
-// SetRootCause sets the value of RootCause.
-func (s *IncidentSummary) SetRootCause(val OptNilString) {
-	s.RootCause = val
+func (*IncidentStatusUpdateResponse) updateIncidentStatusRes() {}
+
+// Updated status.
+type IncidentStatusUpdateResponseStatus string
+
+const (
+	IncidentStatusUpdateResponseStatusDetected      IncidentStatusUpdateResponseStatus = "detected"
+	IncidentStatusUpdateResponseStatusInvestigating IncidentStatusUpdateResponseStatus = "investigating"
+	IncidentStatusUpdateResponseStatusFixing        IncidentStatusUpdateResponseStatus = "fixing"
+	IncidentStatusUpdateResponseStatusResolved      IncidentStatusUpdateResponseStatus = "resolved"
+	IncidentStatusUpdateResponseStatusClose         IncidentStatusUpdateResponseStatus = "close"
+)
+
+// AllValues returns all IncidentStatusUpdateResponseStatus values.
+func (IncidentStatusUpdateResponseStatus) AllValues() []IncidentStatusUpdateResponseStatus {
+	return []IncidentStatusUpdateResponseStatus{
+		IncidentStatusUpdateResponseStatusDetected,
+		IncidentStatusUpdateResponseStatusInvestigating,
+		IncidentStatusUpdateResponseStatusFixing,
+		IncidentStatusUpdateResponseStatusResolved,
+		IncidentStatusUpdateResponseStatusClose,
+	}
 }
 
-// SetMetrics sets the value of Metrics.
-func (s *IncidentSummary) SetMetrics(val OptIncidentSummaryMetrics) {
-	s.Metrics = val
+// MarshalText implements encoding.TextMarshaler.
+func (s IncidentStatusUpdateResponseStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case IncidentStatusUpdateResponseStatusDetected:
+		return []byte(s), nil
+	case IncidentStatusUpdateResponseStatusInvestigating:
+		return []byte(s), nil
+	case IncidentStatusUpdateResponseStatusFixing:
+		return []byte(s), nil
+	case IncidentStatusUpdateResponseStatusResolved:
+		return []byte(s), nil
+	case IncidentStatusUpdateResponseStatusClose:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
 }
 
-// SetExperimental sets the value of Experimental.
-func (s *IncidentSummary) SetExperimental(val OptBool) {
-	s.Experimental = val
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *IncidentStatusUpdateResponseStatus) UnmarshalText(data []byte) error {
+	switch IncidentStatusUpdateResponseStatus(data) {
+	case IncidentStatusUpdateResponseStatusDetected:
+		*s = IncidentStatusUpdateResponseStatusDetected
+		return nil
+	case IncidentStatusUpdateResponseStatusInvestigating:
+		*s = IncidentStatusUpdateResponseStatusInvestigating
+		return nil
+	case IncidentStatusUpdateResponseStatusFixing:
+		*s = IncidentStatusUpdateResponseStatusFixing
+		return nil
+	case IncidentStatusUpdateResponseStatusResolved:
+		*s = IncidentStatusUpdateResponseStatusResolved
+		return nil
+	case IncidentStatusUpdateResponseStatusClose:
+		*s = IncidentStatusUpdateResponseStatusClose
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
-// SetService sets the value of Service.
-func (s *IncidentSummary) SetService(val OptIncidentSummaryService) {
-	s.Service = val
-}
-
-// SetLabels sets the value of Labels.
-func (s *IncidentSummary) SetLabels(val []IncidentSummaryLabelsItem) {
-	s.Labels = val
-}
-
-// SetCreatedAt sets the value of CreatedAt.
-func (s *IncidentSummary) SetCreatedAt(val time.Time) {
-	s.CreatedAt = val
-}
-
-type IncidentSummaryLabelsItem struct {
-	UUID  OptUUID   `json:"uuid"`
-	Key   OptString `json:"key"`
-	Value OptString `json:"value"`
+// Ref: #/components/schemas/IncidentUpdateResponse
+type IncidentUpdateResponse struct {
+	// Incident UUID.
+	UUID uuid.UUID `json:"uuid"`
+	// Updated severity level.
+	Severity IncidentUpdateResponseSeverity `json:"severity"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *IncidentSummaryLabelsItem) GetUUID() OptUUID {
+func (s *IncidentUpdateResponse) GetUUID() uuid.UUID {
 	return s.UUID
 }
 
-// GetKey returns the value of Key.
-func (s *IncidentSummaryLabelsItem) GetKey() OptString {
-	return s.Key
-}
-
-// GetValue returns the value of Value.
-func (s *IncidentSummaryLabelsItem) GetValue() OptString {
-	return s.Value
-}
-
-// SetUUID sets the value of UUID.
-func (s *IncidentSummaryLabelsItem) SetUUID(val OptUUID) {
-	s.UUID = val
-}
-
-// SetKey sets the value of Key.
-func (s *IncidentSummaryLabelsItem) SetKey(val OptString) {
-	s.Key = val
-}
-
-// SetValue sets the value of Value.
-func (s *IncidentSummaryLabelsItem) SetValue(val OptString) {
-	s.Value = val
-}
-
-type IncidentSummaryMetrics struct {
-	Ttd OptInt64 `json:"ttd"`
-	Tta OptInt64 `json:"tta"`
-	Tti OptInt64 `json:"tti"`
-	Ttf OptInt64 `json:"ttf"`
-	Ttr OptInt64 `json:"ttr"`
-}
-
-// GetTtd returns the value of Ttd.
-func (s *IncidentSummaryMetrics) GetTtd() OptInt64 {
-	return s.Ttd
-}
-
-// GetTta returns the value of Tta.
-func (s *IncidentSummaryMetrics) GetTta() OptInt64 {
-	return s.Tta
-}
-
-// GetTti returns the value of Tti.
-func (s *IncidentSummaryMetrics) GetTti() OptInt64 {
-	return s.Tti
-}
-
-// GetTtf returns the value of Ttf.
-func (s *IncidentSummaryMetrics) GetTtf() OptInt64 {
-	return s.Ttf
-}
-
-// GetTtr returns the value of Ttr.
-func (s *IncidentSummaryMetrics) GetTtr() OptInt64 {
-	return s.Ttr
-}
-
-// SetTtd sets the value of Ttd.
-func (s *IncidentSummaryMetrics) SetTtd(val OptInt64) {
-	s.Ttd = val
-}
-
-// SetTta sets the value of Tta.
-func (s *IncidentSummaryMetrics) SetTta(val OptInt64) {
-	s.Tta = val
-}
-
-// SetTti sets the value of Tti.
-func (s *IncidentSummaryMetrics) SetTti(val OptInt64) {
-	s.Tti = val
-}
-
-// SetTtf sets the value of Ttf.
-func (s *IncidentSummaryMetrics) SetTtf(val OptInt64) {
-	s.Ttf = val
-}
-
-// SetTtr sets the value of Ttr.
-func (s *IncidentSummaryMetrics) SetTtr(val OptInt64) {
-	s.Ttr = val
-}
-
-type IncidentSummaryService struct {
-	Name OptString `json:"name"`
-}
-
-// GetName returns the value of Name.
-func (s *IncidentSummaryService) GetName() OptString {
-	return s.Name
-}
-
-// SetName sets the value of Name.
-func (s *IncidentSummaryService) SetName(val OptString) {
-	s.Name = val
-}
-
-type IncidentSummarySeverity string
-
-const (
-	IncidentSummarySeverityUNKNOWN  IncidentSummarySeverity = "UNKNOWN"
-	IncidentSummarySeverityINFO     IncidentSummarySeverity = "INFO"
-	IncidentSummarySeverityLOW      IncidentSummarySeverity = "LOW"
-	IncidentSummarySeverityHIGH     IncidentSummarySeverity = "HIGH"
-	IncidentSummarySeverityCRITICAL IncidentSummarySeverity = "CRITICAL"
-)
-
-// AllValues returns all IncidentSummarySeverity values.
-func (IncidentSummarySeverity) AllValues() []IncidentSummarySeverity {
-	return []IncidentSummarySeverity{
-		IncidentSummarySeverityUNKNOWN,
-		IncidentSummarySeverityINFO,
-		IncidentSummarySeverityLOW,
-		IncidentSummarySeverityHIGH,
-		IncidentSummarySeverityCRITICAL,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentSummarySeverity) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentSummarySeverityUNKNOWN:
-		return []byte(s), nil
-	case IncidentSummarySeverityINFO:
-		return []byte(s), nil
-	case IncidentSummarySeverityLOW:
-		return []byte(s), nil
-	case IncidentSummarySeverityHIGH:
-		return []byte(s), nil
-	case IncidentSummarySeverityCRITICAL:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentSummarySeverity) UnmarshalText(data []byte) error {
-	switch IncidentSummarySeverity(data) {
-	case IncidentSummarySeverityUNKNOWN:
-		*s = IncidentSummarySeverityUNKNOWN
-		return nil
-	case IncidentSummarySeverityINFO:
-		*s = IncidentSummarySeverityINFO
-		return nil
-	case IncidentSummarySeverityLOW:
-		*s = IncidentSummarySeverityLOW
-		return nil
-	case IncidentSummarySeverityHIGH:
-		*s = IncidentSummarySeverityHIGH
-		return nil
-	case IncidentSummarySeverityCRITICAL:
-		*s = IncidentSummarySeverityCRITICAL
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-type IncidentsGetOK struct {
-	Incidents        []IncidentSummary `json:"incidents"`
-	ResponseMetadata Pagination        `json:"response_metadata"`
-}
-
-// GetIncidents returns the value of Incidents.
-func (s *IncidentsGetOK) GetIncidents() []IncidentSummary {
-	return s.Incidents
-}
-
-// GetResponseMetadata returns the value of ResponseMetadata.
-func (s *IncidentsGetOK) GetResponseMetadata() Pagination {
-	return s.ResponseMetadata
-}
-
-// SetIncidents sets the value of Incidents.
-func (s *IncidentsGetOK) SetIncidents(val []IncidentSummary) {
-	s.Incidents = val
-}
-
-// SetResponseMetadata sets the value of ResponseMetadata.
-func (s *IncidentsGetOK) SetResponseMetadata(val Pagination) {
-	s.ResponseMetadata = val
-}
-
-func (*IncidentsGetOK) incidentsGetRes() {}
-
-type IncidentsGetSortOrder string
-
-const (
-	IncidentsGetSortOrderAsc  IncidentsGetSortOrder = "asc"
-	IncidentsGetSortOrderDesc IncidentsGetSortOrder = "desc"
-)
-
-// AllValues returns all IncidentsGetSortOrder values.
-func (IncidentsGetSortOrder) AllValues() []IncidentsGetSortOrder {
-	return []IncidentsGetSortOrder{
-		IncidentsGetSortOrderAsc,
-		IncidentsGetSortOrderDesc,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentsGetSortOrder) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentsGetSortOrderAsc:
-		return []byte(s), nil
-	case IncidentsGetSortOrderDesc:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentsGetSortOrder) UnmarshalText(data []byte) error {
-	switch IncidentsGetSortOrder(data) {
-	case IncidentsGetSortOrderAsc:
-		*s = IncidentsGetSortOrderAsc
-		return nil
-	case IncidentsGetSortOrderDesc:
-		*s = IncidentsGetSortOrderDesc
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-type IncidentsPostBadRequest Error
-
-func (*IncidentsPostBadRequest) incidentsPostRes() {}
-
-type IncidentsPostNotFound Error
-
-func (*IncidentsPostNotFound) incidentsPostRes() {}
-
-type IncidentsPostReq struct {
-	ServiceName  string                   `json:"service_name"`
-	Title        string                   `json:"title"`
-	Severity     IncidentsPostReqSeverity `json:"severity"`
-	Experimental OptBool                  `json:"experimental"`
-	Description  OptString                `json:"description"`
-	IsPrivate    OptBool                  `json:"is_private"`
-}
-
-// GetServiceName returns the value of ServiceName.
-func (s *IncidentsPostReq) GetServiceName() string {
-	return s.ServiceName
-}
-
-// GetTitle returns the value of Title.
-func (s *IncidentsPostReq) GetTitle() string {
-	return s.Title
-}
-
 // GetSeverity returns the value of Severity.
-func (s *IncidentsPostReq) GetSeverity() IncidentsPostReqSeverity {
+func (s *IncidentUpdateResponse) GetSeverity() IncidentUpdateResponseSeverity {
 	return s.Severity
 }
 
-// GetExperimental returns the value of Experimental.
-func (s *IncidentsPostReq) GetExperimental() OptBool {
-	return s.Experimental
-}
-
-// GetDescription returns the value of Description.
-func (s *IncidentsPostReq) GetDescription() OptString {
-	return s.Description
-}
-
-// GetIsPrivate returns the value of IsPrivate.
-func (s *IncidentsPostReq) GetIsPrivate() OptBool {
-	return s.IsPrivate
-}
-
-// SetServiceName sets the value of ServiceName.
-func (s *IncidentsPostReq) SetServiceName(val string) {
-	s.ServiceName = val
-}
-
-// SetTitle sets the value of Title.
-func (s *IncidentsPostReq) SetTitle(val string) {
-	s.Title = val
+// SetUUID sets the value of UUID.
+func (s *IncidentUpdateResponse) SetUUID(val uuid.UUID) {
+	s.UUID = val
 }
 
 // SetSeverity sets the value of Severity.
-func (s *IncidentsPostReq) SetSeverity(val IncidentsPostReqSeverity) {
+func (s *IncidentUpdateResponse) SetSeverity(val IncidentUpdateResponseSeverity) {
 	s.Severity = val
 }
 
-// SetExperimental sets the value of Experimental.
-func (s *IncidentsPostReq) SetExperimental(val OptBool) {
-	s.Experimental = val
-}
+func (*IncidentUpdateResponse) updateIncidentSeverityRes() {}
 
-// SetDescription sets the value of Description.
-func (s *IncidentsPostReq) SetDescription(val OptString) {
-	s.Description = val
-}
-
-// SetIsPrivate sets the value of IsPrivate.
-func (s *IncidentsPostReq) SetIsPrivate(val OptBool) {
-	s.IsPrivate = val
-}
-
-type IncidentsPostReqSeverity string
+// Updated severity level.
+type IncidentUpdateResponseSeverity string
 
 const (
-	IncidentsPostReqSeverityUNKNOWN  IncidentsPostReqSeverity = "UNKNOWN"
-	IncidentsPostReqSeverityINFO     IncidentsPostReqSeverity = "INFO"
-	IncidentsPostReqSeverityLOW      IncidentsPostReqSeverity = "LOW"
-	IncidentsPostReqSeverityHIGH     IncidentsPostReqSeverity = "HIGH"
-	IncidentsPostReqSeverityCRITICAL IncidentsPostReqSeverity = "CRITICAL"
+	IncidentUpdateResponseSeverityCritical IncidentUpdateResponseSeverity = "critical"
+	IncidentUpdateResponseSeverityHigh     IncidentUpdateResponseSeverity = "high"
+	IncidentUpdateResponseSeverityLow      IncidentUpdateResponseSeverity = "low"
+	IncidentUpdateResponseSeverityInfo     IncidentUpdateResponseSeverity = "info"
+	IncidentUpdateResponseSeverityUnknown  IncidentUpdateResponseSeverity = "unknown"
 )
 
-// AllValues returns all IncidentsPostReqSeverity values.
-func (IncidentsPostReqSeverity) AllValues() []IncidentsPostReqSeverity {
-	return []IncidentsPostReqSeverity{
-		IncidentsPostReqSeverityUNKNOWN,
-		IncidentsPostReqSeverityINFO,
-		IncidentsPostReqSeverityLOW,
-		IncidentsPostReqSeverityHIGH,
-		IncidentsPostReqSeverityCRITICAL,
+// AllValues returns all IncidentUpdateResponseSeverity values.
+func (IncidentUpdateResponseSeverity) AllValues() []IncidentUpdateResponseSeverity {
+	return []IncidentUpdateResponseSeverity{
+		IncidentUpdateResponseSeverityCritical,
+		IncidentUpdateResponseSeverityHigh,
+		IncidentUpdateResponseSeverityLow,
+		IncidentUpdateResponseSeverityInfo,
+		IncidentUpdateResponseSeverityUnknown,
 	}
 }
 
 // MarshalText implements encoding.TextMarshaler.
-func (s IncidentsPostReqSeverity) MarshalText() ([]byte, error) {
+func (s IncidentUpdateResponseSeverity) MarshalText() ([]byte, error) {
 	switch s {
-	case IncidentsPostReqSeverityUNKNOWN:
+	case IncidentUpdateResponseSeverityCritical:
 		return []byte(s), nil
-	case IncidentsPostReqSeverityINFO:
+	case IncidentUpdateResponseSeverityHigh:
 		return []byte(s), nil
-	case IncidentsPostReqSeverityLOW:
+	case IncidentUpdateResponseSeverityLow:
 		return []byte(s), nil
-	case IncidentsPostReqSeverityHIGH:
+	case IncidentUpdateResponseSeverityInfo:
 		return []byte(s), nil
-	case IncidentsPostReqSeverityCRITICAL:
+	case IncidentUpdateResponseSeverityUnknown:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -902,307 +989,87 @@ func (s IncidentsPostReqSeverity) MarshalText() ([]byte, error) {
 }
 
 // UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentsPostReqSeverity) UnmarshalText(data []byte) error {
-	switch IncidentsPostReqSeverity(data) {
-	case IncidentsPostReqSeverityUNKNOWN:
-		*s = IncidentsPostReqSeverityUNKNOWN
+func (s *IncidentUpdateResponseSeverity) UnmarshalText(data []byte) error {
+	switch IncidentUpdateResponseSeverity(data) {
+	case IncidentUpdateResponseSeverityCritical:
+		*s = IncidentUpdateResponseSeverityCritical
 		return nil
-	case IncidentsPostReqSeverityINFO:
-		*s = IncidentsPostReqSeverityINFO
+	case IncidentUpdateResponseSeverityHigh:
+		*s = IncidentUpdateResponseSeverityHigh
 		return nil
-	case IncidentsPostReqSeverityLOW:
-		*s = IncidentsPostReqSeverityLOW
+	case IncidentUpdateResponseSeverityLow:
+		*s = IncidentUpdateResponseSeverityLow
 		return nil
-	case IncidentsPostReqSeverityHIGH:
-		*s = IncidentsPostReqSeverityHIGH
+	case IncidentUpdateResponseSeverityInfo:
+		*s = IncidentUpdateResponseSeverityInfo
 		return nil
-	case IncidentsPostReqSeverityCRITICAL:
-		*s = IncidentsPostReqSeverityCRITICAL
+	case IncidentUpdateResponseSeverityUnknown:
+		*s = IncidentUpdateResponseSeverityUnknown
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
 	}
 }
 
-type IncidentsPostUnprocessableEntity Error
-
-func (*IncidentsPostUnprocessableEntity) incidentsPostRes() {}
-
-// NewOptBool returns new OptBool with value set to v.
-func NewOptBool(v bool) OptBool {
-	return OptBool{
-		Value: v,
-		Set:   true,
-	}
+type ListPostmortemsOK struct {
+	Postmortems      []Postmortem     `json:"postmortems"`
+	ResponseMetadata ResponseMetadata `json:"response_metadata"`
 }
 
-// OptBool is optional bool.
-type OptBool struct {
-	Value bool
-	Set   bool
+// GetPostmortems returns the value of Postmortems.
+func (s *ListPostmortemsOK) GetPostmortems() []Postmortem {
+	return s.Postmortems
 }
 
-// IsSet returns true if OptBool was set.
-func (o OptBool) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptBool) Reset() {
-	var v bool
-	o.Value = v
-	o.Set = false
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListPostmortemsOK) GetResponseMetadata() ResponseMetadata {
+	return s.ResponseMetadata
 }
 
-// SetTo sets value to v.
-func (o *OptBool) SetTo(v bool) {
-	o.Set = true
-	o.Value = v
+// SetPostmortems sets the value of Postmortems.
+func (s *ListPostmortemsOK) SetPostmortems(val []Postmortem) {
+	s.Postmortems = val
 }
 
-// Get returns value and boolean that denotes whether value was set.
-func (o OptBool) Get() (v bool, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListPostmortemsOK) SetResponseMetadata(val ResponseMetadata) {
+	s.ResponseMetadata = val
 }
 
-// Or returns value if set, or given parameter if does not.
-func (o OptBool) Or(d bool) bool {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
+func (*ListPostmortemsOK) listPostmortemsRes() {}
+
+type MessageError struct {
+	Message OptString `json:"message"`
 }
 
-// NewOptIncidentMetrics returns new OptIncidentMetrics with value set to v.
-func NewOptIncidentMetrics(v IncidentMetrics) OptIncidentMetrics {
-	return OptIncidentMetrics{
-		Value: v,
-		Set:   true,
-	}
+// GetMessage returns the value of Message.
+func (s *MessageError) GetMessage() OptString {
+	return s.Message
 }
 
-// OptIncidentMetrics is optional IncidentMetrics.
-type OptIncidentMetrics struct {
-	Value IncidentMetrics
-	Set   bool
+// SetMessage sets the value of Message.
+func (s *MessageError) SetMessage(val OptString) {
+	s.Message = val
 }
 
-// IsSet returns true if OptIncidentMetrics was set.
-func (o OptIncidentMetrics) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIncidentMetrics) Reset() {
-	var v IncidentMetrics
-	o.Value = v
-	o.Set = false
+type NotFoundError struct {
+	Error OptString `json:"error"`
 }
 
-// SetTo sets value to v.
-func (o *OptIncidentMetrics) SetTo(v IncidentMetrics) {
-	o.Set = true
-	o.Value = v
+// GetError returns the value of Error.
+func (s *NotFoundError) GetError() OptString {
+	return s.Error
 }
 
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIncidentMetrics) Get() (v IncidentMetrics, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
+// SetError sets the value of Error.
+func (s *NotFoundError) SetError(val OptString) {
+	s.Error = val
 }
 
-// Or returns value if set, or given parameter if does not.
-func (o OptIncidentMetrics) Or(d IncidentMetrics) IncidentMetrics {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIncidentService returns new OptIncidentService with value set to v.
-func NewOptIncidentService(v IncidentService) OptIncidentService {
-	return OptIncidentService{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIncidentService is optional IncidentService.
-type OptIncidentService struct {
-	Value IncidentService
-	Set   bool
-}
-
-// IsSet returns true if OptIncidentService was set.
-func (o OptIncidentService) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIncidentService) Reset() {
-	var v IncidentService
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIncidentService) SetTo(v IncidentService) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIncidentService) Get() (v IncidentService, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIncidentService) Or(d IncidentService) IncidentService {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIncidentSummaryMetrics returns new OptIncidentSummaryMetrics with value set to v.
-func NewOptIncidentSummaryMetrics(v IncidentSummaryMetrics) OptIncidentSummaryMetrics {
-	return OptIncidentSummaryMetrics{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIncidentSummaryMetrics is optional IncidentSummaryMetrics.
-type OptIncidentSummaryMetrics struct {
-	Value IncidentSummaryMetrics
-	Set   bool
-}
-
-// IsSet returns true if OptIncidentSummaryMetrics was set.
-func (o OptIncidentSummaryMetrics) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIncidentSummaryMetrics) Reset() {
-	var v IncidentSummaryMetrics
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIncidentSummaryMetrics) SetTo(v IncidentSummaryMetrics) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIncidentSummaryMetrics) Get() (v IncidentSummaryMetrics, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIncidentSummaryMetrics) Or(d IncidentSummaryMetrics) IncidentSummaryMetrics {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIncidentSummaryService returns new OptIncidentSummaryService with value set to v.
-func NewOptIncidentSummaryService(v IncidentSummaryService) OptIncidentSummaryService {
-	return OptIncidentSummaryService{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIncidentSummaryService is optional IncidentSummaryService.
-type OptIncidentSummaryService struct {
-	Value IncidentSummaryService
-	Set   bool
-}
-
-// IsSet returns true if OptIncidentSummaryService was set.
-func (o OptIncidentSummaryService) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIncidentSummaryService) Reset() {
-	var v IncidentSummaryService
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIncidentSummaryService) SetTo(v IncidentSummaryService) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIncidentSummaryService) Get() (v IncidentSummaryService, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIncidentSummaryService) Or(d IncidentSummaryService) IncidentSummaryService {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIncidentsGetSortOrder returns new OptIncidentsGetSortOrder with value set to v.
-func NewOptIncidentsGetSortOrder(v IncidentsGetSortOrder) OptIncidentsGetSortOrder {
-	return OptIncidentsGetSortOrder{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIncidentsGetSortOrder is optional IncidentsGetSortOrder.
-type OptIncidentsGetSortOrder struct {
-	Value IncidentsGetSortOrder
-	Set   bool
-}
-
-// IsSet returns true if OptIncidentsGetSortOrder was set.
-func (o OptIncidentsGetSortOrder) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIncidentsGetSortOrder) Reset() {
-	var v IncidentsGetSortOrder
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIncidentsGetSortOrder) SetTo(v IncidentsGetSortOrder) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIncidentsGetSortOrder) Get() (v IncidentsGetSortOrder, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIncidentsGetSortOrder) Or(d IncidentsGetSortOrder) IncidentsGetSortOrder {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
+func (*NotFoundError) getIncidentRes()            {}
+func (*NotFoundError) updateIncidentLabelsRes()   {}
+func (*NotFoundError) updateIncidentSeverityRes() {}
+func (*NotFoundError) updateIncidentStatusRes()   {}
 
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
@@ -1244,52 +1111,6 @@ func (o OptInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptInt) Or(d int) int {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptInt64 returns new OptInt64 with value set to v.
-func NewOptInt64(v int64) OptInt64 {
-	return OptInt64{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptInt64 is optional int64.
-type OptInt64 struct {
-	Value int64
-	Set   bool
-}
-
-// IsSet returns true if OptInt64 was set.
-func (o OptInt64) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptInt64) Reset() {
-	var v int64
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptInt64) SetTo(v int64) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptInt64) Get() (v int64, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptInt64) Or(d int64) int64 {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1359,69 +1180,6 @@ func (o OptNilInt) Or(d int) int {
 	return d
 }
 
-// NewOptNilString returns new OptNilString with value set to v.
-func NewOptNilString(v string) OptNilString {
-	return OptNilString{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptNilString is optional nullable string.
-type OptNilString struct {
-	Value string
-	Set   bool
-	Null  bool
-}
-
-// IsSet returns true if OptNilString was set.
-func (o OptNilString) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptNilString) Reset() {
-	var v string
-	o.Value = v
-	o.Set = false
-	o.Null = false
-}
-
-// SetTo sets value to v.
-func (o *OptNilString) SetTo(v string) {
-	o.Set = true
-	o.Null = false
-	o.Value = v
-}
-
-// IsNull returns true if value is Null.
-func (o OptNilString) IsNull() bool { return o.Null }
-
-// SetToNull sets value to null.
-func (o *OptNilString) SetToNull() {
-	o.Set = true
-	o.Null = true
-	var v string
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptNilString) Get() (v string, ok bool) {
-	if o.Null {
-		return v, false
-	}
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptNilString) Or(d string) string {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // NewOptString returns new OptString with value set to v.
 func NewOptString(v string) OptString {
 	return OptString{
@@ -1468,112 +1226,375 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-// NewOptUUID returns new OptUUID with value set to v.
-func NewOptUUID(v uuid.UUID) OptUUID {
-	return OptUUID{
-		Value: v,
-		Set:   true,
-	}
+// Ref: #/components/schemas/Postmortem
+type Postmortem struct {
+	// Postmortem ID.
+	ID int64 `json:"id"`
+	// Postmortem title.
+	Title string `json:"title"`
+	// Creation timestamp.
+	CreatedAt time.Time `json:"created_at"`
+	// Last update timestamp.
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-// OptUUID is optional uuid.UUID.
-type OptUUID struct {
-	Value uuid.UUID
-	Set   bool
+// GetID returns the value of ID.
+func (s *Postmortem) GetID() int64 {
+	return s.ID
 }
 
-// IsSet returns true if OptUUID was set.
-func (o OptUUID) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptUUID) Reset() {
-	var v uuid.UUID
-	o.Value = v
-	o.Set = false
+// GetTitle returns the value of Title.
+func (s *Postmortem) GetTitle() string {
+	return s.Title
 }
 
-// SetTo sets value to v.
-func (o *OptUUID) SetTo(v uuid.UUID) {
-	o.Set = true
-	o.Value = v
+// GetCreatedAt returns the value of CreatedAt.
+func (s *Postmortem) GetCreatedAt() time.Time {
+	return s.CreatedAt
 }
 
-// Get returns value and boolean that denotes whether value was set.
-func (o OptUUID) Get() (v uuid.UUID, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *Postmortem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
 }
 
-// Or returns value if set, or given parameter if does not.
-func (o OptUUID) Or(d uuid.UUID) uuid.UUID {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
+// SetID sets the value of ID.
+func (s *Postmortem) SetID(val int64) {
+	s.ID = val
 }
 
-// Ref: #/components/schemas/Pagination
-type Pagination struct {
-	CurrentPage int       `json:"current_page"`
-	NextPage    OptNilInt `json:"next_page"`
-	PrevPage    OptNilInt `json:"prev_page"`
-	TotalPages  int       `json:"total_pages"`
-	TotalCount  int       `json:"total_count"`
+// SetTitle sets the value of Title.
+func (s *Postmortem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *Postmortem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *Postmortem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+func (*Postmortem) createPostmortemRes() {}
+
+// Ref: #/components/schemas/ResponseMetadata
+type ResponseMetadata struct {
+	// Current page number.
+	CurrentPage int `json:"current_page"`
+	// Next page number.
+	NextPage OptNilInt `json:"next_page"`
+	// Previous page number.
+	PrevPage OptNilInt `json:"prev_page"`
+	// Total number of pages.
+	TotalPages int `json:"total_pages"`
+	// Total number of items.
+	TotalCount int `json:"total_count"`
 }
 
 // GetCurrentPage returns the value of CurrentPage.
-func (s *Pagination) GetCurrentPage() int {
+func (s *ResponseMetadata) GetCurrentPage() int {
 	return s.CurrentPage
 }
 
 // GetNextPage returns the value of NextPage.
-func (s *Pagination) GetNextPage() OptNilInt {
+func (s *ResponseMetadata) GetNextPage() OptNilInt {
 	return s.NextPage
 }
 
 // GetPrevPage returns the value of PrevPage.
-func (s *Pagination) GetPrevPage() OptNilInt {
+func (s *ResponseMetadata) GetPrevPage() OptNilInt {
 	return s.PrevPage
 }
 
 // GetTotalPages returns the value of TotalPages.
-func (s *Pagination) GetTotalPages() int {
+func (s *ResponseMetadata) GetTotalPages() int {
 	return s.TotalPages
 }
 
 // GetTotalCount returns the value of TotalCount.
-func (s *Pagination) GetTotalCount() int {
+func (s *ResponseMetadata) GetTotalCount() int {
 	return s.TotalCount
 }
 
 // SetCurrentPage sets the value of CurrentPage.
-func (s *Pagination) SetCurrentPage(val int) {
+func (s *ResponseMetadata) SetCurrentPage(val int) {
 	s.CurrentPage = val
 }
 
 // SetNextPage sets the value of NextPage.
-func (s *Pagination) SetNextPage(val OptNilInt) {
+func (s *ResponseMetadata) SetNextPage(val OptNilInt) {
 	s.NextPage = val
 }
 
 // SetPrevPage sets the value of PrevPage.
-func (s *Pagination) SetPrevPage(val OptNilInt) {
+func (s *ResponseMetadata) SetPrevPage(val OptNilInt) {
 	s.PrevPage = val
 }
 
 // SetTotalPages sets the value of TotalPages.
-func (s *Pagination) SetTotalPages(val int) {
+func (s *ResponseMetadata) SetTotalPages(val int) {
 	s.TotalPages = val
 }
 
 // SetTotalCount sets the value of TotalCount.
-func (s *Pagination) SetTotalCount(val int) {
+func (s *ResponseMetadata) SetTotalCount(val int) {
 	s.TotalCount = val
 }
 
-// Ref: #/components/responses/Unauthorized
-type Unauthorized struct{}
+// Ref: #/components/schemas/Service
+type Service struct {
+	// Service name.
+	Name string `json:"name"`
+}
 
-func (*Unauthorized) incidentsGetRes() {}
+// GetName returns the value of Name.
+func (s *Service) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *Service) SetName(val string) {
+	s.Name = val
+}
+
+// Ref: #/components/schemas/ServicesListResponse
+type ServicesListResponse struct {
+	Services         []Service        `json:"services"`
+	ResponseMetadata ResponseMetadata `json:"response_metadata"`
+}
+
+// GetServices returns the value of Services.
+func (s *ServicesListResponse) GetServices() []Service {
+	return s.Services
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ServicesListResponse) GetResponseMetadata() ResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetServices sets the value of Services.
+func (s *ServicesListResponse) SetServices(val []Service) {
+	s.Services = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ServicesListResponse) SetResponseMetadata(val ResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ServicesListResponse) listServicesRes() {}
+
+type UnauthorizedError struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UnauthorizedError) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UnauthorizedError) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UnauthorizedError) createIncidentMetricsRes()  {}
+func (*UnauthorizedError) createPostmortemRes()       {}
+func (*UnauthorizedError) getIncidentRes()            {}
+func (*UnauthorizedError) listIncidentsRes()          {}
+func (*UnauthorizedError) listPostmortemsRes()        {}
+func (*UnauthorizedError) listServicesRes()           {}
+func (*UnauthorizedError) updateIncidentLabelsRes()   {}
+func (*UnauthorizedError) updateIncidentSeverityRes() {}
+func (*UnauthorizedError) updateIncidentStatusRes()   {}
+
+type UnprocessableEntityError struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UnprocessableEntityError) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UnprocessableEntityError) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UnprocessableEntityError) createPostmortemRes() {}
+
+type UpdateIncidentLabelsReq struct {
+	// Array of label UUIDs to associate with the incident.
+	LabelUuids []uuid.UUID `json:"label_uuids"`
+}
+
+// GetLabelUuids returns the value of LabelUuids.
+func (s *UpdateIncidentLabelsReq) GetLabelUuids() []uuid.UUID {
+	return s.LabelUuids
+}
+
+// SetLabelUuids sets the value of LabelUuids.
+func (s *UpdateIncidentLabelsReq) SetLabelUuids(val []uuid.UUID) {
+	s.LabelUuids = val
+}
+
+type UpdateIncidentSeverityReq struct {
+	// New severity level.
+	Severity UpdateIncidentSeverityReqSeverity `json:"severity"`
+}
+
+// GetSeverity returns the value of Severity.
+func (s *UpdateIncidentSeverityReq) GetSeverity() UpdateIncidentSeverityReqSeverity {
+	return s.Severity
+}
+
+// SetSeverity sets the value of Severity.
+func (s *UpdateIncidentSeverityReq) SetSeverity(val UpdateIncidentSeverityReqSeverity) {
+	s.Severity = val
+}
+
+// New severity level.
+type UpdateIncidentSeverityReqSeverity string
+
+const (
+	UpdateIncidentSeverityReqSeverityCritical UpdateIncidentSeverityReqSeverity = "critical"
+	UpdateIncidentSeverityReqSeverityHigh     UpdateIncidentSeverityReqSeverity = "high"
+	UpdateIncidentSeverityReqSeverityLow      UpdateIncidentSeverityReqSeverity = "low"
+	UpdateIncidentSeverityReqSeverityInfo     UpdateIncidentSeverityReqSeverity = "info"
+	UpdateIncidentSeverityReqSeverityUnknown  UpdateIncidentSeverityReqSeverity = "unknown"
+)
+
+// AllValues returns all UpdateIncidentSeverityReqSeverity values.
+func (UpdateIncidentSeverityReqSeverity) AllValues() []UpdateIncidentSeverityReqSeverity {
+	return []UpdateIncidentSeverityReqSeverity{
+		UpdateIncidentSeverityReqSeverityCritical,
+		UpdateIncidentSeverityReqSeverityHigh,
+		UpdateIncidentSeverityReqSeverityLow,
+		UpdateIncidentSeverityReqSeverityInfo,
+		UpdateIncidentSeverityReqSeverityUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateIncidentSeverityReqSeverity) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateIncidentSeverityReqSeverityCritical:
+		return []byte(s), nil
+	case UpdateIncidentSeverityReqSeverityHigh:
+		return []byte(s), nil
+	case UpdateIncidentSeverityReqSeverityLow:
+		return []byte(s), nil
+	case UpdateIncidentSeverityReqSeverityInfo:
+		return []byte(s), nil
+	case UpdateIncidentSeverityReqSeverityUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateIncidentSeverityReqSeverity) UnmarshalText(data []byte) error {
+	switch UpdateIncidentSeverityReqSeverity(data) {
+	case UpdateIncidentSeverityReqSeverityCritical:
+		*s = UpdateIncidentSeverityReqSeverityCritical
+		return nil
+	case UpdateIncidentSeverityReqSeverityHigh:
+		*s = UpdateIncidentSeverityReqSeverityHigh
+		return nil
+	case UpdateIncidentSeverityReqSeverityLow:
+		*s = UpdateIncidentSeverityReqSeverityLow
+		return nil
+	case UpdateIncidentSeverityReqSeverityInfo:
+		*s = UpdateIncidentSeverityReqSeverityInfo
+		return nil
+	case UpdateIncidentSeverityReqSeverityUnknown:
+		*s = UpdateIncidentSeverityReqSeverityUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateIncidentStatusReq struct {
+	// New status.
+	Status UpdateIncidentStatusReqStatus `json:"status"`
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentStatusReq) GetStatus() UpdateIncidentStatusReqStatus {
+	return s.Status
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentStatusReq) SetStatus(val UpdateIncidentStatusReqStatus) {
+	s.Status = val
+}
+
+// New status.
+type UpdateIncidentStatusReqStatus string
+
+const (
+	UpdateIncidentStatusReqStatusDetected      UpdateIncidentStatusReqStatus = "detected"
+	UpdateIncidentStatusReqStatusInvestigating UpdateIncidentStatusReqStatus = "investigating"
+	UpdateIncidentStatusReqStatusFixing        UpdateIncidentStatusReqStatus = "fixing"
+	UpdateIncidentStatusReqStatusResolved      UpdateIncidentStatusReqStatus = "resolved"
+	UpdateIncidentStatusReqStatusClose         UpdateIncidentStatusReqStatus = "close"
+)
+
+// AllValues returns all UpdateIncidentStatusReqStatus values.
+func (UpdateIncidentStatusReqStatus) AllValues() []UpdateIncidentStatusReqStatus {
+	return []UpdateIncidentStatusReqStatus{
+		UpdateIncidentStatusReqStatusDetected,
+		UpdateIncidentStatusReqStatusInvestigating,
+		UpdateIncidentStatusReqStatusFixing,
+		UpdateIncidentStatusReqStatusResolved,
+		UpdateIncidentStatusReqStatusClose,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateIncidentStatusReqStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateIncidentStatusReqStatusDetected:
+		return []byte(s), nil
+	case UpdateIncidentStatusReqStatusInvestigating:
+		return []byte(s), nil
+	case UpdateIncidentStatusReqStatusFixing:
+		return []byte(s), nil
+	case UpdateIncidentStatusReqStatusResolved:
+		return []byte(s), nil
+	case UpdateIncidentStatusReqStatusClose:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateIncidentStatusReqStatus) UnmarshalText(data []byte) error {
+	switch UpdateIncidentStatusReqStatus(data) {
+	case UpdateIncidentStatusReqStatusDetected:
+		*s = UpdateIncidentStatusReqStatusDetected
+		return nil
+	case UpdateIncidentStatusReqStatusInvestigating:
+		*s = UpdateIncidentStatusReqStatusInvestigating
+		return nil
+	case UpdateIncidentStatusReqStatusFixing:
+		*s = UpdateIncidentStatusReqStatusFixing
+		return nil
+	case UpdateIncidentStatusReqStatusResolved:
+		*s = UpdateIncidentStatusReqStatusResolved
+		return nil
+	case UpdateIncidentStatusReqStatusClose:
+		*s = UpdateIncidentStatusReqStatusClose
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}

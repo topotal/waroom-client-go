@@ -11,8 +11,64 @@ import (
 	ht "github.com/ogen-go/ogen/http"
 )
 
-func encodeIncidentsPostRequest(
-	req *IncidentsPostReq,
+func encodeCreateIncidentMetricsRequest(
+	req *CreateIncidentMetricsReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCreatePostmortemRequest(
+	req *CreatePostmortemReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateIncidentLabelsRequest(
+	req *UpdateIncidentLabelsReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateIncidentSeverityRequest(
+	req *UpdateIncidentSeverityReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateIncidentStatusRequest(
+	req *UpdateIncidentStatusReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

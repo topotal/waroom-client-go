@@ -6,7 +6,13 @@ package ogen
 type OperationName = string
 
 const (
-	IncidentsGetOperation             OperationName = "IncidentsGet"
-	IncidentsIncidentUUIDGetOperation OperationName = "IncidentsIncidentUUIDGet"
-	IncidentsPostOperation            OperationName = "IncidentsPost"
+	CreateIncidentMetricsOperation  OperationName = "CreateIncidentMetrics"
+	CreatePostmortemOperation       OperationName = "CreatePostmortem"
+	GetIncidentOperation            OperationName = "GetIncident"
+	ListIncidentsOperation          OperationName = "ListIncidents"
+	ListPostmortemsOperation        OperationName = "ListPostmortems"
+	ListServicesOperation           OperationName = "ListServices"
+	UpdateIncidentLabelsOperation   OperationName = "UpdateIncidentLabels"
+	UpdateIncidentSeverityOperation OperationName = "UpdateIncidentSeverity"
+	UpdateIncidentStatusOperation   OperationName = "UpdateIncidentStatus"
 )

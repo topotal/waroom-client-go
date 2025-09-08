@@ -11,15 +11,15 @@ import (
 
 // SecuritySource is provider of security values (tokens, passwords, etc.).
 type SecuritySource interface {
-	// BearerAuth provides bearerAuth security value.
-	BearerAuth(ctx context.Context, operationName OperationName, client *Client) (BearerAuth, error)
+	// ApiKeyAuth provides ApiKeyAuth security value.
+	ApiKeyAuth(ctx context.Context, operationName OperationName, client *Client) (ApiKeyAuth, error)
 }
 
-func (s *Client) securityBearerAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
-	t, err := s.sec.BearerAuth(ctx, operationName, s)
+func (s *Client) securityApiKeyAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
+	t, err := s.sec.ApiKeyAuth(ctx, operationName, s)
 	if err != nil {
-		return errors.Wrap(err, "security source \"BearerAuth\"")
+		return errors.Wrap(err, "security source \"ApiKeyAuth\"")
 	}
-	req.Header.Set("Authorization", "Bearer "+t.Token)
+	req.Header.Set("Authorization", t.APIKey)
 	return nil
 }

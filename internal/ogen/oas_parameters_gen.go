@@ -6,14 +6,56 @@ import (
 	"github.com/google/uuid"
 )
 
-// IncidentsGetParams is parameters of GET /incidents operation.
-type IncidentsGetParams struct {
-	PerPage   OptInt
-	Page      OptInt
-	SortOrder OptIncidentsGetSortOrder
+// CreateIncidentMetricsParams is parameters of createIncidentMetrics operation.
+type CreateIncidentMetricsParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
 }
 
-// IncidentsIncidentUUIDGetParams is parameters of GET /incidents/{incident_uuid} operation.
-type IncidentsIncidentUUIDGetParams struct {
-	IncidentUUID uuid.UUID
+// GetIncidentParams is parameters of getIncident operation.
+type GetIncidentParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
+}
+
+// ListIncidentsParams is parameters of listIncidents operation.
+type ListIncidentsParams struct {
+	// Page number for pagination.
+	Page OptInt
+	// Number of items per page.
+	PerPage OptInt
+}
+
+// ListPostmortemsParams is parameters of listPostmortems operation.
+type ListPostmortemsParams struct {
+	// Page number for pagination.
+	Page OptInt
+	// Number of items per page.
+	PerPage OptInt
+}
+
+// ListServicesParams is parameters of listServices operation.
+type ListServicesParams struct {
+	// Page number for pagination.
+	Page OptInt
+	// Number of items per page.
+	PerPage OptInt
+}
+
+// UpdateIncidentLabelsParams is parameters of updateIncidentLabels operation.
+type UpdateIncidentLabelsParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
+}
+
+// UpdateIncidentSeverityParams is parameters of updateIncidentSeverity operation.
+type UpdateIncidentSeverityParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
+}
+
+// UpdateIncidentStatusParams is parameters of updateIncidentStatus operation.
+type UpdateIncidentStatusParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
 }
