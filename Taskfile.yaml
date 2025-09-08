@@ -1,0 +1,41 @@
+version: "3"
+
+vars:
+  # TODO: schemaの配置位置がまだ決まってない
+  OPENAPI_URL: "{{.OPENAPI_URL | default `https://api.waroom.com/.well-knowns/openapi.yaml`}}"
+  SCHEMA_PATH: "api/openapi.yaml"
+  BUILD_DIR: "dist"
+  E2E_TARGET: "staging"
+
+env:
+  GOFLAGS: "-mod=mod"
+
+tasks:
+  fetch:openapi:
+    desc: "Fetch OpenAPI schema"
+    sources: []
+    generates:
+      - "{{.SCHEMA_PATH}}"
+    cmds:
+      - echo "__IMPLEMENT_ME__ fetch schema"
+      # TODO:
+      # - curl "{{.OPENAPI_URL}}" -o "{{.SCHEMA_PATH}}"
+
+  gen:
+    desc: "go generate ./..."
+    deps: [fetch:openapi]
+    cmds:
+      - go generate ./...
+
+  build:
+    desc: "Build app"
+    deps: [gen]
+    cmds:
+      - mkdir -p {{.BUILD_DIR}}
+      - go build -o {{.BUILD_DIR}}/app ./cmd/app
+
+  test:
+    desc: "Run test"
+    cmds:
+      - go test ./...
+
