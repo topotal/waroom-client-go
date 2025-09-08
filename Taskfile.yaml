@@ -27,12 +27,13 @@ tasks:
     cmds:
       - go generate ./...
 
-  build:
-    desc: "Build app"
-    deps: [gen]
-    cmds:
-      - mkdir -p {{.BUILD_DIR}}
-      - go build -o {{.BUILD_DIR}}/app ./cmd/app
+  # sdk releaseだけなので今のとこいらない
+  # build:
+  #   desc: "Build app"
+  #   deps: [gen]
+  #   cmds:
+  #     - mkdir -p {{.BUILD_DIR}}
+  #     - go build -o {{.BUILD_DIR}}/app
 
   test:
     desc: "Run test"

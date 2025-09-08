@@ -31,8 +31,3 @@ jobs:
 
       - name: Run tests
         run: go test ./...
-
-      - name: Build
-        run: |
-          mkdir -p dist
-          go build -o dist/app ./cmd/app
