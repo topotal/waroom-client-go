@@ -11,63 +11,28 @@ import (
 
 type IncidentsService struct{ client *Client }
 
-// GET /incidents
-// func (svc *IncidentsService) List(ctx context.Context, page, perPage int, sort string) ([]IncidentSummary, *Pagination, error) {
-// 	params := gen.IncidentsGetParams{}
-// 	res, err := svc.client.raw.IncidentsGet(ctx, params)
-//
-// 	if err != nil {
-// 		return nil, nil, errors.Wrap(err, "err")
-// 	}
-//
-// 	return res.Incidents, &res.ResponseMetadata, nil
-// }
-
-// func (c *Client) GetInsidents(ctx context.Context, page, perPage int, sort string) ([]IncidentSummary, *Pagination, error) {
-// 	params := gen.IncidentsGetParams{}
-// 	res, err := c.raw.IncidentsGet(ctx, params)
-//
-// 	if err != nil {
-// 		return nil, nil, errors.Wrap(err, "err")
-// 	}
-//
-// 	return res.Incidents, &res.ResponseMetadata, nil
-// }
-
 // GET /incidents/{uuid}
-func (c *Client) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.IncidentsIncidentUUIDGetRes, error) {
-	params := gen.IncidentsIncidentUUIDGetParams{IncidentUUID: uuid}
+func (c *Client) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
+	params := gen.GetIncidentParams{UUID: uuid}
 
-	res, err := c.raw.IncidentsIncidentUUIDGet(ctx, params)
+	res, err := c.raw.GetIncident(ctx, params)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "err")
+		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
 	}
 
 	return &res, nil
 }
 
-// // 便利メソッド例（下は概念。生成された名前に合わせて薄くラップ）
-// func (c *Client) CreateIncident(ctx context.Context, in CreateIncidentRequest) (*Incident, error) {
-// 	out, err := c.raw.CreateIncident(ctx, gen.CreateIncidentRequest(in))
-// 	return (*Incident)(out), err
-// }
+// GET /incidents
+func (c *Client) ListIncidents(ctx context.Context) (*gen.ListIncidentsRes, error) {
+	params := gen.ListIncidentsParams{}
 
-//
-// // POST /incidents
-// func (s *IncidentsService) Create(ctx context.Context, in CreateIncidentRequest) (*Incident, error) {
-// 	out, err := s.c.raw.CreateIncident(ctx, gen.CreateIncidentRequest(in))
-// 	if err != nil {
-// 		return nil, wrapHTTPError(err)
-// 	}
-// 	return (*Incident)(out), nil
-// }
-//
-// // GET /incidents/{uuid}
-// func (s *IncidentsService) Get(ctx context.Context, uuid string) (*Incident, error) {
-// 	out, err := s.c.raw.GetIncident(ctx, uuid)
-// 	if err != nil {
-// 		return nil, wrapHTTPError(err)
-// 	}
-// 	return (*Incident)(out), nil
-// }
+	res, err := c.raw.ListIncidents(ctx, params)
+
+	if err != nil {
+		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
+	}
+
+	return &res, nil
+}

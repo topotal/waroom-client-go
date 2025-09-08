@@ -2,11 +2,10 @@ package waroom
 
 import gen "waroom-client-go/internal/ogen"
 
-// ExposeするAPIだけ書いていく
+// Generateした型から Exposeする型だけ書いていく
 type Incident = gen.Incident
-type IncidentSummary = gen.IncidentSummary
-type Pagination = gen.Pagination
-
-// type CreateIncidentRequest = gen.CreateIncidentRequest
+type IncidentLabel = gen.IncidentLabel
+type IncidentMetrics = gen.IncidentMetrics
+type IncidentSeverity = gen.IncidentSeverity
 
 // TODO: 追加
