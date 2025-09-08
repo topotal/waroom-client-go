@@ -1,0 +1,7 @@
+{
+  "yaml.schemas": {
+    "schema/openapi-v3.json": [
+      "api/openapi.yaml"
+    ]
+  }
+}
