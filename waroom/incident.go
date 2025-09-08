@@ -9,8 +9,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type IncidentsService struct{ client *Client }
-
 // GET /incidents/{uuid}
 func (c *Client) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
 	params := gen.GetIncidentParams{UUID: uuid}
