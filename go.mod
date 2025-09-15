@@ -33,3 +33,10 @@ require (
 	golang.org/x/text v0.29.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+tool (
+	github.com/ogen-go/ogen/cmd/ogen
+	golang.org/x/lint/golint
+	golang.org/x/tools/cmd/goimports
+	honnef.co/go/tools/cmd/staticcheck
+)
