@@ -142,11 +142,11 @@ components:
     IncidentLabel:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          description: Label ID
-          example: 789
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier for the labels
+          example: 123e4567-e89b-12d3-a456-426614174000
         name:
           type: string
           description: Label name
@@ -162,7 +162,7 @@ components:
           description: Creation timestamp
           example: '2024-01-15T10:30:00Z'
       required:
-      - id
+      - uuid
       - name
       - created_at
     Postmortem:
