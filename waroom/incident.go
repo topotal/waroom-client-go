@@ -9,24 +9,36 @@ import (
 	"github.com/google/uuid"
 )
 
-// GET /incidents/{uuid}
-func (c *Client) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
-	params := gen.GetIncidentParams{UUID: uuid}
+type IncidentService struct {
+	client *WaroomClient
+}
 
-	res, err := c.raw.GetIncident(ctx, params)
+func NewIncidentService(client *WaroomClient) *IncidentService {
+	return &IncidentService{client: client}
+}
+
+func (s *IncidentService) ListIncidents(ctx context.Context, params gen.ListIncidentsParams) ([]gen.Incident, error) {
+	res, err := s.client.raw.ListIncidents(ctx, params)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
 	}
 
-	return &res, nil
+	switch res := res.(type) {
+	case *gen.IncidentListResponse:
+		return res.Incidents, nil
+	case *gen.UnauthorizedError:
+		return nil, errors.New("unauthorized")
+	default:
+		return nil, errors.Errorf("unhandled response %T", res)
+	}
 }
 
-// GET /incidents
-func (c *Client) ListIncidents(ctx context.Context) (*gen.ListIncidentsRes, error) {
-	params := gen.ListIncidentsParams{}
+// GET /incidents/{uuid}
+func (c *WaroomClient) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
+	params := gen.GetIncidentParams{UUID: uuid}
 
-	res, err := c.raw.ListIncidents(ctx, params)
+	res, err := c.raw.GetIncident(ctx, params)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "err") //TODO ちゃんとする

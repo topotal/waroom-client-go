@@ -23,7 +23,7 @@ func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.HTTPClie
 func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgent = ua } }
 func WithDump(b bool) Option               { return func(c *config) { c.Dump = b } }
 
-type Client struct {
+type WaroomClient struct {
 	raw *gen.Client
 }
 
@@ -37,11 +37,11 @@ func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper)
 	return rt
 }
 
-func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
+func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error) {
 	cfg := &config{
 		BaseURL: DefaultBaseURL,
 		HTTPClient: &http.Client{
-			Timeout:   10 * time.Second,
+			Timeout:   10 * time.Second, //TODO: 外部から変更可能に
 			Transport: http.DefaultTransport,
 		},
 		UserAgent: DefaultUserAgent,
@@ -69,5 +69,5 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Client{raw: raw}, nil
+	return &WaroomClient{raw: raw}, nil
 }
