@@ -9,6 +9,10 @@ type CreatePostmortemRes interface {
 	createPostmortemRes()
 }
 
+type CreateServiceLabelRes interface {
+	createServiceLabelRes()
+}
+
 type GetIncidentRes interface {
 	getIncidentRes()
 }
@@ -19,6 +23,10 @@ type ListIncidentsRes interface {
 
 type ListPostmortemsRes interface {
 	listPostmortemsRes()
+}
+
+type ListServiceLabelsRes interface {
+	listServiceLabelsRes()
 }
 
 type ListServicesRes interface {

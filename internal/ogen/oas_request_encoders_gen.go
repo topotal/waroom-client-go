@@ -39,6 +39,20 @@ func encodeCreatePostmortemRequest(
 	return nil
 }
 
+func encodeCreateServiceLabelRequest(
+	req *Label,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeUpdateIncidentLabelsRequest(
 	req *UpdateIncidentLabelsReq,
 	r *http.Request,

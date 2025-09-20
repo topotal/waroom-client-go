@@ -12,6 +12,11 @@ type CreateIncidentMetricsParams struct {
 	UUID uuid.UUID
 }
 
+// CreateServiceLabelParams is parameters of createServiceLabel operation.
+type CreateServiceLabelParams struct {
+	Name string
+}
+
 // GetIncidentParams is parameters of getIncident operation.
 type GetIncidentParams struct {
 	// Incident UUID.
@@ -32,6 +37,11 @@ type ListPostmortemsParams struct {
 	Page OptInt
 	// Number of items per page.
 	PerPage OptInt
+}
+
+// ListServiceLabelsParams is parameters of listServiceLabels operation.
+type ListServiceLabelsParams struct {
+	Name string
 }
 
 // ListServicesParams is parameters of listServices operation.

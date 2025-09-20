@@ -8,9 +8,11 @@ type OperationName = string
 const (
 	CreateIncidentMetricsOperation  OperationName = "CreateIncidentMetrics"
 	CreatePostmortemOperation       OperationName = "CreatePostmortem"
+	CreateServiceLabelOperation     OperationName = "CreateServiceLabel"
 	GetIncidentOperation            OperationName = "GetIncident"
 	ListIncidentsOperation          OperationName = "ListIncidents"
 	ListPostmortemsOperation        OperationName = "ListPostmortems"
+	ListServiceLabelsOperation      OperationName = "ListServiceLabels"
 	ListServicesOperation           OperationName = "ListServices"
 	UpdateIncidentLabelsOperation   OperationName = "UpdateIncidentLabels"
 	UpdateIncidentSeverityOperation OperationName = "UpdateIncidentSeverity"

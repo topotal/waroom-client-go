@@ -34,6 +34,12 @@ type Invoker interface {
 	//
 	// POST /postmortems
 	CreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (CreatePostmortemRes, error)
+	// CreateServiceLabel invokes createServiceLabel operation.
+	//
+	// Create label on a service.
+	//
+	// POST /services/{name}/labels
+	CreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (CreateServiceLabelRes, error)
 	// GetIncident invokes getIncident operation.
 	//
 	// Retrieve a specific incident by its UUID.
@@ -52,6 +58,12 @@ type Invoker interface {
 	//
 	// GET /postmortems
 	ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error)
+	// ListServiceLabels invokes listServiceLabels operation.
+	//
+	// List labels on a service.
+	//
+	// GET /services/{name}/labels
+	ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) (ListServiceLabelsRes, error)
 	// ListServices invokes listServices operation.
 	//
 	// Retrieve a paginated list of services.
@@ -284,6 +296,106 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 	defer resp.Body.Close()
 
 	result, err := decodeCreatePostmortemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateServiceLabel invokes createServiceLabel operation.
+//
+// Create label on a service.
+//
+// POST /services/{name}/labels
+func (c *Client) CreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (CreateServiceLabelRes, error) {
+	res, err := c.sendCreateServiceLabel(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (res CreateServiceLabelRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/labels"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateServiceLabelRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, CreateServiceLabelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeCreateServiceLabelResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -583,6 +695,94 @@ func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortems
 	defer resp.Body.Close()
 
 	result, err := decodeListPostmortemsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListServiceLabels invokes listServiceLabels operation.
+//
+// List labels on a service.
+//
+// GET /services/{name}/labels
+func (c *Client) ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) (ListServiceLabelsRes, error) {
+	res, err := c.sendListServiceLabels(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLabelsParams) (res ListServiceLabelsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/labels"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, ListServiceLabelsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeListServiceLabelsResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

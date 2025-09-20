@@ -191,6 +191,11 @@ func (s *CreatePostmortemReqStatus) UnmarshalText(data []byte) error {
 	}
 }
 
+// CreateServiceLabelCreated is response for CreateServiceLabel operation.
+type CreateServiceLabelCreated struct{}
+
+func (*CreateServiceLabelCreated) createServiceLabelRes() {}
+
 // Ref: #/components/schemas/Incident
 type Incident struct {
 	// Unique identifier for the incident.
@@ -316,8 +321,8 @@ func (*Incident) getIncidentRes() {}
 
 // Ref: #/components/schemas/IncidentLabel
 type IncidentLabel struct {
-	// Label ID.
-	ID int64 `json:"id"`
+	// Unique identifier for the labels.
+	UUID uuid.UUID `json:"uuid"`
 	// Label name.
 	Name string `json:"name"`
 	// Label color in hex format (without.
@@ -326,9 +331,9 @@ type IncidentLabel struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-// GetID returns the value of ID.
-func (s *IncidentLabel) GetID() int64 {
-	return s.ID
+// GetUUID returns the value of UUID.
+func (s *IncidentLabel) GetUUID() uuid.UUID {
+	return s.UUID
 }
 
 // GetName returns the value of Name.
@@ -346,9 +351,9 @@ func (s *IncidentLabel) GetCreatedAt() time.Time {
 	return s.CreatedAt
 }
 
-// SetID sets the value of ID.
-func (s *IncidentLabel) SetID(val int64) {
-	s.ID = val
+// SetUUID sets the value of UUID.
+func (s *IncidentLabel) SetUUID(val uuid.UUID) {
+	s.UUID = val
 }
 
 // SetName sets the value of Name.
@@ -1011,6 +1016,58 @@ func (s *IncidentUpdateResponseSeverity) UnmarshalText(data []byte) error {
 	}
 }
 
+// Ref: #/components/schemas/Label
+type Label struct {
+	// Unique identifier for the labels.
+	UUID OptUUID `json:"uuid"`
+	// Label name.
+	Name string `json:"name"`
+	// Label color in hex format (without.
+	Color OptString `json:"color"`
+	// Creation timestamp.
+	CreatedAt OptDateTime `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *Label) GetUUID() OptUUID {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *Label) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *Label) GetColor() OptString {
+	return s.Color
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *Label) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *Label) SetUUID(val OptUUID) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *Label) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *Label) SetColor(val OptString) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *Label) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
 type ListPostmortemsOK struct {
 	Postmortems      []Postmortem     `json:"postmortems"`
 	ResponseMetadata ResponseMetadata `json:"response_metadata"`
@@ -1037,6 +1094,22 @@ func (s *ListPostmortemsOK) SetResponseMetadata(val ResponseMetadata) {
 }
 
 func (*ListPostmortemsOK) listPostmortemsRes() {}
+
+type ListServiceLabelsOK struct {
+	Labels []Label `json:"labels"`
+}
+
+// GetLabels returns the value of Labels.
+func (s *ListServiceLabelsOK) GetLabels() []Label {
+	return s.Labels
+}
+
+// SetLabels sets the value of Labels.
+func (s *ListServiceLabelsOK) SetLabels(val []Label) {
+	s.Labels = val
+}
+
+func (*ListServiceLabelsOK) listServiceLabelsRes() {}
 
 type MessageError struct {
 	Message OptString `json:"message"`
@@ -1070,6 +1143,52 @@ func (*NotFoundError) getIncidentRes()            {}
 func (*NotFoundError) updateIncidentLabelsRes()   {}
 func (*NotFoundError) updateIncidentSeverityRes() {}
 func (*NotFoundError) updateIncidentStatusRes()   {}
+
+// NewOptDateTime returns new OptDateTime with value set to v.
+func NewOptDateTime(v time.Time) OptDateTime {
+	return OptDateTime{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptDateTime is optional time.Time.
+type OptDateTime struct {
+	Value time.Time
+	Set   bool
+}
+
+// IsSet returns true if OptDateTime was set.
+func (o OptDateTime) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptDateTime) Reset() {
+	var v time.Time
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptDateTime) SetTo(v time.Time) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptDateTime) Get() (v time.Time, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptDateTime) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
 
 // NewOptInt returns new OptInt with value set to v.
 func NewOptInt(v int) OptInt {
@@ -1220,6 +1339,52 @@ func (o OptString) Get() (v string, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUUID returns new OptUUID with value set to v.
+func NewOptUUID(v uuid.UUID) OptUUID {
+	return OptUUID{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUUID is optional uuid.UUID.
+type OptUUID struct {
+	Value uuid.UUID
+	Set   bool
+}
+
+// IsSet returns true if OptUUID was set.
+func (o OptUUID) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUUID) Reset() {
+	var v uuid.UUID
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUUID) SetTo(v uuid.UUID) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUUID) Get() (v uuid.UUID, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUUID) Or(d uuid.UUID) uuid.UUID {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1404,9 +1569,11 @@ func (s *UnauthorizedError) SetErrors(val []string) {
 
 func (*UnauthorizedError) createIncidentMetricsRes()  {}
 func (*UnauthorizedError) createPostmortemRes()       {}
+func (*UnauthorizedError) createServiceLabelRes()     {}
 func (*UnauthorizedError) getIncidentRes()            {}
 func (*UnauthorizedError) listIncidentsRes()          {}
 func (*UnauthorizedError) listPostmortemsRes()        {}
+func (*UnauthorizedError) listServiceLabelsRes()      {}
 func (*UnauthorizedError) listServicesRes()           {}
 func (*UnauthorizedError) updateIncidentLabelsRes()   {}
 func (*UnauthorizedError) updateIncidentSeverityRes() {}

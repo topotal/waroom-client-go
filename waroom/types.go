@@ -7,5 +7,6 @@ type Incident = gen.Incident
 type IncidentLabel = gen.IncidentLabel
 type IncidentMetrics = gen.IncidentMetrics
 type IncidentSeverity = gen.IncidentSeverity
+type Label = gen.Label
 
 // TODO: 追加
