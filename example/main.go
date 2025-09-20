@@ -31,19 +31,24 @@ func getIncidentUUID() {
 
 func listIncidents() {
 	ctx := context.Background()
-	client := NewClient()
+	client, err := waroom.NewWaroomClient(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	res, err := client.ListIncidents(ctx)
+	svc := waroom.NewIncidentService(client)
+
+	res, err := svc.ListIncidents(ctx, waroom.ListIncidentsParams{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(res)
 }
 
-func NewClient() *waroom.Client {
+func NewClient() *waroom.WaroomClient {
 	ctx := context.Background()
 
-	client, err := waroom.NewClient(ctx,
+	client, err := waroom.NewWaroomClient(ctx,
 		waroom.WithBaseURL("http://api.staging.waroom.com/api/v0"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
 		waroom.WithDump(true),
