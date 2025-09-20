@@ -1,5 +1,5 @@
 ---
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Waroom V0 Public API
   description: Public API for Waroom incident management system
