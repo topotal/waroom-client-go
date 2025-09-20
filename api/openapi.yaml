@@ -97,6 +97,31 @@ components:
               type: integer
               example: 100
   schemas:
+    Label:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+          description: Unique identifier for the labels
+          example: 123e4567-e89b-12d3-a456-426614174000
+          readOnly: true
+        name:
+          type: string
+          description: Label name
+          example: database
+        color:
+          type: string
+          pattern: "^[0-9a-fA-F]{6}$"
+          description: Label color in hex format (without
+          example: ff0000
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: '2024-01-15T10:30:00Z'
+      required:
+        - name
     Service:
       type: object
       properties:
@@ -934,3 +959,50 @@ paths:
           "$ref": "#/components/responses/UnauthorizedError"
       security:
       - ApiKeyAuth: []
+
+  /services/{name}/labels:
+    get:
+      tags: [Services]
+      summary: List labels on a service
+      operationId: listServiceLabels
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  labels:
+                    type: array
+                    items: { $ref: '#/components/schemas/Label' }
+        '401':
+          "$ref": "#/components/responses/UnauthorizedError"
+      security:
+        - ApiKeyAuth: []
+    post:
+      tags: [Services]
+      summary: Create label on a service
+      operationId: createServiceLabel
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Label' }
+      responses:
+        "201":
+          description: Created
+        '401':
+          "$ref": "#/components/responses/UnauthorizedError"
+      security:
+        - ApiKeyAuth: []
