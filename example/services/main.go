@@ -12,13 +12,13 @@ import (
 
 func main() {
 	// getIncidentUUID()
-	listIncidents()
+	listServices()
 }
 
 func getIncidentUUID() {
 	ctx := context.Background()
 
-	client := NewClient()
+	client := newClient()
 
 	// 例: 1ページだけ取得
 	uuid, _ := uuid.Parse("d32fc8dd-e424-4974-b27e-c55bb323a6cb")
@@ -29,29 +29,29 @@ func getIncidentUUID() {
 	fmt.Println(res)
 }
 
-func listIncidents() {
+func listServices() {
 	ctx := context.Background()
-	client, err := waroom.NewWaroomClient(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
+	c := newClient()
 
-	svc := waroom.NewIncidentService(client)
+	svc := waroom.NewServiceService(c)
+	param := waroom.ListServicesParams{}
 
-	res, err := svc.ListIncidents(ctx, waroom.ListIncidentsParams{})
+	//TODO: pagination
+	res, err := svc.ListServices(ctx, param)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println(res)
 }
 
-func NewClient() *waroom.WaroomClient {
+func newClient() *waroom.WaroomClient {
 	ctx := context.Background()
 
 	client, err := waroom.NewWaroomClient(ctx,
 		waroom.WithBaseURL("http://api.staging.waroom.com/api/v0"),
+		// waroom.WithBaseURL("http://127.0.0.1:4010"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
-		waroom.WithDump(true),
+		waroom.WithResponseDump(),
 	)
 
 	if err != nil {
