@@ -1512,7 +1512,8 @@ func (s *ResponseMetadata) SetTotalCount(val int) {
 // Ref: #/components/schemas/Service
 type Service struct {
 	// Service name.
-	Name string `json:"name"`
+	Name   string          `json:"name"`
+	Labels []IncidentLabel `json:"labels"`
 }
 
 // GetName returns the value of Name.
@@ -1520,9 +1521,19 @@ func (s *Service) GetName() string {
 	return s.Name
 }
 
+// GetLabels returns the value of Labels.
+func (s *Service) GetLabels() []IncidentLabel {
+	return s.Labels
+}
+
 // SetName sets the value of Name.
 func (s *Service) SetName(val string) {
 	s.Name = val
+}
+
+// SetLabels sets the value of Labels.
+func (s *Service) SetLabels(val []IncidentLabel) {
+	s.Labels = val
 }
 
 // Ref: #/components/schemas/ServicesListResponse

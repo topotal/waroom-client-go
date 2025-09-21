@@ -2986,10 +2986,21 @@ func (s *Service) encodeFields(e *jx.Encoder) {
 		e.FieldStart("name")
 		e.Str(s.Name)
 	}
+	{
+		if s.Labels != nil {
+			e.FieldStart("labels")
+			e.ArrStart()
+			for _, elem := range s.Labels {
+				elem.Encode(e)
+			}
+			e.ArrEnd()
+		}
+	}
 }
 
-var jsonFieldsNameOfService = [1]string{
+var jsonFieldsNameOfService = [2]string{
 	0: "name",
+	1: "labels",
 }
 
 // Decode decodes Service from json.
@@ -3012,6 +3023,23 @@ func (s *Service) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
+			}
+		case "labels":
+			if err := func() error {
+				s.Labels = make([]IncidentLabel, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem IncidentLabel
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.Labels = append(s.Labels, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"labels\"")
 			}
 		default:
 			return d.Skip()

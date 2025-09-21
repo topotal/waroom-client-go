@@ -7,6 +7,11 @@ type Incident = gen.Incident
 type IncidentLabel = gen.IncidentLabel
 type IncidentMetrics = gen.IncidentMetrics
 type IncidentSeverity = gen.IncidentSeverity
+type ListIncidentsParams = gen.ListIncidentsParams
+
+// TODO: services
+
 type Label = gen.Label
+type ListServicesParams = gen.ListServicesParams
 
 // TODO: 追加

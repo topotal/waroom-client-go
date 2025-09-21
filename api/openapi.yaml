@@ -129,6 +129,10 @@ components:
           type: string
           description: Service name
           example: web-api
+        labels:
+          type: array
+          items:
+            "$ref": "#/components/schemas/IncidentLabel"
       required:
       - name
     User:
