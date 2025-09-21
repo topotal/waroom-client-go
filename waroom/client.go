@@ -12,16 +12,18 @@ import (
 type Option func(*config)
 
 type config struct {
-	BaseURL    string
-	HTTPClient *http.Client
-	UserAgent  string
-	Dump       bool
+	BaseURL      string
+	HTTPClient   *http.Client
+	UserAgent    string
+	Dump         bool
+	ResponseDump bool
 }
 
 func WithBaseURL(u string) Option          { return func(c *config) { c.BaseURL = u } }
 func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.HTTPClient = h } }
 func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgent = ua } }
 func WithDump(b bool) Option               { return func(c *config) { c.Dump = b } }
+func WithResponseDump() Option             { return func(c *config) { c.ResponseDump = true } }
 
 type WaroomClient struct {
 	raw *gen.Client
@@ -58,6 +60,10 @@ func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error)
 	trippers = append(trippers, httpx.WithUA(cfg.UserAgent))
 	if cfg.Dump {
 		trippers = append(trippers, httpx.WithDump())
+	}
+
+	if cfg.ResponseDump {
+		trippers = append(trippers, httpx.WithResponseDump())
 	}
 
 	cfg.HTTPClient.Transport = buildTripperChain(tp, trippers...)
