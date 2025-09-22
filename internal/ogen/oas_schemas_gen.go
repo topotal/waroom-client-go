@@ -51,6 +51,22 @@ func (s *BadRequestError) SetError(val OptString) {
 func (*BadRequestError) updateIncidentSeverityRes() {}
 func (*BadRequestError) updateIncidentStatusRes()   {}
 
+type ConflictError struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ConflictError) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ConflictError) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ConflictError) createServiceLabelRes() {}
+
 type CreateIncidentMetricsBadRequest MessageError
 
 func (*CreateIncidentMetricsBadRequest) createIncidentMetricsRes() {}
@@ -1019,7 +1035,7 @@ func (s *IncidentUpdateResponseSeverity) UnmarshalText(data []byte) error {
 // Ref: #/components/schemas/Label
 type Label struct {
 	// Unique identifier for the labels.
-	UUID OptUUID `json:"uuid"`
+	UUID uuid.UUID `json:"uuid"`
 	// Label name.
 	Name string `json:"name"`
 	// Label color in hex format (without.
@@ -1029,7 +1045,7 @@ type Label struct {
 }
 
 // GetUUID returns the value of UUID.
-func (s *Label) GetUUID() OptUUID {
+func (s *Label) GetUUID() uuid.UUID {
 	return s.UUID
 }
 
@@ -1049,7 +1065,7 @@ func (s *Label) GetCreatedAt() OptDateTime {
 }
 
 // SetUUID sets the value of UUID.
-func (s *Label) SetUUID(val OptUUID) {
+func (s *Label) SetUUID(val uuid.UUID) {
 	s.UUID = val
 }
 
@@ -1345,52 +1361,6 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-// NewOptUUID returns new OptUUID with value set to v.
-func NewOptUUID(v uuid.UUID) OptUUID {
-	return OptUUID{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptUUID is optional uuid.UUID.
-type OptUUID struct {
-	Value uuid.UUID
-	Set   bool
-}
-
-// IsSet returns true if OptUUID was set.
-func (o OptUUID) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptUUID) Reset() {
-	var v uuid.UUID
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptUUID) SetTo(v uuid.UUID) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptUUID) Get() (v uuid.UUID, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptUUID) Or(d uuid.UUID) uuid.UUID {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
 // Ref: #/components/schemas/Postmortem
 type Postmortem struct {
 	// Postmortem ID.
@@ -1604,7 +1574,8 @@ func (s *UnprocessableEntityError) SetError(val OptString) {
 	s.Error = val
 }
 
-func (*UnprocessableEntityError) createPostmortemRes() {}
+func (*UnprocessableEntityError) createPostmortemRes()   {}
+func (*UnprocessableEntityError) createServiceLabelRes() {}
 
 type UpdateIncidentLabelsReq struct {
 	// Array of label UUIDs to associate with the incident.
