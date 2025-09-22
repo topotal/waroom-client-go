@@ -41,7 +41,7 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req gen.Label, pa
 
 	switch res := res.(type) {
 	case *gen.CreateServiceLabelCreated:
-		return nil, nil
+		return &req, nil
 	case *gen.UnauthorizedError:
 		return nil, errors.New("unauthorized")
 	default:
