@@ -212,6 +212,11 @@ type CreateServiceLabelCreated struct{}
 
 func (*CreateServiceLabelCreated) createServiceLabelRes() {}
 
+// DeleteServiceLabelNoContent is response for DeleteServiceLabel operation.
+type DeleteServiceLabelNoContent struct{}
+
+func (*DeleteServiceLabelNoContent) deleteServiceLabelRes() {}
+
 // Ref: #/components/schemas/Incident
 type Incident struct {
 	// Unique identifier for the incident.
@@ -1155,6 +1160,7 @@ func (s *NotFoundError) SetError(val OptString) {
 	s.Error = val
 }
 
+func (*NotFoundError) deleteServiceLabelRes()     {}
 func (*NotFoundError) getIncidentRes()            {}
 func (*NotFoundError) updateIncidentLabelsRes()   {}
 func (*NotFoundError) updateIncidentSeverityRes() {}
@@ -1551,6 +1557,7 @@ func (s *UnauthorizedError) SetErrors(val []string) {
 func (*UnauthorizedError) createIncidentMetricsRes()  {}
 func (*UnauthorizedError) createPostmortemRes()       {}
 func (*UnauthorizedError) createServiceLabelRes()     {}
+func (*UnauthorizedError) deleteServiceLabelRes()     {}
 func (*UnauthorizedError) getIncidentRes()            {}
 func (*UnauthorizedError) listIncidentsRes()          {}
 func (*UnauthorizedError) listPostmortemsRes()        {}

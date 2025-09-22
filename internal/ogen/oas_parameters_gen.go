@@ -17,6 +17,12 @@ type CreateServiceLabelParams struct {
 	Name string
 }
 
+// DeleteServiceLabelParams is parameters of deleteServiceLabel operation.
+type DeleteServiceLabelParams struct {
+	Name string
+	UUID uuid.UUID
+}
+
 // GetIncidentParams is parameters of getIncident operation.
 type GetIncidentParams struct {
 	// Incident UUID.

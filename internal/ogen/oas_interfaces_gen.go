@@ -13,6 +13,10 @@ type CreateServiceLabelRes interface {
 	createServiceLabelRes()
 }
 
+type DeleteServiceLabelRes interface {
+	deleteServiceLabelRes()
+}
+
 type GetIncidentRes interface {
 	getIncidentRes()
 }

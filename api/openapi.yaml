@@ -1027,3 +1027,46 @@ paths:
           "$ref": "#/components/responses/UnprocessableEntityError"
       security:
         - ApiKeyAuth: []
+
+  /services/{name}/labels/{uuid}:
+    # TODO: impl
+    # put:
+    #   summary: Update/replace a label
+    #   tags: [Services]
+    #   operationId: updateServiceLabel
+    #   parameters:
+    #     - name: name
+    #       in: path
+    #       required: true
+    #       schema: { type: string }
+    #     - name: uuid
+    #       in: path
+    #       required: true
+    #       schema: { type: string, format: uuid }
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema: { $ref: '#/components/schemas/Label' }
+    #   responses:
+    #     '200': { description: Updated }
+    delete:
+      summary: Delete a label
+      tags: [Services]
+      operationId: deleteServiceLabel
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: { type: string }
+        - name: uuid
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '204':
+          description: No Content
+        '401':
+          "$ref": "#/components/responses/UnauthorizedError"
+        '404':
+          "$ref": "#/components/responses/NotFoundError"

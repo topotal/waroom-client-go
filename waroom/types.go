@@ -30,5 +30,6 @@ type Label = gen.Label
 type ListServicesParams = gen.ListServicesParams
 type ListServiceLabelsParams = gen.ListServiceLabelsParams
 type CreateServiceLabelParams = gen.CreateServiceLabelParams
+type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
 
 // TODO: 追加

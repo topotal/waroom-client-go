@@ -9,6 +9,7 @@ const (
 	CreateIncidentMetricsOperation  OperationName = "CreateIncidentMetrics"
 	CreatePostmortemOperation       OperationName = "CreatePostmortem"
 	CreateServiceLabelOperation     OperationName = "CreateServiceLabel"
+	DeleteServiceLabelOperation     OperationName = "DeleteServiceLabel"
 	GetIncidentOperation            OperationName = "GetIncident"
 	ListIncidentsOperation          OperationName = "ListIncidents"
 	ListPostmortemsOperation        OperationName = "ListPostmortems"

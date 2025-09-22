@@ -40,6 +40,12 @@ type Invoker interface {
 	//
 	// POST /services/{name}/labels
 	CreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (CreateServiceLabelRes, error)
+	// DeleteServiceLabel invokes deleteServiceLabel operation.
+	//
+	// Delete a label.
+	//
+	// DELETE /services/{name}/labels/{uuid}
+	DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) (DeleteServiceLabelRes, error)
 	// GetIncident invokes getIncident operation.
 	//
 	// Retrieve a specific incident by its UUID.
@@ -396,6 +402,112 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *Label, par
 	defer resp.Body.Close()
 
 	result, err := decodeCreateServiceLabelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteServiceLabel invokes deleteServiceLabel operation.
+//
+// Delete a label.
+//
+// DELETE /services/{name}/labels/{uuid}
+func (c *Client) DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) (DeleteServiceLabelRes, error) {
+	res, err := c.sendDeleteServiceLabel(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) (res DeleteServiceLabelRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/labels/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, DeleteServiceLabelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeDeleteServiceLabelResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
