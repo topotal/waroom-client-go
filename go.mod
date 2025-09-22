@@ -7,9 +7,6 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/google/uuid v1.6.0
 	github.com/ogen-go/ogen v1.14.0
-	golang.org/x/lint v0.0.0-20241112194109-818c5a804067
-	golang.org/x/tools v0.37.0
-	honnef.co/go/tools v0.6.1
 )
 
 require (
@@ -21,22 +18,31 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
+	github.com/yuin/goldmark v1.7.13 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
+	golang.org/x/lint v0.0.0-20241112194109-818c5a804067 // indirect
 	golang.org/x/mod v0.28.0 // indirect
 	golang.org/x/net v0.44.0 // indirect
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/telemetry v0.0.0-20250908211612-aef8a434d053 // indirect
 	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/tools v0.37.0 // indirect
+	golang.org/x/tools/cmd/godoc v0.1.0-deprecated // indirect
+	golang.org/x/tools/go/expect v0.1.1-deprecated // indirect
+	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	honnef.co/go/tools v0.6.1 // indirect
 )
 
 tool (
 	github.com/ogen-go/ogen/cmd/ogen
+	github.com/topotal/waroom-client-go
 	golang.org/x/lint/golint
+	golang.org/x/tools/cmd/godoc
 	golang.org/x/tools/cmd/goimports
 	honnef.co/go/tools/cmd/staticcheck
 )
