@@ -35,14 +35,24 @@ func (s *IncidentService) ListIncidents(ctx context.Context, params gen.ListInci
 }
 
 // GET /incidents/{uuid}
-func (c *WaroomClient) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
+func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.GetIncidentRes, error) {
 	params := gen.GetIncidentParams{UUID: uuid}
 
-	res, err := c.raw.GetIncident(ctx, params)
+	res, err := s.client.raw.GetIncident(ctx, params)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
 	}
+
+	switch res := res.(type) {
+	case *gen.GetIncidentRes:
+		return res.Incidents, nil
+	case *gen.UnauthorizedError:
+		return nil, errors.New("unauthorized")
+	default:
+		return nil, errors.Errorf("unhandled response %T", res)
+	}
+}
 
 	return &res, nil
 }

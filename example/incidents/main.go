@@ -11,18 +11,18 @@ import (
 )
 
 func main() {
-	// getIncidentUUID()
 	listIncidents()
 }
 
 func getIncidentUUID() {
 	ctx := context.Background()
 
-	client := NewClient()
+	client := newClient()
+	svc := waroom.NewIncidentService(client)
 
 	// 例: 1ページだけ取得
 	uuid, _ := uuid.Parse("d32fc8dd-e424-4974-b27e-c55bb323a6cb")
-	res, err := client.GetIncident(ctx, uuid)
+	res, err := svc.GetIncident(ctx, uuid)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,12 +30,12 @@ func getIncidentUUID() {
 }
 
 func listIncidents() {
-	ctx := context.Background()
-
-	svc := waroom.NewIncidentService(ctx)
+	client := newClient()
+	svc := waroom.NewIncidentService(client)
 	param := waroom.ListIncidentsParams{}
 
 	//TODO: pagination
+	ctx := context.Background()
 	res, err := svc.ListIncidents(ctx, param)
 	if err != nil {
 		log.Fatal(err)
@@ -49,13 +49,12 @@ func newClient() *waroom.WaroomClient {
 	client, err := waroom.NewWaroomClient(ctx,
 		waroom.WithBaseURL("https://api.staging.waroom.com/api/v0"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
-		waroom.WithDump(true),
+		waroom.WithRequestDump(),
 	)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Print("Client initialized")
 	return client
 }
