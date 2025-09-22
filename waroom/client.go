@@ -15,14 +15,14 @@ type config struct {
 	BaseURL      string
 	HTTPClient   *http.Client
 	UserAgent    string
-	Dump         bool
+	RequestDump  bool
 	ResponseDump bool
 }
 
 func WithBaseURL(u string) Option          { return func(c *config) { c.BaseURL = u } }
 func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.HTTPClient = h } }
 func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgent = ua } }
-func WithDump(b bool) Option               { return func(c *config) { c.Dump = b } }
+func WithRequestDump() Option              { return func(c *config) { c.RequestDump = true } }
 func WithResponseDump() Option             { return func(c *config) { c.ResponseDump = true } }
 
 type WaroomClient struct {
@@ -46,8 +46,9 @@ func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error)
 			Timeout:   10 * time.Second, //TODO: 外部から変更可能に
 			Transport: http.DefaultTransport,
 		},
-		UserAgent: DefaultUserAgent,
-		Dump:      false,
+		UserAgent:    DefaultUserAgent,
+		RequestDump:  false,
+		ResponseDump: false,
 	}
 	for _, opt := range opts {
 		opt(cfg)
@@ -58,8 +59,8 @@ func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error)
 	var trippers []func(http.RoundTripper) http.RoundTripper
 
 	trippers = append(trippers, httpx.WithUA(cfg.UserAgent))
-	if cfg.Dump {
-		trippers = append(trippers, httpx.WithDump())
+	if cfg.RequestDump {
+		trippers = append(trippers, httpx.WithRequestDump())
 	}
 
 	if cfg.ResponseDump {

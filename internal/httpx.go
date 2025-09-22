@@ -41,7 +41,7 @@ func WithUA(ua string) func(http.RoundTripper) http.RoundTripper {
 	}
 }
 
-func WithDump() func(http.RoundTripper) http.RoundTripper {
+func WithRequestDump() func(http.RoundTripper) http.RoundTripper {
 	return func(nextTripper http.RoundTripper) http.RoundTripper {
 		return roundTripperFunc(func(r *http.Request) (*http.Response, error) {
 			println("Tripper Dump Request:", r.Method, r.URL.String())

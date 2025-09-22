@@ -51,6 +51,7 @@ func newClient() *waroom.WaroomClient {
 		waroom.WithBaseURL("http://api.staging.waroom.com/api/v0"),
 		// waroom.WithBaseURL("http://127.0.0.1:4010"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
+		waroom.WithRequestDump(),
 		waroom.WithResponseDump(),
 	)
 
