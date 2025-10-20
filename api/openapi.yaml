@@ -124,7 +124,7 @@ components:
         color:
           type: string
           pattern: "^[0-9a-fA-F]{6}$"
-          description: Label color in hex format (without
+          description: Label color in hex format (without#)
           example: ff0000
         created_at:
           type: string
