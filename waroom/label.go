@@ -20,7 +20,7 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params gen.ListSer
 	res, err := s.client.raw.ListServiceLabels(ctx, params)
 
 	if err != nil {
-		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
+		return nil, errors.Wrap(err, "List Service Error") //TODO ちゃんとする
 	}
 
 	switch res := res.(type) {
@@ -36,14 +36,14 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params gen.ListSer
 func (s *LabelService) CreateServiceLabel(ctx context.Context, req gen.Label, params gen.CreateServiceLabelParams) (*gen.Label, error) {
 	res, err := s.client.raw.CreateServiceLabel(ctx, &req, params)
 	if err != nil {
-		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
+		return nil, errors.Wrap(err, "Create service error")
 	}
 
 	switch res := res.(type) {
 	case *gen.CreateServiceLabelCreated:
 		return &req, nil
 	case *gen.UnauthorizedError:
-		return nil, errors.New("unauthorized")
+		return nil, errors.Wrap(err, "unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
 	}
