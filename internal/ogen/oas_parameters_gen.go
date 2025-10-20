@@ -32,17 +32,17 @@ type GetIncidentParams struct {
 // ListIncidentsParams is parameters of listIncidents operation.
 type ListIncidentsParams struct {
 	// Page number for pagination.
-	Page OptInt
+	Page OptInt `json:",omitempty,omitzero"`
 	// Number of items per page.
-	PerPage OptInt
+	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // ListPostmortemsParams is parameters of listPostmortems operation.
 type ListPostmortemsParams struct {
 	// Page number for pagination.
-	Page OptInt
+	Page OptInt `json:",omitempty,omitzero"`
 	// Number of items per page.
-	PerPage OptInt
+	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // ListServiceLabelsParams is parameters of listServiceLabels operation.
@@ -53,9 +53,9 @@ type ListServiceLabelsParams struct {
 // ListServicesParams is parameters of listServices operation.
 type ListServicesParams struct {
 	// Page number for pagination.
-	Page OptInt
+	Page OptInt `json:",omitempty,omitzero"`
 	// Number of items per page.
-	PerPage OptInt
+	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // UpdateIncidentLabelsParams is parameters of updateIncidentLabels operation.

@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/validate"
 )
@@ -157,7 +156,7 @@ func decodeCreateIncidentMetricsResponse(resp *http.Response) (res CreateInciden
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreatePostmortemResponse(resp *http.Response) (res CreatePostmortemRes, _ error) {
@@ -268,7 +267,7 @@ func decodeCreatePostmortemResponse(resp *http.Response) (res CreatePostmortemRe
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateServiceLabelResponse(resp *http.Response) (res CreateServiceLabelRes, _ error) {
@@ -382,7 +381,7 @@ func decodeCreateServiceLabelResponse(resp *http.Response) (res CreateServiceLab
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteServiceLabelResponse(resp *http.Response) (res DeleteServiceLabelRes, _ error) {
@@ -461,7 +460,7 @@ func decodeDeleteServiceLabelResponse(resp *http.Response) (res DeleteServiceLab
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetIncidentResponse(resp *http.Response) (res GetIncidentRes, _ error) {
@@ -581,7 +580,7 @@ func decodeGetIncidentResponse(resp *http.Response) (res GetIncidentRes, _ error
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListIncidentsResponse(resp *http.Response) (res ListIncidentsRes, _ error) {
@@ -666,7 +665,7 @@ func decodeListIncidentsResponse(resp *http.Response) (res ListIncidentsRes, _ e
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListPostmortemsResponse(resp *http.Response) (res ListPostmortemsRes, _ error) {
@@ -751,7 +750,7 @@ func decodeListPostmortemsResponse(resp *http.Response) (res ListPostmortemsRes,
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListServiceLabelsResponse(resp *http.Response) (res ListServiceLabelsRes, _ error) {
@@ -836,7 +835,7 @@ func decodeListServiceLabelsResponse(resp *http.Response) (res ListServiceLabels
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeListServicesResponse(resp *http.Response) (res ListServicesRes, _ error) {
@@ -921,7 +920,7 @@ func decodeListServicesResponse(resp *http.Response) (res ListServicesRes, _ err
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateIncidentLabelsResponse(resp *http.Response) (res UpdateIncidentLabelsRes, _ error) {
@@ -1041,7 +1040,7 @@ func decodeUpdateIncidentLabelsResponse(resp *http.Response) (res UpdateIncident
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateIncidentSeverityResponse(resp *http.Response) (res UpdateIncidentSeverityRes, _ error) {
@@ -1196,7 +1195,7 @@ func decodeUpdateIncidentSeverityResponse(resp *http.Response) (res UpdateIncide
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeUpdateIncidentStatusResponse(resp *http.Response) (res UpdateIncidentStatusRes, _ error) {
@@ -1351,5 +1350,5 @@ func decodeUpdateIncidentStatusResponse(resp *http.Response) (res UpdateIncident
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }

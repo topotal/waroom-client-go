@@ -1043,7 +1043,7 @@ type Label struct {
 	UUID uuid.UUID `json:"uuid"`
 	// Label name.
 	Name string `json:"name"`
-	// Label color in hex format (without.
+	// Label color in hex format (without#).
 	Color OptString `json:"color"`
 	// Creation timestamp.
 	CreatedAt OptDateTime `json:"created_at"`
