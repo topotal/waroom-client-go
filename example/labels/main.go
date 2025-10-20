@@ -59,6 +59,20 @@ func createServiceLabel(name, color string) {
 	fmt.Println(res.Color)
 }
 
+func deleteServiceLabel(service_name string, id uuid.UUID) {
+	ctx := context.Background()
+	c := newClient()
+
+	svc := waroom.NewLabelService(c)
+	param := waroom.DeleteServiceLabelParams{
+		Name: service_name,
+		UUID: id,
+	}
+	if err := svc.DeleteServiceLabel(ctx, param); err != nil {
+		log.Fatal(err)
+	}
+}
+
 func newClient() *waroom.WaroomClient {
 	ctx := context.Background()
 
