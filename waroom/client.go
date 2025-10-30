@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	httpx "github.com/topotal/waroom-client-go/internal"
+	"github.com/topotal/waroom-client-go/internal/httpx"
 	gen "github.com/topotal/waroom-client-go/internal/ogen"
 )
 
