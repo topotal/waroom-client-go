@@ -2,8 +2,8 @@ package waroom
 
 import (
 	"context"
-	"os"
 	gen "github.com/topotal/waroom-client-go/internal/ogen"
+	"os"
 )
 
 var _ gen.SecuritySource = (*WaroomBearerAuth)(nil)
