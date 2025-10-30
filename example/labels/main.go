@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/google/uuid"
+
 	"github.com/topotal/waroom-client-go/waroom"
 )
 
