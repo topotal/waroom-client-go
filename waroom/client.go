@@ -70,7 +70,7 @@ func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error)
 	cfg.HTTPClient.Transport = buildTripperChain(tp, trippers...)
 
 	// ogen 側の Client を作成
-	auth := WaroomBearerAuth{}
+	auth := waroomBearerAuth{}
 	raw, err := gen.NewClient(cfg.BaseURL, &auth, gen.WithClient(cfg.HTTPClient))
 
 	if err != nil {

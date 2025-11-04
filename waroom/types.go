@@ -25,8 +25,8 @@ type IncidentMetrics = gen.IncidentMetrics
 type IncidentSeverity = gen.IncidentSeverity
 type ListIncidentsParams = gen.ListIncidentsParams
 
-// TODO: services
 type Label = gen.Label
+type Service = gen.Service
 type ListServicesParams = gen.ListServicesParams
 type ListServiceLabelsParams = gen.ListServiceLabelsParams
 type CreateServiceLabelParams = gen.CreateServiceLabelParams

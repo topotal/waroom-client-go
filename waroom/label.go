@@ -16,7 +16,7 @@ func NewLabelService(client *WaroomClient) *LabelService {
 	return &LabelService{client: client}
 }
 
-func (s *LabelService) ListServiceLabels(ctx context.Context, params gen.ListServiceLabelsParams) ([]gen.Label, error) {
+func (s *LabelService) ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) ([]Label, error) {
 	res, err := s.client.raw.ListServiceLabels(ctx, params)
 
 	if err != nil {
@@ -33,7 +33,7 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params gen.ListSer
 	}
 }
 
-func (s *LabelService) CreateServiceLabel(ctx context.Context, req gen.Label, params gen.CreateServiceLabelParams) (*gen.Label, error) {
+func (s *LabelService) CreateServiceLabel(ctx context.Context, req Label, params CreateServiceLabelParams) (*Label, error) {
 	res, err := s.client.raw.CreateServiceLabel(ctx, &req, params)
 	if err != nil {
 		return nil, errors.Wrap(err, "Create service error")
@@ -49,7 +49,7 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req gen.Label, pa
 	}
 }
 
-func (s *LabelService) DeleteServiceLabel(ctx context.Context, params gen.DeleteServiceLabelParams) error {
+func (s *LabelService) DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) error {
 	res, err := s.client.raw.DeleteServiceLabel(ctx, params)
 	if err != nil {
 		return errors.Wrap(err, "err") //TODO ちゃんとする

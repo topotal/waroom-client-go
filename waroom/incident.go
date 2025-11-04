@@ -17,7 +17,7 @@ func NewIncidentService(client *WaroomClient) *IncidentService {
 	return &IncidentService{client: client}
 }
 
-func (s *IncidentService) ListIncidents(ctx context.Context, params gen.ListIncidentsParams) ([]gen.Incident, error) {
+func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncidentsParams) ([]Incident, error) {
 	res, err := s.client.raw.ListIncidents(ctx, params)
 
 	if err != nil {
@@ -35,7 +35,7 @@ func (s *IncidentService) ListIncidents(ctx context.Context, params gen.ListInci
 }
 
 // GET /incidents/{uuid}
-func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*gen.Incident, error) {
+func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*Incident, error) {
 	params := gen.GetIncidentParams{UUID: uuid}
 
 	res, err := s.client.raw.GetIncident(ctx, params)
