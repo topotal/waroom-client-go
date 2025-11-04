@@ -16,7 +16,7 @@ func NewServiceService(client *WaroomClient) *ServiceService {
 	return &ServiceService{client: client}
 }
 
-func (s *ServiceService) ListServices(ctx context.Context, params gen.ListServicesParams) ([]gen.Service, error) {
+func (s *ServiceService) ListServices(ctx context.Context, params ListServicesParams) ([]Service, error) {
 	res, err := s.client.raw.ListServices(ctx, params)
 
 	if err != nil {
