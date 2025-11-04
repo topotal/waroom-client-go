@@ -1,15 +1,46 @@
-# sho2010-waroom-client-go
+# waroom-client-go
 
+waroom-client-go is a Go client library for the Waroom API.
 
-## prerequisites
+> [!WARNING]
+> The API of this library is not stable yet.
 
-dependencies tools
+## Usage
 
+```go
+import (
+    "context"
+    "fmt"
+
+    "github.com/waroom/waroom-client-go/waroom"
+)
+
+func main() {
+    ctx := context.Background()
+
+    client, err := waroom.NewWaroomClient(ctx)
+    if err != nil {
+        fmt.Println("Error creating waroom client:", err)
+        return
+    }
+
+    svc := waroom.NewServiceService(client)
+    res, err := svc.ListServices(ctx, &waroom.ListServiceParams{})
+    if err != nil {
+        fmt.Println("Error listing services:", err)
+        return
+    }
+
+    fmt.Printf("%+v\n", res)
+}
 ```
-# https://taskfile.dev/docs/installation
-brew install go-task
 
-# https://goreleaser.com/install/
-brew install goreleaser
+## Development
 
-```
+### Prerequisites
+
+- Task
+    - https://taskfile.dev/docs/installation
+- GoReleaser
+    - https://goreleaser.com/install/
+
