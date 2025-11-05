@@ -1160,11 +1160,14 @@ func (s *NotFoundError) SetError(val OptString) {
 	s.Error = val
 }
 
+func (*NotFoundError) createServiceLabelRes()     {}
 func (*NotFoundError) deleteServiceLabelRes()     {}
 func (*NotFoundError) getIncidentRes()            {}
+func (*NotFoundError) listServiceLabelsRes()      {}
 func (*NotFoundError) updateIncidentLabelsRes()   {}
 func (*NotFoundError) updateIncidentSeverityRes() {}
 func (*NotFoundError) updateIncidentStatusRes()   {}
+func (*NotFoundError) updateServiceLabelRes()     {}
 
 // NewOptDateTime returns new OptDateTime with value set to v.
 func NewOptDateTime(v time.Time) OptDateTime {
@@ -1566,6 +1569,7 @@ func (*UnauthorizedError) listServicesRes()           {}
 func (*UnauthorizedError) updateIncidentLabelsRes()   {}
 func (*UnauthorizedError) updateIncidentSeverityRes() {}
 func (*UnauthorizedError) updateIncidentStatusRes()   {}
+func (*UnauthorizedError) updateServiceLabelRes()     {}
 
 type UnprocessableEntityError struct {
 	Error OptString `json:"error"`
@@ -1754,3 +1758,8 @@ func (s *UpdateIncidentStatusReqStatus) UnmarshalText(data []byte) error {
 		return errors.Errorf("invalid value: %q", data)
 	}
 }
+
+// UpdateServiceLabelOK is response for UpdateServiceLabel operation.
+type UpdateServiceLabelOK struct{}
+
+func (*UpdateServiceLabelOK) updateServiceLabelRes() {}

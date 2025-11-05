@@ -75,3 +75,9 @@ type UpdateIncidentStatusParams struct {
 	// Incident UUID.
 	UUID uuid.UUID
 }
+
+// UpdateServiceLabelParams is parameters of updateServiceLabel operation.
+type UpdateServiceLabelParams struct {
+	Name string
+	UUID uuid.UUID
+}

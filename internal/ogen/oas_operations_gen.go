@@ -18,4 +18,5 @@ const (
 	UpdateIncidentLabelsOperation   OperationName = "UpdateIncidentLabels"
 	UpdateIncidentSeverityOperation OperationName = "UpdateIncidentSeverity"
 	UpdateIncidentStatusOperation   OperationName = "UpdateIncidentStatus"
+	UpdateServiceLabelOperation     OperationName = "UpdateServiceLabel"
 )

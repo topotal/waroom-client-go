@@ -1000,6 +1000,8 @@ paths:
                     items: { $ref: '#/components/schemas/Label' }
         '401':
           "$ref": "#/components/responses/UnauthorizedError"
+        '404':
+          "$ref": "#/components/responses/NotFoundError"
       security:
         - ApiKeyAuth: []
     post:
@@ -1021,6 +1023,8 @@ paths:
           description: Created
         '401':
           "$ref": "#/components/responses/UnauthorizedError"
+        '404':
+          "$ref": "#/components/responses/NotFoundError"
         '409':
           "$ref": "#/components/responses/ConflictError"
         '422':
@@ -1029,27 +1033,31 @@ paths:
         - ApiKeyAuth: []
 
   /services/{name}/labels/{uuid}:
-    # TODO: impl
-    # put:
-    #   summary: Update/replace a label
-    #   tags: [Services]
-    #   operationId: updateServiceLabel
-    #   parameters:
-    #     - name: name
-    #       in: path
-    #       required: true
-    #       schema: { type: string }
-    #     - name: uuid
-    #       in: path
-    #       required: true
-    #       schema: { type: string, format: uuid }
-    #   requestBody:
-    #     required: true
-    #     content:
-    #       application/json:
-    #         schema: { $ref: '#/components/schemas/Label' }
-    #   responses:
-    #     '200': { description: Updated }
+    patch:
+      summary: Update/replace a label
+      tags: [Services]
+      operationId: updateServiceLabel
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema: { type: string }
+        - name: uuid
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Label' }
+      responses:
+        '200':
+          description: Updated
+        '401':
+          "$ref": "#/components/responses/UnauthorizedError"
+        '404':
+          "$ref": "#/components/responses/NotFoundError"
     delete:
       summary: Delete a label
       tags: [Services]
