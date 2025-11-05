@@ -10,10 +10,10 @@ import (
 )
 
 type IncidentService struct {
-	client *WaroomClient
+	client *Client
 }
 
-func NewIncidentService(client *WaroomClient) *IncidentService {
+func NewIncidentService(client *Client) *IncidentService {
 	return &IncidentService{client: client}
 }
 

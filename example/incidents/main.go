@@ -43,10 +43,10 @@ func listIncidents() {
 	fmt.Println(res)
 }
 
-func newClient() *waroom.WaroomClient {
+func newClient() *waroom.Client {
 	ctx := context.Background()
 
-	client, err := waroom.NewWaroomClient(ctx,
+	client, err := waroom.NewClient(ctx,
 		waroom.WithBaseURL("https://api.staging.waroom.com/api/v0"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
 		waroom.WithRequestDump(),

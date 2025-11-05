@@ -9,10 +9,10 @@ import (
 )
 
 type LabelService struct {
-	client *WaroomClient
+	client *Client
 }
 
-func NewLabelService(client *WaroomClient) *LabelService {
+func NewLabelService(client *Client) *LabelService {
 	return &LabelService{client: client}
 }
 

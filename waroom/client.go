@@ -25,7 +25,7 @@ func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgen
 func WithRequestDump() Option              { return func(c *config) { c.RequestDump = true } }
 func WithResponseDump() Option             { return func(c *config) { c.ResponseDump = true } }
 
-type WaroomClient struct {
+type Client struct {
 	raw *gen.Client
 }
 
@@ -39,7 +39,7 @@ func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper)
 	return rt
 }
 
-func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error) {
+func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	cfg := &config{
 		BaseURL: DefaultBaseURL,
 		HTTPClient: &http.Client{
@@ -76,5 +76,5 @@ func NewWaroomClient(ctx context.Context, opts ...Option) (*WaroomClient, error)
 	if err != nil {
 		return nil, err
 	}
-	return &WaroomClient{raw: raw}, nil
+	return &Client{raw: raw}, nil
 }
