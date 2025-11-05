@@ -48,3 +48,7 @@ type UpdateIncidentSeverityRes interface {
 type UpdateIncidentStatusRes interface {
 	updateIncidentStatusRes()
 }
+
+type UpdateServiceLabelRes interface {
+	updateServiceLabelRes()
+}

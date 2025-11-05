@@ -93,6 +93,12 @@ type Invoker interface {
 	//
 	// PATCH /incidents/{uuid}/status
 	UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error)
+	// UpdateServiceLabel invokes updateServiceLabel operation.
+	//
+	// Update/replace a label.
+	//
+	// PATCH /services/{name}/labels/{uuid}
+	UpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error)
 }
 
 // Client implements OAS client.
@@ -1300,6 +1306,124 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 	defer resp.Body.Close()
 
 	result, err := decodeUpdateIncidentStatusResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateServiceLabel invokes updateServiceLabel operation.
+//
+// Update/replace a label.
+//
+// PATCH /services/{name}/labels/{uuid}
+func (c *Client) UpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error) {
+	res, err := c.sendUpdateServiceLabel(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (res UpdateServiceLabelRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/labels/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateServiceLabelRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityApiKeyAuth(ctx, UpdateServiceLabelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	defer resp.Body.Close()
+
+	result, err := decodeUpdateServiceLabelResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
