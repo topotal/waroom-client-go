@@ -18,7 +18,7 @@ import (
 func main() {
     ctx := context.Background()
 
-    client, err := waroom.NewWaroomClient(ctx)
+    client, err := waroom.NewClient(ctx)
     if err != nil {
         fmt.Println("Error creating waroom client:", err)
         return
