@@ -27,9 +27,13 @@ type ListIncidentsParams = gen.ListIncidentsParams
 
 type Label = gen.Label
 type Service = gen.Service
+
 type ListServicesParams = gen.ListServicesParams
 type ListServiceLabelsParams = gen.ListServiceLabelsParams
+
 type CreateServiceLabelParams = gen.CreateServiceLabelParams
+type CreateServiceLabelReq = gen.CreateServiceLabelReq
+
 type UpdateServiceLabelParams = gen.UpdateServiceLabelParams
 type UpdateServiceLabelReq = gen.UpdateServiceLabelReq
 type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
