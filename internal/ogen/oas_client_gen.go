@@ -98,7 +98,7 @@ type Invoker interface {
 	// Update/replace a label.
 	//
 	// PATCH /services/{name}/labels/{uuid}
-	UpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error)
+	UpdateServiceLabel(ctx context.Context, request *UpdateServiceLabelReq, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error)
 }
 
 // Client implements OAS client.
@@ -1318,12 +1318,12 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 // Update/replace a label.
 //
 // PATCH /services/{name}/labels/{uuid}
-func (c *Client) UpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error) {
+func (c *Client) UpdateServiceLabel(ctx context.Context, request *UpdateServiceLabelReq, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error) {
 	res, err := c.sendUpdateServiceLabel(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *Label, params UpdateServiceLabelParams) (res UpdateServiceLabelRes, err error) {
+func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *UpdateServiceLabelReq, params UpdateServiceLabelParams) (res UpdateServiceLabelRes, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {

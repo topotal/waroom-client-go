@@ -95,7 +95,7 @@ func encodeUpdateIncidentStatusRequest(
 }
 
 func encodeUpdateServiceLabelRequest(
-	req *Label,
+	req *UpdateServiceLabelReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

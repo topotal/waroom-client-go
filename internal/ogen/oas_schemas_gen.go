@@ -1759,7 +1759,45 @@ func (s *UpdateIncidentStatusReqStatus) UnmarshalText(data []byte) error {
 	}
 }
 
-// UpdateServiceLabelOK is response for UpdateServiceLabel operation.
-type UpdateServiceLabelOK struct{}
+type UpdateServiceLabelOK struct {
+	Label Label `json:"label"`
+}
+
+// GetLabel returns the value of Label.
+func (s *UpdateServiceLabelOK) GetLabel() Label {
+	return s.Label
+}
+
+// SetLabel sets the value of Label.
+func (s *UpdateServiceLabelOK) SetLabel(val Label) {
+	s.Label = val
+}
 
 func (*UpdateServiceLabelOK) updateServiceLabelRes() {}
+
+type UpdateServiceLabelReq struct {
+	// Label color in hex format (without#).
+	Color OptString `json:"color"`
+	// Label name.
+	Name OptString `json:"name"`
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateServiceLabelReq) GetColor() OptString {
+	return s.Color
+}
+
+// GetName returns the value of Name.
+func (s *UpdateServiceLabelReq) GetName() OptString {
+	return s.Name
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateServiceLabelReq) SetColor(val OptString) {
+	s.Color = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateServiceLabelReq) SetName(val OptString) {
+	s.Name = val
+}
