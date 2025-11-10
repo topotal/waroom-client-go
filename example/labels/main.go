@@ -11,17 +11,20 @@ import (
 )
 
 func main() {
-	getServiceLabels()
-	createServiceLabel("fuga", "ffF000")
+
+	svc := "awesome-service"
+
+	getServiceLabels(svc)
+	// createServiceLabel(svc, "test-06", "FF4030")
 }
 
-func getServiceLabels() {
+func getServiceLabels(sname string) {
 	ctx := context.Background()
 	c := newClient()
 
 	svc := waroom.NewLabelService(c)
 	param := waroom.ListServiceLabelsParams{
-		Name: "ないとぅー",
+		Name: sname,
 	}
 
 	//TODO: pagination
@@ -37,21 +40,22 @@ func getServiceLabels() {
 	}
 }
 
-func createServiceLabel(name, color string) {
+func createServiceLabel(sname, label, color string) {
 	ctx := context.Background()
 	c := newClient()
 
 	svc := waroom.NewLabelService(c)
-	req := waroom.Label{
-		Name: name,
-	}
-	req.Color.SetTo(color)
 
 	param := waroom.CreateServiceLabelParams{
-		Name: "ないとぅー",
+		Name: sname,
 	}
 
-	res, err := svc.CreateServiceLabel(ctx, req, param)
+	body := waroom.CreateServiceLabelReq{
+		Name:  label,
+		Color: color,
+	}
+
+	res, err := svc.CreateServiceLabel(ctx, body, param)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -61,13 +65,35 @@ func createServiceLabel(name, color string) {
 	fmt.Println(res.Color)
 }
 
-func deleteServiceLabel(service_name string, id uuid.UUID) {
+func updateServiceLabel(service_name string, id uuid.UUID) {
+	ctx := context.Background()
+	c := newClient()
+
+	svc := waroom.NewLabelService(c)
+	param := waroom.UpdateServiceLabelParams{
+		UUID: id,
+		Name: service_name,
+	}
+
+	body := waroom.UpdateServiceLabelReq{
+		Name:  waroom.NewOptString("updated-label"),
+		Color: waroom.NewOptString("FF00FF"),
+	}
+
+	label, err := svc.UpdateServiceLabel(ctx, body, param)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(label)
+}
+
+func deleteServiceLabel(sname string, id uuid.UUID) {
 	ctx := context.Background()
 	c := newClient()
 
 	svc := waroom.NewLabelService(c)
 	param := waroom.DeleteServiceLabelParams{
-		Name: service_name,
+		Name: sname,
 		UUID: id,
 	}
 	if err := svc.DeleteServiceLabel(ctx, param); err != nil {
