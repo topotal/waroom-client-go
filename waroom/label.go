@@ -33,7 +33,7 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params ListService
 	}
 }
 
-func (s *LabelService) CreateServiceLabel(ctx context.Context, req Label, params CreateServiceLabelParams) (*Label, error) {
+func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateServiceLabelReq, params CreateServiceLabelParams) (*Label, error) {
 	res, err := s.client.raw.CreateServiceLabel(ctx, &req, params)
 	if err != nil {
 		return nil, errors.Wrap(err, "create service label")
@@ -41,8 +41,7 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req Label, params
 
 	switch res := res.(type) {
 	case *gen.CreateServiceLabelCreated:
-		//FIXME: responseからUUID取らないとUUIDがセットされない
-		return &req, nil
+		return &res.Label, nil
 	case *gen.UnauthorizedError:
 		return nil, errors.Wrap(err, "unauthorized")
 	default:

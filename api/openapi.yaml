@@ -1010,17 +1010,39 @@ paths:
       operationId: createServiceLabel
       parameters:
         - in: path
-          name: name
+          name: name # service name
           required: true
           schema: { type: string }
       requestBody:
         required: true
         content:
           application/json:
-            schema: { $ref: '#/components/schemas/Label' }
+            schema:
+              type: object
+              properties:
+                color:
+                  type: string
+                  pattern: "^[0-9a-fA-F]{6}$"
+                  description: "Label color in hex format (without#)"
+                  example: "ff0000"
+                name:
+                  type: string
+                  description: "Label name"
+                  example: "database"
+              required:
+                - name
+                - color
       responses:
         "201":
           description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  label: {"$ref": "#/components/schemas/Label"}
+                required:
+                - label
         '401':
           "$ref": "#/components/responses/UnauthorizedError"
         '404':

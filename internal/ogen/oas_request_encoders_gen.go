@@ -39,7 +39,7 @@ func encodeCreatePostmortemRequest(
 }
 
 func encodeCreateServiceLabelRequest(
-	req *Label,
+	req *CreateServiceLabelReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

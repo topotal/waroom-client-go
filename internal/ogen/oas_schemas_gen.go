@@ -207,10 +207,48 @@ func (s *CreatePostmortemReqStatus) UnmarshalText(data []byte) error {
 	}
 }
 
-// CreateServiceLabelCreated is response for CreateServiceLabel operation.
-type CreateServiceLabelCreated struct{}
+type CreateServiceLabelCreated struct {
+	Label Label `json:"label"`
+}
+
+// GetLabel returns the value of Label.
+func (s *CreateServiceLabelCreated) GetLabel() Label {
+	return s.Label
+}
+
+// SetLabel sets the value of Label.
+func (s *CreateServiceLabelCreated) SetLabel(val Label) {
+	s.Label = val
+}
 
 func (*CreateServiceLabelCreated) createServiceLabelRes() {}
+
+type CreateServiceLabelReq struct {
+	// Label color in hex format (without#).
+	Color string `json:"color"`
+	// Label name.
+	Name string `json:"name"`
+}
+
+// GetColor returns the value of Color.
+func (s *CreateServiceLabelReq) GetColor() string {
+	return s.Color
+}
+
+// GetName returns the value of Name.
+func (s *CreateServiceLabelReq) GetName() string {
+	return s.Name
+}
+
+// SetColor sets the value of Color.
+func (s *CreateServiceLabelReq) SetColor(val string) {
+	s.Color = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateServiceLabelReq) SetName(val string) {
+	s.Name = val
+}
 
 // DeleteServiceLabelNoContent is response for DeleteServiceLabel operation.
 type DeleteServiceLabelNoContent struct{}

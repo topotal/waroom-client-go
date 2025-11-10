@@ -38,7 +38,7 @@ type Invoker interface {
 	// Create label on a service.
 	//
 	// POST /services/{name}/labels
-	CreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (CreateServiceLabelRes, error)
+	CreateServiceLabel(ctx context.Context, request *CreateServiceLabelReq, params CreateServiceLabelParams) (CreateServiceLabelRes, error)
 	// DeleteServiceLabel invokes deleteServiceLabel operation.
 	//
 	// Delete a label.
@@ -319,12 +319,12 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 // Create label on a service.
 //
 // POST /services/{name}/labels
-func (c *Client) CreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (CreateServiceLabelRes, error) {
+func (c *Client) CreateServiceLabel(ctx context.Context, request *CreateServiceLabelReq, params CreateServiceLabelParams) (CreateServiceLabelRes, error) {
 	res, err := c.sendCreateServiceLabel(ctx, request, params)
 	return res, err
 }
 
-func (c *Client) sendCreateServiceLabel(ctx context.Context, request *Label, params CreateServiceLabelParams) (res CreateServiceLabelRes, err error) {
+func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServiceLabelReq, params CreateServiceLabelParams) (res CreateServiceLabelRes, err error) {
 	// Validate request before sending.
 	if err := func() error {
 		if err := request.Validate(); err != nil {
