@@ -7,6 +7,7 @@ require (
 	github.com/go-faster/jx v1.1.0
 	github.com/google/uuid v1.6.0
 	github.com/ogen-go/ogen v1.16.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
