@@ -1,0 +1,28 @@
+# 露出する型（type alias を生成）：
+# - waroom側の公開APIとして見せたい型だけ列挙
+# - Opt系も必要な分だけ
+types:
+- Incident
+- IncidentSummary
+- CreateIncidentRequest
+- UpdateIncidentRequest
+- Pagination
+- OptString
+- OptBool
+- OptInt
+- OptInt64
+- OptFloat64
+- OptTime
+
+# フォワードするコンストラクタ関数（関数は alias できないため）
+# エントリは 2 形式をサポート：
+# - 単なる関数名（既知の型名に基づき推論：String→string, Bool→bool, Int64→int64, Time→time.Time など）
+# - name/type を明示（推論に無い型や独自名に対応）
+constructors:
+- NewOptString
+- NewOptBool
+- NewOptInt
+- NewOptInt64
+- NewOptFloat64
+- name: NewOptTime
+  type: time.Time
