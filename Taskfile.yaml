@@ -38,5 +38,5 @@ tasks:
   test:
     desc: "Run test"
     cmds:
-      - go test ./...
+      - go test ./... {{.CLI_ARGS}}
 
