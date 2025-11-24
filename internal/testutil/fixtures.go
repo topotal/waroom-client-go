@@ -52,3 +52,32 @@ func JSONFixtureHandler(t *testing.T, path string, opts ...FixtureOption) http.H
 		_, _ = w.Write(b)
 	}
 }
+
+// UnauthorizedHandler returns an HTTP handler that responds with a 401 Unauthorized
+// error using the unauthorized_error.json fixture.
+func UnauthorizedHandler(t *testing.T) http.HandlerFunc {
+	t.Helper()
+	return JSONFixtureHandler(
+		t,
+		"testdata/unauthorized_error.json",
+		WithStatus(http.StatusUnauthorized),
+	)
+}
+
+// InternalServerErrorHandler returns an HTTP handler that responds with a 500 Internal Server Error.
+func InternalServerErrorHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+}
+
+// NotFoundHandler returns an HTTP handler that responds with a 404 Not Found
+// error using the not_found_error.json fixture.
+func NotFoundHandler(t *testing.T) http.HandlerFunc {
+	t.Helper()
+	return JSONFixtureHandler(
+		t,
+		"testdata/not_found_error.json",
+		WithStatus(http.StatusNotFound),
+	)
+}
