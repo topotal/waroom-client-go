@@ -97,6 +97,7 @@ func TestJSONFixtureHandler_ContentType(t *testing.T) {
 			tmpFile.Name(),
 			WithHeader("Content-Type", "text/plain"),
 			WithHeader("Content-Type", "text/html"),
+			WithHeader("x-waroom-test", "test"),
 			WithHeader("Content-Type", "application/xml"),
 		)
 
@@ -106,6 +107,7 @@ func TestJSONFixtureHandler_ContentType(t *testing.T) {
 		handler(rec, req)
 
 		assert.Equal(t, "application/xml", rec.Header().Get("Content-Type"))
+		assert.Equal(t, "test", rec.Header().Get("x-waroom-test"))
 	})
 
 	t.Run("WithHeader with custom header plus WithStatus", func(t *testing.T) {
