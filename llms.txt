@@ -17,7 +17,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 - [Waroom API Documentation](https://docs.waroom.com/11871aebe5dd80898ffbe32cbf38d74e)
 - [Waroom API Implementation](https://github.com/topotal/waroom-backend/tree/master/app/controllers/api/v0)
 - [Open API Specification](https://swagger.io/specification/)
-	- [OAS Waroom Schema](./openapi.yaml)
+	- [OAS Waroom Schema](./api/openapi.yaml)
 - [Ogen](https://ogen.dev/docs/intro/)
 
 ## Examples
