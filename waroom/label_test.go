@@ -17,7 +17,7 @@ func TestLabelService_ListServiceLabels(t *testing.T) {
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
-		return NewClient(ctx, WithBaseURL(baseURL))
+		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 	})
 	defer cleanup()
 
@@ -56,7 +56,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
-				return NewClient(ctx, WithBaseURL(baseURL))
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 			})
 			defer cleanup()
 
@@ -85,7 +85,7 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
-		return NewClient(ctx, WithBaseURL(baseURL))
+		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 	})
 	defer cleanup()
 
@@ -122,7 +122,7 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
-				return NewClient(ctx, WithBaseURL(baseURL))
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 			})
 			defer cleanup()
 
@@ -155,7 +155,7 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
-		return NewClient(ctx, WithBaseURL(baseURL))
+		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 	})
 	defer cleanup()
 
@@ -196,7 +196,7 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
-				return NewClient(ctx, WithBaseURL(baseURL))
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 			})
 			defer cleanup()
 
@@ -228,7 +228,7 @@ func TestLabelService_DeleteServiceLabel(t *testing.T) {
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
-		return NewClient(ctx, WithBaseURL(baseURL))
+		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 	})
 	defer cleanup()
 
@@ -262,7 +262,7 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
-				return NewClient(ctx, WithBaseURL(baseURL))
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 			})
 			defer cleanup()
 
