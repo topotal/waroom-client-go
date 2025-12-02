@@ -39,7 +39,8 @@ func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper)
 	return rt
 }
 
-func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
+// NewClient creates a new Waroom API client.
+func NewClient(ctx context.Context, apiKey string, opts ...Option) (*Client, error) {
 	cfg := &config{
 		BaseURL: DefaultBaseURL,
 		HTTPClient: &http.Client{
@@ -69,8 +70,7 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 
 	cfg.HTTPClient.Transport = buildTripperChain(tp, trippers...)
 
-	// ogen 側の Client を作成
-	auth := waroomBearerAuth{}
+	auth := waroomBearerAuth{apiKey: apiKey}
 	raw, err := gen.NewClient(cfg.BaseURL, &auth, gen.WithClient(cfg.HTTPClient))
 
 	if err != nil {

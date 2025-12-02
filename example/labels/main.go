@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/google/uuid"
 
@@ -104,7 +105,7 @@ func deleteServiceLabel(sname string, id uuid.UUID) {
 func newClient() *waroom.Client {
 	ctx := context.Background()
 
-	client, err := waroom.NewClient(ctx,
+	client, err := waroom.NewClient(ctx, os.Getenv("WAROOM_API_KEY"),
 		waroom.WithBaseURL("https://api.staging.waroom.com/api/v0"),
 		// waroom.WithBaseURL("http://127.0.0.1:4010"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
