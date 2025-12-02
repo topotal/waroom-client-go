@@ -2,7 +2,9 @@ package waroom
 
 import (
 	"context"
+	"errors"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/topotal/waroom-client-go/internal/httpx"
@@ -17,6 +19,7 @@ type config struct {
 	UserAgent    string
 	RequestDump  bool
 	ResponseDump bool
+	APIKey       string
 }
 
 func WithBaseURL(u string) Option          { return func(c *config) { c.BaseURL = u } }
@@ -24,6 +27,7 @@ func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.HTTPClie
 func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgent = ua } }
 func WithRequestDump() Option              { return func(c *config) { c.RequestDump = true } }
 func WithResponseDump() Option             { return func(c *config) { c.ResponseDump = true } }
+func WithAPIKey(apiKey string) Option      { return func(c *config) { c.APIKey = apiKey } }
 
 type Client struct {
 	raw *gen.Client
@@ -39,6 +43,7 @@ func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper)
 	return rt
 }
 
+// NewClient creates a new Waroom API client.
 func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	cfg := &config{
 		BaseURL: DefaultBaseURL,
@@ -69,8 +74,15 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 
 	cfg.HTTPClient.Transport = buildTripperChain(tp, trippers...)
 
-	// ogen 側の Client を作成
-	auth := waroomBearerAuth{}
+	apiKey := cfg.APIKey
+	if apiKey == "" {
+		apiKey = os.Getenv("WAROOM_API_KEY")
+	}
+	if apiKey == "" {
+		return nil, errors.New("API key is required: set it via WithAPIKey option or WAROOM_API_KEY environment variable")
+	}
+
+	auth := waroomBearerAuth{apiKey: apiKey}
 	raw, err := gen.NewClient(cfg.BaseURL, &auth, gen.WithClient(cfg.HTTPClient))
 
 	if err != nil {

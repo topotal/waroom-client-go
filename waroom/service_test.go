@@ -17,7 +17,7 @@ func TestServiceService_ListServices(t *testing.T) {
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
-		return NewClient(ctx, WithBaseURL(baseURL))
+		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 	})
 	defer cleanup()
 
@@ -61,7 +61,7 @@ func TestServiceService_ListServices_Errors(t *testing.T) {
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
-				return NewClient(ctx, WithBaseURL(baseURL))
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
 			})
 			defer cleanup()
 
