@@ -228,6 +228,8 @@ type CreateServiceLabelReq struct {
 	Color string `json:"color"`
 	// Label name.
 	Name string `json:"name"`
+	// Dummy.
+	Dummy OptString `json:"dummy"`
 }
 
 // GetColor returns the value of Color.
@@ -240,6 +242,11 @@ func (s *CreateServiceLabelReq) GetName() string {
 	return s.Name
 }
 
+// GetDummy returns the value of Dummy.
+func (s *CreateServiceLabelReq) GetDummy() OptString {
+	return s.Dummy
+}
+
 // SetColor sets the value of Color.
 func (s *CreateServiceLabelReq) SetColor(val string) {
 	s.Color = val
@@ -248,6 +255,11 @@ func (s *CreateServiceLabelReq) SetColor(val string) {
 // SetName sets the value of Name.
 func (s *CreateServiceLabelReq) SetName(val string) {
 	s.Name = val
+}
+
+// SetDummy sets the value of Dummy.
+func (s *CreateServiceLabelReq) SetDummy(val OptString) {
+	s.Dummy = val
 }
 
 // DeleteServiceLabelNoContent is response for DeleteServiceLabel operation.
