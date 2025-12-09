@@ -655,11 +655,18 @@ func (s *CreateServiceLabelReq) encodeFields(e *jx.Encoder) {
 		e.FieldStart("name")
 		e.Str(s.Name)
 	}
+	{
+		if s.Dummy.Set {
+			e.FieldStart("dummy")
+			s.Dummy.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfCreateServiceLabelReq = [2]string{
+var jsonFieldsNameOfCreateServiceLabelReq = [3]string{
 	0: "color",
 	1: "name",
+	2: "dummy",
 }
 
 // Decode decodes CreateServiceLabelReq from json.
@@ -694,6 +701,16 @@ func (s *CreateServiceLabelReq) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"name\"")
+			}
+		case "dummy":
+			if err := func() error {
+				s.Dummy.Reset()
+				if err := s.Dummy.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"dummy\"")
 			}
 		default:
 			return d.Skip()
