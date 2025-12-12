@@ -1029,10 +1029,6 @@ paths:
                   type: string
                   description: "Label name"
                   example: "database"
-                dummy:
-                  type: string
-                  description: "dummy"
-                  example: "dummy"
               required:
                 - name
                 - color
