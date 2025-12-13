@@ -42,9 +42,9 @@ jobs:
 
       - name: Commit changes
         if: steps.check-changes.outputs.has_changes == 'true'
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: suzuki-shunsuke/commit-action@87b297f0ce551411b43d1880f4fb3cbc60381055 # v0.0.14
         with:
-          commit_message: "chore: auto-generate code from OpenAPI spec"
-          branch: ${{ github.head_ref }}
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
+          commit_message: "api: auto-generate code from OpenAPI spec"
+          app_id: ${{secrets.APP_ID}}
+          app_private_key: ${{secrets.APP_PRIVATE_KEY}}
+
