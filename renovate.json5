@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "github>aquaproj/aqua-renovate-config#2.9.0", // doc: https://zenn.dev/shunsuke_suzuki/books/aqua-handbook/viewer/renovate
+    "github>aquaproj/aqua-renovate-config#2.10.0", // doc: https://zenn.dev/shunsuke_suzuki/books/aqua-handbook/viewer/renovate
     "github>suzuki-shunsuke/renovate-config#3.3.1",
   ]
 }
