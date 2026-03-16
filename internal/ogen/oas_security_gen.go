@@ -15,6 +15,44 @@ type SecuritySource interface {
 	ApiKeyAuth(ctx context.Context, operationName OperationName, client *Client) (ApiKeyAuth, error)
 }
 
+// operationRolesApiKeyAuth is a private map storing roles per operation.
+var operationRolesApiKeyAuth = map[string][]string{
+	CreateIncidentMetricsOperation:  []string{},
+	CreatePostmortemOperation:       []string{},
+	CreateServiceLabelOperation:     []string{},
+	DeleteServiceLabelOperation:     []string{},
+	GetIncidentOperation:            []string{},
+	ListIncidentsOperation:          []string{},
+	ListPostmortemsOperation:        []string{},
+	ListServiceLabelsOperation:      []string{},
+	ListServicesOperation:           []string{},
+	UpdateIncidentLabelsOperation:   []string{},
+	UpdateIncidentSeverityOperation: []string{},
+	UpdateIncidentStatusOperation:   []string{},
+	UpdateServiceLabelOperation:     []string{},
+}
+
+// GetRolesForApiKeyAuth returns the required roles for the given operation.
+//
+// This is useful for authorization scenarios where you need to know which roles
+// are required for an operation.
+//
+// Example:
+//
+//	requiredRoles := GetRolesForApiKeyAuth(AddPetOperation)
+//
+// Returns nil if the operation has no role requirements or if the operation is unknown.
+func GetRolesForApiKeyAuth(operation string) []string {
+	roles, ok := operationRolesApiKeyAuth[operation]
+	if !ok {
+		return nil
+	}
+	// Return a copy to prevent external modification
+	result := make([]string, len(roles))
+	copy(result, roles)
+	return result
+}
+
 func (s *Client) securityApiKeyAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
 	t, err := s.sec.ApiKeyAuth(ctx, operationName, s)
 	if err != nil {
