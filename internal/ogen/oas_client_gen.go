@@ -223,7 +223,8 @@ func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateI
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateIncidentMetricsResponse(resp)
 	if err != nil {
@@ -304,7 +305,8 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreatePostmortemResponse(resp)
 	if err != nil {
@@ -404,7 +406,8 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServ
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeCreateServiceLabelResponse(resp)
 	if err != nil {
@@ -510,7 +513,8 @@ func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServic
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeDeleteServiceLabelResponse(resp)
 	if err != nil {
@@ -597,7 +601,8 @@ func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) 
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeGetIncidentResponse(resp)
 	if err != nil {
@@ -703,7 +708,8 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListIncidentsResponse(resp)
 	if err != nil {
@@ -809,7 +815,8 @@ func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortems
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListPostmortemsResponse(resp)
 	if err != nil {
@@ -897,7 +904,8 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListServiceLabelsResponse(resp)
 	if err != nil {
@@ -1003,7 +1011,8 @@ func (c *Client) sendListServices(ctx context.Context, params ListServicesParams
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeListServicesResponse(resp)
 	if err != nil {
@@ -1103,7 +1112,8 @@ func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIn
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateIncidentLabelsResponse(resp)
 	if err != nil {
@@ -1203,7 +1213,8 @@ func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *Update
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateIncidentSeverityResponse(resp)
 	if err != nil {
@@ -1303,7 +1314,8 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateIncidentStatusResponse(resp)
 	if err != nil {
@@ -1421,7 +1433,8 @@ func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *UpdateServ
 	if err != nil {
 		return res, errors.Wrap(err, "do request")
 	}
-	defer resp.Body.Close()
+	body := resp.Body
+	defer body.Close()
 
 	result, err := decodeUpdateServiceLabelResponse(resp)
 	if err != nil {
