@@ -6,78 +6,286 @@ import (
 	"github.com/google/uuid"
 )
 
+// CreateIncidentActionItemParams is parameters of createIncidentActionItem operation.
+type CreateIncidentActionItemParams struct {
+	UUID uuid.UUID
+}
+
 // CreateIncidentMetricsParams is parameters of createIncidentMetrics operation.
 type CreateIncidentMetricsParams struct {
-	// Incident UUID.
 	UUID uuid.UUID
 }
 
 // CreateServiceLabelParams is parameters of createServiceLabel operation.
 type CreateServiceLabelParams struct {
+	// Service name.
 	Name string
+}
+
+// CreateServiceRunbookRuleParams is parameters of createServiceRunbookRule operation.
+type CreateServiceRunbookRuleParams struct {
+	// Service name.
+	Name string
+}
+
+// DeleteIncidentParams is parameters of deleteIncident operation.
+type DeleteIncidentParams struct {
+	UUID uuid.UUID
+}
+
+// DeleteIncidentActionItemParams is parameters of deleteIncidentActionItem operation.
+type DeleteIncidentActionItemParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
+	// Action item UUID.
+	ActionItemUUID uuid.UUID
+}
+
+// DeleteIncidentDocumentTemplateParams is parameters of deleteIncidentDocumentTemplate operation.
+type DeleteIncidentDocumentTemplateParams struct {
+	// Service name.
+	Name string
+}
+
+// DeletePostmortemParams is parameters of deletePostmortem operation.
+type DeletePostmortemParams struct {
+	UUID uuid.UUID
+}
+
+// DeletePostmortemTemplateByUuidParams is parameters of deletePostmortemTemplateByUuid operation.
+type DeletePostmortemTemplateByUuidParams struct {
+	// UUID of the postmortem template.
+	UUID uuid.UUID
+}
+
+// DeleteRunbookParams is parameters of deleteRunbook operation.
+type DeleteRunbookParams struct {
+	// Namespace without leading slash.
+	Namespace string
 }
 
 // DeleteServiceLabelParams is parameters of deleteServiceLabel operation.
 type DeleteServiceLabelParams struct {
+	// Service name.
 	Name string
+	// Label UUID.
+	UUID uuid.UUID
+}
+
+// DeleteServiceNotificationSlackChannelParams is parameters of deleteServiceNotificationSlackChannel operation.
+type DeleteServiceNotificationSlackChannelParams struct {
+	// Service name.
+	Name string
+}
+
+// DeleteServiceRunbookRuleParams is parameters of deleteServiceRunbookRule operation.
+type DeleteServiceRunbookRuleParams struct {
+	// Service name.
+	Name string
+	// Runbook rule UUID.
 	UUID uuid.UUID
 }
 
 // GetIncidentParams is parameters of getIncident operation.
 type GetIncidentParams struct {
+	UUID uuid.UUID
+}
+
+// GetIncidentActionItemParams is parameters of getIncidentActionItem operation.
+type GetIncidentActionItemParams struct {
 	// Incident UUID.
 	UUID uuid.UUID
+	// Action item UUID.
+	ActionItemUUID uuid.UUID
+}
+
+// GetIncidentDocumentTemplateParams is parameters of getIncidentDocumentTemplate operation.
+type GetIncidentDocumentTemplateParams struct {
+	// Service name.
+	Name string
+}
+
+// GetPostmortemParams is parameters of getPostmortem operation.
+type GetPostmortemParams struct {
+	UUID uuid.UUID
+}
+
+// GetPostmortemTemplateByUuidParams is parameters of getPostmortemTemplateByUuid operation.
+type GetPostmortemTemplateByUuidParams struct {
+	// UUID of the postmortem template.
+	UUID uuid.UUID
+}
+
+// GetRunbookParams is parameters of getRunbook operation.
+type GetRunbookParams struct {
+	// Namespace without leading slash (e.g. default, api-server/recovery).
+	Namespace string
+}
+
+// GetServiceArchitectureContextParams is parameters of getServiceArchitectureContext operation.
+type GetServiceArchitectureContextParams struct {
+	// Service name.
+	Name string
+}
+
+// GetServiceNotificationSlackChannelParams is parameters of getServiceNotificationSlackChannel operation.
+type GetServiceNotificationSlackChannelParams struct {
+	// Service name.
+	Name string
+}
+
+// GetServiceWebhookConfigurationParams is parameters of getServiceWebhookConfiguration operation.
+type GetServiceWebhookConfigurationParams struct {
+	// Service name.
+	Name string
+	// Webhook configuration UUID.
+	UUID uuid.UUID
+}
+
+// ListIncidentActionItemsParams is parameters of listIncidentActionItems operation.
+type ListIncidentActionItemsParams struct {
+	UUID    uuid.UUID
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // ListIncidentsParams is parameters of listIncidents operation.
 type ListIncidentsParams struct {
-	// Page number for pagination.
-	Page OptInt `json:",omitempty,omitzero"`
-	// Number of items per page.
+	Page      OptInt                    `json:",omitempty,omitzero"`
+	PerPage   OptInt                    `json:",omitempty,omitzero"`
+	SortOrder OptListIncidentsSortOrder `json:",omitempty,omitzero"`
+}
+
+// ListPostmortemTemplatesParams is parameters of listPostmortemTemplates operation.
+type ListPostmortemTemplatesParams struct {
+	Page    OptInt `json:",omitempty,omitzero"`
 	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // ListPostmortemsParams is parameters of listPostmortems operation.
 type ListPostmortemsParams struct {
-	// Page number for pagination.
-	Page OptInt `json:",omitempty,omitzero"`
-	// Number of items per page.
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListRunbooksParams is parameters of listRunbooks operation.
+type ListRunbooksParams struct {
+	Page    OptInt `json:",omitempty,omitzero"`
 	PerPage OptInt `json:",omitempty,omitzero"`
 }
 
 // ListServiceLabelsParams is parameters of listServiceLabels operation.
 type ListServiceLabelsParams struct {
+	// Service name.
+	Name    string
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListServiceRunbookRulesParams is parameters of listServiceRunbookRules operation.
+type ListServiceRunbookRulesParams struct {
+	// Service name.
+	Name    string
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListServiceWebhookConfigurationsParams is parameters of listServiceWebhookConfigurations operation.
+type ListServiceWebhookConfigurationsParams struct {
+	// Service name.
+	Name    string
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListUsersParams is parameters of listUsers operation.
+type ListUsersParams struct {
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// PutServiceNotificationSlackChannelParams is parameters of putServiceNotificationSlackChannel operation.
+type PutServiceNotificationSlackChannelParams struct {
+	// Service name.
 	Name string
 }
 
-// ListServicesParams is parameters of listServices operation.
-type ListServicesParams struct {
-	// Page number for pagination.
-	Page OptInt `json:",omitempty,omitzero"`
-	// Number of items per page.
-	PerPage OptInt `json:",omitempty,omitzero"`
+// UpdateIncidentParams is parameters of updateIncident operation.
+type UpdateIncidentParams struct {
+	UUID uuid.UUID
+}
+
+// UpdateIncidentCommanderParams is parameters of updateIncidentCommander operation.
+type UpdateIncidentCommanderParams struct {
+	UUID uuid.UUID
+}
+
+// UpdateIncidentDocumentTemplateParams is parameters of updateIncidentDocumentTemplate operation.
+type UpdateIncidentDocumentTemplateParams struct {
+	// Service name.
+	Name string
 }
 
 // UpdateIncidentLabelsParams is parameters of updateIncidentLabels operation.
 type UpdateIncidentLabelsParams struct {
-	// Incident UUID.
+	UUID uuid.UUID
+}
+
+// UpdateIncidentRespondersParams is parameters of updateIncidentResponders operation.
+type UpdateIncidentRespondersParams struct {
+	UUID uuid.UUID
+}
+
+// UpdateIncidentServiceParams is parameters of updateIncidentService operation.
+type UpdateIncidentServiceParams struct {
 	UUID uuid.UUID
 }
 
 // UpdateIncidentSeverityParams is parameters of updateIncidentSeverity operation.
 type UpdateIncidentSeverityParams struct {
-	// Incident UUID.
 	UUID uuid.UUID
 }
 
 // UpdateIncidentStatusParams is parameters of updateIncidentStatus operation.
 type UpdateIncidentStatusParams struct {
-	// Incident UUID.
 	UUID uuid.UUID
+}
+
+// UpdatePostmortemParams is parameters of updatePostmortem operation.
+type UpdatePostmortemParams struct {
+	UUID uuid.UUID
+}
+
+// UpdatePostmortemTemplateByUuidParams is parameters of updatePostmortemTemplateByUuid operation.
+type UpdatePostmortemTemplateByUuidParams struct {
+	// UUID of the postmortem template.
+	UUID uuid.UUID
+}
+
+// UpdateRunbookParams is parameters of updateRunbook operation.
+type UpdateRunbookParams struct {
+	// Namespace without leading slash.
+	Namespace string
+}
+
+// UpdateServiceArchitectureContextParams is parameters of updateServiceArchitectureContext operation.
+type UpdateServiceArchitectureContextParams struct {
+	// Service name.
+	Name string
 }
 
 // UpdateServiceLabelParams is parameters of updateServiceLabel operation.
 type UpdateServiceLabelParams struct {
+	// Service name.
 	Name string
+	// Label UUID.
+	UUID uuid.UUID
+}
+
+// UpdateServiceRunbookRuleParams is parameters of updateServiceRunbookRule operation.
+type UpdateServiceRunbookRuleParams struct {
+	// Service name.
+	Name string
+	// Runbook rule UUID.
 	UUID uuid.UUID
 }

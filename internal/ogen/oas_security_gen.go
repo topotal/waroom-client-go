@@ -11,39 +11,83 @@ import (
 
 // SecuritySource is provider of security values (tokens, passwords, etc.).
 type SecuritySource interface {
-	// ApiKeyAuth provides ApiKeyAuth security value.
-	ApiKeyAuth(ctx context.Context, operationName OperationName, client *Client) (ApiKeyAuth, error)
+	// BearerAuth provides bearerAuth security value.
+	// API key authentication via Bearer token.
+	BearerAuth(ctx context.Context, operationName OperationName, client *Client) (BearerAuth, error)
 }
 
-// operationRolesApiKeyAuth is a private map storing roles per operation.
-var operationRolesApiKeyAuth = map[string][]string{
-	CreateIncidentMetricsOperation:  []string{},
-	CreatePostmortemOperation:       []string{},
-	CreateServiceLabelOperation:     []string{},
-	DeleteServiceLabelOperation:     []string{},
-	GetIncidentOperation:            []string{},
-	ListIncidentsOperation:          []string{},
-	ListPostmortemsOperation:        []string{},
-	ListServiceLabelsOperation:      []string{},
-	ListServicesOperation:           []string{},
-	UpdateIncidentLabelsOperation:   []string{},
-	UpdateIncidentSeverityOperation: []string{},
-	UpdateIncidentStatusOperation:   []string{},
-	UpdateServiceLabelOperation:     []string{},
+// operationRolesBearerAuth is a private map storing roles per operation.
+var operationRolesBearerAuth = map[string][]string{
+	CreateIncidentOperation:                        []string{},
+	CreateIncidentActionItemOperation:              []string{},
+	CreateIncidentMetricsOperation:                 []string{},
+	CreatePostmortemOperation:                      []string{},
+	CreatePostmortemTemplateOperation:              []string{},
+	CreateRunbookOperation:                         []string{},
+	CreateServiceLabelOperation:                    []string{},
+	CreateServiceRunbookRuleOperation:              []string{},
+	DeleteIncidentOperation:                        []string{},
+	DeleteIncidentActionItemOperation:              []string{},
+	DeleteIncidentDescriptionTemplateOperation:     []string{},
+	DeleteIncidentDocumentTemplateOperation:        []string{},
+	DeletePostmortemOperation:                      []string{},
+	DeletePostmortemTemplateByUuidOperation:        []string{},
+	DeleteRunbookOperation:                         []string{},
+	DeleteServiceLabelOperation:                    []string{},
+	DeleteServiceNotificationSlackChannelOperation: []string{},
+	DeleteServiceRunbookRuleOperation:              []string{},
+	GetIncidentOperation:                           []string{},
+	GetIncidentActionItemOperation:                 []string{},
+	GetIncidentDescriptionTemplateOperation:        []string{},
+	GetIncidentDocumentTemplateOperation:           []string{},
+	GetPostmortemOperation:                         []string{},
+	GetPostmortemTemplateOperation:                 []string{},
+	GetPostmortemTemplateByUuidOperation:           []string{},
+	GetRunbookOperation:                            []string{},
+	GetServiceArchitectureContextOperation:         []string{},
+	GetServiceNotificationSlackChannelOperation:    []string{},
+	GetServiceWebhookConfigurationOperation:        []string{},
+	ListIncidentActionItemsOperation:               []string{},
+	ListIncidentsOperation:                         []string{},
+	ListPostmortemTemplatesOperation:               []string{},
+	ListPostmortemsOperation:                       []string{},
+	ListRunbooksOperation:                          []string{},
+	ListServiceLabelsOperation:                     []string{},
+	ListServiceRunbookRulesOperation:               []string{},
+	ListServiceWebhookConfigurationsOperation:      []string{},
+	ListServicesOperation:                          []string{},
+	ListUsersOperation:                             []string{},
+	PutServiceNotificationSlackChannelOperation:    []string{},
+	UpdateIncidentOperation:                        []string{},
+	UpdateIncidentCommanderOperation:               []string{},
+	UpdateIncidentDescriptionTemplateOperation:     []string{},
+	UpdateIncidentDocumentTemplateOperation:        []string{},
+	UpdateIncidentLabelsOperation:                  []string{},
+	UpdateIncidentRespondersOperation:              []string{},
+	UpdateIncidentServiceOperation:                 []string{},
+	UpdateIncidentSeverityOperation:                []string{},
+	UpdateIncidentStatusOperation:                  []string{},
+	UpdatePostmortemOperation:                      []string{},
+	UpdatePostmortemTemplateOperation:              []string{},
+	UpdatePostmortemTemplateByUuidOperation:        []string{},
+	UpdateRunbookOperation:                         []string{},
+	UpdateServiceArchitectureContextOperation:      []string{},
+	UpdateServiceLabelOperation:                    []string{},
+	UpdateServiceRunbookRuleOperation:              []string{},
 }
 
-// GetRolesForApiKeyAuth returns the required roles for the given operation.
+// GetRolesForBearerAuth returns the required roles for the given operation.
 //
 // This is useful for authorization scenarios where you need to know which roles
 // are required for an operation.
 //
 // Example:
 //
-//	requiredRoles := GetRolesForApiKeyAuth(AddPetOperation)
+//	requiredRoles := GetRolesForBearerAuth(AddPetOperation)
 //
 // Returns nil if the operation has no role requirements or if the operation is unknown.
-func GetRolesForApiKeyAuth(operation string) []string {
-	roles, ok := operationRolesApiKeyAuth[operation]
+func GetRolesForBearerAuth(operation string) []string {
+	roles, ok := operationRolesBearerAuth[operation]
 	if !ok {
 		return nil
 	}
@@ -53,11 +97,11 @@ func GetRolesForApiKeyAuth(operation string) []string {
 	return result
 }
 
-func (s *Client) securityApiKeyAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
-	t, err := s.sec.ApiKeyAuth(ctx, operationName, s)
+func (s *Client) securityBearerAuth(ctx context.Context, operationName OperationName, req *http.Request) error {
+	t, err := s.sec.BearerAuth(ctx, operationName, s)
 	if err != nil {
-		return errors.Wrap(err, "security source \"ApiKeyAuth\"")
+		return errors.Wrap(err, "security source \"BearerAuth\"")
 	}
-	req.Header.Set("Authorization", t.APIKey)
+	req.Header.Set("Authorization", "Bearer "+t.Token)
 	return nil
 }

@@ -33,7 +33,8 @@ type Client struct {
 	raw *gen.Client
 }
 
-const DefaultBaseURL = "https://api.staging.waroom.com/api/v0"
+// 新specはパス側に /api/v0 プレフィックスを含むため、ベースURLはホストのみ
+const DefaultBaseURL = "https://api.staging.waroom.com"
 const DefaultUserAgent = "waroom-sdk-go/0.0.1"
 
 func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper) http.RoundTripper) http.RoundTripper {

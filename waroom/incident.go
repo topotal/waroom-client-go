@@ -17,7 +17,7 @@ func NewIncidentService(client *Client) *IncidentService {
 	return &IncidentService{client: client}
 }
 
-func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncidentsParams) ([]Incident, error) {
+func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncidentsParams) ([]IncidentListItem, error) {
 	res, err := s.client.raw.ListIncidents(ctx, params)
 
 	if err != nil {
@@ -25,9 +25,9 @@ func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncident
 	}
 
 	switch res := res.(type) {
-	case *gen.IncidentListResponse:
+	case *gen.ListIncidentsOK:
 		return res.Incidents, nil
-	case *gen.UnauthorizedError:
+	case *gen.ListIncidentsUnauthorized:
 		return nil, errors.New("unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
@@ -45,9 +45,9 @@ func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*Inc
 	}
 
 	switch res := res.(type) {
-	case *gen.Incident:
+	case *gen.GetIncidentOK:
 		return res, nil
-	case *gen.UnauthorizedError:
+	case *gen.GetIncidentUnauthorized:
 		return nil, errors.New("unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)

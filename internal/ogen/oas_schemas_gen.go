@@ -3,125 +3,1312 @@
 package ogen
 
 import (
+	"net/url"
 	"time"
 
 	"github.com/go-faster/errors"
 	"github.com/google/uuid"
 )
 
-type ApiKeyAuth struct {
-	APIKey string
-	Roles  []string
+type BearerAuth struct {
+	Token string
+	Roles []string
 }
 
-// GetAPIKey returns the value of APIKey.
-func (s *ApiKeyAuth) GetAPIKey() string {
-	return s.APIKey
+// GetToken returns the value of Token.
+func (s *BearerAuth) GetToken() string {
+	return s.Token
 }
 
 // GetRoles returns the value of Roles.
-func (s *ApiKeyAuth) GetRoles() []string {
+func (s *BearerAuth) GetRoles() []string {
 	return s.Roles
 }
 
-// SetAPIKey sets the value of APIKey.
-func (s *ApiKeyAuth) SetAPIKey(val string) {
-	s.APIKey = val
+// SetToken sets the value of Token.
+func (s *BearerAuth) SetToken(val string) {
+	s.Token = val
 }
 
 // SetRoles sets the value of Roles.
-func (s *ApiKeyAuth) SetRoles(val []string) {
+func (s *BearerAuth) SetRoles(val []string) {
 	s.Roles = val
 }
 
-type BadRequestError struct {
+type CreateIncidentActionItemCreated struct {
+	ActionItem CreateIncidentActionItemCreatedActionItem `json:"action_item"`
+}
+
+// GetActionItem returns the value of ActionItem.
+func (s *CreateIncidentActionItemCreated) GetActionItem() CreateIncidentActionItemCreatedActionItem {
+	return s.ActionItem
+}
+
+// SetActionItem sets the value of ActionItem.
+func (s *CreateIncidentActionItemCreated) SetActionItem(val CreateIncidentActionItemCreatedActionItem) {
+	s.ActionItem = val
+}
+
+func (*CreateIncidentActionItemCreated) createIncidentActionItemRes() {}
+
+type CreateIncidentActionItemCreatedActionItem struct {
+	UUID      uuid.UUID                                       `json:"uuid"`
+	Title     string                                          `json:"title"`
+	Status    CreateIncidentActionItemCreatedActionItemStatus `json:"status"`
+	Position  int                                             `json:"position"`
+	CreatedAt time.Time                                       `json:"created_at"`
+	UpdatedAt time.Time                                       `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateIncidentActionItemCreatedActionItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreateIncidentActionItemCreatedActionItem) GetTitle() string {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateIncidentActionItemCreatedActionItem) GetStatus() CreateIncidentActionItemCreatedActionItemStatus {
+	return s.Status
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateIncidentActionItemCreatedActionItem) GetPosition() int {
+	return s.Position
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateIncidentActionItemCreatedActionItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateIncidentActionItemCreatedActionItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateIncidentActionItemCreatedActionItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreateIncidentActionItemCreatedActionItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateIncidentActionItemCreatedActionItem) SetStatus(val CreateIncidentActionItemCreatedActionItemStatus) {
+	s.Status = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateIncidentActionItemCreatedActionItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateIncidentActionItemCreatedActionItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateIncidentActionItemCreatedActionItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type CreateIncidentActionItemCreatedActionItemStatus string
+
+const (
+	CreateIncidentActionItemCreatedActionItemStatusOpen    CreateIncidentActionItemCreatedActionItemStatus = "open"
+	CreateIncidentActionItemCreatedActionItemStatusClosed  CreateIncidentActionItemCreatedActionItemStatus = "closed"
+	CreateIncidentActionItemCreatedActionItemStatusSkipped CreateIncidentActionItemCreatedActionItemStatus = "skipped"
+)
+
+// AllValues returns all CreateIncidentActionItemCreatedActionItemStatus values.
+func (CreateIncidentActionItemCreatedActionItemStatus) AllValues() []CreateIncidentActionItemCreatedActionItemStatus {
+	return []CreateIncidentActionItemCreatedActionItemStatus{
+		CreateIncidentActionItemCreatedActionItemStatusOpen,
+		CreateIncidentActionItemCreatedActionItemStatusClosed,
+		CreateIncidentActionItemCreatedActionItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateIncidentActionItemCreatedActionItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateIncidentActionItemCreatedActionItemStatusOpen:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemStatusClosed:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateIncidentActionItemCreatedActionItemStatus) UnmarshalText(data []byte) error {
+	switch CreateIncidentActionItemCreatedActionItemStatus(data) {
+	case CreateIncidentActionItemCreatedActionItemStatusOpen:
+		*s = CreateIncidentActionItemCreatedActionItemStatusOpen
+		return nil
+	case CreateIncidentActionItemCreatedActionItemStatusClosed:
+		*s = CreateIncidentActionItemCreatedActionItemStatusClosed
+		return nil
+	case CreateIncidentActionItemCreatedActionItemStatusSkipped:
+		*s = CreateIncidentActionItemCreatedActionItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateIncidentActionItemNotFound struct {
 	Error OptString `json:"error"`
 }
 
 // GetError returns the value of Error.
-func (s *BadRequestError) GetError() OptString {
+func (s *CreateIncidentActionItemNotFound) GetError() OptString {
 	return s.Error
 }
 
 // SetError sets the value of Error.
-func (s *BadRequestError) SetError(val OptString) {
+func (s *CreateIncidentActionItemNotFound) SetError(val OptString) {
 	s.Error = val
 }
 
-func (*BadRequestError) updateIncidentSeverityRes() {}
-func (*BadRequestError) updateIncidentStatusRes()   {}
+func (*CreateIncidentActionItemNotFound) createIncidentActionItemRes() {}
 
-type ConflictError struct {
+type CreateIncidentActionItemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentActionItemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentActionItemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateIncidentActionItemPaymentRequired) createIncidentActionItemRes() {}
+
+type CreateIncidentActionItemReq struct {
+	ActionItem CreateIncidentActionItemReqActionItem `json:"action_item"`
+}
+
+// GetActionItem returns the value of ActionItem.
+func (s *CreateIncidentActionItemReq) GetActionItem() CreateIncidentActionItemReqActionItem {
+	return s.ActionItem
+}
+
+// SetActionItem sets the value of ActionItem.
+func (s *CreateIncidentActionItemReq) SetActionItem(val CreateIncidentActionItemReqActionItem) {
+	s.ActionItem = val
+}
+
+type CreateIncidentActionItemReqActionItem struct {
+	Title  string                                         `json:"title"`
+	Status OptCreateIncidentActionItemReqActionItemStatus `json:"status"`
+}
+
+// GetTitle returns the value of Title.
+func (s *CreateIncidentActionItemReqActionItem) GetTitle() string {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateIncidentActionItemReqActionItem) GetStatus() OptCreateIncidentActionItemReqActionItemStatus {
+	return s.Status
+}
+
+// SetTitle sets the value of Title.
+func (s *CreateIncidentActionItemReqActionItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateIncidentActionItemReqActionItem) SetStatus(val OptCreateIncidentActionItemReqActionItemStatus) {
+	s.Status = val
+}
+
+type CreateIncidentActionItemReqActionItemStatus string
+
+const (
+	CreateIncidentActionItemReqActionItemStatusOpen    CreateIncidentActionItemReqActionItemStatus = "open"
+	CreateIncidentActionItemReqActionItemStatusClosed  CreateIncidentActionItemReqActionItemStatus = "closed"
+	CreateIncidentActionItemReqActionItemStatusSkipped CreateIncidentActionItemReqActionItemStatus = "skipped"
+)
+
+// AllValues returns all CreateIncidentActionItemReqActionItemStatus values.
+func (CreateIncidentActionItemReqActionItemStatus) AllValues() []CreateIncidentActionItemReqActionItemStatus {
+	return []CreateIncidentActionItemReqActionItemStatus{
+		CreateIncidentActionItemReqActionItemStatusOpen,
+		CreateIncidentActionItemReqActionItemStatusClosed,
+		CreateIncidentActionItemReqActionItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateIncidentActionItemReqActionItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateIncidentActionItemReqActionItemStatusOpen:
+		return []byte(s), nil
+	case CreateIncidentActionItemReqActionItemStatusClosed:
+		return []byte(s), nil
+	case CreateIncidentActionItemReqActionItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateIncidentActionItemReqActionItemStatus) UnmarshalText(data []byte) error {
+	switch CreateIncidentActionItemReqActionItemStatus(data) {
+	case CreateIncidentActionItemReqActionItemStatusOpen:
+		*s = CreateIncidentActionItemReqActionItemStatusOpen
+		return nil
+	case CreateIncidentActionItemReqActionItemStatusClosed:
+		*s = CreateIncidentActionItemReqActionItemStatusClosed
+		return nil
+	case CreateIncidentActionItemReqActionItemStatusSkipped:
+		*s = CreateIncidentActionItemReqActionItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateIncidentActionItemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateIncidentActionItemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateIncidentActionItemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateIncidentActionItemUnauthorized) createIncidentActionItemRes() {}
+
+type CreateIncidentActionItemUnprocessableEntity struct {
 	Error OptString `json:"error"`
 }
 
 // GetError returns the value of Error.
-func (s *ConflictError) GetError() OptString {
+func (s *CreateIncidentActionItemUnprocessableEntity) GetError() OptString {
 	return s.Error
 }
 
 // SetError sets the value of Error.
-func (s *ConflictError) SetError(val OptString) {
+func (s *CreateIncidentActionItemUnprocessableEntity) SetError(val OptString) {
 	s.Error = val
 }
 
-func (*ConflictError) createServiceLabelRes() {}
+func (*CreateIncidentActionItemUnprocessableEntity) createIncidentActionItemRes() {}
 
-type CreateIncidentMetricsBadRequest MessageError
+type CreateIncidentCreated struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Severity label (translated).
+	Severity string `json:"severity"`
+	// Status (Japanese translation).
+	Status string `json:"status"`
+	// Root cause (Japanese translation).
+	RootCause    string                            `json:"root_cause"`
+	Experimental bool                              `json:"experimental"`
+	Metrics      CreateIncidentCreatedMetrics      `json:"metrics"`
+	Service      CreateIncidentCreatedService      `json:"service"`
+	Labels       []CreateIncidentCreatedLabelsItem `json:"labels"`
+	CreatedAt    time.Time                         `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateIncidentCreated) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreateIncidentCreated) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *CreateIncidentCreated) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateIncidentCreated) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *CreateIncidentCreated) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *CreateIncidentCreated) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetMetrics returns the value of Metrics.
+func (s *CreateIncidentCreated) GetMetrics() CreateIncidentCreatedMetrics {
+	return s.Metrics
+}
+
+// GetService returns the value of Service.
+func (s *CreateIncidentCreated) GetService() CreateIncidentCreatedService {
+	return s.Service
+}
+
+// GetLabels returns the value of Labels.
+func (s *CreateIncidentCreated) GetLabels() []CreateIncidentCreatedLabelsItem {
+	return s.Labels
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateIncidentCreated) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateIncidentCreated) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreateIncidentCreated) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *CreateIncidentCreated) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateIncidentCreated) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *CreateIncidentCreated) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *CreateIncidentCreated) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetMetrics sets the value of Metrics.
+func (s *CreateIncidentCreated) SetMetrics(val CreateIncidentCreatedMetrics) {
+	s.Metrics = val
+}
+
+// SetService sets the value of Service.
+func (s *CreateIncidentCreated) SetService(val CreateIncidentCreatedService) {
+	s.Service = val
+}
+
+// SetLabels sets the value of Labels.
+func (s *CreateIncidentCreated) SetLabels(val []CreateIncidentCreatedLabelsItem) {
+	s.Labels = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateIncidentCreated) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+func (*CreateIncidentCreated) createIncidentRes() {}
+
+type CreateIncidentCreatedLabelsItem struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateIncidentCreatedLabelsItem) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreateIncidentCreatedLabelsItem) SetName(val string) {
+	s.Name = val
+}
+
+type CreateIncidentCreatedMetrics struct {
+	// Time to Detect (seconds).
+	Ttd NilInt `json:"ttd"`
+	// Time to Acknowledge (seconds).
+	Tta NilInt `json:"tta"`
+	// Time to Investigate (seconds).
+	Tti NilInt `json:"tti"`
+	// Time to Fix (seconds).
+	Ttf NilInt `json:"ttf"`
+	// Time to Resolve (seconds).
+	Ttr NilInt `json:"ttr"`
+}
+
+// GetTtd returns the value of Ttd.
+func (s *CreateIncidentCreatedMetrics) GetTtd() NilInt {
+	return s.Ttd
+}
+
+// GetTta returns the value of Tta.
+func (s *CreateIncidentCreatedMetrics) GetTta() NilInt {
+	return s.Tta
+}
+
+// GetTti returns the value of Tti.
+func (s *CreateIncidentCreatedMetrics) GetTti() NilInt {
+	return s.Tti
+}
+
+// GetTtf returns the value of Ttf.
+func (s *CreateIncidentCreatedMetrics) GetTtf() NilInt {
+	return s.Ttf
+}
+
+// GetTtr returns the value of Ttr.
+func (s *CreateIncidentCreatedMetrics) GetTtr() NilInt {
+	return s.Ttr
+}
+
+// SetTtd sets the value of Ttd.
+func (s *CreateIncidentCreatedMetrics) SetTtd(val NilInt) {
+	s.Ttd = val
+}
+
+// SetTta sets the value of Tta.
+func (s *CreateIncidentCreatedMetrics) SetTta(val NilInt) {
+	s.Tta = val
+}
+
+// SetTti sets the value of Tti.
+func (s *CreateIncidentCreatedMetrics) SetTti(val NilInt) {
+	s.Tti = val
+}
+
+// SetTtf sets the value of Ttf.
+func (s *CreateIncidentCreatedMetrics) SetTtf(val NilInt) {
+	s.Ttf = val
+}
+
+// SetTtr sets the value of Ttr.
+func (s *CreateIncidentCreatedMetrics) SetTtr(val NilInt) {
+	s.Ttr = val
+}
+
+type CreateIncidentCreatedService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateIncidentCreatedService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreateIncidentCreatedService) SetName(val string) {
+	s.Name = val
+}
+
+type CreateIncidentMetricsBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentMetricsBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentMetricsBadRequest) SetError(val OptString) {
+	s.Error = val
+}
 
 func (*CreateIncidentMetricsBadRequest) createIncidentMetricsRes() {}
 
-type CreateIncidentMetricsNotFound MessageError
+type CreateIncidentMetricsNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentMetricsNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentMetricsNotFound) SetError(val OptString) {
+	s.Error = val
+}
 
 func (*CreateIncidentMetricsNotFound) createIncidentMetricsRes() {}
 
-type CreateIncidentMetricsReq struct {
-	// Incident UUID.
-	IncidentUUID uuid.UUID `json:"incident_uuid"`
-	// Activity action.
-	ActivityAction string `json:"activity_action"`
-	// When the activity was triggered.
-	TriggeredAt time.Time `json:"triggered_at"`
+type CreateIncidentMetricsOK struct {
+	UUID        uuid.UUID                       `json:"uuid"`
+	Action      string                          `json:"action"`
+	TriggeredAt time.Time                       `json:"triggered_at"`
+	Incident    CreateIncidentMetricsOKIncident `json:"incident"`
 }
 
-// GetIncidentUUID returns the value of IncidentUUID.
-func (s *CreateIncidentMetricsReq) GetIncidentUUID() uuid.UUID {
-	return s.IncidentUUID
+// GetUUID returns the value of UUID.
+func (s *CreateIncidentMetricsOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetAction returns the value of Action.
+func (s *CreateIncidentMetricsOK) GetAction() string {
+	return s.Action
+}
+
+// GetTriggeredAt returns the value of TriggeredAt.
+func (s *CreateIncidentMetricsOK) GetTriggeredAt() time.Time {
+	return s.TriggeredAt
+}
+
+// GetIncident returns the value of Incident.
+func (s *CreateIncidentMetricsOK) GetIncident() CreateIncidentMetricsOKIncident {
+	return s.Incident
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateIncidentMetricsOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetAction sets the value of Action.
+func (s *CreateIncidentMetricsOK) SetAction(val string) {
+	s.Action = val
+}
+
+// SetTriggeredAt sets the value of TriggeredAt.
+func (s *CreateIncidentMetricsOK) SetTriggeredAt(val time.Time) {
+	s.TriggeredAt = val
+}
+
+// SetIncident sets the value of Incident.
+func (s *CreateIncidentMetricsOK) SetIncident(val CreateIncidentMetricsOKIncident) {
+	s.Incident = val
+}
+
+func (*CreateIncidentMetricsOK) createIncidentMetricsRes() {}
+
+type CreateIncidentMetricsOKIncident struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Time to Detect (seconds).
+	Ttd NilInt `json:"ttd"`
+	// Time to Acknowledge (seconds).
+	Tta NilInt `json:"tta"`
+	// Time to Investigate (seconds).
+	Tti NilInt `json:"tti"`
+	// Time to Fix (seconds).
+	Ttf NilInt `json:"ttf"`
+	// Time to Resolve (seconds).
+	Ttr NilInt `json:"ttr"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateIncidentMetricsOKIncident) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreateIncidentMetricsOKIncident) GetTitle() string {
+	return s.Title
+}
+
+// GetTtd returns the value of Ttd.
+func (s *CreateIncidentMetricsOKIncident) GetTtd() NilInt {
+	return s.Ttd
+}
+
+// GetTta returns the value of Tta.
+func (s *CreateIncidentMetricsOKIncident) GetTta() NilInt {
+	return s.Tta
+}
+
+// GetTti returns the value of Tti.
+func (s *CreateIncidentMetricsOKIncident) GetTti() NilInt {
+	return s.Tti
+}
+
+// GetTtf returns the value of Ttf.
+func (s *CreateIncidentMetricsOKIncident) GetTtf() NilInt {
+	return s.Ttf
+}
+
+// GetTtr returns the value of Ttr.
+func (s *CreateIncidentMetricsOKIncident) GetTtr() NilInt {
+	return s.Ttr
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateIncidentMetricsOKIncident) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreateIncidentMetricsOKIncident) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetTtd sets the value of Ttd.
+func (s *CreateIncidentMetricsOKIncident) SetTtd(val NilInt) {
+	s.Ttd = val
+}
+
+// SetTta sets the value of Tta.
+func (s *CreateIncidentMetricsOKIncident) SetTta(val NilInt) {
+	s.Tta = val
+}
+
+// SetTti sets the value of Tti.
+func (s *CreateIncidentMetricsOKIncident) SetTti(val NilInt) {
+	s.Tti = val
+}
+
+// SetTtf sets the value of Ttf.
+func (s *CreateIncidentMetricsOKIncident) SetTtf(val NilInt) {
+	s.Ttf = val
+}
+
+// SetTtr sets the value of Ttr.
+func (s *CreateIncidentMetricsOKIncident) SetTtr(val NilInt) {
+	s.Ttr = val
+}
+
+type CreateIncidentMetricsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentMetricsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentMetricsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateIncidentMetricsPaymentRequired) createIncidentMetricsRes() {}
+
+type CreateIncidentMetricsReq struct {
+	// The action type for the response activity.
+	ActivityAction CreateIncidentMetricsReqActivityAction `json:"activity_action"`
+	// When the activity was triggered (defaults to current time).
+	TriggeredAt OptDateTime `json:"triggered_at"`
 }
 
 // GetActivityAction returns the value of ActivityAction.
-func (s *CreateIncidentMetricsReq) GetActivityAction() string {
+func (s *CreateIncidentMetricsReq) GetActivityAction() CreateIncidentMetricsReqActivityAction {
 	return s.ActivityAction
 }
 
 // GetTriggeredAt returns the value of TriggeredAt.
-func (s *CreateIncidentMetricsReq) GetTriggeredAt() time.Time {
+func (s *CreateIncidentMetricsReq) GetTriggeredAt() OptDateTime {
 	return s.TriggeredAt
 }
 
-// SetIncidentUUID sets the value of IncidentUUID.
-func (s *CreateIncidentMetricsReq) SetIncidentUUID(val uuid.UUID) {
-	s.IncidentUUID = val
-}
-
 // SetActivityAction sets the value of ActivityAction.
-func (s *CreateIncidentMetricsReq) SetActivityAction(val string) {
+func (s *CreateIncidentMetricsReq) SetActivityAction(val CreateIncidentMetricsReqActivityAction) {
 	s.ActivityAction = val
 }
 
 // SetTriggeredAt sets the value of TriggeredAt.
-func (s *CreateIncidentMetricsReq) SetTriggeredAt(val time.Time) {
+func (s *CreateIncidentMetricsReq) SetTriggeredAt(val OptDateTime) {
 	s.TriggeredAt = val
 }
 
-type CreatePostmortemReq struct {
-	// Postmortem title.
-	Title string `json:"title"`
-	// Postmortem content.
+// The action type for the response activity.
+type CreateIncidentMetricsReqActivityAction string
+
+const (
+	CreateIncidentMetricsReqActivityActionTriggered     CreateIncidentMetricsReqActivityAction = "triggered"
+	CreateIncidentMetricsReqActivityActionDetected      CreateIncidentMetricsReqActivityAction = "detected"
+	CreateIncidentMetricsReqActivityActionInvestigating CreateIncidentMetricsReqActivityAction = "investigating"
+	CreateIncidentMetricsReqActivityActionFixing        CreateIncidentMetricsReqActivityAction = "fixing"
+	CreateIncidentMetricsReqActivityActionResolved      CreateIncidentMetricsReqActivityAction = "resolved"
+	CreateIncidentMetricsReqActivityActionClose         CreateIncidentMetricsReqActivityAction = "close"
+)
+
+// AllValues returns all CreateIncidentMetricsReqActivityAction values.
+func (CreateIncidentMetricsReqActivityAction) AllValues() []CreateIncidentMetricsReqActivityAction {
+	return []CreateIncidentMetricsReqActivityAction{
+		CreateIncidentMetricsReqActivityActionTriggered,
+		CreateIncidentMetricsReqActivityActionDetected,
+		CreateIncidentMetricsReqActivityActionInvestigating,
+		CreateIncidentMetricsReqActivityActionFixing,
+		CreateIncidentMetricsReqActivityActionResolved,
+		CreateIncidentMetricsReqActivityActionClose,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateIncidentMetricsReqActivityAction) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateIncidentMetricsReqActivityActionTriggered:
+		return []byte(s), nil
+	case CreateIncidentMetricsReqActivityActionDetected:
+		return []byte(s), nil
+	case CreateIncidentMetricsReqActivityActionInvestigating:
+		return []byte(s), nil
+	case CreateIncidentMetricsReqActivityActionFixing:
+		return []byte(s), nil
+	case CreateIncidentMetricsReqActivityActionResolved:
+		return []byte(s), nil
+	case CreateIncidentMetricsReqActivityActionClose:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateIncidentMetricsReqActivityAction) UnmarshalText(data []byte) error {
+	switch CreateIncidentMetricsReqActivityAction(data) {
+	case CreateIncidentMetricsReqActivityActionTriggered:
+		*s = CreateIncidentMetricsReqActivityActionTriggered
+		return nil
+	case CreateIncidentMetricsReqActivityActionDetected:
+		*s = CreateIncidentMetricsReqActivityActionDetected
+		return nil
+	case CreateIncidentMetricsReqActivityActionInvestigating:
+		*s = CreateIncidentMetricsReqActivityActionInvestigating
+		return nil
+	case CreateIncidentMetricsReqActivityActionFixing:
+		*s = CreateIncidentMetricsReqActivityActionFixing
+		return nil
+	case CreateIncidentMetricsReqActivityActionResolved:
+		*s = CreateIncidentMetricsReqActivityActionResolved
+		return nil
+	case CreateIncidentMetricsReqActivityActionClose:
+		*s = CreateIncidentMetricsReqActivityActionClose
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateIncidentMetricsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateIncidentMetricsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateIncidentMetricsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateIncidentMetricsUnauthorized) createIncidentMetricsRes() {}
+
+type CreateIncidentNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateIncidentNotFound) createIncidentRes() {}
+
+type CreateIncidentPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateIncidentPaymentRequired) createIncidentRes() {}
+
+type CreateIncidentReq struct {
+	Incident CreateIncidentReqIncident `json:"incident"`
+}
+
+// GetIncident returns the value of Incident.
+func (s *CreateIncidentReq) GetIncident() CreateIncidentReqIncident {
+	return s.Incident
+}
+
+// SetIncident sets the value of Incident.
+func (s *CreateIncidentReq) SetIncident(val CreateIncidentReqIncident) {
+	s.Incident = val
+}
+
+type CreateIncidentReqIncident struct {
+	ServiceName  string                            `json:"service_name"`
+	Title        string                            `json:"title"`
+	Severity     CreateIncidentReqIncidentSeverity `json:"severity"`
+	Experimental OptBool                           `json:"experimental"`
+	Description  OptString                         `json:"description"`
+	IsPrivate    OptBool                           `json:"is_private"`
+}
+
+// GetServiceName returns the value of ServiceName.
+func (s *CreateIncidentReqIncident) GetServiceName() string {
+	return s.ServiceName
+}
+
+// GetTitle returns the value of Title.
+func (s *CreateIncidentReqIncident) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *CreateIncidentReqIncident) GetSeverity() CreateIncidentReqIncidentSeverity {
+	return s.Severity
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *CreateIncidentReqIncident) GetExperimental() OptBool {
+	return s.Experimental
+}
+
+// GetDescription returns the value of Description.
+func (s *CreateIncidentReqIncident) GetDescription() OptString {
+	return s.Description
+}
+
+// GetIsPrivate returns the value of IsPrivate.
+func (s *CreateIncidentReqIncident) GetIsPrivate() OptBool {
+	return s.IsPrivate
+}
+
+// SetServiceName sets the value of ServiceName.
+func (s *CreateIncidentReqIncident) SetServiceName(val string) {
+	s.ServiceName = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreateIncidentReqIncident) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *CreateIncidentReqIncident) SetSeverity(val CreateIncidentReqIncidentSeverity) {
+	s.Severity = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *CreateIncidentReqIncident) SetExperimental(val OptBool) {
+	s.Experimental = val
+}
+
+// SetDescription sets the value of Description.
+func (s *CreateIncidentReqIncident) SetDescription(val OptString) {
+	s.Description = val
+}
+
+// SetIsPrivate sets the value of IsPrivate.
+func (s *CreateIncidentReqIncident) SetIsPrivate(val OptBool) {
+	s.IsPrivate = val
+}
+
+type CreateIncidentReqIncidentSeverity string
+
+const (
+	CreateIncidentReqIncidentSeverityCritical CreateIncidentReqIncidentSeverity = "critical"
+	CreateIncidentReqIncidentSeverityHigh     CreateIncidentReqIncidentSeverity = "high"
+	CreateIncidentReqIncidentSeverityLow      CreateIncidentReqIncidentSeverity = "low"
+	CreateIncidentReqIncidentSeverityInfo     CreateIncidentReqIncidentSeverity = "info"
+	CreateIncidentReqIncidentSeverityUnknown  CreateIncidentReqIncidentSeverity = "unknown"
+)
+
+// AllValues returns all CreateIncidentReqIncidentSeverity values.
+func (CreateIncidentReqIncidentSeverity) AllValues() []CreateIncidentReqIncidentSeverity {
+	return []CreateIncidentReqIncidentSeverity{
+		CreateIncidentReqIncidentSeverityCritical,
+		CreateIncidentReqIncidentSeverityHigh,
+		CreateIncidentReqIncidentSeverityLow,
+		CreateIncidentReqIncidentSeverityInfo,
+		CreateIncidentReqIncidentSeverityUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateIncidentReqIncidentSeverity) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateIncidentReqIncidentSeverityCritical:
+		return []byte(s), nil
+	case CreateIncidentReqIncidentSeverityHigh:
+		return []byte(s), nil
+	case CreateIncidentReqIncidentSeverityLow:
+		return []byte(s), nil
+	case CreateIncidentReqIncidentSeverityInfo:
+		return []byte(s), nil
+	case CreateIncidentReqIncidentSeverityUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateIncidentReqIncidentSeverity) UnmarshalText(data []byte) error {
+	switch CreateIncidentReqIncidentSeverity(data) {
+	case CreateIncidentReqIncidentSeverityCritical:
+		*s = CreateIncidentReqIncidentSeverityCritical
+		return nil
+	case CreateIncidentReqIncidentSeverityHigh:
+		*s = CreateIncidentReqIncidentSeverityHigh
+		return nil
+	case CreateIncidentReqIncidentSeverityLow:
+		*s = CreateIncidentReqIncidentSeverityLow
+		return nil
+	case CreateIncidentReqIncidentSeverityInfo:
+		*s = CreateIncidentReqIncidentSeverityInfo
+		return nil
+	case CreateIncidentReqIncidentSeverityUnknown:
+		*s = CreateIncidentReqIncidentSeverityUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateIncidentUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateIncidentUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateIncidentUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateIncidentUnauthorized) createIncidentRes() {}
+
+type CreateIncidentUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateIncidentUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateIncidentUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateIncidentUnprocessableEntity) createIncidentRes() {}
+
+type CreatePostmortemOK struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Postmortem content (markdown).
 	Blob string `json:"blob"`
-	// Postmortem status.
-	Status CreatePostmortemReqStatus `json:"status"`
-	// Associated incident UUIDs.
+	// Author nickname.
+	Author    string                            `json:"author"`
+	Status    CreatePostmortemOKStatus          `json:"status"`
+	Incidents []CreatePostmortemOKIncidentsItem `json:"incidents"`
+	CreatedAt time.Time                         `json:"created_at"`
+	UpdatedAt OptDateTime                       `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreatePostmortemOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreatePostmortemOK) GetTitle() string {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreatePostmortemOK) GetBlob() string {
+	return s.Blob
+}
+
+// GetAuthor returns the value of Author.
+func (s *CreatePostmortemOK) GetAuthor() string {
+	return s.Author
+}
+
+// GetStatus returns the value of Status.
+func (s *CreatePostmortemOK) GetStatus() CreatePostmortemOKStatus {
+	return s.Status
+}
+
+// GetIncidents returns the value of Incidents.
+func (s *CreatePostmortemOK) GetIncidents() []CreatePostmortemOKIncidentsItem {
+	return s.Incidents
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreatePostmortemOK) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreatePostmortemOK) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreatePostmortemOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreatePostmortemOK) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreatePostmortemOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetAuthor sets the value of Author.
+func (s *CreatePostmortemOK) SetAuthor(val string) {
+	s.Author = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreatePostmortemOK) SetStatus(val CreatePostmortemOKStatus) {
+	s.Status = val
+}
+
+// SetIncidents sets the value of Incidents.
+func (s *CreatePostmortemOK) SetIncidents(val []CreatePostmortemOKIncidentsItem) {
+	s.Incidents = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreatePostmortemOK) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreatePostmortemOK) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+func (*CreatePostmortemOK) createPostmortemRes() {}
+
+type CreatePostmortemOKIncidentsItem struct {
+	UUID         uuid.UUID                              `json:"uuid"`
+	Title        string                                 `json:"title"`
+	Severity     string                                 `json:"severity"`
+	Status       string                                 `json:"status"`
+	RootCause    string                                 `json:"root_cause"`
+	Experimental bool                                   `json:"experimental"`
+	Service      CreatePostmortemOKIncidentsItemService `json:"service"`
+	CreatedAt    time.Time                              `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreatePostmortemOKIncidentsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreatePostmortemOKIncidentsItem) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *CreatePostmortemOKIncidentsItem) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *CreatePostmortemOKIncidentsItem) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *CreatePostmortemOKIncidentsItem) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *CreatePostmortemOKIncidentsItem) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetService returns the value of Service.
+func (s *CreatePostmortemOKIncidentsItem) GetService() CreatePostmortemOKIncidentsItemService {
+	return s.Service
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreatePostmortemOKIncidentsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreatePostmortemOKIncidentsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreatePostmortemOKIncidentsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *CreatePostmortemOKIncidentsItem) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreatePostmortemOKIncidentsItem) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *CreatePostmortemOKIncidentsItem) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *CreatePostmortemOKIncidentsItem) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetService sets the value of Service.
+func (s *CreatePostmortemOKIncidentsItem) SetService(val CreatePostmortemOKIncidentsItemService) {
+	s.Service = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreatePostmortemOKIncidentsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreatePostmortemOKIncidentsItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreatePostmortemOKIncidentsItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreatePostmortemOKIncidentsItemService) SetName(val string) {
+	s.Name = val
+}
+
+type CreatePostmortemOKStatus string
+
+const (
+	CreatePostmortemOKStatusDraft    CreatePostmortemOKStatus = "draft"
+	CreatePostmortemOKStatusInReview CreatePostmortemOKStatus = "in_review"
+	CreatePostmortemOKStatusReviewed CreatePostmortemOKStatus = "reviewed"
+	CreatePostmortemOKStatusClosed   CreatePostmortemOKStatus = "closed"
+)
+
+// AllValues returns all CreatePostmortemOKStatus values.
+func (CreatePostmortemOKStatus) AllValues() []CreatePostmortemOKStatus {
+	return []CreatePostmortemOKStatus{
+		CreatePostmortemOKStatusDraft,
+		CreatePostmortemOKStatusInReview,
+		CreatePostmortemOKStatusReviewed,
+		CreatePostmortemOKStatusClosed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreatePostmortemOKStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreatePostmortemOKStatusDraft:
+		return []byte(s), nil
+	case CreatePostmortemOKStatusInReview:
+		return []byte(s), nil
+	case CreatePostmortemOKStatusReviewed:
+		return []byte(s), nil
+	case CreatePostmortemOKStatusClosed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreatePostmortemOKStatus) UnmarshalText(data []byte) error {
+	switch CreatePostmortemOKStatus(data) {
+	case CreatePostmortemOKStatusDraft:
+		*s = CreatePostmortemOKStatusDraft
+		return nil
+	case CreatePostmortemOKStatusInReview:
+		*s = CreatePostmortemOKStatusInReview
+		return nil
+	case CreatePostmortemOKStatusReviewed:
+		*s = CreatePostmortemOKStatusReviewed
+		return nil
+	case CreatePostmortemOKStatusClosed:
+		*s = CreatePostmortemOKStatusClosed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreatePostmortemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreatePostmortemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreatePostmortemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreatePostmortemPaymentRequired) createPostmortemRes() {}
+
+type CreatePostmortemReq struct {
+	Title string `json:"title"`
+	// Postmortem content (markdown).
+	Blob   OptString                    `json:"blob"`
+	Status OptCreatePostmortemReqStatus `json:"status"`
+	// Array of incident UUIDs to associate.
 	IncidentUuids []uuid.UUID `json:"incident_uuids"`
 }
 
@@ -131,12 +1318,12 @@ func (s *CreatePostmortemReq) GetTitle() string {
 }
 
 // GetBlob returns the value of Blob.
-func (s *CreatePostmortemReq) GetBlob() string {
+func (s *CreatePostmortemReq) GetBlob() OptString {
 	return s.Blob
 }
 
 // GetStatus returns the value of Status.
-func (s *CreatePostmortemReq) GetStatus() CreatePostmortemReqStatus {
+func (s *CreatePostmortemReq) GetStatus() OptCreatePostmortemReqStatus {
 	return s.Status
 }
 
@@ -151,12 +1338,12 @@ func (s *CreatePostmortemReq) SetTitle(val string) {
 }
 
 // SetBlob sets the value of Blob.
-func (s *CreatePostmortemReq) SetBlob(val string) {
+func (s *CreatePostmortemReq) SetBlob(val OptString) {
 	s.Blob = val
 }
 
 // SetStatus sets the value of Status.
-func (s *CreatePostmortemReq) SetStatus(val CreatePostmortemReqStatus) {
+func (s *CreatePostmortemReq) SetStatus(val OptCreatePostmortemReqStatus) {
 	s.Status = val
 }
 
@@ -165,19 +1352,22 @@ func (s *CreatePostmortemReq) SetIncidentUuids(val []uuid.UUID) {
 	s.IncidentUuids = val
 }
 
-// Postmortem status.
 type CreatePostmortemReqStatus string
 
 const (
-	CreatePostmortemReqStatusDraft     CreatePostmortemReqStatus = "draft"
-	CreatePostmortemReqStatusPublished CreatePostmortemReqStatus = "published"
+	CreatePostmortemReqStatusDraft    CreatePostmortemReqStatus = "draft"
+	CreatePostmortemReqStatusInReview CreatePostmortemReqStatus = "in_review"
+	CreatePostmortemReqStatusReviewed CreatePostmortemReqStatus = "reviewed"
+	CreatePostmortemReqStatusClosed   CreatePostmortemReqStatus = "closed"
 )
 
 // AllValues returns all CreatePostmortemReqStatus values.
 func (CreatePostmortemReqStatus) AllValues() []CreatePostmortemReqStatus {
 	return []CreatePostmortemReqStatus{
 		CreatePostmortemReqStatusDraft,
-		CreatePostmortemReqStatusPublished,
+		CreatePostmortemReqStatusInReview,
+		CreatePostmortemReqStatusReviewed,
+		CreatePostmortemReqStatusClosed,
 	}
 }
 
@@ -186,7 +1376,11 @@ func (s CreatePostmortemReqStatus) MarshalText() ([]byte, error) {
 	switch s {
 	case CreatePostmortemReqStatusDraft:
 		return []byte(s), nil
-	case CreatePostmortemReqStatusPublished:
+	case CreatePostmortemReqStatusInReview:
+		return []byte(s), nil
+	case CreatePostmortemReqStatusReviewed:
+		return []byte(s), nil
+	case CreatePostmortemReqStatusClosed:
 		return []byte(s), nil
 	default:
 		return nil, errors.Errorf("invalid value: %q", s)
@@ -199,1013 +1393,5971 @@ func (s *CreatePostmortemReqStatus) UnmarshalText(data []byte) error {
 	case CreatePostmortemReqStatusDraft:
 		*s = CreatePostmortemReqStatusDraft
 		return nil
-	case CreatePostmortemReqStatusPublished:
-		*s = CreatePostmortemReqStatusPublished
+	case CreatePostmortemReqStatusInReview:
+		*s = CreatePostmortemReqStatusInReview
+		return nil
+	case CreatePostmortemReqStatusReviewed:
+		*s = CreatePostmortemReqStatusReviewed
+		return nil
+	case CreatePostmortemReqStatusClosed:
+		*s = CreatePostmortemReqStatusClosed
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
 	}
 }
 
+type CreatePostmortemTemplateCreated struct {
+	PostmortemTemplate CreatePostmortemTemplateCreatedPostmortemTemplate `json:"postmortem_template"`
+}
+
+// GetPostmortemTemplate returns the value of PostmortemTemplate.
+func (s *CreatePostmortemTemplateCreated) GetPostmortemTemplate() CreatePostmortemTemplateCreatedPostmortemTemplate {
+	return s.PostmortemTemplate
+}
+
+// SetPostmortemTemplate sets the value of PostmortemTemplate.
+func (s *CreatePostmortemTemplateCreated) SetPostmortemTemplate(val CreatePostmortemTemplateCreatedPostmortemTemplate) {
+	s.PostmortemTemplate = val
+}
+
+func (*CreatePostmortemTemplateCreated) createPostmortemTemplateRes() {}
+
+type CreatePostmortemTemplateCreatedPostmortemTemplate struct {
+	// Unique identifier of the postmortem template.
+	UUID uuid.UUID `json:"uuid"`
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob      string    `json:"blob"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreatePostmortemTemplateCreatedPostmortemTemplate) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type CreatePostmortemTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreatePostmortemTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreatePostmortemTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreatePostmortemTemplatePaymentRequired) createPostmortemTemplateRes() {}
+
+type CreatePostmortemTemplateReq struct {
+	PostmortemTemplate CreatePostmortemTemplateReqPostmortemTemplate `json:"postmortem_template"`
+}
+
+// GetPostmortemTemplate returns the value of PostmortemTemplate.
+func (s *CreatePostmortemTemplateReq) GetPostmortemTemplate() CreatePostmortemTemplateReqPostmortemTemplate {
+	return s.PostmortemTemplate
+}
+
+// SetPostmortemTemplate sets the value of PostmortemTemplate.
+func (s *CreatePostmortemTemplateReq) SetPostmortemTemplate(val CreatePostmortemTemplateReqPostmortemTemplate) {
+	s.PostmortemTemplate = val
+}
+
+type CreatePostmortemTemplateReqPostmortemTemplate struct {
+	// Unique identifier of the postmortem template.
+	UUID uuid.UUID `json:"uuid"`
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob      string    `json:"blob"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreatePostmortemTemplateReqPostmortemTemplate) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type CreatePostmortemTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreatePostmortemTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreatePostmortemTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreatePostmortemTemplateUnauthorized) createPostmortemTemplateRes() {}
+
+type CreatePostmortemTemplateUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreatePostmortemTemplateUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreatePostmortemTemplateUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreatePostmortemTemplateUnprocessableEntity) createPostmortemTemplateRes() {}
+
+type CreatePostmortemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreatePostmortemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreatePostmortemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreatePostmortemUnauthorized) createPostmortemRes() {}
+
+type CreatePostmortemUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreatePostmortemUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreatePostmortemUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreatePostmortemUnprocessableEntity) createPostmortemRes() {}
+
+type CreateRunbookCreated struct {
+	Runbook CreateRunbookCreatedRunbook `json:"runbook"`
+}
+
+// GetRunbook returns the value of Runbook.
+func (s *CreateRunbookCreated) GetRunbook() CreateRunbookCreatedRunbook {
+	return s.Runbook
+}
+
+// SetRunbook sets the value of Runbook.
+func (s *CreateRunbookCreated) SetRunbook(val CreateRunbookCreatedRunbook) {
+	s.Runbook = val
+}
+
+func (*CreateRunbookCreated) createRunbookRes() {}
+
+type CreateRunbookCreatedRunbook struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace string `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob      string      `json:"blob"`
+	CreatedAt OptDateTime `json:"created_at"`
+	UpdatedAt OptDateTime `json:"updated_at"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *CreateRunbookCreatedRunbook) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreateRunbookCreatedRunbook) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateRunbookCreatedRunbook) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateRunbookCreatedRunbook) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *CreateRunbookCreatedRunbook) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreateRunbookCreatedRunbook) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateRunbookCreatedRunbook) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateRunbookCreatedRunbook) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type CreateRunbookPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateRunbookPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateRunbookPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateRunbookPaymentRequired) createRunbookRes() {}
+
+type CreateRunbookReq struct {
+	Runbook CreateRunbookReqRunbook `json:"runbook"`
+}
+
+// GetRunbook returns the value of Runbook.
+func (s *CreateRunbookReq) GetRunbook() CreateRunbookReqRunbook {
+	return s.Runbook
+}
+
+// SetRunbook sets the value of Runbook.
+func (s *CreateRunbookReq) SetRunbook(val CreateRunbookReqRunbook) {
+	s.Runbook = val
+}
+
+type CreateRunbookReqRunbook struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace string `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob      string      `json:"blob"`
+	CreatedAt OptDateTime `json:"created_at"`
+	UpdatedAt OptDateTime `json:"updated_at"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *CreateRunbookReqRunbook) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *CreateRunbookReqRunbook) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateRunbookReqRunbook) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateRunbookReqRunbook) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *CreateRunbookReqRunbook) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *CreateRunbookReqRunbook) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateRunbookReqRunbook) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateRunbookReqRunbook) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type CreateRunbookUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateRunbookUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateRunbookUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateRunbookUnauthorized) createRunbookRes() {}
+
+type CreateRunbookUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateRunbookUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateRunbookUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateRunbookUnprocessableEntity) createRunbookRes() {}
+
 type CreateServiceLabelCreated struct {
-	Label Label `json:"label"`
+	Label CreateServiceLabelCreatedLabel `json:"label"`
 }
 
 // GetLabel returns the value of Label.
-func (s *CreateServiceLabelCreated) GetLabel() Label {
+func (s *CreateServiceLabelCreated) GetLabel() CreateServiceLabelCreatedLabel {
 	return s.Label
 }
 
 // SetLabel sets the value of Label.
-func (s *CreateServiceLabelCreated) SetLabel(val Label) {
+func (s *CreateServiceLabelCreated) SetLabel(val CreateServiceLabelCreatedLabel) {
 	s.Label = val
 }
 
 func (*CreateServiceLabelCreated) createServiceLabelRes() {}
 
-type CreateServiceLabelReq struct {
-	// Label color in hex format (without#).
-	Color string `json:"color"`
-	// Label name.
-	Name string `json:"name"`
+type CreateServiceLabelCreatedLabel struct {
+	UUID uuid.UUID `json:"uuid"`
+	Name string    `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color     string    `json:"color"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-// GetColor returns the value of Color.
-func (s *CreateServiceLabelReq) GetColor() string {
-	return s.Color
+// GetUUID returns the value of UUID.
+func (s *CreateServiceLabelCreatedLabel) GetUUID() uuid.UUID {
+	return s.UUID
 }
 
 // GetName returns the value of Name.
-func (s *CreateServiceLabelReq) GetName() string {
+func (s *CreateServiceLabelCreatedLabel) GetName() string {
 	return s.Name
 }
 
-// SetColor sets the value of Color.
-func (s *CreateServiceLabelReq) SetColor(val string) {
-	s.Color = val
+// GetColor returns the value of Color.
+func (s *CreateServiceLabelCreatedLabel) GetColor() string {
+	return s.Color
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateServiceLabelCreatedLabel) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateServiceLabelCreatedLabel) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateServiceLabelCreatedLabel) SetUUID(val uuid.UUID) {
+	s.UUID = val
 }
 
 // SetName sets the value of Name.
-func (s *CreateServiceLabelReq) SetName(val string) {
+func (s *CreateServiceLabelCreatedLabel) SetName(val string) {
 	s.Name = val
 }
+
+// SetColor sets the value of Color.
+func (s *CreateServiceLabelCreatedLabel) SetColor(val string) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateServiceLabelCreatedLabel) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateServiceLabelCreatedLabel) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type CreateServiceLabelNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceLabelNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceLabelNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceLabelNotFound) createServiceLabelRes() {}
+
+type CreateServiceLabelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceLabelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceLabelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateServiceLabelPaymentRequired) createServiceLabelRes() {}
+
+type CreateServiceLabelReq struct {
+	Label CreateServiceLabelReqLabel `json:"label"`
+}
+
+// GetLabel returns the value of Label.
+func (s *CreateServiceLabelReq) GetLabel() CreateServiceLabelReqLabel {
+	return s.Label
+}
+
+// SetLabel sets the value of Label.
+func (s *CreateServiceLabelReq) SetLabel(val CreateServiceLabelReqLabel) {
+	s.Label = val
+}
+
+type CreateServiceLabelReqLabel struct {
+	Name string `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color string `json:"color"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateServiceLabelReqLabel) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *CreateServiceLabelReqLabel) GetColor() string {
+	return s.Color
+}
+
+// SetName sets the value of Name.
+func (s *CreateServiceLabelReqLabel) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *CreateServiceLabelReqLabel) SetColor(val string) {
+	s.Color = val
+}
+
+type CreateServiceLabelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateServiceLabelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateServiceLabelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateServiceLabelUnauthorized) createServiceLabelRes() {}
+
+type CreateServiceLabelUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceLabelUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceLabelUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceLabelUnprocessableEntity) createServiceLabelRes() {}
+
+type CreateServiceRunbookRuleCreated struct {
+	UUID uuid.UUID `json:"uuid"`
+	// Regex pattern for matching incident title or description.
+	Pattern string `json:"pattern"`
+	// Match target (title or description).
+	Target CreateServiceRunbookRuleCreatedTarget `json:"target"`
+	// Priority (lower value = higher priority).
+	Priority int `json:"priority"`
+	// Namespace of the linked Runbook (e.g. /default, /api-server-recovery).
+	RunbookNamespace string    `json:"runbook_namespace"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateServiceRunbookRuleCreated) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetPattern returns the value of Pattern.
+func (s *CreateServiceRunbookRuleCreated) GetPattern() string {
+	return s.Pattern
+}
+
+// GetTarget returns the value of Target.
+func (s *CreateServiceRunbookRuleCreated) GetTarget() CreateServiceRunbookRuleCreatedTarget {
+	return s.Target
+}
+
+// GetPriority returns the value of Priority.
+func (s *CreateServiceRunbookRuleCreated) GetPriority() int {
+	return s.Priority
+}
+
+// GetRunbookNamespace returns the value of RunbookNamespace.
+func (s *CreateServiceRunbookRuleCreated) GetRunbookNamespace() string {
+	return s.RunbookNamespace
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateServiceRunbookRuleCreated) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateServiceRunbookRuleCreated) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateServiceRunbookRuleCreated) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetPattern sets the value of Pattern.
+func (s *CreateServiceRunbookRuleCreated) SetPattern(val string) {
+	s.Pattern = val
+}
+
+// SetTarget sets the value of Target.
+func (s *CreateServiceRunbookRuleCreated) SetTarget(val CreateServiceRunbookRuleCreatedTarget) {
+	s.Target = val
+}
+
+// SetPriority sets the value of Priority.
+func (s *CreateServiceRunbookRuleCreated) SetPriority(val int) {
+	s.Priority = val
+}
+
+// SetRunbookNamespace sets the value of RunbookNamespace.
+func (s *CreateServiceRunbookRuleCreated) SetRunbookNamespace(val string) {
+	s.RunbookNamespace = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateServiceRunbookRuleCreated) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateServiceRunbookRuleCreated) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+func (*CreateServiceRunbookRuleCreated) createServiceRunbookRuleRes() {}
+
+// Match target (title or description).
+type CreateServiceRunbookRuleCreatedTarget string
+
+const (
+	CreateServiceRunbookRuleCreatedTargetTitle       CreateServiceRunbookRuleCreatedTarget = "title"
+	CreateServiceRunbookRuleCreatedTargetDescription CreateServiceRunbookRuleCreatedTarget = "description"
+)
+
+// AllValues returns all CreateServiceRunbookRuleCreatedTarget values.
+func (CreateServiceRunbookRuleCreatedTarget) AllValues() []CreateServiceRunbookRuleCreatedTarget {
+	return []CreateServiceRunbookRuleCreatedTarget{
+		CreateServiceRunbookRuleCreatedTargetTitle,
+		CreateServiceRunbookRuleCreatedTargetDescription,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateServiceRunbookRuleCreatedTarget) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateServiceRunbookRuleCreatedTargetTitle:
+		return []byte(s), nil
+	case CreateServiceRunbookRuleCreatedTargetDescription:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateServiceRunbookRuleCreatedTarget) UnmarshalText(data []byte) error {
+	switch CreateServiceRunbookRuleCreatedTarget(data) {
+	case CreateServiceRunbookRuleCreatedTargetTitle:
+		*s = CreateServiceRunbookRuleCreatedTargetTitle
+		return nil
+	case CreateServiceRunbookRuleCreatedTargetDescription:
+		*s = CreateServiceRunbookRuleCreatedTargetDescription
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateServiceRunbookRuleNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceRunbookRuleNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceRunbookRuleNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceRunbookRuleNotFound) createServiceRunbookRuleRes() {}
+
+type CreateServiceRunbookRulePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceRunbookRulePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceRunbookRulePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateServiceRunbookRulePaymentRequired) createServiceRunbookRuleRes() {}
+
+type CreateServiceRunbookRuleReq struct {
+	RunbookRule CreateServiceRunbookRuleReqRunbookRule `json:"runbook_rule"`
+}
+
+// GetRunbookRule returns the value of RunbookRule.
+func (s *CreateServiceRunbookRuleReq) GetRunbookRule() CreateServiceRunbookRuleReqRunbookRule {
+	return s.RunbookRule
+}
+
+// SetRunbookRule sets the value of RunbookRule.
+func (s *CreateServiceRunbookRuleReq) SetRunbookRule(val CreateServiceRunbookRuleReqRunbookRule) {
+	s.RunbookRule = val
+}
+
+type CreateServiceRunbookRuleReqRunbookRule struct {
+	UUID uuid.UUID `json:"uuid"`
+	// Regex pattern for matching incident title or description.
+	Pattern string `json:"pattern"`
+	// Match target (title or description).
+	Target CreateServiceRunbookRuleReqRunbookRuleTarget `json:"target"`
+	// Priority (lower value = higher priority).
+	Priority int `json:"priority"`
+	// Namespace of the linked Runbook (e.g. /default, /api-server-recovery).
+	RunbookNamespace string    `json:"runbook_namespace"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetPattern returns the value of Pattern.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetPattern() string {
+	return s.Pattern
+}
+
+// GetTarget returns the value of Target.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetTarget() CreateServiceRunbookRuleReqRunbookRuleTarget {
+	return s.Target
+}
+
+// GetPriority returns the value of Priority.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetPriority() int {
+	return s.Priority
+}
+
+// GetRunbookNamespace returns the value of RunbookNamespace.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetRunbookNamespace() string {
+	return s.RunbookNamespace
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *CreateServiceRunbookRuleReqRunbookRule) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetPattern sets the value of Pattern.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetPattern(val string) {
+	s.Pattern = val
+}
+
+// SetTarget sets the value of Target.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetTarget(val CreateServiceRunbookRuleReqRunbookRuleTarget) {
+	s.Target = val
+}
+
+// SetPriority sets the value of Priority.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetPriority(val int) {
+	s.Priority = val
+}
+
+// SetRunbookNamespace sets the value of RunbookNamespace.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetRunbookNamespace(val string) {
+	s.RunbookNamespace = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *CreateServiceRunbookRuleReqRunbookRule) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+// Match target (title or description).
+type CreateServiceRunbookRuleReqRunbookRuleTarget string
+
+const (
+	CreateServiceRunbookRuleReqRunbookRuleTargetTitle       CreateServiceRunbookRuleReqRunbookRuleTarget = "title"
+	CreateServiceRunbookRuleReqRunbookRuleTargetDescription CreateServiceRunbookRuleReqRunbookRuleTarget = "description"
+)
+
+// AllValues returns all CreateServiceRunbookRuleReqRunbookRuleTarget values.
+func (CreateServiceRunbookRuleReqRunbookRuleTarget) AllValues() []CreateServiceRunbookRuleReqRunbookRuleTarget {
+	return []CreateServiceRunbookRuleReqRunbookRuleTarget{
+		CreateServiceRunbookRuleReqRunbookRuleTargetTitle,
+		CreateServiceRunbookRuleReqRunbookRuleTargetDescription,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateServiceRunbookRuleReqRunbookRuleTarget) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateServiceRunbookRuleReqRunbookRuleTargetTitle:
+		return []byte(s), nil
+	case CreateServiceRunbookRuleReqRunbookRuleTargetDescription:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateServiceRunbookRuleReqRunbookRuleTarget) UnmarshalText(data []byte) error {
+	switch CreateServiceRunbookRuleReqRunbookRuleTarget(data) {
+	case CreateServiceRunbookRuleReqRunbookRuleTargetTitle:
+		*s = CreateServiceRunbookRuleReqRunbookRuleTargetTitle
+		return nil
+	case CreateServiceRunbookRuleReqRunbookRuleTargetDescription:
+		*s = CreateServiceRunbookRuleReqRunbookRuleTargetDescription
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateServiceRunbookRuleUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateServiceRunbookRuleUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateServiceRunbookRuleUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateServiceRunbookRuleUnauthorized) createServiceRunbookRuleRes() {}
+
+type CreateServiceRunbookRuleUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceRunbookRuleUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceRunbookRuleUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceRunbookRuleUnprocessableEntity) createServiceRunbookRuleRes() {}
+
+// DeleteIncidentActionItemNoContent is response for DeleteIncidentActionItem operation.
+type DeleteIncidentActionItemNoContent struct{}
+
+func (*DeleteIncidentActionItemNoContent) deleteIncidentActionItemRes() {}
+
+type DeleteIncidentActionItemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentActionItemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentActionItemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteIncidentActionItemNotFound) deleteIncidentActionItemRes() {}
+
+type DeleteIncidentActionItemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentActionItemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentActionItemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteIncidentActionItemPaymentRequired) deleteIncidentActionItemRes() {}
+
+type DeleteIncidentActionItemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteIncidentActionItemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteIncidentActionItemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteIncidentActionItemUnauthorized) deleteIncidentActionItemRes() {}
+
+// DeleteIncidentDescriptionTemplateNoContent is response for DeleteIncidentDescriptionTemplate operation.
+type DeleteIncidentDescriptionTemplateNoContent struct{}
+
+func (*DeleteIncidentDescriptionTemplateNoContent) deleteIncidentDescriptionTemplateRes() {}
+
+type DeleteIncidentDescriptionTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentDescriptionTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentDescriptionTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteIncidentDescriptionTemplatePaymentRequired) deleteIncidentDescriptionTemplateRes() {}
+
+type DeleteIncidentDescriptionTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteIncidentDescriptionTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteIncidentDescriptionTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteIncidentDescriptionTemplateUnauthorized) deleteIncidentDescriptionTemplateRes() {}
+
+type DeleteIncidentDescriptionTemplateUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentDescriptionTemplateUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentDescriptionTemplateUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteIncidentDescriptionTemplateUnprocessableEntity) deleteIncidentDescriptionTemplateRes() {}
+
+// DeleteIncidentDocumentTemplateNoContent is response for DeleteIncidentDocumentTemplate operation.
+type DeleteIncidentDocumentTemplateNoContent struct{}
+
+func (*DeleteIncidentDocumentTemplateNoContent) deleteIncidentDocumentTemplateRes() {}
+
+type DeleteIncidentDocumentTemplateNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentDocumentTemplateNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentDocumentTemplateNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteIncidentDocumentTemplateNotFound) deleteIncidentDocumentTemplateRes() {}
+
+type DeleteIncidentDocumentTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentDocumentTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentDocumentTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteIncidentDocumentTemplatePaymentRequired) deleteIncidentDocumentTemplateRes() {}
+
+type DeleteIncidentDocumentTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteIncidentDocumentTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteIncidentDocumentTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteIncidentDocumentTemplateUnauthorized) deleteIncidentDocumentTemplateRes() {}
+
+// DeleteIncidentNoContent is response for DeleteIncident operation.
+type DeleteIncidentNoContent struct{}
+
+func (*DeleteIncidentNoContent) deleteIncidentRes() {}
+
+type DeleteIncidentNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteIncidentNotFound) deleteIncidentRes() {}
+
+type DeleteIncidentPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteIncidentPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteIncidentPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteIncidentPaymentRequired) deleteIncidentRes() {}
+
+type DeleteIncidentUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteIncidentUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteIncidentUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteIncidentUnauthorized) deleteIncidentRes() {}
+
+// DeletePostmortemNoContent is response for DeletePostmortem operation.
+type DeletePostmortemNoContent struct{}
+
+func (*DeletePostmortemNoContent) deletePostmortemRes() {}
+
+type DeletePostmortemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeletePostmortemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeletePostmortemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeletePostmortemNotFound) deletePostmortemRes() {}
+
+type DeletePostmortemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeletePostmortemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeletePostmortemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeletePostmortemPaymentRequired) deletePostmortemRes() {}
+
+// DeletePostmortemTemplateByUuidNoContent is response for DeletePostmortemTemplateByUuid operation.
+type DeletePostmortemTemplateByUuidNoContent struct{}
+
+func (*DeletePostmortemTemplateByUuidNoContent) deletePostmortemTemplateByUuidRes() {}
+
+type DeletePostmortemTemplateByUuidNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeletePostmortemTemplateByUuidNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeletePostmortemTemplateByUuidNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeletePostmortemTemplateByUuidNotFound) deletePostmortemTemplateByUuidRes() {}
+
+type DeletePostmortemTemplateByUuidPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeletePostmortemTemplateByUuidPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeletePostmortemTemplateByUuidPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeletePostmortemTemplateByUuidPaymentRequired) deletePostmortemTemplateByUuidRes() {}
+
+type DeletePostmortemTemplateByUuidUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeletePostmortemTemplateByUuidUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeletePostmortemTemplateByUuidUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeletePostmortemTemplateByUuidUnauthorized) deletePostmortemTemplateByUuidRes() {}
+
+type DeletePostmortemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeletePostmortemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeletePostmortemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeletePostmortemUnauthorized) deletePostmortemRes() {}
+
+// DeleteRunbookNoContent is response for DeleteRunbook operation.
+type DeleteRunbookNoContent struct{}
+
+func (*DeleteRunbookNoContent) deleteRunbookRes() {}
+
+type DeleteRunbookNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteRunbookNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteRunbookNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteRunbookNotFound) deleteRunbookRes() {}
+
+type DeleteRunbookPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteRunbookPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteRunbookPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteRunbookPaymentRequired) deleteRunbookRes() {}
+
+type DeleteRunbookUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteRunbookUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteRunbookUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteRunbookUnauthorized) deleteRunbookRes() {}
+
+type DeleteRunbookUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteRunbookUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteRunbookUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteRunbookUnprocessableEntity) deleteRunbookRes() {}
 
 // DeleteServiceLabelNoContent is response for DeleteServiceLabel operation.
 type DeleteServiceLabelNoContent struct{}
 
 func (*DeleteServiceLabelNoContent) deleteServiceLabelRes() {}
 
-// Ref: #/components/schemas/Incident
-type Incident struct {
-	// Unique identifier for the incident.
-	UUID uuid.UUID `json:"uuid"`
-	// Incident title.
-	Title string `json:"title"`
-	// Severity level of the incident.
-	Severity IncidentSeverity `json:"severity"`
-	// Current status of the incident.
-	Status IncidentStatus `json:"status"`
-	// Root cause category.
-	RootCause IncidentRootCause `json:"root_cause"`
-	// Whether this is an experimental incident.
-	Experimental bool `json:"experimental"`
-	// Creation timestamp.
-	CreatedAt time.Time       `json:"created_at"`
-	Metrics   IncidentMetrics `json:"metrics"`
-	Service   Service         `json:"service"`
-	Labels    []IncidentLabel `json:"labels"`
+type DeleteServiceLabelNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceLabelNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceLabelNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteServiceLabelNotFound) deleteServiceLabelRes() {}
+
+type DeleteServiceLabelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceLabelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceLabelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteServiceLabelPaymentRequired) deleteServiceLabelRes() {}
+
+type DeleteServiceLabelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteServiceLabelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteServiceLabelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteServiceLabelUnauthorized) deleteServiceLabelRes() {}
+
+// DeleteServiceNotificationSlackChannelNoContent is response for DeleteServiceNotificationSlackChannel operation.
+type DeleteServiceNotificationSlackChannelNoContent struct{}
+
+func (*DeleteServiceNotificationSlackChannelNoContent) deleteServiceNotificationSlackChannelRes() {}
+
+type DeleteServiceNotificationSlackChannelNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceNotificationSlackChannelNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceNotificationSlackChannelNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteServiceNotificationSlackChannelNotFound) deleteServiceNotificationSlackChannelRes() {}
+
+type DeleteServiceNotificationSlackChannelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceNotificationSlackChannelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceNotificationSlackChannelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteServiceNotificationSlackChannelPaymentRequired) deleteServiceNotificationSlackChannelRes() {
+}
+
+type DeleteServiceNotificationSlackChannelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteServiceNotificationSlackChannelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteServiceNotificationSlackChannelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteServiceNotificationSlackChannelUnauthorized) deleteServiceNotificationSlackChannelRes() {
+}
+
+// DeleteServiceRunbookRuleNoContent is response for DeleteServiceRunbookRule operation.
+type DeleteServiceRunbookRuleNoContent struct{}
+
+func (*DeleteServiceRunbookRuleNoContent) deleteServiceRunbookRuleRes() {}
+
+type DeleteServiceRunbookRuleNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceRunbookRuleNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceRunbookRuleNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteServiceRunbookRuleNotFound) deleteServiceRunbookRuleRes() {}
+
+type DeleteServiceRunbookRulePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteServiceRunbookRulePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteServiceRunbookRulePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteServiceRunbookRulePaymentRequired) deleteServiceRunbookRuleRes() {}
+
+type DeleteServiceRunbookRuleUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteServiceRunbookRuleUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteServiceRunbookRuleUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteServiceRunbookRuleUnauthorized) deleteServiceRunbookRuleRes() {}
+
+type GetIncidentActionItemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentActionItemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentActionItemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetIncidentActionItemNotFound) getIncidentActionItemRes() {}
+
+type GetIncidentActionItemOK struct {
+	ActionItem GetIncidentActionItemOKActionItem `json:"action_item"`
+}
+
+// GetActionItem returns the value of ActionItem.
+func (s *GetIncidentActionItemOK) GetActionItem() GetIncidentActionItemOKActionItem {
+	return s.ActionItem
+}
+
+// SetActionItem sets the value of ActionItem.
+func (s *GetIncidentActionItemOK) SetActionItem(val GetIncidentActionItemOKActionItem) {
+	s.ActionItem = val
+}
+
+func (*GetIncidentActionItemOK) getIncidentActionItemRes() {}
+
+type GetIncidentActionItemOKActionItem struct {
+	UUID      uuid.UUID                               `json:"uuid"`
+	Title     string                                  `json:"title"`
+	Status    GetIncidentActionItemOKActionItemStatus `json:"status"`
+	Position  int                                     `json:"position"`
+	CreatedAt time.Time                               `json:"created_at"`
+	UpdatedAt time.Time                               `json:"updated_at"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *Incident) GetUUID() uuid.UUID {
+func (s *GetIncidentActionItemOKActionItem) GetUUID() uuid.UUID {
 	return s.UUID
 }
 
 // GetTitle returns the value of Title.
-func (s *Incident) GetTitle() string {
+func (s *GetIncidentActionItemOKActionItem) GetTitle() string {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *GetIncidentActionItemOKActionItem) GetStatus() GetIncidentActionItemOKActionItemStatus {
+	return s.Status
+}
+
+// GetPosition returns the value of Position.
+func (s *GetIncidentActionItemOKActionItem) GetPosition() int {
+	return s.Position
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetIncidentActionItemOKActionItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetIncidentActionItemOKActionItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetIncidentActionItemOKActionItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *GetIncidentActionItemOKActionItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetIncidentActionItemOKActionItem) SetStatus(val GetIncidentActionItemOKActionItemStatus) {
+	s.Status = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetIncidentActionItemOKActionItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetIncidentActionItemOKActionItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetIncidentActionItemOKActionItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type GetIncidentActionItemOKActionItemStatus string
+
+const (
+	GetIncidentActionItemOKActionItemStatusOpen    GetIncidentActionItemOKActionItemStatus = "open"
+	GetIncidentActionItemOKActionItemStatusClosed  GetIncidentActionItemOKActionItemStatus = "closed"
+	GetIncidentActionItemOKActionItemStatusSkipped GetIncidentActionItemOKActionItemStatus = "skipped"
+)
+
+// AllValues returns all GetIncidentActionItemOKActionItemStatus values.
+func (GetIncidentActionItemOKActionItemStatus) AllValues() []GetIncidentActionItemOKActionItemStatus {
+	return []GetIncidentActionItemOKActionItemStatus{
+		GetIncidentActionItemOKActionItemStatusOpen,
+		GetIncidentActionItemOKActionItemStatusClosed,
+		GetIncidentActionItemOKActionItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetIncidentActionItemOKActionItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetIncidentActionItemOKActionItemStatusOpen:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemStatusClosed:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetIncidentActionItemOKActionItemStatus) UnmarshalText(data []byte) error {
+	switch GetIncidentActionItemOKActionItemStatus(data) {
+	case GetIncidentActionItemOKActionItemStatusOpen:
+		*s = GetIncidentActionItemOKActionItemStatusOpen
+		return nil
+	case GetIncidentActionItemOKActionItemStatusClosed:
+		*s = GetIncidentActionItemOKActionItemStatusClosed
+		return nil
+	case GetIncidentActionItemOKActionItemStatusSkipped:
+		*s = GetIncidentActionItemOKActionItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetIncidentActionItemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentActionItemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentActionItemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetIncidentActionItemPaymentRequired) getIncidentActionItemRes() {}
+
+type GetIncidentActionItemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetIncidentActionItemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetIncidentActionItemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetIncidentActionItemUnauthorized) getIncidentActionItemRes() {}
+
+type GetIncidentDescriptionTemplateOK struct {
+	// Template content. Empty when not set.
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetIncidentDescriptionTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetIncidentDescriptionTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*GetIncidentDescriptionTemplateOK) getIncidentDescriptionTemplateRes() {}
+
+type GetIncidentDescriptionTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentDescriptionTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentDescriptionTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetIncidentDescriptionTemplatePaymentRequired) getIncidentDescriptionTemplateRes() {}
+
+type GetIncidentDescriptionTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetIncidentDescriptionTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetIncidentDescriptionTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetIncidentDescriptionTemplateUnauthorized) getIncidentDescriptionTemplateRes() {}
+
+type GetIncidentDocumentTemplateNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentDocumentTemplateNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentDocumentTemplateNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetIncidentDocumentTemplateNotFound) getIncidentDocumentTemplateRes() {}
+
+type GetIncidentDocumentTemplateOK struct {
+	// Template body for incident document.
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetIncidentDocumentTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetIncidentDocumentTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*GetIncidentDocumentTemplateOK) getIncidentDocumentTemplateRes() {}
+
+type GetIncidentDocumentTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentDocumentTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentDocumentTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetIncidentDocumentTemplatePaymentRequired) getIncidentDocumentTemplateRes() {}
+
+type GetIncidentDocumentTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetIncidentDocumentTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetIncidentDocumentTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetIncidentDocumentTemplateUnauthorized) getIncidentDocumentTemplateRes() {}
+
+type GetIncidentNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetIncidentNotFound) getIncidentRes() {}
+
+// Merged schema.
+type GetIncidentOK struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Severity label (translated).
+	Severity string `json:"severity"`
+	// Status (Japanese translation).
+	Status string `json:"status"`
+	// Root cause (Japanese translation).
+	RootCause    string                    `json:"root_cause"`
+	Experimental bool                      `json:"experimental"`
+	Metrics      GetIncidentOKMetrics      `json:"metrics"`
+	Service      GetIncidentOKService      `json:"service"`
+	Labels       []GetIncidentOKLabelsItem `json:"labels"`
+	CreatedAt    time.Time                 `json:"created_at"`
+	// Incident description.
+	Description OptNilString `json:"description"`
+	// State document as markdown.
+	StateDocument        OptNilString                            `json:"state_document"`
+	IncidentSlackChannel OptNilGetIncidentOKIncidentSlackChannel `json:"incident_slack_channel"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetIncidentOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *GetIncidentOK) GetTitle() string {
 	return s.Title
 }
 
 // GetSeverity returns the value of Severity.
-func (s *Incident) GetSeverity() IncidentSeverity {
+func (s *GetIncidentOK) GetSeverity() string {
 	return s.Severity
 }
 
 // GetStatus returns the value of Status.
-func (s *Incident) GetStatus() IncidentStatus {
+func (s *GetIncidentOK) GetStatus() string {
 	return s.Status
 }
 
 // GetRootCause returns the value of RootCause.
-func (s *Incident) GetRootCause() IncidentRootCause {
+func (s *GetIncidentOK) GetRootCause() string {
 	return s.RootCause
 }
 
 // GetExperimental returns the value of Experimental.
-func (s *Incident) GetExperimental() bool {
+func (s *GetIncidentOK) GetExperimental() bool {
 	return s.Experimental
 }
 
-// GetCreatedAt returns the value of CreatedAt.
-func (s *Incident) GetCreatedAt() time.Time {
-	return s.CreatedAt
-}
-
 // GetMetrics returns the value of Metrics.
-func (s *Incident) GetMetrics() IncidentMetrics {
+func (s *GetIncidentOK) GetMetrics() GetIncidentOKMetrics {
 	return s.Metrics
 }
 
 // GetService returns the value of Service.
-func (s *Incident) GetService() Service {
+func (s *GetIncidentOK) GetService() GetIncidentOKService {
 	return s.Service
 }
 
 // GetLabels returns the value of Labels.
-func (s *Incident) GetLabels() []IncidentLabel {
+func (s *GetIncidentOK) GetLabels() []GetIncidentOKLabelsItem {
 	return s.Labels
 }
 
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetIncidentOK) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetDescription returns the value of Description.
+func (s *GetIncidentOK) GetDescription() OptNilString {
+	return s.Description
+}
+
+// GetStateDocument returns the value of StateDocument.
+func (s *GetIncidentOK) GetStateDocument() OptNilString {
+	return s.StateDocument
+}
+
+// GetIncidentSlackChannel returns the value of IncidentSlackChannel.
+func (s *GetIncidentOK) GetIncidentSlackChannel() OptNilGetIncidentOKIncidentSlackChannel {
+	return s.IncidentSlackChannel
+}
+
 // SetUUID sets the value of UUID.
-func (s *Incident) SetUUID(val uuid.UUID) {
+func (s *GetIncidentOK) SetUUID(val uuid.UUID) {
 	s.UUID = val
 }
 
 // SetTitle sets the value of Title.
-func (s *Incident) SetTitle(val string) {
+func (s *GetIncidentOK) SetTitle(val string) {
 	s.Title = val
 }
 
 // SetSeverity sets the value of Severity.
-func (s *Incident) SetSeverity(val IncidentSeverity) {
+func (s *GetIncidentOK) SetSeverity(val string) {
 	s.Severity = val
 }
 
 // SetStatus sets the value of Status.
-func (s *Incident) SetStatus(val IncidentStatus) {
+func (s *GetIncidentOK) SetStatus(val string) {
 	s.Status = val
 }
 
 // SetRootCause sets the value of RootCause.
-func (s *Incident) SetRootCause(val IncidentRootCause) {
+func (s *GetIncidentOK) SetRootCause(val string) {
 	s.RootCause = val
 }
 
 // SetExperimental sets the value of Experimental.
-func (s *Incident) SetExperimental(val bool) {
+func (s *GetIncidentOK) SetExperimental(val bool) {
 	s.Experimental = val
 }
 
-// SetCreatedAt sets the value of CreatedAt.
-func (s *Incident) SetCreatedAt(val time.Time) {
-	s.CreatedAt = val
-}
-
 // SetMetrics sets the value of Metrics.
-func (s *Incident) SetMetrics(val IncidentMetrics) {
+func (s *GetIncidentOK) SetMetrics(val GetIncidentOKMetrics) {
 	s.Metrics = val
 }
 
 // SetService sets the value of Service.
-func (s *Incident) SetService(val Service) {
+func (s *GetIncidentOK) SetService(val GetIncidentOKService) {
 	s.Service = val
 }
 
 // SetLabels sets the value of Labels.
-func (s *Incident) SetLabels(val []IncidentLabel) {
+func (s *GetIncidentOK) SetLabels(val []GetIncidentOKLabelsItem) {
 	s.Labels = val
-}
-
-func (*Incident) getIncidentRes() {}
-
-// Ref: #/components/schemas/IncidentLabel
-type IncidentLabel struct {
-	// Unique identifier for the labels.
-	UUID uuid.UUID `json:"uuid"`
-	// Label name.
-	Name string `json:"name"`
-	// Label color in hex format (without.
-	Color OptString `json:"color"`
-	// Creation timestamp.
-	CreatedAt time.Time `json:"created_at"`
-}
-
-// GetUUID returns the value of UUID.
-func (s *IncidentLabel) GetUUID() uuid.UUID {
-	return s.UUID
-}
-
-// GetName returns the value of Name.
-func (s *IncidentLabel) GetName() string {
-	return s.Name
-}
-
-// GetColor returns the value of Color.
-func (s *IncidentLabel) GetColor() OptString {
-	return s.Color
-}
-
-// GetCreatedAt returns the value of CreatedAt.
-func (s *IncidentLabel) GetCreatedAt() time.Time {
-	return s.CreatedAt
-}
-
-// SetUUID sets the value of UUID.
-func (s *IncidentLabel) SetUUID(val uuid.UUID) {
-	s.UUID = val
-}
-
-// SetName sets the value of Name.
-func (s *IncidentLabel) SetName(val string) {
-	s.Name = val
-}
-
-// SetColor sets the value of Color.
-func (s *IncidentLabel) SetColor(val OptString) {
-	s.Color = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
-func (s *IncidentLabel) SetCreatedAt(val time.Time) {
+func (s *GetIncidentOK) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
 }
 
-// Ref: #/components/schemas/IncidentLabelsUpdateResponse
-type IncidentLabelsUpdateResponse struct {
-	// Updated incident labels.
-	Labels []IncidentLabel `json:"labels"`
+// SetDescription sets the value of Description.
+func (s *GetIncidentOK) SetDescription(val OptNilString) {
+	s.Description = val
 }
 
-// GetLabels returns the value of Labels.
-func (s *IncidentLabelsUpdateResponse) GetLabels() []IncidentLabel {
-	return s.Labels
+// SetStateDocument sets the value of StateDocument.
+func (s *GetIncidentOK) SetStateDocument(val OptNilString) {
+	s.StateDocument = val
 }
 
-// SetLabels sets the value of Labels.
-func (s *IncidentLabelsUpdateResponse) SetLabels(val []IncidentLabel) {
-	s.Labels = val
+// SetIncidentSlackChannel sets the value of IncidentSlackChannel.
+func (s *GetIncidentOK) SetIncidentSlackChannel(val OptNilGetIncidentOKIncidentSlackChannel) {
+	s.IncidentSlackChannel = val
 }
 
-func (*IncidentLabelsUpdateResponse) updateIncidentLabelsRes() {}
+func (*GetIncidentOK) getIncidentRes() {}
 
-// Ref: #/components/schemas/IncidentListResponse
-type IncidentListResponse struct {
-	Incidents        []Incident       `json:"incidents"`
-	ResponseMetadata ResponseMetadata `json:"response_metadata"`
+type GetIncidentOKIncidentSlackChannel struct {
+	URL url.URL `json:"url"`
 }
 
-// GetIncidents returns the value of Incidents.
-func (s *IncidentListResponse) GetIncidents() []Incident {
-	return s.Incidents
+// GetURL returns the value of URL.
+func (s *GetIncidentOKIncidentSlackChannel) GetURL() url.URL {
+	return s.URL
 }
 
-// GetResponseMetadata returns the value of ResponseMetadata.
-func (s *IncidentListResponse) GetResponseMetadata() ResponseMetadata {
-	return s.ResponseMetadata
+// SetURL sets the value of URL.
+func (s *GetIncidentOKIncidentSlackChannel) SetURL(val url.URL) {
+	s.URL = val
 }
 
-// SetIncidents sets the value of Incidents.
-func (s *IncidentListResponse) SetIncidents(val []Incident) {
-	s.Incidents = val
+type GetIncidentOKLabelsItem struct {
+	Name string `json:"name"`
 }
 
-// SetResponseMetadata sets the value of ResponseMetadata.
-func (s *IncidentListResponse) SetResponseMetadata(val ResponseMetadata) {
-	s.ResponseMetadata = val
+// GetName returns the value of Name.
+func (s *GetIncidentOKLabelsItem) GetName() string {
+	return s.Name
 }
 
-func (*IncidentListResponse) listIncidentsRes() {}
+// SetName sets the value of Name.
+func (s *GetIncidentOKLabelsItem) SetName(val string) {
+	s.Name = val
+}
 
-type IncidentMetrics struct {
-	// Time to detect (in seconds).
-	Ttd OptNilInt `json:"ttd"`
-	// Time to acknowledge (in seconds).
-	Tta OptNilInt `json:"tta"`
-	// Time to investigate (in seconds).
-	Tti OptNilInt `json:"tti"`
-	// Time to fix (in seconds).
-	Ttf OptNilInt `json:"ttf"`
-	// Time to repair (in seconds).
-	Ttr OptNilInt `json:"ttr"`
+type GetIncidentOKMetrics struct {
+	// Time to Detect (seconds).
+	Ttd NilInt `json:"ttd"`
+	// Time to Acknowledge (seconds).
+	Tta NilInt `json:"tta"`
+	// Time to Investigate (seconds).
+	Tti NilInt `json:"tti"`
+	// Time to Fix (seconds).
+	Ttf NilInt `json:"ttf"`
+	// Time to Resolve (seconds).
+	Ttr NilInt `json:"ttr"`
 }
 
 // GetTtd returns the value of Ttd.
-func (s *IncidentMetrics) GetTtd() OptNilInt {
+func (s *GetIncidentOKMetrics) GetTtd() NilInt {
 	return s.Ttd
 }
 
 // GetTta returns the value of Tta.
-func (s *IncidentMetrics) GetTta() OptNilInt {
+func (s *GetIncidentOKMetrics) GetTta() NilInt {
 	return s.Tta
 }
 
 // GetTti returns the value of Tti.
-func (s *IncidentMetrics) GetTti() OptNilInt {
+func (s *GetIncidentOKMetrics) GetTti() NilInt {
 	return s.Tti
 }
 
 // GetTtf returns the value of Ttf.
-func (s *IncidentMetrics) GetTtf() OptNilInt {
+func (s *GetIncidentOKMetrics) GetTtf() NilInt {
 	return s.Ttf
 }
 
 // GetTtr returns the value of Ttr.
-func (s *IncidentMetrics) GetTtr() OptNilInt {
+func (s *GetIncidentOKMetrics) GetTtr() NilInt {
 	return s.Ttr
 }
 
 // SetTtd sets the value of Ttd.
-func (s *IncidentMetrics) SetTtd(val OptNilInt) {
+func (s *GetIncidentOKMetrics) SetTtd(val NilInt) {
 	s.Ttd = val
 }
 
 // SetTta sets the value of Tta.
-func (s *IncidentMetrics) SetTta(val OptNilInt) {
+func (s *GetIncidentOKMetrics) SetTta(val NilInt) {
 	s.Tta = val
 }
 
 // SetTti sets the value of Tti.
-func (s *IncidentMetrics) SetTti(val OptNilInt) {
+func (s *GetIncidentOKMetrics) SetTti(val NilInt) {
 	s.Tti = val
 }
 
 // SetTtf sets the value of Ttf.
-func (s *IncidentMetrics) SetTtf(val OptNilInt) {
+func (s *GetIncidentOKMetrics) SetTtf(val NilInt) {
 	s.Ttf = val
 }
 
 // SetTtr sets the value of Ttr.
-func (s *IncidentMetrics) SetTtr(val OptNilInt) {
+func (s *GetIncidentOKMetrics) SetTtr(val NilInt) {
 	s.Ttr = val
 }
 
-// Ref: #/components/schemas/IncidentMetricsResponse
-type IncidentMetricsResponse struct {
-	// Activity UUID.
-	UUID uuid.UUID `json:"uuid"`
-	// Activity action.
-	Action string `json:"action"`
-	// When the activity was triggered.
-	TriggeredAt time.Time                       `json:"triggered_at"`
-	Incident    IncidentMetricsResponseIncident `json:"incident"`
+type GetIncidentOKService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *GetIncidentOKService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *GetIncidentOKService) SetName(val string) {
+	s.Name = val
+}
+
+type GetIncidentPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetIncidentPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetIncidentPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetIncidentPaymentRequired) getIncidentRes() {}
+
+type GetIncidentUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetIncidentUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetIncidentUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetIncidentUnauthorized) getIncidentRes() {}
+
+type GetPostmortemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetPostmortemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetPostmortemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetPostmortemNotFound) getPostmortemRes() {}
+
+type GetPostmortemOK struct {
+	Postmortem GetPostmortemOKPostmortem `json:"postmortem"`
+}
+
+// GetPostmortem returns the value of Postmortem.
+func (s *GetPostmortemOK) GetPostmortem() GetPostmortemOKPostmortem {
+	return s.Postmortem
+}
+
+// SetPostmortem sets the value of Postmortem.
+func (s *GetPostmortemOK) SetPostmortem(val GetPostmortemOKPostmortem) {
+	s.Postmortem = val
+}
+
+func (*GetPostmortemOK) getPostmortemRes() {}
+
+type GetPostmortemOKPostmortem struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Postmortem content (markdown).
+	Blob string `json:"blob"`
+	// Author nickname.
+	Author    string                                   `json:"author"`
+	Status    GetPostmortemOKPostmortemStatus          `json:"status"`
+	Incidents []GetPostmortemOKPostmortemIncidentsItem `json:"incidents"`
+	CreatedAt time.Time                                `json:"created_at"`
+	UpdatedAt OptDateTime                              `json:"updated_at"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *IncidentMetricsResponse) GetUUID() uuid.UUID {
-	return s.UUID
-}
-
-// GetAction returns the value of Action.
-func (s *IncidentMetricsResponse) GetAction() string {
-	return s.Action
-}
-
-// GetTriggeredAt returns the value of TriggeredAt.
-func (s *IncidentMetricsResponse) GetTriggeredAt() time.Time {
-	return s.TriggeredAt
-}
-
-// GetIncident returns the value of Incident.
-func (s *IncidentMetricsResponse) GetIncident() IncidentMetricsResponseIncident {
-	return s.Incident
-}
-
-// SetUUID sets the value of UUID.
-func (s *IncidentMetricsResponse) SetUUID(val uuid.UUID) {
-	s.UUID = val
-}
-
-// SetAction sets the value of Action.
-func (s *IncidentMetricsResponse) SetAction(val string) {
-	s.Action = val
-}
-
-// SetTriggeredAt sets the value of TriggeredAt.
-func (s *IncidentMetricsResponse) SetTriggeredAt(val time.Time) {
-	s.TriggeredAt = val
-}
-
-// SetIncident sets the value of Incident.
-func (s *IncidentMetricsResponse) SetIncident(val IncidentMetricsResponseIncident) {
-	s.Incident = val
-}
-
-func (*IncidentMetricsResponse) createIncidentMetricsRes() {}
-
-type IncidentMetricsResponseIncident struct {
-	// Incident UUID.
-	UUID uuid.UUID `json:"uuid"`
-	// Incident title.
-	Title string `json:"title"`
-	// Time to detect (in seconds).
-	Ttd OptNilInt `json:"ttd"`
-	// Time to acknowledge (in seconds).
-	Tta OptNilInt `json:"tta"`
-	// Time to investigate (in seconds).
-	Tti OptNilInt `json:"tti"`
-	// Time to fix (in seconds).
-	Ttf OptNilInt `json:"ttf"`
-	// Time to repair (in seconds).
-	Ttr OptNilInt `json:"ttr"`
-}
-
-// GetUUID returns the value of UUID.
-func (s *IncidentMetricsResponseIncident) GetUUID() uuid.UUID {
+func (s *GetPostmortemOKPostmortem) GetUUID() uuid.UUID {
 	return s.UUID
 }
 
 // GetTitle returns the value of Title.
-func (s *IncidentMetricsResponseIncident) GetTitle() string {
+func (s *GetPostmortemOKPostmortem) GetTitle() string {
 	return s.Title
 }
 
-// GetTtd returns the value of Ttd.
-func (s *IncidentMetricsResponseIncident) GetTtd() OptNilInt {
-	return s.Ttd
+// GetBlob returns the value of Blob.
+func (s *GetPostmortemOKPostmortem) GetBlob() string {
+	return s.Blob
 }
 
-// GetTta returns the value of Tta.
-func (s *IncidentMetricsResponseIncident) GetTta() OptNilInt {
-	return s.Tta
+// GetAuthor returns the value of Author.
+func (s *GetPostmortemOKPostmortem) GetAuthor() string {
+	return s.Author
 }
 
-// GetTti returns the value of Tti.
-func (s *IncidentMetricsResponseIncident) GetTti() OptNilInt {
-	return s.Tti
+// GetStatus returns the value of Status.
+func (s *GetPostmortemOKPostmortem) GetStatus() GetPostmortemOKPostmortemStatus {
+	return s.Status
 }
 
-// GetTtf returns the value of Ttf.
-func (s *IncidentMetricsResponseIncident) GetTtf() OptNilInt {
-	return s.Ttf
+// GetIncidents returns the value of Incidents.
+func (s *GetPostmortemOKPostmortem) GetIncidents() []GetPostmortemOKPostmortemIncidentsItem {
+	return s.Incidents
 }
 
-// GetTtr returns the value of Ttr.
-func (s *IncidentMetricsResponseIncident) GetTtr() OptNilInt {
-	return s.Ttr
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetPostmortemOKPostmortem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetPostmortemOKPostmortem) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
 }
 
 // SetUUID sets the value of UUID.
-func (s *IncidentMetricsResponseIncident) SetUUID(val uuid.UUID) {
+func (s *GetPostmortemOKPostmortem) SetUUID(val uuid.UUID) {
 	s.UUID = val
 }
 
 // SetTitle sets the value of Title.
-func (s *IncidentMetricsResponseIncident) SetTitle(val string) {
+func (s *GetPostmortemOKPostmortem) SetTitle(val string) {
 	s.Title = val
 }
 
-// SetTtd sets the value of Ttd.
-func (s *IncidentMetricsResponseIncident) SetTtd(val OptNilInt) {
-	s.Ttd = val
+// SetBlob sets the value of Blob.
+func (s *GetPostmortemOKPostmortem) SetBlob(val string) {
+	s.Blob = val
 }
 
-// SetTta sets the value of Tta.
-func (s *IncidentMetricsResponseIncident) SetTta(val OptNilInt) {
-	s.Tta = val
-}
-
-// SetTti sets the value of Tti.
-func (s *IncidentMetricsResponseIncident) SetTti(val OptNilInt) {
-	s.Tti = val
-}
-
-// SetTtf sets the value of Ttf.
-func (s *IncidentMetricsResponseIncident) SetTtf(val OptNilInt) {
-	s.Ttf = val
-}
-
-// SetTtr sets the value of Ttr.
-func (s *IncidentMetricsResponseIncident) SetTtr(val OptNilInt) {
-	s.Ttr = val
-}
-
-// Root cause category.
-type IncidentRootCause string
-
-const (
-	IncidentRootCauseUnspecified           IncidentRootCause = "unspecified"
-	IncidentRootCauseCodeBug               IncidentRootCause = "code_bug"
-	IncidentRootCauseConfigurationError    IncidentRootCause = "configuration_error"
-	IncidentRootCauseDeploymentFailure     IncidentRootCause = "deployment_failure"
-	IncidentRootCauseInfrastructureFailure IncidentRootCause = "infrastructure_failure"
-	IncidentRootCauseOperationalFailure    IncidentRootCause = "operational_failure"
-	IncidentRootCauseThirdPartyOutage      IncidentRootCause = "third_party_outage"
-	IncidentRootCauseOther                 IncidentRootCause = "other"
-)
-
-// AllValues returns all IncidentRootCause values.
-func (IncidentRootCause) AllValues() []IncidentRootCause {
-	return []IncidentRootCause{
-		IncidentRootCauseUnspecified,
-		IncidentRootCauseCodeBug,
-		IncidentRootCauseConfigurationError,
-		IncidentRootCauseDeploymentFailure,
-		IncidentRootCauseInfrastructureFailure,
-		IncidentRootCauseOperationalFailure,
-		IncidentRootCauseThirdPartyOutage,
-		IncidentRootCauseOther,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentRootCause) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentRootCauseUnspecified:
-		return []byte(s), nil
-	case IncidentRootCauseCodeBug:
-		return []byte(s), nil
-	case IncidentRootCauseConfigurationError:
-		return []byte(s), nil
-	case IncidentRootCauseDeploymentFailure:
-		return []byte(s), nil
-	case IncidentRootCauseInfrastructureFailure:
-		return []byte(s), nil
-	case IncidentRootCauseOperationalFailure:
-		return []byte(s), nil
-	case IncidentRootCauseThirdPartyOutage:
-		return []byte(s), nil
-	case IncidentRootCauseOther:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentRootCause) UnmarshalText(data []byte) error {
-	switch IncidentRootCause(data) {
-	case IncidentRootCauseUnspecified:
-		*s = IncidentRootCauseUnspecified
-		return nil
-	case IncidentRootCauseCodeBug:
-		*s = IncidentRootCauseCodeBug
-		return nil
-	case IncidentRootCauseConfigurationError:
-		*s = IncidentRootCauseConfigurationError
-		return nil
-	case IncidentRootCauseDeploymentFailure:
-		*s = IncidentRootCauseDeploymentFailure
-		return nil
-	case IncidentRootCauseInfrastructureFailure:
-		*s = IncidentRootCauseInfrastructureFailure
-		return nil
-	case IncidentRootCauseOperationalFailure:
-		*s = IncidentRootCauseOperationalFailure
-		return nil
-	case IncidentRootCauseThirdPartyOutage:
-		*s = IncidentRootCauseThirdPartyOutage
-		return nil
-	case IncidentRootCauseOther:
-		*s = IncidentRootCauseOther
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// Severity level of the incident.
-type IncidentSeverity string
-
-const (
-	IncidentSeverityCritical IncidentSeverity = "critical"
-	IncidentSeverityHigh     IncidentSeverity = "high"
-	IncidentSeverityLow      IncidentSeverity = "low"
-	IncidentSeverityInfo     IncidentSeverity = "info"
-	IncidentSeverityUnknown  IncidentSeverity = "unknown"
-)
-
-// AllValues returns all IncidentSeverity values.
-func (IncidentSeverity) AllValues() []IncidentSeverity {
-	return []IncidentSeverity{
-		IncidentSeverityCritical,
-		IncidentSeverityHigh,
-		IncidentSeverityLow,
-		IncidentSeverityInfo,
-		IncidentSeverityUnknown,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentSeverity) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentSeverityCritical:
-		return []byte(s), nil
-	case IncidentSeverityHigh:
-		return []byte(s), nil
-	case IncidentSeverityLow:
-		return []byte(s), nil
-	case IncidentSeverityInfo:
-		return []byte(s), nil
-	case IncidentSeverityUnknown:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentSeverity) UnmarshalText(data []byte) error {
-	switch IncidentSeverity(data) {
-	case IncidentSeverityCritical:
-		*s = IncidentSeverityCritical
-		return nil
-	case IncidentSeverityHigh:
-		*s = IncidentSeverityHigh
-		return nil
-	case IncidentSeverityLow:
-		*s = IncidentSeverityLow
-		return nil
-	case IncidentSeverityInfo:
-		*s = IncidentSeverityInfo
-		return nil
-	case IncidentSeverityUnknown:
-		*s = IncidentSeverityUnknown
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// Current status of the incident.
-type IncidentStatus string
-
-const (
-	IncidentStatusDetected      IncidentStatus = "detected"
-	IncidentStatusInvestigating IncidentStatus = "investigating"
-	IncidentStatusFixing        IncidentStatus = "fixing"
-	IncidentStatusResolved      IncidentStatus = "resolved"
-	IncidentStatusClose         IncidentStatus = "close"
-)
-
-// AllValues returns all IncidentStatus values.
-func (IncidentStatus) AllValues() []IncidentStatus {
-	return []IncidentStatus{
-		IncidentStatusDetected,
-		IncidentStatusInvestigating,
-		IncidentStatusFixing,
-		IncidentStatusResolved,
-		IncidentStatusClose,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentStatus) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentStatusDetected:
-		return []byte(s), nil
-	case IncidentStatusInvestigating:
-		return []byte(s), nil
-	case IncidentStatusFixing:
-		return []byte(s), nil
-	case IncidentStatusResolved:
-		return []byte(s), nil
-	case IncidentStatusClose:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentStatus) UnmarshalText(data []byte) error {
-	switch IncidentStatus(data) {
-	case IncidentStatusDetected:
-		*s = IncidentStatusDetected
-		return nil
-	case IncidentStatusInvestigating:
-		*s = IncidentStatusInvestigating
-		return nil
-	case IncidentStatusFixing:
-		*s = IncidentStatusFixing
-		return nil
-	case IncidentStatusResolved:
-		*s = IncidentStatusResolved
-		return nil
-	case IncidentStatusClose:
-		*s = IncidentStatusClose
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// Ref: #/components/schemas/IncidentStatusUpdateResponse
-type IncidentStatusUpdateResponse struct {
-	// Incident UUID.
-	UUID uuid.UUID `json:"uuid"`
-	// Updated status.
-	Status IncidentStatusUpdateResponseStatus `json:"status"`
-}
-
-// GetUUID returns the value of UUID.
-func (s *IncidentStatusUpdateResponse) GetUUID() uuid.UUID {
-	return s.UUID
-}
-
-// GetStatus returns the value of Status.
-func (s *IncidentStatusUpdateResponse) GetStatus() IncidentStatusUpdateResponseStatus {
-	return s.Status
-}
-
-// SetUUID sets the value of UUID.
-func (s *IncidentStatusUpdateResponse) SetUUID(val uuid.UUID) {
-	s.UUID = val
+// SetAuthor sets the value of Author.
+func (s *GetPostmortemOKPostmortem) SetAuthor(val string) {
+	s.Author = val
 }
 
 // SetStatus sets the value of Status.
-func (s *IncidentStatusUpdateResponse) SetStatus(val IncidentStatusUpdateResponseStatus) {
+func (s *GetPostmortemOKPostmortem) SetStatus(val GetPostmortemOKPostmortemStatus) {
 	s.Status = val
 }
 
-func (*IncidentStatusUpdateResponse) updateIncidentStatusRes() {}
-
-// Updated status.
-type IncidentStatusUpdateResponseStatus string
-
-const (
-	IncidentStatusUpdateResponseStatusDetected      IncidentStatusUpdateResponseStatus = "detected"
-	IncidentStatusUpdateResponseStatusInvestigating IncidentStatusUpdateResponseStatus = "investigating"
-	IncidentStatusUpdateResponseStatusFixing        IncidentStatusUpdateResponseStatus = "fixing"
-	IncidentStatusUpdateResponseStatusResolved      IncidentStatusUpdateResponseStatus = "resolved"
-	IncidentStatusUpdateResponseStatusClose         IncidentStatusUpdateResponseStatus = "close"
-)
-
-// AllValues returns all IncidentStatusUpdateResponseStatus values.
-func (IncidentStatusUpdateResponseStatus) AllValues() []IncidentStatusUpdateResponseStatus {
-	return []IncidentStatusUpdateResponseStatus{
-		IncidentStatusUpdateResponseStatusDetected,
-		IncidentStatusUpdateResponseStatusInvestigating,
-		IncidentStatusUpdateResponseStatusFixing,
-		IncidentStatusUpdateResponseStatusResolved,
-		IncidentStatusUpdateResponseStatusClose,
-	}
+// SetIncidents sets the value of Incidents.
+func (s *GetPostmortemOKPostmortem) SetIncidents(val []GetPostmortemOKPostmortemIncidentsItem) {
+	s.Incidents = val
 }
 
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentStatusUpdateResponseStatus) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentStatusUpdateResponseStatusDetected:
-		return []byte(s), nil
-	case IncidentStatusUpdateResponseStatusInvestigating:
-		return []byte(s), nil
-	case IncidentStatusUpdateResponseStatusFixing:
-		return []byte(s), nil
-	case IncidentStatusUpdateResponseStatusResolved:
-		return []byte(s), nil
-	case IncidentStatusUpdateResponseStatusClose:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetPostmortemOKPostmortem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
 }
 
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentStatusUpdateResponseStatus) UnmarshalText(data []byte) error {
-	switch IncidentStatusUpdateResponseStatus(data) {
-	case IncidentStatusUpdateResponseStatusDetected:
-		*s = IncidentStatusUpdateResponseStatusDetected
-		return nil
-	case IncidentStatusUpdateResponseStatusInvestigating:
-		*s = IncidentStatusUpdateResponseStatusInvestigating
-		return nil
-	case IncidentStatusUpdateResponseStatusFixing:
-		*s = IncidentStatusUpdateResponseStatusFixing
-		return nil
-	case IncidentStatusUpdateResponseStatusResolved:
-		*s = IncidentStatusUpdateResponseStatusResolved
-		return nil
-	case IncidentStatusUpdateResponseStatusClose:
-		*s = IncidentStatusUpdateResponseStatusClose
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetPostmortemOKPostmortem) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
 }
 
-// Ref: #/components/schemas/IncidentUpdateResponse
-type IncidentUpdateResponse struct {
-	// Incident UUID.
-	UUID uuid.UUID `json:"uuid"`
-	// Updated severity level.
-	Severity IncidentUpdateResponseSeverity `json:"severity"`
+type GetPostmortemOKPostmortemIncidentsItem struct {
+	UUID         uuid.UUID                                     `json:"uuid"`
+	Title        string                                        `json:"title"`
+	Severity     string                                        `json:"severity"`
+	Status       string                                        `json:"status"`
+	RootCause    string                                        `json:"root_cause"`
+	Experimental bool                                          `json:"experimental"`
+	Service      GetPostmortemOKPostmortemIncidentsItemService `json:"service"`
+	CreatedAt    time.Time                                     `json:"created_at"`
 }
 
 // GetUUID returns the value of UUID.
-func (s *IncidentUpdateResponse) GetUUID() uuid.UUID {
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetUUID() uuid.UUID {
 	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetTitle() string {
+	return s.Title
 }
 
 // GetSeverity returns the value of Severity.
-func (s *IncidentUpdateResponse) GetSeverity() IncidentUpdateResponseSeverity {
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetSeverity() string {
 	return s.Severity
 }
 
-// SetUUID sets the value of UUID.
-func (s *IncidentUpdateResponse) SetUUID(val uuid.UUID) {
-	s.UUID = val
+// GetStatus returns the value of Status.
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetStatus() string {
+	return s.Status
 }
 
-// SetSeverity sets the value of Severity.
-func (s *IncidentUpdateResponse) SetSeverity(val IncidentUpdateResponseSeverity) {
-	s.Severity = val
+// GetRootCause returns the value of RootCause.
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetRootCause() string {
+	return s.RootCause
 }
 
-func (*IncidentUpdateResponse) updateIncidentSeverityRes() {}
-
-// Updated severity level.
-type IncidentUpdateResponseSeverity string
-
-const (
-	IncidentUpdateResponseSeverityCritical IncidentUpdateResponseSeverity = "critical"
-	IncidentUpdateResponseSeverityHigh     IncidentUpdateResponseSeverity = "high"
-	IncidentUpdateResponseSeverityLow      IncidentUpdateResponseSeverity = "low"
-	IncidentUpdateResponseSeverityInfo     IncidentUpdateResponseSeverity = "info"
-	IncidentUpdateResponseSeverityUnknown  IncidentUpdateResponseSeverity = "unknown"
-)
-
-// AllValues returns all IncidentUpdateResponseSeverity values.
-func (IncidentUpdateResponseSeverity) AllValues() []IncidentUpdateResponseSeverity {
-	return []IncidentUpdateResponseSeverity{
-		IncidentUpdateResponseSeverityCritical,
-		IncidentUpdateResponseSeverityHigh,
-		IncidentUpdateResponseSeverityLow,
-		IncidentUpdateResponseSeverityInfo,
-		IncidentUpdateResponseSeverityUnknown,
-	}
+// GetExperimental returns the value of Experimental.
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetExperimental() bool {
+	return s.Experimental
 }
 
-// MarshalText implements encoding.TextMarshaler.
-func (s IncidentUpdateResponseSeverity) MarshalText() ([]byte, error) {
-	switch s {
-	case IncidentUpdateResponseSeverityCritical:
-		return []byte(s), nil
-	case IncidentUpdateResponseSeverityHigh:
-		return []byte(s), nil
-	case IncidentUpdateResponseSeverityLow:
-		return []byte(s), nil
-	case IncidentUpdateResponseSeverityInfo:
-		return []byte(s), nil
-	case IncidentUpdateResponseSeverityUnknown:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *IncidentUpdateResponseSeverity) UnmarshalText(data []byte) error {
-	switch IncidentUpdateResponseSeverity(data) {
-	case IncidentUpdateResponseSeverityCritical:
-		*s = IncidentUpdateResponseSeverityCritical
-		return nil
-	case IncidentUpdateResponseSeverityHigh:
-		*s = IncidentUpdateResponseSeverityHigh
-		return nil
-	case IncidentUpdateResponseSeverityLow:
-		*s = IncidentUpdateResponseSeverityLow
-		return nil
-	case IncidentUpdateResponseSeverityInfo:
-		*s = IncidentUpdateResponseSeverityInfo
-		return nil
-	case IncidentUpdateResponseSeverityUnknown:
-		*s = IncidentUpdateResponseSeverityUnknown
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// Ref: #/components/schemas/Label
-type Label struct {
-	// Unique identifier for the labels.
-	UUID uuid.UUID `json:"uuid"`
-	// Label name.
-	Name string `json:"name"`
-	// Label color in hex format (without#).
-	Color OptString `json:"color"`
-	// Creation timestamp.
-	CreatedAt OptDateTime `json:"created_at"`
-}
-
-// GetUUID returns the value of UUID.
-func (s *Label) GetUUID() uuid.UUID {
-	return s.UUID
-}
-
-// GetName returns the value of Name.
-func (s *Label) GetName() string {
-	return s.Name
-}
-
-// GetColor returns the value of Color.
-func (s *Label) GetColor() OptString {
-	return s.Color
+// GetService returns the value of Service.
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetService() GetPostmortemOKPostmortemIncidentsItemService {
+	return s.Service
 }
 
 // GetCreatedAt returns the value of CreatedAt.
-func (s *Label) GetCreatedAt() OptDateTime {
+func (s *GetPostmortemOKPostmortemIncidentsItem) GetCreatedAt() time.Time {
 	return s.CreatedAt
 }
 
 // SetUUID sets the value of UUID.
-func (s *Label) SetUUID(val uuid.UUID) {
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetService sets the value of Service.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetService(val GetPostmortemOKPostmortemIncidentsItemService) {
+	s.Service = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetPostmortemOKPostmortemIncidentsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetPostmortemOKPostmortemIncidentsItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *GetPostmortemOKPostmortemIncidentsItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *GetPostmortemOKPostmortemIncidentsItemService) SetName(val string) {
+	s.Name = val
+}
+
+type GetPostmortemOKPostmortemStatus string
+
+const (
+	GetPostmortemOKPostmortemStatusDraft    GetPostmortemOKPostmortemStatus = "draft"
+	GetPostmortemOKPostmortemStatusInReview GetPostmortemOKPostmortemStatus = "in_review"
+	GetPostmortemOKPostmortemStatusReviewed GetPostmortemOKPostmortemStatus = "reviewed"
+	GetPostmortemOKPostmortemStatusClosed   GetPostmortemOKPostmortemStatus = "closed"
+)
+
+// AllValues returns all GetPostmortemOKPostmortemStatus values.
+func (GetPostmortemOKPostmortemStatus) AllValues() []GetPostmortemOKPostmortemStatus {
+	return []GetPostmortemOKPostmortemStatus{
+		GetPostmortemOKPostmortemStatusDraft,
+		GetPostmortemOKPostmortemStatusInReview,
+		GetPostmortemOKPostmortemStatusReviewed,
+		GetPostmortemOKPostmortemStatusClosed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetPostmortemOKPostmortemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetPostmortemOKPostmortemStatusDraft:
+		return []byte(s), nil
+	case GetPostmortemOKPostmortemStatusInReview:
+		return []byte(s), nil
+	case GetPostmortemOKPostmortemStatusReviewed:
+		return []byte(s), nil
+	case GetPostmortemOKPostmortemStatusClosed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetPostmortemOKPostmortemStatus) UnmarshalText(data []byte) error {
+	switch GetPostmortemOKPostmortemStatus(data) {
+	case GetPostmortemOKPostmortemStatusDraft:
+		*s = GetPostmortemOKPostmortemStatusDraft
+		return nil
+	case GetPostmortemOKPostmortemStatusInReview:
+		*s = GetPostmortemOKPostmortemStatusInReview
+		return nil
+	case GetPostmortemOKPostmortemStatusReviewed:
+		*s = GetPostmortemOKPostmortemStatusReviewed
+		return nil
+	case GetPostmortemOKPostmortemStatusClosed:
+		*s = GetPostmortemOKPostmortemStatusClosed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetPostmortemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetPostmortemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetPostmortemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetPostmortemPaymentRequired) getPostmortemRes() {}
+
+type GetPostmortemTemplateByUuidNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetPostmortemTemplateByUuidNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetPostmortemTemplateByUuidNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetPostmortemTemplateByUuidNotFound) getPostmortemTemplateByUuidRes() {}
+
+type GetPostmortemTemplateByUuidOK struct {
+	PostmortemTemplate GetPostmortemTemplateByUuidOKPostmortemTemplate `json:"postmortem_template"`
+}
+
+// GetPostmortemTemplate returns the value of PostmortemTemplate.
+func (s *GetPostmortemTemplateByUuidOK) GetPostmortemTemplate() GetPostmortemTemplateByUuidOKPostmortemTemplate {
+	return s.PostmortemTemplate
+}
+
+// SetPostmortemTemplate sets the value of PostmortemTemplate.
+func (s *GetPostmortemTemplateByUuidOK) SetPostmortemTemplate(val GetPostmortemTemplateByUuidOKPostmortemTemplate) {
+	s.PostmortemTemplate = val
+}
+
+func (*GetPostmortemTemplateByUuidOK) getPostmortemTemplateByUuidRes() {}
+
+type GetPostmortemTemplateByUuidOKPostmortemTemplate struct {
+	// Unique identifier of the postmortem template.
+	UUID uuid.UUID `json:"uuid"`
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob      string    `json:"blob"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetPostmortemTemplateByUuidOKPostmortemTemplate) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type GetPostmortemTemplateByUuidPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetPostmortemTemplateByUuidPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetPostmortemTemplateByUuidPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetPostmortemTemplateByUuidPaymentRequired) getPostmortemTemplateByUuidRes() {}
+
+type GetPostmortemTemplateByUuidUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetPostmortemTemplateByUuidUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetPostmortemTemplateByUuidUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetPostmortemTemplateByUuidUnauthorized) getPostmortemTemplateByUuidRes() {}
+
+type GetPostmortemTemplateOK struct {
+	// Template content (markdown).
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetPostmortemTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetPostmortemTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*GetPostmortemTemplateOK) getPostmortemTemplateRes() {}
+
+type GetPostmortemTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetPostmortemTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetPostmortemTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetPostmortemTemplatePaymentRequired) getPostmortemTemplateRes() {}
+
+type GetPostmortemTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetPostmortemTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetPostmortemTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetPostmortemTemplateUnauthorized) getPostmortemTemplateRes() {}
+
+type GetPostmortemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetPostmortemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetPostmortemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetPostmortemUnauthorized) getPostmortemRes() {}
+
+type GetRunbookNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetRunbookNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetRunbookNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetRunbookNotFound) getRunbookRes() {}
+
+type GetRunbookOK struct {
+	Runbook GetRunbookOKRunbook `json:"runbook"`
+}
+
+// GetRunbook returns the value of Runbook.
+func (s *GetRunbookOK) GetRunbook() GetRunbookOKRunbook {
+	return s.Runbook
+}
+
+// SetRunbook sets the value of Runbook.
+func (s *GetRunbookOK) SetRunbook(val GetRunbookOKRunbook) {
+	s.Runbook = val
+}
+
+func (*GetRunbookOK) getRunbookRes() {}
+
+type GetRunbookOKRunbook struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace string `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob      string      `json:"blob"`
+	CreatedAt OptDateTime `json:"created_at"`
+	UpdatedAt OptDateTime `json:"updated_at"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *GetRunbookOKRunbook) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetRunbookOKRunbook) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetRunbookOKRunbook) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetRunbookOKRunbook) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *GetRunbookOKRunbook) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetRunbookOKRunbook) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetRunbookOKRunbook) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetRunbookOKRunbook) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type GetRunbookPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetRunbookPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetRunbookPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetRunbookPaymentRequired) getRunbookRes() {}
+
+type GetRunbookUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetRunbookUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetRunbookUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetRunbookUnauthorized) getRunbookRes() {}
+
+type GetServiceArchitectureContextNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceArchitectureContextNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceArchitectureContextNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetServiceArchitectureContextNotFound) getServiceArchitectureContextRes() {}
+
+type GetServiceArchitectureContextOK struct {
+	ID OptNilInt `json:"id"`
+	// Architecture context content (markdown).
+	Blob      string                                 `json:"blob"`
+	CreatedAt OptNilDateTime                         `json:"created_at"`
+	UpdatedAt OptNilDateTime                         `json:"updated_at"`
+	Service   GetServiceArchitectureContextOKService `json:"service"`
+}
+
+// GetID returns the value of ID.
+func (s *GetServiceArchitectureContextOK) GetID() OptNilInt {
+	return s.ID
+}
+
+// GetBlob returns the value of Blob.
+func (s *GetServiceArchitectureContextOK) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetServiceArchitectureContextOK) GetCreatedAt() OptNilDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetServiceArchitectureContextOK) GetUpdatedAt() OptNilDateTime {
+	return s.UpdatedAt
+}
+
+// GetService returns the value of Service.
+func (s *GetServiceArchitectureContextOK) GetService() GetServiceArchitectureContextOKService {
+	return s.Service
+}
+
+// SetID sets the value of ID.
+func (s *GetServiceArchitectureContextOK) SetID(val OptNilInt) {
+	s.ID = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *GetServiceArchitectureContextOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetServiceArchitectureContextOK) SetCreatedAt(val OptNilDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetServiceArchitectureContextOK) SetUpdatedAt(val OptNilDateTime) {
+	s.UpdatedAt = val
+}
+
+// SetService sets the value of Service.
+func (s *GetServiceArchitectureContextOK) SetService(val GetServiceArchitectureContextOKService) {
+	s.Service = val
+}
+
+func (*GetServiceArchitectureContextOK) getServiceArchitectureContextRes() {}
+
+type GetServiceArchitectureContextOKService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *GetServiceArchitectureContextOKService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *GetServiceArchitectureContextOKService) SetName(val string) {
+	s.Name = val
+}
+
+type GetServiceArchitectureContextPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceArchitectureContextPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceArchitectureContextPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetServiceArchitectureContextPaymentRequired) getServiceArchitectureContextRes() {}
+
+type GetServiceArchitectureContextUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetServiceArchitectureContextUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetServiceArchitectureContextUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetServiceArchitectureContextUnauthorized) getServiceArchitectureContextRes() {}
+
+type GetServiceNotificationSlackChannelNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceNotificationSlackChannelNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceNotificationSlackChannelNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetServiceNotificationSlackChannelNotFound) getServiceNotificationSlackChannelRes() {}
+
+type GetServiceNotificationSlackChannelOK struct {
+	// Slack channel name (e.g. incident-production).
+	Name OptString `json:"name"`
+	// Slack channel ID (e.g. C1234567890).
+	Key string `json:"key"`
+}
+
+// GetName returns the value of Name.
+func (s *GetServiceNotificationSlackChannelOK) GetName() OptString {
+	return s.Name
+}
+
+// GetKey returns the value of Key.
+func (s *GetServiceNotificationSlackChannelOK) GetKey() string {
+	return s.Key
+}
+
+// SetName sets the value of Name.
+func (s *GetServiceNotificationSlackChannelOK) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetKey sets the value of Key.
+func (s *GetServiceNotificationSlackChannelOK) SetKey(val string) {
+	s.Key = val
+}
+
+func (*GetServiceNotificationSlackChannelOK) getServiceNotificationSlackChannelRes() {}
+
+type GetServiceNotificationSlackChannelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceNotificationSlackChannelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceNotificationSlackChannelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetServiceNotificationSlackChannelPaymentRequired) getServiceNotificationSlackChannelRes() {}
+
+type GetServiceNotificationSlackChannelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetServiceNotificationSlackChannelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetServiceNotificationSlackChannelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetServiceNotificationSlackChannelUnauthorized) getServiceNotificationSlackChannelRes() {}
+
+type GetServiceWebhookConfigurationNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceWebhookConfigurationNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceWebhookConfigurationNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetServiceWebhookConfigurationNotFound) getServiceWebhookConfigurationRes() {}
+
+type GetServiceWebhookConfigurationOK struct {
+	WebhookConfiguration GetServiceWebhookConfigurationOKWebhookConfiguration `json:"webhook_configuration"`
+}
+
+// GetWebhookConfiguration returns the value of WebhookConfiguration.
+func (s *GetServiceWebhookConfigurationOK) GetWebhookConfiguration() GetServiceWebhookConfigurationOKWebhookConfiguration {
+	return s.WebhookConfiguration
+}
+
+// SetWebhookConfiguration sets the value of WebhookConfiguration.
+func (s *GetServiceWebhookConfigurationOK) SetWebhookConfiguration(val GetServiceWebhookConfigurationOKWebhookConfiguration) {
+	s.WebhookConfiguration = val
+}
+
+func (*GetServiceWebhookConfigurationOK) getServiceWebhookConfigurationRes() {}
+
+type GetServiceWebhookConfigurationOKWebhookConfiguration struct {
+	UUID                      uuid.UUID                                                                           `json:"uuid"`
+	Name                      string                                                                              `json:"name"`
+	URL                       url.URL                                                                             `json:"url"`
+	State                     GetServiceWebhookConfigurationOKWebhookConfigurationState                           `json:"state"`
+	WebhookSubscriptionEvents []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem `json:"webhook_subscription_events"`
+	CreatedAt                 time.Time                                                                           `json:"created_at"`
+	UpdatedAt                 time.Time                                                                           `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetName() string {
+	return s.Name
+}
+
+// GetURL returns the value of URL.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetURL() url.URL {
+	return s.URL
+}
+
+// GetState returns the value of State.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetState() GetServiceWebhookConfigurationOKWebhookConfigurationState {
+	return s.State
+}
+
+// GetWebhookSubscriptionEvents returns the value of WebhookSubscriptionEvents.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetWebhookSubscriptionEvents() []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem {
+	return s.WebhookSubscriptionEvents
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetUUID(val uuid.UUID) {
 	s.UUID = val
 }
 
 // SetName sets the value of Name.
-func (s *Label) SetName(val string) {
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetName(val string) {
 	s.Name = val
 }
 
-// SetColor sets the value of Color.
-func (s *Label) SetColor(val OptString) {
-	s.Color = val
+// SetURL sets the value of URL.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetURL(val url.URL) {
+	s.URL = val
+}
+
+// SetState sets the value of State.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetState(val GetServiceWebhookConfigurationOKWebhookConfigurationState) {
+	s.State = val
+}
+
+// SetWebhookSubscriptionEvents sets the value of WebhookSubscriptionEvents.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetWebhookSubscriptionEvents(val []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) {
+	s.WebhookSubscriptionEvents = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
-func (s *Label) SetCreatedAt(val OptDateTime) {
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
 }
 
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *GetServiceWebhookConfigurationOKWebhookConfiguration) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type GetServiceWebhookConfigurationOKWebhookConfigurationState string
+
+const (
+	GetServiceWebhookConfigurationOKWebhookConfigurationStateUnverified GetServiceWebhookConfigurationOKWebhookConfigurationState = "unverified"
+	GetServiceWebhookConfigurationOKWebhookConfigurationStateVerified   GetServiceWebhookConfigurationOKWebhookConfigurationState = "verified"
+	GetServiceWebhookConfigurationOKWebhookConfigurationStateArchived   GetServiceWebhookConfigurationOKWebhookConfigurationState = "archived"
+)
+
+// AllValues returns all GetServiceWebhookConfigurationOKWebhookConfigurationState values.
+func (GetServiceWebhookConfigurationOKWebhookConfigurationState) AllValues() []GetServiceWebhookConfigurationOKWebhookConfigurationState {
+	return []GetServiceWebhookConfigurationOKWebhookConfigurationState{
+		GetServiceWebhookConfigurationOKWebhookConfigurationStateUnverified,
+		GetServiceWebhookConfigurationOKWebhookConfigurationStateVerified,
+		GetServiceWebhookConfigurationOKWebhookConfigurationStateArchived,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetServiceWebhookConfigurationOKWebhookConfigurationState) MarshalText() ([]byte, error) {
+	switch s {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateUnverified:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateVerified:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateArchived:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationState) UnmarshalText(data []byte) error {
+	switch GetServiceWebhookConfigurationOKWebhookConfigurationState(data) {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateUnverified:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationStateUnverified
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateVerified:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationStateVerified
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationStateArchived:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationStateArchived
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem struct {
+	UUID         uuid.UUID                                                                                     `json:"uuid"`
+	EventType    GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType    `json:"event_type"`
+	EventVersion GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion `json:"event_version"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetEventType returns the value of EventType.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) GetEventType() GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType {
+	return s.EventType
+}
+
+// GetEventVersion returns the value of EventVersion.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) GetEventVersion() GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion {
+	return s.EventVersion
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) SetEventType(val GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType) {
+	s.EventType = val
+}
+
+// SetEventVersion sets the value of EventVersion.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItem) SetEventVersion(val GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion) {
+	s.EventVersion = val
+}
+
+type GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType string
+
+const (
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentCreated             GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "incident_created"
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentUpdated             GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "incident_updated"
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookExecuted             GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "runbook_executed"
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookSkipped              GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "runbook_skipped"
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentSlackChannelCreated GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "incident_slack_channel_created"
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeTestPing                    GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType = "test_ping"
+)
+
+// AllValues returns all GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType values.
+func (GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType) AllValues() []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType {
+	return []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType{
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentCreated,
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentUpdated,
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookExecuted,
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookSkipped,
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentSlackChannelCreated,
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeTestPing,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentCreated:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentUpdated:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookExecuted:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookSkipped:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentSlackChannelCreated:
+		return []byte(s), nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeTestPing:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType) UnmarshalText(data []byte) error {
+	switch GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventType(data) {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentCreated:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentCreated
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentUpdated:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentUpdated
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookExecuted:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookExecuted
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookSkipped:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeRunbookSkipped
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentSlackChannelCreated:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeIncidentSlackChannelCreated
+		return nil
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeTestPing:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventTypeTestPing
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion string
+
+const (
+	GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersionV1 GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion = "v1"
+)
+
+// AllValues returns all GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion values.
+func (GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion) AllValues() []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion {
+	return []GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion{
+		GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersionV1,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion) MarshalText() ([]byte, error) {
+	switch s {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersionV1:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion) UnmarshalText(data []byte) error {
+	switch GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersion(data) {
+	case GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersionV1:
+		*s = GetServiceWebhookConfigurationOKWebhookConfigurationWebhookSubscriptionEventsItemEventVersionV1
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetServiceWebhookConfigurationPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetServiceWebhookConfigurationPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetServiceWebhookConfigurationPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetServiceWebhookConfigurationPaymentRequired) getServiceWebhookConfigurationRes() {}
+
+type GetServiceWebhookConfigurationUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetServiceWebhookConfigurationUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetServiceWebhookConfigurationUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetServiceWebhookConfigurationUnauthorized) getServiceWebhookConfigurationRes() {}
+
+type ListIncidentActionItemsNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListIncidentActionItemsNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListIncidentActionItemsNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListIncidentActionItemsNotFound) listIncidentActionItemsRes() {}
+
+type ListIncidentActionItemsOK struct {
+	ActionItems      []ListIncidentActionItemsOKActionItemsItem `json:"action_items"`
+	ResponseMetadata ListIncidentActionItemsOKResponseMetadata  `json:"response_metadata"`
+}
+
+// GetActionItems returns the value of ActionItems.
+func (s *ListIncidentActionItemsOK) GetActionItems() []ListIncidentActionItemsOKActionItemsItem {
+	return s.ActionItems
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListIncidentActionItemsOK) GetResponseMetadata() ListIncidentActionItemsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetActionItems sets the value of ActionItems.
+func (s *ListIncidentActionItemsOK) SetActionItems(val []ListIncidentActionItemsOKActionItemsItem) {
+	s.ActionItems = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListIncidentActionItemsOK) SetResponseMetadata(val ListIncidentActionItemsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListIncidentActionItemsOK) listIncidentActionItemsRes() {}
+
+type ListIncidentActionItemsOKActionItemsItem struct {
+	UUID      uuid.UUID                                      `json:"uuid"`
+	Title     string                                         `json:"title"`
+	Status    ListIncidentActionItemsOKActionItemsItemStatus `json:"status"`
+	Position  int                                            `json:"position"`
+	CreatedAt time.Time                                      `json:"created_at"`
+	UpdatedAt time.Time                                      `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetTitle() string {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetStatus() ListIncidentActionItemsOKActionItemsItemStatus {
+	return s.Status
+}
+
+// GetPosition returns the value of Position.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetStatus(val ListIncidentActionItemsOKActionItemsItemStatus) {
+	s.Status = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type ListIncidentActionItemsOKActionItemsItemStatus string
+
+const (
+	ListIncidentActionItemsOKActionItemsItemStatusOpen    ListIncidentActionItemsOKActionItemsItemStatus = "open"
+	ListIncidentActionItemsOKActionItemsItemStatusClosed  ListIncidentActionItemsOKActionItemsItemStatus = "closed"
+	ListIncidentActionItemsOKActionItemsItemStatusSkipped ListIncidentActionItemsOKActionItemsItemStatus = "skipped"
+)
+
+// AllValues returns all ListIncidentActionItemsOKActionItemsItemStatus values.
+func (ListIncidentActionItemsOKActionItemsItemStatus) AllValues() []ListIncidentActionItemsOKActionItemsItemStatus {
+	return []ListIncidentActionItemsOKActionItemsItemStatus{
+		ListIncidentActionItemsOKActionItemsItemStatusOpen,
+		ListIncidentActionItemsOKActionItemsItemStatusClosed,
+		ListIncidentActionItemsOKActionItemsItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListIncidentActionItemsOKActionItemsItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListIncidentActionItemsOKActionItemsItemStatusOpen:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemStatusClosed:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListIncidentActionItemsOKActionItemsItemStatus) UnmarshalText(data []byte) error {
+	switch ListIncidentActionItemsOKActionItemsItemStatus(data) {
+	case ListIncidentActionItemsOKActionItemsItemStatusOpen:
+		*s = ListIncidentActionItemsOKActionItemsItemStatusOpen
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemStatusClosed:
+		*s = ListIncidentActionItemsOKActionItemsItemStatusClosed
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemStatusSkipped:
+		*s = ListIncidentActionItemsOKActionItemsItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListIncidentActionItemsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListIncidentActionItemsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListIncidentActionItemsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListIncidentActionItemsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListIncidentActionItemsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListIncidentActionItemsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListIncidentActionItemsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListIncidentActionItemsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListIncidentActionItemsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListIncidentActionItemsPaymentRequired) listIncidentActionItemsRes() {}
+
+type ListIncidentActionItemsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListIncidentActionItemsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListIncidentActionItemsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListIncidentActionItemsUnauthorized) listIncidentActionItemsRes() {}
+
+type ListIncidentsOK struct {
+	Incidents        []ListIncidentsOKIncidentsItem  `json:"incidents"`
+	ResponseMetadata ListIncidentsOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetIncidents returns the value of Incidents.
+func (s *ListIncidentsOK) GetIncidents() []ListIncidentsOKIncidentsItem {
+	return s.Incidents
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListIncidentsOK) GetResponseMetadata() ListIncidentsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetIncidents sets the value of Incidents.
+func (s *ListIncidentsOK) SetIncidents(val []ListIncidentsOKIncidentsItem) {
+	s.Incidents = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListIncidentsOK) SetResponseMetadata(val ListIncidentsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListIncidentsOK) listIncidentsRes() {}
+
+type ListIncidentsOKIncidentsItem struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Severity label (translated).
+	Severity string `json:"severity"`
+	// Status (Japanese translation).
+	Status string `json:"status"`
+	// Root cause (Japanese translation).
+	RootCause    string                                   `json:"root_cause"`
+	Experimental bool                                     `json:"experimental"`
+	Metrics      ListIncidentsOKIncidentsItemMetrics      `json:"metrics"`
+	Service      ListIncidentsOKIncidentsItemService      `json:"service"`
+	Labels       []ListIncidentsOKIncidentsItemLabelsItem `json:"labels"`
+	CreatedAt    time.Time                                `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListIncidentsOKIncidentsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *ListIncidentsOKIncidentsItem) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *ListIncidentsOKIncidentsItem) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *ListIncidentsOKIncidentsItem) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *ListIncidentsOKIncidentsItem) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *ListIncidentsOKIncidentsItem) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetMetrics returns the value of Metrics.
+func (s *ListIncidentsOKIncidentsItem) GetMetrics() ListIncidentsOKIncidentsItemMetrics {
+	return s.Metrics
+}
+
+// GetService returns the value of Service.
+func (s *ListIncidentsOKIncidentsItem) GetService() ListIncidentsOKIncidentsItemService {
+	return s.Service
+}
+
+// GetLabels returns the value of Labels.
+func (s *ListIncidentsOKIncidentsItem) GetLabels() []ListIncidentsOKIncidentsItemLabelsItem {
+	return s.Labels
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListIncidentsOKIncidentsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListIncidentsOKIncidentsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *ListIncidentsOKIncidentsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *ListIncidentsOKIncidentsItem) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListIncidentsOKIncidentsItem) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *ListIncidentsOKIncidentsItem) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *ListIncidentsOKIncidentsItem) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetMetrics sets the value of Metrics.
+func (s *ListIncidentsOKIncidentsItem) SetMetrics(val ListIncidentsOKIncidentsItemMetrics) {
+	s.Metrics = val
+}
+
+// SetService sets the value of Service.
+func (s *ListIncidentsOKIncidentsItem) SetService(val ListIncidentsOKIncidentsItemService) {
+	s.Service = val
+}
+
+// SetLabels sets the value of Labels.
+func (s *ListIncidentsOKIncidentsItem) SetLabels(val []ListIncidentsOKIncidentsItemLabelsItem) {
+	s.Labels = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListIncidentsOKIncidentsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListIncidentsOKIncidentsItemLabelsItem struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *ListIncidentsOKIncidentsItemLabelsItem) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *ListIncidentsOKIncidentsItemLabelsItem) SetName(val string) {
+	s.Name = val
+}
+
+type ListIncidentsOKIncidentsItemMetrics struct {
+	// Time to Detect (seconds).
+	Ttd NilInt `json:"ttd"`
+	// Time to Acknowledge (seconds).
+	Tta NilInt `json:"tta"`
+	// Time to Investigate (seconds).
+	Tti NilInt `json:"tti"`
+	// Time to Fix (seconds).
+	Ttf NilInt `json:"ttf"`
+	// Time to Resolve (seconds).
+	Ttr NilInt `json:"ttr"`
+}
+
+// GetTtd returns the value of Ttd.
+func (s *ListIncidentsOKIncidentsItemMetrics) GetTtd() NilInt {
+	return s.Ttd
+}
+
+// GetTta returns the value of Tta.
+func (s *ListIncidentsOKIncidentsItemMetrics) GetTta() NilInt {
+	return s.Tta
+}
+
+// GetTti returns the value of Tti.
+func (s *ListIncidentsOKIncidentsItemMetrics) GetTti() NilInt {
+	return s.Tti
+}
+
+// GetTtf returns the value of Ttf.
+func (s *ListIncidentsOKIncidentsItemMetrics) GetTtf() NilInt {
+	return s.Ttf
+}
+
+// GetTtr returns the value of Ttr.
+func (s *ListIncidentsOKIncidentsItemMetrics) GetTtr() NilInt {
+	return s.Ttr
+}
+
+// SetTtd sets the value of Ttd.
+func (s *ListIncidentsOKIncidentsItemMetrics) SetTtd(val NilInt) {
+	s.Ttd = val
+}
+
+// SetTta sets the value of Tta.
+func (s *ListIncidentsOKIncidentsItemMetrics) SetTta(val NilInt) {
+	s.Tta = val
+}
+
+// SetTti sets the value of Tti.
+func (s *ListIncidentsOKIncidentsItemMetrics) SetTti(val NilInt) {
+	s.Tti = val
+}
+
+// SetTtf sets the value of Ttf.
+func (s *ListIncidentsOKIncidentsItemMetrics) SetTtf(val NilInt) {
+	s.Ttf = val
+}
+
+// SetTtr sets the value of Ttr.
+func (s *ListIncidentsOKIncidentsItemMetrics) SetTtr(val NilInt) {
+	s.Ttr = val
+}
+
+type ListIncidentsOKIncidentsItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *ListIncidentsOKIncidentsItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *ListIncidentsOKIncidentsItemService) SetName(val string) {
+	s.Name = val
+}
+
+type ListIncidentsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListIncidentsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListIncidentsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListIncidentsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListIncidentsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListIncidentsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListIncidentsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListIncidentsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListIncidentsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListIncidentsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListIncidentsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListIncidentsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListIncidentsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListIncidentsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListIncidentsPaymentRequired) listIncidentsRes() {}
+
+type ListIncidentsSortOrder string
+
+const (
+	ListIncidentsSortOrderAsc  ListIncidentsSortOrder = "asc"
+	ListIncidentsSortOrderDesc ListIncidentsSortOrder = "desc"
+)
+
+// AllValues returns all ListIncidentsSortOrder values.
+func (ListIncidentsSortOrder) AllValues() []ListIncidentsSortOrder {
+	return []ListIncidentsSortOrder{
+		ListIncidentsSortOrderAsc,
+		ListIncidentsSortOrderDesc,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListIncidentsSortOrder) MarshalText() ([]byte, error) {
+	switch s {
+	case ListIncidentsSortOrderAsc:
+		return []byte(s), nil
+	case ListIncidentsSortOrderDesc:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListIncidentsSortOrder) UnmarshalText(data []byte) error {
+	switch ListIncidentsSortOrder(data) {
+	case ListIncidentsSortOrderAsc:
+		*s = ListIncidentsSortOrderAsc
+		return nil
+	case ListIncidentsSortOrderDesc:
+		*s = ListIncidentsSortOrderDesc
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListIncidentsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListIncidentsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListIncidentsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListIncidentsUnauthorized) listIncidentsRes() {}
+
+type ListPostmortemTemplatesOK struct {
+	PostmortemTemplates []ListPostmortemTemplatesOKPostmortemTemplatesItem `json:"postmortem_templates"`
+	ResponseMetadata    ListPostmortemTemplatesOKResponseMetadata          `json:"response_metadata"`
+}
+
+// GetPostmortemTemplates returns the value of PostmortemTemplates.
+func (s *ListPostmortemTemplatesOK) GetPostmortemTemplates() []ListPostmortemTemplatesOKPostmortemTemplatesItem {
+	return s.PostmortemTemplates
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListPostmortemTemplatesOK) GetResponseMetadata() ListPostmortemTemplatesOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetPostmortemTemplates sets the value of PostmortemTemplates.
+func (s *ListPostmortemTemplatesOK) SetPostmortemTemplates(val []ListPostmortemTemplatesOKPostmortemTemplatesItem) {
+	s.PostmortemTemplates = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListPostmortemTemplatesOK) SetResponseMetadata(val ListPostmortemTemplatesOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListPostmortemTemplatesOK) listPostmortemTemplatesRes() {}
+
+type ListPostmortemTemplatesOKPostmortemTemplatesItem struct {
+	// Unique identifier of the postmortem template.
+	UUID uuid.UUID `json:"uuid"`
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob      string    `json:"blob"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListPostmortemTemplatesOKPostmortemTemplatesItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type ListPostmortemTemplatesOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListPostmortemTemplatesOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListPostmortemTemplatesOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListPostmortemTemplatesOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListPostmortemTemplatesOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListPostmortemTemplatesOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListPostmortemTemplatesPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListPostmortemTemplatesPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListPostmortemTemplatesPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListPostmortemTemplatesPaymentRequired) listPostmortemTemplatesRes() {}
+
+type ListPostmortemTemplatesUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListPostmortemTemplatesUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListPostmortemTemplatesUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListPostmortemTemplatesUnauthorized) listPostmortemTemplatesRes() {}
+
 type ListPostmortemsOK struct {
-	Postmortems      []Postmortem     `json:"postmortems"`
-	ResponseMetadata ResponseMetadata `json:"response_metadata"`
+	Postmortems      []ListPostmortemsOKPostmortemsItem `json:"postmortems"`
+	ResponseMetadata ListPostmortemsOKResponseMetadata  `json:"response_metadata"`
 }
 
 // GetPostmortems returns the value of Postmortems.
-func (s *ListPostmortemsOK) GetPostmortems() []Postmortem {
+func (s *ListPostmortemsOK) GetPostmortems() []ListPostmortemsOKPostmortemsItem {
 	return s.Postmortems
 }
 
 // GetResponseMetadata returns the value of ResponseMetadata.
-func (s *ListPostmortemsOK) GetResponseMetadata() ResponseMetadata {
+func (s *ListPostmortemsOK) GetResponseMetadata() ListPostmortemsOKResponseMetadata {
 	return s.ResponseMetadata
 }
 
 // SetPostmortems sets the value of Postmortems.
-func (s *ListPostmortemsOK) SetPostmortems(val []Postmortem) {
+func (s *ListPostmortemsOK) SetPostmortems(val []ListPostmortemsOKPostmortemsItem) {
 	s.Postmortems = val
 }
 
 // SetResponseMetadata sets the value of ResponseMetadata.
-func (s *ListPostmortemsOK) SetResponseMetadata(val ResponseMetadata) {
+func (s *ListPostmortemsOK) SetResponseMetadata(val ListPostmortemsOKResponseMetadata) {
 	s.ResponseMetadata = val
 }
 
 func (*ListPostmortemsOK) listPostmortemsRes() {}
 
-type ListServiceLabelsOK struct {
-	Labels []Label `json:"labels"`
+type ListPostmortemsOKPostmortemsItem struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Postmortem content (markdown).
+	Blob string `json:"blob"`
+	// Author nickname.
+	Author    string                                          `json:"author"`
+	Status    ListPostmortemsOKPostmortemsItemStatus          `json:"status"`
+	Incidents []ListPostmortemsOKPostmortemsItemIncidentsItem `json:"incidents"`
+	CreatedAt time.Time                                       `json:"created_at"`
+	UpdatedAt OptDateTime                                     `json:"updated_at"`
 }
 
-// GetLabels returns the value of Labels.
-func (s *ListServiceLabelsOK) GetLabels() []Label {
-	return s.Labels
+// GetUUID returns the value of UUID.
+func (s *ListPostmortemsOKPostmortemsItem) GetUUID() uuid.UUID {
+	return s.UUID
 }
 
-// SetLabels sets the value of Labels.
-func (s *ListServiceLabelsOK) SetLabels(val []Label) {
-	s.Labels = val
+// GetTitle returns the value of Title.
+func (s *ListPostmortemsOKPostmortemsItem) GetTitle() string {
+	return s.Title
 }
 
-func (*ListServiceLabelsOK) listServiceLabelsRes() {}
-
-type MessageError struct {
-	Message OptString `json:"message"`
+// GetBlob returns the value of Blob.
+func (s *ListPostmortemsOKPostmortemsItem) GetBlob() string {
+	return s.Blob
 }
 
-// GetMessage returns the value of Message.
-func (s *MessageError) GetMessage() OptString {
-	return s.Message
+// GetAuthor returns the value of Author.
+func (s *ListPostmortemsOKPostmortemsItem) GetAuthor() string {
+	return s.Author
 }
 
-// SetMessage sets the value of Message.
-func (s *MessageError) SetMessage(val OptString) {
-	s.Message = val
+// GetStatus returns the value of Status.
+func (s *ListPostmortemsOKPostmortemsItem) GetStatus() ListPostmortemsOKPostmortemsItemStatus {
+	return s.Status
 }
 
-type NotFoundError struct {
-	Error OptString `json:"error"`
+// GetIncidents returns the value of Incidents.
+func (s *ListPostmortemsOKPostmortemsItem) GetIncidents() []ListPostmortemsOKPostmortemsItemIncidentsItem {
+	return s.Incidents
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListPostmortemsOKPostmortemsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListPostmortemsOKPostmortemsItem) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListPostmortemsOKPostmortemsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *ListPostmortemsOKPostmortemsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *ListPostmortemsOKPostmortemsItem) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetAuthor sets the value of Author.
+func (s *ListPostmortemsOKPostmortemsItem) SetAuthor(val string) {
+	s.Author = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListPostmortemsOKPostmortemsItem) SetStatus(val ListPostmortemsOKPostmortemsItemStatus) {
+	s.Status = val
+}
+
+// SetIncidents sets the value of Incidents.
+func (s *ListPostmortemsOKPostmortemsItem) SetIncidents(val []ListPostmortemsOKPostmortemsItemIncidentsItem) {
+	s.Incidents = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListPostmortemsOKPostmortemsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListPostmortemsOKPostmortemsItem) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type ListPostmortemsOKPostmortemsItemIncidentsItem struct {
+	UUID         uuid.UUID                                            `json:"uuid"`
+	Title        string                                               `json:"title"`
+	Severity     string                                               `json:"severity"`
+	Status       string                                               `json:"status"`
+	RootCause    string                                               `json:"root_cause"`
+	Experimental bool                                                 `json:"experimental"`
+	Service      ListPostmortemsOKPostmortemsItemIncidentsItemService `json:"service"`
+	CreatedAt    time.Time                                            `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetService returns the value of Service.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetService() ListPostmortemsOKPostmortemsItemIncidentsItemService {
+	return s.Service
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetService sets the value of Service.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetService(val ListPostmortemsOKPostmortemsItemIncidentsItemService) {
+	s.Service = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListPostmortemsOKPostmortemsItemIncidentsItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *ListPostmortemsOKPostmortemsItemIncidentsItemService) SetName(val string) {
+	s.Name = val
+}
+
+type ListPostmortemsOKPostmortemsItemStatus string
+
+const (
+	ListPostmortemsOKPostmortemsItemStatusDraft    ListPostmortemsOKPostmortemsItemStatus = "draft"
+	ListPostmortemsOKPostmortemsItemStatusInReview ListPostmortemsOKPostmortemsItemStatus = "in_review"
+	ListPostmortemsOKPostmortemsItemStatusReviewed ListPostmortemsOKPostmortemsItemStatus = "reviewed"
+	ListPostmortemsOKPostmortemsItemStatusClosed   ListPostmortemsOKPostmortemsItemStatus = "closed"
+)
+
+// AllValues returns all ListPostmortemsOKPostmortemsItemStatus values.
+func (ListPostmortemsOKPostmortemsItemStatus) AllValues() []ListPostmortemsOKPostmortemsItemStatus {
+	return []ListPostmortemsOKPostmortemsItemStatus{
+		ListPostmortemsOKPostmortemsItemStatusDraft,
+		ListPostmortemsOKPostmortemsItemStatusInReview,
+		ListPostmortemsOKPostmortemsItemStatusReviewed,
+		ListPostmortemsOKPostmortemsItemStatusClosed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListPostmortemsOKPostmortemsItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListPostmortemsOKPostmortemsItemStatusDraft:
+		return []byte(s), nil
+	case ListPostmortemsOKPostmortemsItemStatusInReview:
+		return []byte(s), nil
+	case ListPostmortemsOKPostmortemsItemStatusReviewed:
+		return []byte(s), nil
+	case ListPostmortemsOKPostmortemsItemStatusClosed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListPostmortemsOKPostmortemsItemStatus) UnmarshalText(data []byte) error {
+	switch ListPostmortemsOKPostmortemsItemStatus(data) {
+	case ListPostmortemsOKPostmortemsItemStatusDraft:
+		*s = ListPostmortemsOKPostmortemsItemStatusDraft
+		return nil
+	case ListPostmortemsOKPostmortemsItemStatusInReview:
+		*s = ListPostmortemsOKPostmortemsItemStatusInReview
+		return nil
+	case ListPostmortemsOKPostmortemsItemStatusReviewed:
+		*s = ListPostmortemsOKPostmortemsItemStatusReviewed
+		return nil
+	case ListPostmortemsOKPostmortemsItemStatusClosed:
+		*s = ListPostmortemsOKPostmortemsItemStatusClosed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListPostmortemsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListPostmortemsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListPostmortemsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListPostmortemsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListPostmortemsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListPostmortemsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListPostmortemsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListPostmortemsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListPostmortemsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListPostmortemsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListPostmortemsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListPostmortemsPaymentRequired struct {
+	Error string `json:"error"`
 }
 
 // GetError returns the value of Error.
-func (s *NotFoundError) GetError() OptString {
+func (s *ListPostmortemsPaymentRequired) GetError() string {
 	return s.Error
 }
 
 // SetError sets the value of Error.
-func (s *NotFoundError) SetError(val OptString) {
+func (s *ListPostmortemsPaymentRequired) SetError(val string) {
 	s.Error = val
 }
 
-func (*NotFoundError) createServiceLabelRes()     {}
-func (*NotFoundError) deleteServiceLabelRes()     {}
-func (*NotFoundError) getIncidentRes()            {}
-func (*NotFoundError) listServiceLabelsRes()      {}
-func (*NotFoundError) updateIncidentLabelsRes()   {}
-func (*NotFoundError) updateIncidentSeverityRes() {}
-func (*NotFoundError) updateIncidentStatusRes()   {}
-func (*NotFoundError) updateServiceLabelRes()     {}
+func (*ListPostmortemsPaymentRequired) listPostmortemsRes() {}
+
+type ListPostmortemsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListPostmortemsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListPostmortemsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListPostmortemsUnauthorized) listPostmortemsRes() {}
+
+type ListRunbooksOK struct {
+	Runbooks         []ListRunbooksOKRunbooksItem   `json:"runbooks"`
+	ResponseMetadata ListRunbooksOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetRunbooks returns the value of Runbooks.
+func (s *ListRunbooksOK) GetRunbooks() []ListRunbooksOKRunbooksItem {
+	return s.Runbooks
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListRunbooksOK) GetResponseMetadata() ListRunbooksOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetRunbooks sets the value of Runbooks.
+func (s *ListRunbooksOK) SetRunbooks(val []ListRunbooksOKRunbooksItem) {
+	s.Runbooks = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListRunbooksOK) SetResponseMetadata(val ListRunbooksOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListRunbooksOK) listRunbooksRes() {}
+
+type ListRunbooksOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListRunbooksOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListRunbooksOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListRunbooksOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListRunbooksOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListRunbooksOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListRunbooksOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListRunbooksOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListRunbooksOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListRunbooksOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListRunbooksOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListRunbooksOKRunbooksItem struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace string `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob      string      `json:"blob"`
+	CreatedAt OptDateTime `json:"created_at"`
+	UpdatedAt OptDateTime `json:"updated_at"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *ListRunbooksOKRunbooksItem) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *ListRunbooksOKRunbooksItem) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListRunbooksOKRunbooksItem) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListRunbooksOKRunbooksItem) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *ListRunbooksOKRunbooksItem) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *ListRunbooksOKRunbooksItem) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListRunbooksOKRunbooksItem) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListRunbooksOKRunbooksItem) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type ListRunbooksPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListRunbooksPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListRunbooksPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListRunbooksPaymentRequired) listRunbooksRes() {}
+
+type ListRunbooksUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListRunbooksUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListRunbooksUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListRunbooksUnauthorized) listRunbooksRes() {}
+
+type ListServiceLabelsNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceLabelsNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceLabelsNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListServiceLabelsNotFound) listServiceLabelsRes() {}
+
+type ListServiceLabelsOK struct {
+	Labels           []ListServiceLabelsOKLabelsItem     `json:"labels"`
+	ResponseMetadata ListServiceLabelsOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetLabels returns the value of Labels.
+func (s *ListServiceLabelsOK) GetLabels() []ListServiceLabelsOKLabelsItem {
+	return s.Labels
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListServiceLabelsOK) GetResponseMetadata() ListServiceLabelsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetLabels sets the value of Labels.
+func (s *ListServiceLabelsOK) SetLabels(val []ListServiceLabelsOKLabelsItem) {
+	s.Labels = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListServiceLabelsOK) SetResponseMetadata(val ListServiceLabelsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListServiceLabelsOK) listServiceLabelsRes() {}
+
+type ListServiceLabelsOKLabelsItem struct {
+	UUID uuid.UUID `json:"uuid"`
+	Name string    `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color     string    `json:"color"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListServiceLabelsOKLabelsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListServiceLabelsOKLabelsItem) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *ListServiceLabelsOKLabelsItem) GetColor() string {
+	return s.Color
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListServiceLabelsOKLabelsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListServiceLabelsOKLabelsItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListServiceLabelsOKLabelsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListServiceLabelsOKLabelsItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *ListServiceLabelsOKLabelsItem) SetColor(val string) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListServiceLabelsOKLabelsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListServiceLabelsOKLabelsItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type ListServiceLabelsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListServiceLabelsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListServiceLabelsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListServiceLabelsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListServiceLabelsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListServiceLabelsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListServiceLabelsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListServiceLabelsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListServiceLabelsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListServiceLabelsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListServiceLabelsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListServiceLabelsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceLabelsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceLabelsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListServiceLabelsPaymentRequired) listServiceLabelsRes() {}
+
+type ListServiceLabelsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListServiceLabelsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListServiceLabelsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListServiceLabelsUnauthorized) listServiceLabelsRes() {}
+
+type ListServiceRunbookRulesNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceRunbookRulesNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceRunbookRulesNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListServiceRunbookRulesNotFound) listServiceRunbookRulesRes() {}
+
+type ListServiceRunbookRulesOK struct {
+	RunbookRules     []ListServiceRunbookRulesOKRunbookRulesItem `json:"runbook_rules"`
+	ResponseMetadata ListServiceRunbookRulesOKResponseMetadata   `json:"response_metadata"`
+}
+
+// GetRunbookRules returns the value of RunbookRules.
+func (s *ListServiceRunbookRulesOK) GetRunbookRules() []ListServiceRunbookRulesOKRunbookRulesItem {
+	return s.RunbookRules
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListServiceRunbookRulesOK) GetResponseMetadata() ListServiceRunbookRulesOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetRunbookRules sets the value of RunbookRules.
+func (s *ListServiceRunbookRulesOK) SetRunbookRules(val []ListServiceRunbookRulesOKRunbookRulesItem) {
+	s.RunbookRules = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListServiceRunbookRulesOK) SetResponseMetadata(val ListServiceRunbookRulesOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListServiceRunbookRulesOK) listServiceRunbookRulesRes() {}
+
+type ListServiceRunbookRulesOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListServiceRunbookRulesOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListServiceRunbookRulesOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListServiceRunbookRulesOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListServiceRunbookRulesOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListServiceRunbookRulesOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListServiceRunbookRulesOKRunbookRulesItem struct {
+	UUID uuid.UUID `json:"uuid"`
+	// Regex pattern for matching incident title or description.
+	Pattern string `json:"pattern"`
+	// Match target (title or description).
+	Target ListServiceRunbookRulesOKRunbookRulesItemTarget `json:"target"`
+	// Priority (lower value = higher priority).
+	Priority int `json:"priority"`
+	// Namespace of the linked Runbook (e.g. /default, /api-server-recovery).
+	RunbookNamespace string    `json:"runbook_namespace"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetPattern returns the value of Pattern.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetPattern() string {
+	return s.Pattern
+}
+
+// GetTarget returns the value of Target.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetTarget() ListServiceRunbookRulesOKRunbookRulesItemTarget {
+	return s.Target
+}
+
+// GetPriority returns the value of Priority.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetPriority() int {
+	return s.Priority
+}
+
+// GetRunbookNamespace returns the value of RunbookNamespace.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetRunbookNamespace() string {
+	return s.RunbookNamespace
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetPattern sets the value of Pattern.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetPattern(val string) {
+	s.Pattern = val
+}
+
+// SetTarget sets the value of Target.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetTarget(val ListServiceRunbookRulesOKRunbookRulesItemTarget) {
+	s.Target = val
+}
+
+// SetPriority sets the value of Priority.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetPriority(val int) {
+	s.Priority = val
+}
+
+// SetRunbookNamespace sets the value of RunbookNamespace.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetRunbookNamespace(val string) {
+	s.RunbookNamespace = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListServiceRunbookRulesOKRunbookRulesItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+// Match target (title or description).
+type ListServiceRunbookRulesOKRunbookRulesItemTarget string
+
+const (
+	ListServiceRunbookRulesOKRunbookRulesItemTargetTitle       ListServiceRunbookRulesOKRunbookRulesItemTarget = "title"
+	ListServiceRunbookRulesOKRunbookRulesItemTargetDescription ListServiceRunbookRulesOKRunbookRulesItemTarget = "description"
+)
+
+// AllValues returns all ListServiceRunbookRulesOKRunbookRulesItemTarget values.
+func (ListServiceRunbookRulesOKRunbookRulesItemTarget) AllValues() []ListServiceRunbookRulesOKRunbookRulesItemTarget {
+	return []ListServiceRunbookRulesOKRunbookRulesItemTarget{
+		ListServiceRunbookRulesOKRunbookRulesItemTargetTitle,
+		ListServiceRunbookRulesOKRunbookRulesItemTargetDescription,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListServiceRunbookRulesOKRunbookRulesItemTarget) MarshalText() ([]byte, error) {
+	switch s {
+	case ListServiceRunbookRulesOKRunbookRulesItemTargetTitle:
+		return []byte(s), nil
+	case ListServiceRunbookRulesOKRunbookRulesItemTargetDescription:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListServiceRunbookRulesOKRunbookRulesItemTarget) UnmarshalText(data []byte) error {
+	switch ListServiceRunbookRulesOKRunbookRulesItemTarget(data) {
+	case ListServiceRunbookRulesOKRunbookRulesItemTargetTitle:
+		*s = ListServiceRunbookRulesOKRunbookRulesItemTargetTitle
+		return nil
+	case ListServiceRunbookRulesOKRunbookRulesItemTargetDescription:
+		*s = ListServiceRunbookRulesOKRunbookRulesItemTargetDescription
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListServiceRunbookRulesPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceRunbookRulesPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceRunbookRulesPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListServiceRunbookRulesPaymentRequired) listServiceRunbookRulesRes() {}
+
+type ListServiceRunbookRulesUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListServiceRunbookRulesUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListServiceRunbookRulesUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListServiceRunbookRulesUnauthorized) listServiceRunbookRulesRes() {}
+
+type ListServiceWebhookConfigurationsNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceWebhookConfigurationsNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceWebhookConfigurationsNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListServiceWebhookConfigurationsNotFound) listServiceWebhookConfigurationsRes() {}
+
+type ListServiceWebhookConfigurationsOK struct {
+	WebhookConfigurations []ListServiceWebhookConfigurationsOKWebhookConfigurationsItem `json:"webhook_configurations"`
+	ResponseMetadata      ListServiceWebhookConfigurationsOKResponseMetadata            `json:"response_metadata"`
+}
+
+// GetWebhookConfigurations returns the value of WebhookConfigurations.
+func (s *ListServiceWebhookConfigurationsOK) GetWebhookConfigurations() []ListServiceWebhookConfigurationsOKWebhookConfigurationsItem {
+	return s.WebhookConfigurations
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListServiceWebhookConfigurationsOK) GetResponseMetadata() ListServiceWebhookConfigurationsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetWebhookConfigurations sets the value of WebhookConfigurations.
+func (s *ListServiceWebhookConfigurationsOK) SetWebhookConfigurations(val []ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) {
+	s.WebhookConfigurations = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListServiceWebhookConfigurationsOK) SetResponseMetadata(val ListServiceWebhookConfigurationsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListServiceWebhookConfigurationsOK) listServiceWebhookConfigurationsRes() {}
+
+type ListServiceWebhookConfigurationsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListServiceWebhookConfigurationsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListServiceWebhookConfigurationsOKWebhookConfigurationsItem struct {
+	UUID      uuid.UUID                                                        `json:"uuid"`
+	Name      string                                                           `json:"name"`
+	URL       url.URL                                                          `json:"url"`
+	State     ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState `json:"state"`
+	CreatedAt time.Time                                                        `json:"created_at"`
+	UpdatedAt time.Time                                                        `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetName() string {
+	return s.Name
+}
+
+// GetURL returns the value of URL.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetURL() url.URL {
+	return s.URL
+}
+
+// GetState returns the value of State.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetState() ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState {
+	return s.State
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetURL sets the value of URL.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetURL(val url.URL) {
+	s.URL = val
+}
+
+// SetState sets the value of State.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetState(val ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState) {
+	s.State = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState string
+
+const (
+	ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateUnverified ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState = "unverified"
+	ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateVerified   ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState = "verified"
+	ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateArchived   ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState = "archived"
+)
+
+// AllValues returns all ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState values.
+func (ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState) AllValues() []ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState {
+	return []ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState{
+		ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateUnverified,
+		ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateVerified,
+		ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateArchived,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState) MarshalText() ([]byte, error) {
+	switch s {
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateUnverified:
+		return []byte(s), nil
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateVerified:
+		return []byte(s), nil
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateArchived:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState) UnmarshalText(data []byte) error {
+	switch ListServiceWebhookConfigurationsOKWebhookConfigurationsItemState(data) {
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateUnverified:
+		*s = ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateUnverified
+		return nil
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateVerified:
+		*s = ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateVerified
+		return nil
+	case ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateArchived:
+		*s = ListServiceWebhookConfigurationsOKWebhookConfigurationsItemStateArchived
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListServiceWebhookConfigurationsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServiceWebhookConfigurationsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServiceWebhookConfigurationsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListServiceWebhookConfigurationsPaymentRequired) listServiceWebhookConfigurationsRes() {}
+
+type ListServiceWebhookConfigurationsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListServiceWebhookConfigurationsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListServiceWebhookConfigurationsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListServiceWebhookConfigurationsUnauthorized) listServiceWebhookConfigurationsRes() {}
+
+type ListServicesOK struct {
+	Services         []ListServicesOKServicesItem   `json:"services"`
+	ResponseMetadata ListServicesOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetServices returns the value of Services.
+func (s *ListServicesOK) GetServices() []ListServicesOKServicesItem {
+	return s.Services
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListServicesOK) GetResponseMetadata() ListServicesOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetServices sets the value of Services.
+func (s *ListServicesOK) SetServices(val []ListServicesOKServicesItem) {
+	s.Services = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListServicesOK) SetResponseMetadata(val ListServicesOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListServicesOK) listServicesRes() {}
+
+type ListServicesOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListServicesOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListServicesOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListServicesOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListServicesOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListServicesOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListServicesOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListServicesOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListServicesOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListServicesOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListServicesOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListServicesOKServicesItem struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *ListServicesOKServicesItem) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *ListServicesOKServicesItem) SetName(val string) {
+	s.Name = val
+}
+
+type ListServicesPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListServicesPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListServicesPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListServicesPaymentRequired) listServicesRes() {}
+
+type ListServicesUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListServicesUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListServicesUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListServicesUnauthorized) listServicesRes() {}
+
+type ListUsersOK struct {
+	Users            []ListUsersOKUsersItem      `json:"users"`
+	ResponseMetadata ListUsersOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetUsers returns the value of Users.
+func (s *ListUsersOK) GetUsers() []ListUsersOKUsersItem {
+	return s.Users
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListUsersOK) GetResponseMetadata() ListUsersOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetUsers sets the value of Users.
+func (s *ListUsersOK) SetUsers(val []ListUsersOKUsersItem) {
+	s.Users = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListUsersOK) SetResponseMetadata(val ListUsersOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListUsersOK) listUsersRes() {}
+
+type ListUsersOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListUsersOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListUsersOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListUsersOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListUsersOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListUsersOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListUsersOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListUsersOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListUsersOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListUsersOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListUsersOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListUsersOKUsersItem struct {
+	Sub       string                           `json:"sub"`
+	Nickname  string                           `json:"nickname"`
+	Picture   string                           `json:"picture"`
+	Status    ListUsersOKUsersItemStatus       `json:"status"`
+	SlackUser NilListUsersOKUsersItemSlackUser `json:"slack_user"`
+	CreatedAt time.Time                        `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListUsersOKUsersItem) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListUsersOKUsersItem) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListUsersOKUsersItem) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListUsersOKUsersItem) GetStatus() ListUsersOKUsersItemStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListUsersOKUsersItem) GetSlackUser() NilListUsersOKUsersItemSlackUser {
+	return s.SlackUser
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListUsersOKUsersItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListUsersOKUsersItem) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListUsersOKUsersItem) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListUsersOKUsersItem) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListUsersOKUsersItem) SetStatus(val ListUsersOKUsersItemStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListUsersOKUsersItem) SetSlackUser(val NilListUsersOKUsersItemSlackUser) {
+	s.SlackUser = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListUsersOKUsersItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListUsersOKUsersItemSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListUsersOKUsersItemSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListUsersOKUsersItemSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListUsersOKUsersItemStatus string
+
+const (
+	ListUsersOKUsersItemStatusActive            ListUsersOKUsersItemStatus = "active"
+	ListUsersOKUsersItemStatusInactive          ListUsersOKUsersItemStatus = "inactive"
+	ListUsersOKUsersItemStatusInvited           ListUsersOKUsersItemStatus = "invited"
+	ListUsersOKUsersItemStatusInvitationPending ListUsersOKUsersItemStatus = "invitation_pending"
+	ListUsersOKUsersItemStatusInvitationFailed  ListUsersOKUsersItemStatus = "invitation_failed"
+	ListUsersOKUsersItemStatusDeactivated       ListUsersOKUsersItemStatus = "deactivated"
+)
+
+// AllValues returns all ListUsersOKUsersItemStatus values.
+func (ListUsersOKUsersItemStatus) AllValues() []ListUsersOKUsersItemStatus {
+	return []ListUsersOKUsersItemStatus{
+		ListUsersOKUsersItemStatusActive,
+		ListUsersOKUsersItemStatusInactive,
+		ListUsersOKUsersItemStatusInvited,
+		ListUsersOKUsersItemStatusInvitationPending,
+		ListUsersOKUsersItemStatusInvitationFailed,
+		ListUsersOKUsersItemStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListUsersOKUsersItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListUsersOKUsersItemStatusActive:
+		return []byte(s), nil
+	case ListUsersOKUsersItemStatusInactive:
+		return []byte(s), nil
+	case ListUsersOKUsersItemStatusInvited:
+		return []byte(s), nil
+	case ListUsersOKUsersItemStatusInvitationPending:
+		return []byte(s), nil
+	case ListUsersOKUsersItemStatusInvitationFailed:
+		return []byte(s), nil
+	case ListUsersOKUsersItemStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListUsersOKUsersItemStatus) UnmarshalText(data []byte) error {
+	switch ListUsersOKUsersItemStatus(data) {
+	case ListUsersOKUsersItemStatusActive:
+		*s = ListUsersOKUsersItemStatusActive
+		return nil
+	case ListUsersOKUsersItemStatusInactive:
+		*s = ListUsersOKUsersItemStatusInactive
+		return nil
+	case ListUsersOKUsersItemStatusInvited:
+		*s = ListUsersOKUsersItemStatusInvited
+		return nil
+	case ListUsersOKUsersItemStatusInvitationPending:
+		*s = ListUsersOKUsersItemStatusInvitationPending
+		return nil
+	case ListUsersOKUsersItemStatusInvitationFailed:
+		*s = ListUsersOKUsersItemStatusInvitationFailed
+		return nil
+	case ListUsersOKUsersItemStatusDeactivated:
+		*s = ListUsersOKUsersItemStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListUsersPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListUsersPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListUsersPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListUsersPaymentRequired) listUsersRes() {}
+
+type ListUsersUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListUsersUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListUsersUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListUsersUnauthorized) listUsersRes() {}
+
+// NewNilInt returns new NilInt with value set to v.
+func NewNilInt(v int) NilInt {
+	return NilInt{
+		Value: v,
+	}
+}
+
+// NilInt is nullable int.
+type NilInt struct {
+	Value int
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilInt) SetTo(v int) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilInt) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilInt) SetToNull() {
+	o.Null = true
+	var v int
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilInt) Get() (v int, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilInt) Or(d int) int {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListUsersOKUsersItemSlackUser returns new NilListUsersOKUsersItemSlackUser with value set to v.
+func NewNilListUsersOKUsersItemSlackUser(v ListUsersOKUsersItemSlackUser) NilListUsersOKUsersItemSlackUser {
+	return NilListUsersOKUsersItemSlackUser{
+		Value: v,
+	}
+}
+
+// NilListUsersOKUsersItemSlackUser is nullable ListUsersOKUsersItemSlackUser.
+type NilListUsersOKUsersItemSlackUser struct {
+	Value ListUsersOKUsersItemSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListUsersOKUsersItemSlackUser) SetTo(v ListUsersOKUsersItemSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListUsersOKUsersItemSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListUsersOKUsersItemSlackUser) SetToNull() {
+	o.Null = true
+	var v ListUsersOKUsersItemSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListUsersOKUsersItemSlackUser) Get() (v ListUsersOKUsersItemSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListUsersOKUsersItemSlackUser) Or(d ListUsersOKUsersItemSlackUser) ListUsersOKUsersItemSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilString returns new NilString with value set to v.
+func NewNilString(v string) NilString {
+	return NilString{
+		Value: v,
+	}
+}
+
+// NilString is nullable string.
+type NilString struct {
+	Value string
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilString) SetTo(v string) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilString) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilString) SetToNull() {
+	o.Null = true
+	var v string
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilString) Get() (v string, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateIncidentCommanderOKCommander returns new NilUpdateIncidentCommanderOKCommander with value set to v.
+func NewNilUpdateIncidentCommanderOKCommander(v UpdateIncidentCommanderOKCommander) NilUpdateIncidentCommanderOKCommander {
+	return NilUpdateIncidentCommanderOKCommander{
+		Value: v,
+	}
+}
+
+// NilUpdateIncidentCommanderOKCommander is nullable UpdateIncidentCommanderOKCommander.
+type NilUpdateIncidentCommanderOKCommander struct {
+	Value UpdateIncidentCommanderOKCommander
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateIncidentCommanderOKCommander) SetTo(v UpdateIncidentCommanderOKCommander) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateIncidentCommanderOKCommander) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateIncidentCommanderOKCommander) SetToNull() {
+	o.Null = true
+	var v UpdateIncidentCommanderOKCommander
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateIncidentCommanderOKCommander) Get() (v UpdateIncidentCommanderOKCommander, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateIncidentCommanderOKCommander) Or(d UpdateIncidentCommanderOKCommander) UpdateIncidentCommanderOKCommander {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptBool returns new OptBool with value set to v.
+func NewOptBool(v bool) OptBool {
+	return OptBool{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptBool is optional bool.
+type OptBool struct {
+	Value bool
+	Set   bool
+}
+
+// IsSet returns true if OptBool was set.
+func (o OptBool) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptBool) Reset() {
+	var v bool
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptBool) SetTo(v bool) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptBool) Get() (v bool, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptBool) Or(d bool) bool {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptCreateIncidentActionItemReqActionItemStatus returns new OptCreateIncidentActionItemReqActionItemStatus with value set to v.
+func NewOptCreateIncidentActionItemReqActionItemStatus(v CreateIncidentActionItemReqActionItemStatus) OptCreateIncidentActionItemReqActionItemStatus {
+	return OptCreateIncidentActionItemReqActionItemStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateIncidentActionItemReqActionItemStatus is optional CreateIncidentActionItemReqActionItemStatus.
+type OptCreateIncidentActionItemReqActionItemStatus struct {
+	Value CreateIncidentActionItemReqActionItemStatus
+	Set   bool
+}
+
+// IsSet returns true if OptCreateIncidentActionItemReqActionItemStatus was set.
+func (o OptCreateIncidentActionItemReqActionItemStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreateIncidentActionItemReqActionItemStatus) Reset() {
+	var v CreateIncidentActionItemReqActionItemStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateIncidentActionItemReqActionItemStatus) SetTo(v CreateIncidentActionItemReqActionItemStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateIncidentActionItemReqActionItemStatus) Get() (v CreateIncidentActionItemReqActionItemStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateIncidentActionItemReqActionItemStatus) Or(d CreateIncidentActionItemReqActionItemStatus) CreateIncidentActionItemReqActionItemStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptCreatePostmortemReqStatus returns new OptCreatePostmortemReqStatus with value set to v.
+func NewOptCreatePostmortemReqStatus(v CreatePostmortemReqStatus) OptCreatePostmortemReqStatus {
+	return OptCreatePostmortemReqStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreatePostmortemReqStatus is optional CreatePostmortemReqStatus.
+type OptCreatePostmortemReqStatus struct {
+	Value CreatePostmortemReqStatus
+	Set   bool
+}
+
+// IsSet returns true if OptCreatePostmortemReqStatus was set.
+func (o OptCreatePostmortemReqStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreatePostmortemReqStatus) Reset() {
+	var v CreatePostmortemReqStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreatePostmortemReqStatus) SetTo(v CreatePostmortemReqStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreatePostmortemReqStatus) Get() (v CreatePostmortemReqStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreatePostmortemReqStatus) Or(d CreatePostmortemReqStatus) CreatePostmortemReqStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
 
 // NewOptDateTime returns new OptDateTime with value set to v.
 func NewOptDateTime(v time.Time) OptDateTime {
@@ -1299,6 +7451,188 @@ func (o OptInt) Or(d int) int {
 	return d
 }
 
+// NewOptListIncidentsSortOrder returns new OptListIncidentsSortOrder with value set to v.
+func NewOptListIncidentsSortOrder(v ListIncidentsSortOrder) OptListIncidentsSortOrder {
+	return OptListIncidentsSortOrder{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptListIncidentsSortOrder is optional ListIncidentsSortOrder.
+type OptListIncidentsSortOrder struct {
+	Value ListIncidentsSortOrder
+	Set   bool
+}
+
+// IsSet returns true if OptListIncidentsSortOrder was set.
+func (o OptListIncidentsSortOrder) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptListIncidentsSortOrder) Reset() {
+	var v ListIncidentsSortOrder
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptListIncidentsSortOrder) SetTo(v ListIncidentsSortOrder) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptListIncidentsSortOrder) Get() (v ListIncidentsSortOrder, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptListIncidentsSortOrder) Or(d ListIncidentsSortOrder) ListIncidentsSortOrder {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilDateTime returns new OptNilDateTime with value set to v.
+func NewOptNilDateTime(v time.Time) OptNilDateTime {
+	return OptNilDateTime{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilDateTime is optional nullable time.Time.
+type OptNilDateTime struct {
+	Value time.Time
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilDateTime was set.
+func (o OptNilDateTime) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilDateTime) Reset() {
+	var v time.Time
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilDateTime) SetTo(v time.Time) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilDateTime) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilDateTime) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v time.Time
+	o.Value = v
+}
+
+// IsEmpty returns true if the field was omitted from the payload (not Set and not Null).
+func (o OptNilDateTime) IsEmpty() bool {
+	return !o.Set && !o.Null
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilDateTime) Get() (v time.Time, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilDateTime) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilGetIncidentOKIncidentSlackChannel returns new OptNilGetIncidentOKIncidentSlackChannel with value set to v.
+func NewOptNilGetIncidentOKIncidentSlackChannel(v GetIncidentOKIncidentSlackChannel) OptNilGetIncidentOKIncidentSlackChannel {
+	return OptNilGetIncidentOKIncidentSlackChannel{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilGetIncidentOKIncidentSlackChannel is optional nullable GetIncidentOKIncidentSlackChannel.
+type OptNilGetIncidentOKIncidentSlackChannel struct {
+	Value GetIncidentOKIncidentSlackChannel
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilGetIncidentOKIncidentSlackChannel was set.
+func (o OptNilGetIncidentOKIncidentSlackChannel) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilGetIncidentOKIncidentSlackChannel) Reset() {
+	var v GetIncidentOKIncidentSlackChannel
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilGetIncidentOKIncidentSlackChannel) SetTo(v GetIncidentOKIncidentSlackChannel) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilGetIncidentOKIncidentSlackChannel) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilGetIncidentOKIncidentSlackChannel) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v GetIncidentOKIncidentSlackChannel
+	o.Value = v
+}
+
+// IsEmpty returns true if the field was omitted from the payload (not Set and not Null).
+func (o OptNilGetIncidentOKIncidentSlackChannel) IsEmpty() bool {
+	return !o.Set && !o.Null
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilGetIncidentOKIncidentSlackChannel) Get() (v GetIncidentOKIncidentSlackChannel, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilGetIncidentOKIncidentSlackChannel) Or(d GetIncidentOKIncidentSlackChannel) GetIncidentOKIncidentSlackChannel {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptNilInt returns new OptNilInt with value set to v.
 func NewOptNilInt(v int) OptNilInt {
 	return OptNilInt{
@@ -1343,6 +7677,11 @@ func (o *OptNilInt) SetToNull() {
 	o.Value = v
 }
 
+// IsEmpty returns true if the field was omitted from the payload (not Set and not Null).
+func (o OptNilInt) IsEmpty() bool {
+	return !o.Set && !o.Null
+}
+
 // Get returns value and boolean that denotes whether value was set.
 func (o OptNilInt) Get() (v int, ok bool) {
 	if o.Null {
@@ -1356,6 +7695,142 @@ func (o OptNilInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptNilInt) Or(d int) int {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilString returns new OptNilString with value set to v.
+func NewOptNilString(v string) OptNilString {
+	return OptNilString{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilString is optional nullable string.
+type OptNilString struct {
+	Value string
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilString was set.
+func (o OptNilString) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilString) Reset() {
+	var v string
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilString) SetTo(v string) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilString) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilString) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v string
+	o.Value = v
+}
+
+// IsEmpty returns true if the field was omitted from the payload (not Set and not Null).
+func (o OptNilString) IsEmpty() bool {
+	return !o.Set && !o.Null
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilString) Get() (v string, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilString) Or(d string) string {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilUpdateIncidentOKIncidentSlackChannel returns new OptNilUpdateIncidentOKIncidentSlackChannel with value set to v.
+func NewOptNilUpdateIncidentOKIncidentSlackChannel(v UpdateIncidentOKIncidentSlackChannel) OptNilUpdateIncidentOKIncidentSlackChannel {
+	return OptNilUpdateIncidentOKIncidentSlackChannel{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilUpdateIncidentOKIncidentSlackChannel is optional nullable UpdateIncidentOKIncidentSlackChannel.
+type OptNilUpdateIncidentOKIncidentSlackChannel struct {
+	Value UpdateIncidentOKIncidentSlackChannel
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilUpdateIncidentOKIncidentSlackChannel was set.
+func (o OptNilUpdateIncidentOKIncidentSlackChannel) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilUpdateIncidentOKIncidentSlackChannel) Reset() {
+	var v UpdateIncidentOKIncidentSlackChannel
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilUpdateIncidentOKIncidentSlackChannel) SetTo(v UpdateIncidentOKIncidentSlackChannel) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilUpdateIncidentOKIncidentSlackChannel) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilUpdateIncidentOKIncidentSlackChannel) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v UpdateIncidentOKIncidentSlackChannel
+	o.Value = v
+}
+
+// IsEmpty returns true if the field was omitted from the payload (not Set and not Null).
+func (o OptNilUpdateIncidentOKIncidentSlackChannel) IsEmpty() bool {
+	return !o.Set && !o.Null
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilUpdateIncidentOKIncidentSlackChannel) Get() (v UpdateIncidentOKIncidentSlackChannel, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilUpdateIncidentOKIncidentSlackChannel) Or(d UpdateIncidentOKIncidentSlackChannel) UpdateIncidentOKIncidentSlackChannel {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1408,226 +7883,687 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
-// Ref: #/components/schemas/Postmortem
-type Postmortem struct {
-	// Postmortem ID.
-	ID int64 `json:"id"`
-	// Postmortem title.
-	Title string `json:"title"`
-	// Creation timestamp.
-	CreatedAt time.Time `json:"created_at"`
-	// Last update timestamp.
-	UpdatedAt time.Time `json:"updated_at"`
+// NewOptUpdatePostmortemReqStatus returns new OptUpdatePostmortemReqStatus with value set to v.
+func NewOptUpdatePostmortemReqStatus(v UpdatePostmortemReqStatus) OptUpdatePostmortemReqStatus {
+	return OptUpdatePostmortemReqStatus{
+		Value: v,
+		Set:   true,
+	}
 }
 
-// GetID returns the value of ID.
-func (s *Postmortem) GetID() int64 {
-	return s.ID
+// OptUpdatePostmortemReqStatus is optional UpdatePostmortemReqStatus.
+type OptUpdatePostmortemReqStatus struct {
+	Value UpdatePostmortemReqStatus
+	Set   bool
 }
 
-// GetTitle returns the value of Title.
-func (s *Postmortem) GetTitle() string {
-	return s.Title
+// IsSet returns true if OptUpdatePostmortemReqStatus was set.
+func (o OptUpdatePostmortemReqStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdatePostmortemReqStatus) Reset() {
+	var v UpdatePostmortemReqStatus
+	o.Value = v
+	o.Set = false
 }
 
-// GetCreatedAt returns the value of CreatedAt.
-func (s *Postmortem) GetCreatedAt() time.Time {
-	return s.CreatedAt
+// SetTo sets value to v.
+func (o *OptUpdatePostmortemReqStatus) SetTo(v UpdatePostmortemReqStatus) {
+	o.Set = true
+	o.Value = v
 }
 
-// GetUpdatedAt returns the value of UpdatedAt.
-func (s *Postmortem) GetUpdatedAt() time.Time {
-	return s.UpdatedAt
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdatePostmortemReqStatus) Get() (v UpdatePostmortemReqStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
 }
 
-// SetID sets the value of ID.
-func (s *Postmortem) SetID(val int64) {
-	s.ID = val
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdatePostmortemReqStatus) Or(d UpdatePostmortemReqStatus) UpdatePostmortemReqStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
 }
 
-// SetTitle sets the value of Title.
-func (s *Postmortem) SetTitle(val string) {
-	s.Title = val
+// NewOptUpdateServiceRunbookRuleReqRunbookRuleTarget returns new OptUpdateServiceRunbookRuleReqRunbookRuleTarget with value set to v.
+func NewOptUpdateServiceRunbookRuleReqRunbookRuleTarget(v UpdateServiceRunbookRuleReqRunbookRuleTarget) OptUpdateServiceRunbookRuleReqRunbookRuleTarget {
+	return OptUpdateServiceRunbookRuleReqRunbookRuleTarget{
+		Value: v,
+		Set:   true,
+	}
 }
 
-// SetCreatedAt sets the value of CreatedAt.
-func (s *Postmortem) SetCreatedAt(val time.Time) {
-	s.CreatedAt = val
+// OptUpdateServiceRunbookRuleReqRunbookRuleTarget is optional UpdateServiceRunbookRuleReqRunbookRuleTarget.
+type OptUpdateServiceRunbookRuleReqRunbookRuleTarget struct {
+	Value UpdateServiceRunbookRuleReqRunbookRuleTarget
+	Set   bool
 }
 
-// SetUpdatedAt sets the value of UpdatedAt.
-func (s *Postmortem) SetUpdatedAt(val time.Time) {
-	s.UpdatedAt = val
+// IsSet returns true if OptUpdateServiceRunbookRuleReqRunbookRuleTarget was set.
+func (o OptUpdateServiceRunbookRuleReqRunbookRuleTarget) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateServiceRunbookRuleReqRunbookRuleTarget) Reset() {
+	var v UpdateServiceRunbookRuleReqRunbookRuleTarget
+	o.Value = v
+	o.Set = false
 }
 
-func (*Postmortem) createPostmortemRes() {}
-
-// Ref: #/components/schemas/ResponseMetadata
-type ResponseMetadata struct {
-	// Current page number.
-	CurrentPage int `json:"current_page"`
-	// Next page number.
-	NextPage OptNilInt `json:"next_page"`
-	// Previous page number.
-	PrevPage OptNilInt `json:"prev_page"`
-	// Total number of pages.
-	TotalPages int `json:"total_pages"`
-	// Total number of items.
-	TotalCount int `json:"total_count"`
+// SetTo sets value to v.
+func (o *OptUpdateServiceRunbookRuleReqRunbookRuleTarget) SetTo(v UpdateServiceRunbookRuleReqRunbookRuleTarget) {
+	o.Set = true
+	o.Value = v
 }
 
-// GetCurrentPage returns the value of CurrentPage.
-func (s *ResponseMetadata) GetCurrentPage() int {
-	return s.CurrentPage
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateServiceRunbookRuleReqRunbookRuleTarget) Get() (v UpdateServiceRunbookRuleReqRunbookRuleTarget, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
 }
 
-// GetNextPage returns the value of NextPage.
-func (s *ResponseMetadata) GetNextPage() OptNilInt {
-	return s.NextPage
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateServiceRunbookRuleReqRunbookRuleTarget) Or(d UpdateServiceRunbookRuleReqRunbookRuleTarget) UpdateServiceRunbookRuleReqRunbookRuleTarget {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
 }
 
-// GetPrevPage returns the value of PrevPage.
-func (s *ResponseMetadata) GetPrevPage() OptNilInt {
-	return s.PrevPage
-}
-
-// GetTotalPages returns the value of TotalPages.
-func (s *ResponseMetadata) GetTotalPages() int {
-	return s.TotalPages
-}
-
-// GetTotalCount returns the value of TotalCount.
-func (s *ResponseMetadata) GetTotalCount() int {
-	return s.TotalCount
-}
-
-// SetCurrentPage sets the value of CurrentPage.
-func (s *ResponseMetadata) SetCurrentPage(val int) {
-	s.CurrentPage = val
-}
-
-// SetNextPage sets the value of NextPage.
-func (s *ResponseMetadata) SetNextPage(val OptNilInt) {
-	s.NextPage = val
-}
-
-// SetPrevPage sets the value of PrevPage.
-func (s *ResponseMetadata) SetPrevPage(val OptNilInt) {
-	s.PrevPage = val
-}
-
-// SetTotalPages sets the value of TotalPages.
-func (s *ResponseMetadata) SetTotalPages(val int) {
-	s.TotalPages = val
-}
-
-// SetTotalCount sets the value of TotalCount.
-func (s *ResponseMetadata) SetTotalCount(val int) {
-	s.TotalCount = val
-}
-
-// Ref: #/components/schemas/Service
-type Service struct {
-	// Service name.
-	Name   string          `json:"name"`
-	Labels []IncidentLabel `json:"labels"`
-}
-
-// GetName returns the value of Name.
-func (s *Service) GetName() string {
-	return s.Name
-}
-
-// GetLabels returns the value of Labels.
-func (s *Service) GetLabels() []IncidentLabel {
-	return s.Labels
-}
-
-// SetName sets the value of Name.
-func (s *Service) SetName(val string) {
-	s.Name = val
-}
-
-// SetLabels sets the value of Labels.
-func (s *Service) SetLabels(val []IncidentLabel) {
-	s.Labels = val
-}
-
-// Ref: #/components/schemas/ServicesListResponse
-type ServicesListResponse struct {
-	Services         []Service        `json:"services"`
-	ResponseMetadata ResponseMetadata `json:"response_metadata"`
-}
-
-// GetServices returns the value of Services.
-func (s *ServicesListResponse) GetServices() []Service {
-	return s.Services
-}
-
-// GetResponseMetadata returns the value of ResponseMetadata.
-func (s *ServicesListResponse) GetResponseMetadata() ResponseMetadata {
-	return s.ResponseMetadata
-}
-
-// SetServices sets the value of Services.
-func (s *ServicesListResponse) SetServices(val []Service) {
-	s.Services = val
-}
-
-// SetResponseMetadata sets the value of ResponseMetadata.
-func (s *ServicesListResponse) SetResponseMetadata(val ResponseMetadata) {
-	s.ResponseMetadata = val
-}
-
-func (*ServicesListResponse) listServicesRes() {}
-
-type UnauthorizedError struct {
-	Errors []string `json:"errors"`
-}
-
-// GetErrors returns the value of Errors.
-func (s *UnauthorizedError) GetErrors() []string {
-	return s.Errors
-}
-
-// SetErrors sets the value of Errors.
-func (s *UnauthorizedError) SetErrors(val []string) {
-	s.Errors = val
-}
-
-func (*UnauthorizedError) createIncidentMetricsRes()  {}
-func (*UnauthorizedError) createPostmortemRes()       {}
-func (*UnauthorizedError) createServiceLabelRes()     {}
-func (*UnauthorizedError) deleteServiceLabelRes()     {}
-func (*UnauthorizedError) getIncidentRes()            {}
-func (*UnauthorizedError) listIncidentsRes()          {}
-func (*UnauthorizedError) listPostmortemsRes()        {}
-func (*UnauthorizedError) listServiceLabelsRes()      {}
-func (*UnauthorizedError) listServicesRes()           {}
-func (*UnauthorizedError) updateIncidentLabelsRes()   {}
-func (*UnauthorizedError) updateIncidentSeverityRes() {}
-func (*UnauthorizedError) updateIncidentStatusRes()   {}
-func (*UnauthorizedError) updateServiceLabelRes()     {}
-
-type UnprocessableEntityError struct {
+type PutServiceNotificationSlackChannelNotFound struct {
 	Error OptString `json:"error"`
 }
 
 // GetError returns the value of Error.
-func (s *UnprocessableEntityError) GetError() OptString {
+func (s *PutServiceNotificationSlackChannelNotFound) GetError() OptString {
 	return s.Error
 }
 
 // SetError sets the value of Error.
-func (s *UnprocessableEntityError) SetError(val OptString) {
+func (s *PutServiceNotificationSlackChannelNotFound) SetError(val OptString) {
 	s.Error = val
 }
 
-func (*UnprocessableEntityError) createPostmortemRes()   {}
-func (*UnprocessableEntityError) createServiceLabelRes() {}
+func (*PutServiceNotificationSlackChannelNotFound) putServiceNotificationSlackChannelRes() {}
+
+type PutServiceNotificationSlackChannelOK struct {
+	// Slack channel name (e.g. incident-production).
+	Name OptString `json:"name"`
+	// Slack channel ID (e.g. C1234567890).
+	Key string `json:"key"`
+}
+
+// GetName returns the value of Name.
+func (s *PutServiceNotificationSlackChannelOK) GetName() OptString {
+	return s.Name
+}
+
+// GetKey returns the value of Key.
+func (s *PutServiceNotificationSlackChannelOK) GetKey() string {
+	return s.Key
+}
+
+// SetName sets the value of Name.
+func (s *PutServiceNotificationSlackChannelOK) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetKey sets the value of Key.
+func (s *PutServiceNotificationSlackChannelOK) SetKey(val string) {
+	s.Key = val
+}
+
+func (*PutServiceNotificationSlackChannelOK) putServiceNotificationSlackChannelRes() {}
+
+type PutServiceNotificationSlackChannelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *PutServiceNotificationSlackChannelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *PutServiceNotificationSlackChannelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*PutServiceNotificationSlackChannelPaymentRequired) putServiceNotificationSlackChannelRes() {}
+
+type PutServiceNotificationSlackChannelReq struct {
+	ServiceNotificationSlackChannel PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel `json:"service_notification_slack_channel"`
+}
+
+// GetServiceNotificationSlackChannel returns the value of ServiceNotificationSlackChannel.
+func (s *PutServiceNotificationSlackChannelReq) GetServiceNotificationSlackChannel() PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel {
+	return s.ServiceNotificationSlackChannel
+}
+
+// SetServiceNotificationSlackChannel sets the value of ServiceNotificationSlackChannel.
+func (s *PutServiceNotificationSlackChannelReq) SetServiceNotificationSlackChannel(val PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel) {
+	s.ServiceNotificationSlackChannel = val
+}
+
+type PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel struct {
+	// Slack channel name (e.g. incident-production).
+	Name OptString `json:"name"`
+	// Slack channel ID (e.g. C1234567890).
+	Key string `json:"key"`
+}
+
+// GetName returns the value of Name.
+func (s *PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel) GetName() OptString {
+	return s.Name
+}
+
+// GetKey returns the value of Key.
+func (s *PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel) GetKey() string {
+	return s.Key
+}
+
+// SetName sets the value of Name.
+func (s *PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetKey sets the value of Key.
+func (s *PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel) SetKey(val string) {
+	s.Key = val
+}
+
+type PutServiceNotificationSlackChannelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *PutServiceNotificationSlackChannelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *PutServiceNotificationSlackChannelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*PutServiceNotificationSlackChannelUnauthorized) putServiceNotificationSlackChannelRes() {}
+
+type PutServiceNotificationSlackChannelUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *PutServiceNotificationSlackChannelUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *PutServiceNotificationSlackChannelUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*PutServiceNotificationSlackChannelUnprocessableEntity) putServiceNotificationSlackChannelRes() {
+}
+
+type UpdateIncidentCommanderBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentCommanderBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentCommanderBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentCommanderBadRequest) updateIncidentCommanderRes() {}
+
+type UpdateIncidentCommanderNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentCommanderNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentCommanderNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentCommanderNotFound) updateIncidentCommanderRes() {}
+
+type UpdateIncidentCommanderOK struct {
+	Commander NilUpdateIncidentCommanderOKCommander `json:"commander"`
+}
+
+// GetCommander returns the value of Commander.
+func (s *UpdateIncidentCommanderOK) GetCommander() NilUpdateIncidentCommanderOKCommander {
+	return s.Commander
+}
+
+// SetCommander sets the value of Commander.
+func (s *UpdateIncidentCommanderOK) SetCommander(val NilUpdateIncidentCommanderOKCommander) {
+	s.Commander = val
+}
+
+func (*UpdateIncidentCommanderOK) updateIncidentCommanderRes() {}
+
+type UpdateIncidentCommanderOKCommander struct {
+	Nickname string `json:"nickname"`
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateIncidentCommanderOKCommander) GetNickname() string {
+	return s.Nickname
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateIncidentCommanderOKCommander) SetNickname(val string) {
+	s.Nickname = val
+}
+
+type UpdateIncidentCommanderPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentCommanderPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentCommanderPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentCommanderPaymentRequired) updateIncidentCommanderRes() {}
+
+type UpdateIncidentCommanderReq struct {
+	Incident UpdateIncidentCommanderReqIncident `json:"incident"`
+}
+
+// GetIncident returns the value of Incident.
+func (s *UpdateIncidentCommanderReq) GetIncident() UpdateIncidentCommanderReqIncident {
+	return s.Incident
+}
+
+// SetIncident sets the value of Incident.
+func (s *UpdateIncidentCommanderReq) SetIncident(val UpdateIncidentCommanderReqIncident) {
+	s.Incident = val
+}
+
+type UpdateIncidentCommanderReqIncident struct {
+	// The nickname of the user to set as commander. Set to null to unassign the current commander.
+	CommanderNickname NilString `json:"commander_nickname"`
+}
+
+// GetCommanderNickname returns the value of CommanderNickname.
+func (s *UpdateIncidentCommanderReqIncident) GetCommanderNickname() NilString {
+	return s.CommanderNickname
+}
+
+// SetCommanderNickname sets the value of CommanderNickname.
+func (s *UpdateIncidentCommanderReqIncident) SetCommanderNickname(val NilString) {
+	s.CommanderNickname = val
+}
+
+type UpdateIncidentCommanderUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentCommanderUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentCommanderUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentCommanderUnauthorized) updateIncidentCommanderRes() {}
+
+type UpdateIncidentCommanderUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentCommanderUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentCommanderUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentCommanderUnprocessableEntity) updateIncidentCommanderRes() {}
+
+type UpdateIncidentDescriptionTemplateOK struct {
+	// Template content. Empty when not set.
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateIncidentDescriptionTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateIncidentDescriptionTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*UpdateIncidentDescriptionTemplateOK) updateIncidentDescriptionTemplateRes() {}
+
+type UpdateIncidentDescriptionTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentDescriptionTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentDescriptionTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentDescriptionTemplatePaymentRequired) updateIncidentDescriptionTemplateRes() {}
+
+type UpdateIncidentDescriptionTemplateReq struct {
+	// Partial update. Only included fields are updated.
+	IncidentDescriptionTemplate UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate `json:"incident_description_template"`
+}
+
+// GetIncidentDescriptionTemplate returns the value of IncidentDescriptionTemplate.
+func (s *UpdateIncidentDescriptionTemplateReq) GetIncidentDescriptionTemplate() UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate {
+	return s.IncidentDescriptionTemplate
+}
+
+// SetIncidentDescriptionTemplate sets the value of IncidentDescriptionTemplate.
+func (s *UpdateIncidentDescriptionTemplateReq) SetIncidentDescriptionTemplate(val UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate) {
+	s.IncidentDescriptionTemplate = val
+}
+
+// Partial update. Only included fields are updated.
+type UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate struct {
+	// Template content.
+	Blob OptString `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate) GetBlob() OptString {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate) SetBlob(val OptString) {
+	s.Blob = val
+}
+
+type UpdateIncidentDescriptionTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentDescriptionTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentDescriptionTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentDescriptionTemplateUnauthorized) updateIncidentDescriptionTemplateRes() {}
+
+type UpdateIncidentDescriptionTemplateUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentDescriptionTemplateUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentDescriptionTemplateUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentDescriptionTemplateUnprocessableEntity) updateIncidentDescriptionTemplateRes() {}
+
+type UpdateIncidentDocumentTemplateNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentDocumentTemplateNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentDocumentTemplateNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentDocumentTemplateNotFound) updateIncidentDocumentTemplateRes() {}
+
+type UpdateIncidentDocumentTemplateOK struct {
+	// Template body for incident document.
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateIncidentDocumentTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateIncidentDocumentTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*UpdateIncidentDocumentTemplateOK) updateIncidentDocumentTemplateRes() {}
+
+type UpdateIncidentDocumentTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentDocumentTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentDocumentTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentDocumentTemplatePaymentRequired) updateIncidentDocumentTemplateRes() {}
+
+type UpdateIncidentDocumentTemplateReq struct {
+	IncidentDocumentTemplate UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate `json:"incident_document_template"`
+}
+
+// GetIncidentDocumentTemplate returns the value of IncidentDocumentTemplate.
+func (s *UpdateIncidentDocumentTemplateReq) GetIncidentDocumentTemplate() UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate {
+	return s.IncidentDocumentTemplate
+}
+
+// SetIncidentDocumentTemplate sets the value of IncidentDocumentTemplate.
+func (s *UpdateIncidentDocumentTemplateReq) SetIncidentDocumentTemplate(val UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate) {
+	s.IncidentDocumentTemplate = val
+}
+
+type UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate struct {
+	// Template body for incident document.
+	Blob OptString `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate) GetBlob() OptString {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate) SetBlob(val OptString) {
+	s.Blob = val
+}
+
+type UpdateIncidentDocumentTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentDocumentTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentDocumentTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentDocumentTemplateUnauthorized) updateIncidentDocumentTemplateRes() {}
+
+type UpdateIncidentDocumentTemplateUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentDocumentTemplateUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentDocumentTemplateUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentDocumentTemplateUnprocessableEntity) updateIncidentDocumentTemplateRes() {}
+
+type UpdateIncidentLabelsNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentLabelsNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentLabelsNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentLabelsNotFound) updateIncidentLabelsRes() {}
+
+type UpdateIncidentLabelsOK struct {
+	Labels []UpdateIncidentLabelsOKLabelsItem `json:"labels"`
+}
+
+// GetLabels returns the value of Labels.
+func (s *UpdateIncidentLabelsOK) GetLabels() []UpdateIncidentLabelsOKLabelsItem {
+	return s.Labels
+}
+
+// SetLabels sets the value of Labels.
+func (s *UpdateIncidentLabelsOK) SetLabels(val []UpdateIncidentLabelsOKLabelsItem) {
+	s.Labels = val
+}
+
+func (*UpdateIncidentLabelsOK) updateIncidentLabelsRes() {}
+
+type UpdateIncidentLabelsOKLabelsItem struct {
+	UUID uuid.UUID `json:"uuid"`
+	Name string    `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color     string    `json:"color"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateIncidentLabelsOKLabelsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateIncidentLabelsOKLabelsItem) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateIncidentLabelsOKLabelsItem) GetColor() string {
+	return s.Color
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateIncidentLabelsOKLabelsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateIncidentLabelsOKLabelsItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateIncidentLabelsOKLabelsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateIncidentLabelsOKLabelsItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateIncidentLabelsOKLabelsItem) SetColor(val string) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateIncidentLabelsOKLabelsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateIncidentLabelsOKLabelsItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type UpdateIncidentLabelsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentLabelsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentLabelsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentLabelsPaymentRequired) updateIncidentLabelsRes() {}
 
 type UpdateIncidentLabelsReq struct {
-	// Array of label UUIDs to associate with the incident.
+	// Array of label UUIDs to assign to the incident.
 	LabelUuids []uuid.UUID `json:"label_uuids"`
 }
 
@@ -1641,8 +8577,698 @@ func (s *UpdateIncidentLabelsReq) SetLabelUuids(val []uuid.UUID) {
 	s.LabelUuids = val
 }
 
+type UpdateIncidentLabelsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentLabelsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentLabelsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentLabelsUnauthorized) updateIncidentLabelsRes() {}
+
+type UpdateIncidentNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentNotFound) updateIncidentRes() {}
+
+// Merged schema.
+type UpdateIncidentOK struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Severity label (translated).
+	Severity string `json:"severity"`
+	// Status (Japanese translation).
+	Status string `json:"status"`
+	// Root cause (Japanese translation).
+	RootCause    string                       `json:"root_cause"`
+	Experimental bool                         `json:"experimental"`
+	Metrics      UpdateIncidentOKMetrics      `json:"metrics"`
+	Service      UpdateIncidentOKService      `json:"service"`
+	Labels       []UpdateIncidentOKLabelsItem `json:"labels"`
+	CreatedAt    time.Time                    `json:"created_at"`
+	// Incident description.
+	Description OptNilString `json:"description"`
+	// State document as markdown.
+	StateDocument        OptNilString                               `json:"state_document"`
+	IncidentSlackChannel OptNilUpdateIncidentOKIncidentSlackChannel `json:"incident_slack_channel"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateIncidentOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdateIncidentOK) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *UpdateIncidentOK) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentOK) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *UpdateIncidentOK) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *UpdateIncidentOK) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetMetrics returns the value of Metrics.
+func (s *UpdateIncidentOK) GetMetrics() UpdateIncidentOKMetrics {
+	return s.Metrics
+}
+
+// GetService returns the value of Service.
+func (s *UpdateIncidentOK) GetService() UpdateIncidentOKService {
+	return s.Service
+}
+
+// GetLabels returns the value of Labels.
+func (s *UpdateIncidentOK) GetLabels() []UpdateIncidentOKLabelsItem {
+	return s.Labels
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateIncidentOK) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetDescription returns the value of Description.
+func (s *UpdateIncidentOK) GetDescription() OptNilString {
+	return s.Description
+}
+
+// GetStateDocument returns the value of StateDocument.
+func (s *UpdateIncidentOK) GetStateDocument() OptNilString {
+	return s.StateDocument
+}
+
+// GetIncidentSlackChannel returns the value of IncidentSlackChannel.
+func (s *UpdateIncidentOK) GetIncidentSlackChannel() OptNilUpdateIncidentOKIncidentSlackChannel {
+	return s.IncidentSlackChannel
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateIncidentOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdateIncidentOK) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *UpdateIncidentOK) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentOK) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *UpdateIncidentOK) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *UpdateIncidentOK) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetMetrics sets the value of Metrics.
+func (s *UpdateIncidentOK) SetMetrics(val UpdateIncidentOKMetrics) {
+	s.Metrics = val
+}
+
+// SetService sets the value of Service.
+func (s *UpdateIncidentOK) SetService(val UpdateIncidentOKService) {
+	s.Service = val
+}
+
+// SetLabels sets the value of Labels.
+func (s *UpdateIncidentOK) SetLabels(val []UpdateIncidentOKLabelsItem) {
+	s.Labels = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateIncidentOK) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetDescription sets the value of Description.
+func (s *UpdateIncidentOK) SetDescription(val OptNilString) {
+	s.Description = val
+}
+
+// SetStateDocument sets the value of StateDocument.
+func (s *UpdateIncidentOK) SetStateDocument(val OptNilString) {
+	s.StateDocument = val
+}
+
+// SetIncidentSlackChannel sets the value of IncidentSlackChannel.
+func (s *UpdateIncidentOK) SetIncidentSlackChannel(val OptNilUpdateIncidentOKIncidentSlackChannel) {
+	s.IncidentSlackChannel = val
+}
+
+func (*UpdateIncidentOK) updateIncidentRes() {}
+
+type UpdateIncidentOKIncidentSlackChannel struct {
+	URL url.URL `json:"url"`
+}
+
+// GetURL returns the value of URL.
+func (s *UpdateIncidentOKIncidentSlackChannel) GetURL() url.URL {
+	return s.URL
+}
+
+// SetURL sets the value of URL.
+func (s *UpdateIncidentOKIncidentSlackChannel) SetURL(val url.URL) {
+	s.URL = val
+}
+
+type UpdateIncidentOKLabelsItem struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateIncidentOKLabelsItem) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *UpdateIncidentOKLabelsItem) SetName(val string) {
+	s.Name = val
+}
+
+type UpdateIncidentOKMetrics struct {
+	// Time to Detect (seconds).
+	Ttd NilInt `json:"ttd"`
+	// Time to Acknowledge (seconds).
+	Tta NilInt `json:"tta"`
+	// Time to Investigate (seconds).
+	Tti NilInt `json:"tti"`
+	// Time to Fix (seconds).
+	Ttf NilInt `json:"ttf"`
+	// Time to Resolve (seconds).
+	Ttr NilInt `json:"ttr"`
+}
+
+// GetTtd returns the value of Ttd.
+func (s *UpdateIncidentOKMetrics) GetTtd() NilInt {
+	return s.Ttd
+}
+
+// GetTta returns the value of Tta.
+func (s *UpdateIncidentOKMetrics) GetTta() NilInt {
+	return s.Tta
+}
+
+// GetTti returns the value of Tti.
+func (s *UpdateIncidentOKMetrics) GetTti() NilInt {
+	return s.Tti
+}
+
+// GetTtf returns the value of Ttf.
+func (s *UpdateIncidentOKMetrics) GetTtf() NilInt {
+	return s.Ttf
+}
+
+// GetTtr returns the value of Ttr.
+func (s *UpdateIncidentOKMetrics) GetTtr() NilInt {
+	return s.Ttr
+}
+
+// SetTtd sets the value of Ttd.
+func (s *UpdateIncidentOKMetrics) SetTtd(val NilInt) {
+	s.Ttd = val
+}
+
+// SetTta sets the value of Tta.
+func (s *UpdateIncidentOKMetrics) SetTta(val NilInt) {
+	s.Tta = val
+}
+
+// SetTti sets the value of Tti.
+func (s *UpdateIncidentOKMetrics) SetTti(val NilInt) {
+	s.Tti = val
+}
+
+// SetTtf sets the value of Ttf.
+func (s *UpdateIncidentOKMetrics) SetTtf(val NilInt) {
+	s.Ttf = val
+}
+
+// SetTtr sets the value of Ttr.
+func (s *UpdateIncidentOKMetrics) SetTtr(val NilInt) {
+	s.Ttr = val
+}
+
+type UpdateIncidentOKService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateIncidentOKService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *UpdateIncidentOKService) SetName(val string) {
+	s.Name = val
+}
+
+type UpdateIncidentPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentPaymentRequired) updateIncidentRes() {}
+
+type UpdateIncidentReq struct {
+	// Partial update (PATCH). Only include fields to update.
+	Incident UpdateIncidentReqIncident `json:"incident"`
+}
+
+// GetIncident returns the value of Incident.
+func (s *UpdateIncidentReq) GetIncident() UpdateIncidentReqIncident {
+	return s.Incident
+}
+
+// SetIncident sets the value of Incident.
+func (s *UpdateIncidentReq) SetIncident(val UpdateIncidentReqIncident) {
+	s.Incident = val
+}
+
+// Partial update (PATCH). Only include fields to update.
+type UpdateIncidentReqIncident struct {
+	// Incident title.
+	Title OptString `json:"title"`
+	// Incident description.
+	Description OptString `json:"description"`
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdateIncidentReqIncident) GetTitle() OptString {
+	return s.Title
+}
+
+// GetDescription returns the value of Description.
+func (s *UpdateIncidentReqIncident) GetDescription() OptString {
+	return s.Description
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdateIncidentReqIncident) SetTitle(val OptString) {
+	s.Title = val
+}
+
+// SetDescription sets the value of Description.
+func (s *UpdateIncidentReqIncident) SetDescription(val OptString) {
+	s.Description = val
+}
+
+type UpdateIncidentRespondersBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentRespondersBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentRespondersBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentRespondersBadRequest) updateIncidentRespondersRes() {}
+
+type UpdateIncidentRespondersNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentRespondersNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentRespondersNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentRespondersNotFound) updateIncidentRespondersRes() {}
+
+type UpdateIncidentRespondersOK struct {
+	Responders []UpdateIncidentRespondersOKRespondersItem `json:"responders"`
+}
+
+// GetResponders returns the value of Responders.
+func (s *UpdateIncidentRespondersOK) GetResponders() []UpdateIncidentRespondersOKRespondersItem {
+	return s.Responders
+}
+
+// SetResponders sets the value of Responders.
+func (s *UpdateIncidentRespondersOK) SetResponders(val []UpdateIncidentRespondersOKRespondersItem) {
+	s.Responders = val
+}
+
+func (*UpdateIncidentRespondersOK) updateIncidentRespondersRes() {}
+
+type UpdateIncidentRespondersOKRespondersItem struct {
+	Nickname string `json:"nickname"`
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateIncidentRespondersOKRespondersItem) GetNickname() string {
+	return s.Nickname
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateIncidentRespondersOKRespondersItem) SetNickname(val string) {
+	s.Nickname = val
+}
+
+type UpdateIncidentRespondersPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentRespondersPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentRespondersPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentRespondersPaymentRequired) updateIncidentRespondersRes() {}
+
+type UpdateIncidentRespondersReq struct {
+	Incident UpdateIncidentRespondersReqIncident `json:"incident"`
+}
+
+// GetIncident returns the value of Incident.
+func (s *UpdateIncidentRespondersReq) GetIncident() UpdateIncidentRespondersReqIncident {
+	return s.Incident
+}
+
+// SetIncident sets the value of Incident.
+func (s *UpdateIncidentRespondersReq) SetIncident(val UpdateIncidentRespondersReqIncident) {
+	s.Incident = val
+}
+
+type UpdateIncidentRespondersReqIncident struct {
+	// Array of user nicknames to set as responders.
+	ResponderNicknames []string `json:"responder_nicknames"`
+}
+
+// GetResponderNicknames returns the value of ResponderNicknames.
+func (s *UpdateIncidentRespondersReqIncident) GetResponderNicknames() []string {
+	return s.ResponderNicknames
+}
+
+// SetResponderNicknames sets the value of ResponderNicknames.
+func (s *UpdateIncidentRespondersReqIncident) SetResponderNicknames(val []string) {
+	s.ResponderNicknames = val
+}
+
+type UpdateIncidentRespondersUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentRespondersUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentRespondersUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentRespondersUnauthorized) updateIncidentRespondersRes() {}
+
+type UpdateIncidentRespondersUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentRespondersUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentRespondersUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentRespondersUnprocessableEntity) updateIncidentRespondersRes() {}
+
+type UpdateIncidentServiceBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentServiceBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentServiceBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentServiceBadRequest) updateIncidentServiceRes() {}
+
+type UpdateIncidentServiceNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentServiceNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentServiceNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentServiceNotFound) updateIncidentServiceRes() {}
+
+type UpdateIncidentServiceOK struct {
+	// Name of the service to associate with the incident.
+	ServiceName string `json:"service_name"`
+}
+
+// GetServiceName returns the value of ServiceName.
+func (s *UpdateIncidentServiceOK) GetServiceName() string {
+	return s.ServiceName
+}
+
+// SetServiceName sets the value of ServiceName.
+func (s *UpdateIncidentServiceOK) SetServiceName(val string) {
+	s.ServiceName = val
+}
+
+func (*UpdateIncidentServiceOK) updateIncidentServiceRes() {}
+
+type UpdateIncidentServicePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentServicePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentServicePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentServicePaymentRequired) updateIncidentServiceRes() {}
+
+type UpdateIncidentServiceReq struct {
+	Incident UpdateIncidentServiceReqIncident `json:"incident"`
+}
+
+// GetIncident returns the value of Incident.
+func (s *UpdateIncidentServiceReq) GetIncident() UpdateIncidentServiceReqIncident {
+	return s.Incident
+}
+
+// SetIncident sets the value of Incident.
+func (s *UpdateIncidentServiceReq) SetIncident(val UpdateIncidentServiceReqIncident) {
+	s.Incident = val
+}
+
+type UpdateIncidentServiceReqIncident struct {
+	// Name of the service to associate with the incident.
+	ServiceName string `json:"service_name"`
+}
+
+// GetServiceName returns the value of ServiceName.
+func (s *UpdateIncidentServiceReqIncident) GetServiceName() string {
+	return s.ServiceName
+}
+
+// SetServiceName sets the value of ServiceName.
+func (s *UpdateIncidentServiceReqIncident) SetServiceName(val string) {
+	s.ServiceName = val
+}
+
+type UpdateIncidentServiceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentServiceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentServiceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentServiceUnauthorized) updateIncidentServiceRes() {}
+
+type UpdateIncidentServiceUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentServiceUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentServiceUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentServiceUnprocessableEntity) updateIncidentServiceRes() {}
+
+type UpdateIncidentSeverityBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentSeverityBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentSeverityBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentSeverityBadRequest) updateIncidentSeverityRes() {}
+
+type UpdateIncidentSeverityNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentSeverityNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentSeverityNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentSeverityNotFound) updateIncidentSeverityRes() {}
+
+type UpdateIncidentSeverityOK struct {
+	UUID     uuid.UUID `json:"uuid"`
+	Severity string    `json:"severity"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateIncidentSeverityOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetSeverity returns the value of Severity.
+func (s *UpdateIncidentSeverityOK) GetSeverity() string {
+	return s.Severity
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateIncidentSeverityOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *UpdateIncidentSeverityOK) SetSeverity(val string) {
+	s.Severity = val
+}
+
+func (*UpdateIncidentSeverityOK) updateIncidentSeverityRes() {}
+
+type UpdateIncidentSeverityPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentSeverityPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentSeverityPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentSeverityPaymentRequired) updateIncidentSeverityRes() {}
+
 type UpdateIncidentSeverityReq struct {
-	// New severity level.
+	// New severity for the incident.
 	Severity UpdateIncidentSeverityReqSeverity `json:"severity"`
 }
 
@@ -1656,7 +9282,7 @@ func (s *UpdateIncidentSeverityReq) SetSeverity(val UpdateIncidentSeverityReqSev
 	s.Severity = val
 }
 
-// New severity level.
+// New severity for the incident.
 type UpdateIncidentSeverityReqSeverity string
 
 const (
@@ -1719,8 +9345,99 @@ func (s *UpdateIncidentSeverityReqSeverity) UnmarshalText(data []byte) error {
 	}
 }
 
+type UpdateIncidentSeverityUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentSeverityUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentSeverityUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentSeverityUnauthorized) updateIncidentSeverityRes() {}
+
+type UpdateIncidentStatusBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentStatusBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentStatusBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentStatusBadRequest) updateIncidentStatusRes() {}
+
+type UpdateIncidentStatusNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentStatusNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentStatusNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentStatusNotFound) updateIncidentStatusRes() {}
+
+type UpdateIncidentStatusOK struct {
+	UUID   uuid.UUID `json:"uuid"`
+	Status string    `json:"status"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateIncidentStatusOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentStatusOK) GetStatus() string {
+	return s.Status
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateIncidentStatusOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentStatusOK) SetStatus(val string) {
+	s.Status = val
+}
+
+func (*UpdateIncidentStatusOK) updateIncidentStatusRes() {}
+
+type UpdateIncidentStatusPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentStatusPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentStatusPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentStatusPaymentRequired) updateIncidentStatusRes() {}
+
 type UpdateIncidentStatusReq struct {
-	// New status.
+	// New status for the incident.
 	Status UpdateIncidentStatusReqStatus `json:"status"`
 }
 
@@ -1734,7 +9451,7 @@ func (s *UpdateIncidentStatusReq) SetStatus(val UpdateIncidentStatusReqStatus) {
 	s.Status = val
 }
 
-// New status.
+// New status for the incident.
 type UpdateIncidentStatusReqStatus string
 
 const (
@@ -1797,45 +9514,1531 @@ func (s *UpdateIncidentStatusReqStatus) UnmarshalText(data []byte) error {
 	}
 }
 
+type UpdateIncidentStatusUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentStatusUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentStatusUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentStatusUnauthorized) updateIncidentStatusRes() {}
+
+type UpdateIncidentUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentUnauthorized) updateIncidentRes() {}
+
+type UpdateIncidentUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentUnprocessableEntity) updateIncidentRes() {}
+
+type UpdatePostmortemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemNotFound) updatePostmortemRes() {}
+
+type UpdatePostmortemOK struct {
+	Postmortem UpdatePostmortemOKPostmortem `json:"postmortem"`
+}
+
+// GetPostmortem returns the value of Postmortem.
+func (s *UpdatePostmortemOK) GetPostmortem() UpdatePostmortemOKPostmortem {
+	return s.Postmortem
+}
+
+// SetPostmortem sets the value of Postmortem.
+func (s *UpdatePostmortemOK) SetPostmortem(val UpdatePostmortemOKPostmortem) {
+	s.Postmortem = val
+}
+
+func (*UpdatePostmortemOK) updatePostmortemRes() {}
+
+type UpdatePostmortemOKPostmortem struct {
+	UUID  uuid.UUID `json:"uuid"`
+	Title string    `json:"title"`
+	// Postmortem content (markdown).
+	Blob string `json:"blob"`
+	// Author nickname.
+	Author    string                                      `json:"author"`
+	Status    UpdatePostmortemOKPostmortemStatus          `json:"status"`
+	Incidents []UpdatePostmortemOKPostmortemIncidentsItem `json:"incidents"`
+	CreatedAt time.Time                                   `json:"created_at"`
+	UpdatedAt OptDateTime                                 `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdatePostmortemOKPostmortem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdatePostmortemOKPostmortem) GetTitle() string {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemOKPostmortem) GetBlob() string {
+	return s.Blob
+}
+
+// GetAuthor returns the value of Author.
+func (s *UpdatePostmortemOKPostmortem) GetAuthor() string {
+	return s.Author
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdatePostmortemOKPostmortem) GetStatus() UpdatePostmortemOKPostmortemStatus {
+	return s.Status
+}
+
+// GetIncidents returns the value of Incidents.
+func (s *UpdatePostmortemOKPostmortem) GetIncidents() []UpdatePostmortemOKPostmortemIncidentsItem {
+	return s.Incidents
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdatePostmortemOKPostmortem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdatePostmortemOKPostmortem) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdatePostmortemOKPostmortem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdatePostmortemOKPostmortem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemOKPostmortem) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetAuthor sets the value of Author.
+func (s *UpdatePostmortemOKPostmortem) SetAuthor(val string) {
+	s.Author = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdatePostmortemOKPostmortem) SetStatus(val UpdatePostmortemOKPostmortemStatus) {
+	s.Status = val
+}
+
+// SetIncidents sets the value of Incidents.
+func (s *UpdatePostmortemOKPostmortem) SetIncidents(val []UpdatePostmortemOKPostmortemIncidentsItem) {
+	s.Incidents = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdatePostmortemOKPostmortem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdatePostmortemOKPostmortem) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type UpdatePostmortemOKPostmortemIncidentsItem struct {
+	UUID         uuid.UUID                                        `json:"uuid"`
+	Title        string                                           `json:"title"`
+	Severity     string                                           `json:"severity"`
+	Status       string                                           `json:"status"`
+	RootCause    string                                           `json:"root_cause"`
+	Experimental bool                                             `json:"experimental"`
+	Service      UpdatePostmortemOKPostmortemIncidentsItemService `json:"service"`
+	CreatedAt    time.Time                                        `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetTitle() string {
+	return s.Title
+}
+
+// GetSeverity returns the value of Severity.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetSeverity() string {
+	return s.Severity
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetStatus() string {
+	return s.Status
+}
+
+// GetRootCause returns the value of RootCause.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetRootCause() string {
+	return s.RootCause
+}
+
+// GetExperimental returns the value of Experimental.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetExperimental() bool {
+	return s.Experimental
+}
+
+// GetService returns the value of Service.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetService() UpdatePostmortemOKPostmortemIncidentsItemService {
+	return s.Service
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetSeverity sets the value of Severity.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetSeverity(val string) {
+	s.Severity = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetStatus(val string) {
+	s.Status = val
+}
+
+// SetRootCause sets the value of RootCause.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetRootCause(val string) {
+	s.RootCause = val
+}
+
+// SetExperimental sets the value of Experimental.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetExperimental(val bool) {
+	s.Experimental = val
+}
+
+// SetService sets the value of Service.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetService(val UpdatePostmortemOKPostmortemIncidentsItemService) {
+	s.Service = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdatePostmortemOKPostmortemIncidentsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdatePostmortemOKPostmortemIncidentsItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdatePostmortemOKPostmortemIncidentsItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *UpdatePostmortemOKPostmortemIncidentsItemService) SetName(val string) {
+	s.Name = val
+}
+
+type UpdatePostmortemOKPostmortemStatus string
+
+const (
+	UpdatePostmortemOKPostmortemStatusDraft    UpdatePostmortemOKPostmortemStatus = "draft"
+	UpdatePostmortemOKPostmortemStatusInReview UpdatePostmortemOKPostmortemStatus = "in_review"
+	UpdatePostmortemOKPostmortemStatusReviewed UpdatePostmortemOKPostmortemStatus = "reviewed"
+	UpdatePostmortemOKPostmortemStatusClosed   UpdatePostmortemOKPostmortemStatus = "closed"
+)
+
+// AllValues returns all UpdatePostmortemOKPostmortemStatus values.
+func (UpdatePostmortemOKPostmortemStatus) AllValues() []UpdatePostmortemOKPostmortemStatus {
+	return []UpdatePostmortemOKPostmortemStatus{
+		UpdatePostmortemOKPostmortemStatusDraft,
+		UpdatePostmortemOKPostmortemStatusInReview,
+		UpdatePostmortemOKPostmortemStatusReviewed,
+		UpdatePostmortemOKPostmortemStatusClosed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdatePostmortemOKPostmortemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdatePostmortemOKPostmortemStatusDraft:
+		return []byte(s), nil
+	case UpdatePostmortemOKPostmortemStatusInReview:
+		return []byte(s), nil
+	case UpdatePostmortemOKPostmortemStatusReviewed:
+		return []byte(s), nil
+	case UpdatePostmortemOKPostmortemStatusClosed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdatePostmortemOKPostmortemStatus) UnmarshalText(data []byte) error {
+	switch UpdatePostmortemOKPostmortemStatus(data) {
+	case UpdatePostmortemOKPostmortemStatusDraft:
+		*s = UpdatePostmortemOKPostmortemStatusDraft
+		return nil
+	case UpdatePostmortemOKPostmortemStatusInReview:
+		*s = UpdatePostmortemOKPostmortemStatusInReview
+		return nil
+	case UpdatePostmortemOKPostmortemStatusReviewed:
+		*s = UpdatePostmortemOKPostmortemStatusReviewed
+		return nil
+	case UpdatePostmortemOKPostmortemStatusClosed:
+		*s = UpdatePostmortemOKPostmortemStatusClosed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdatePostmortemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemPaymentRequired) updatePostmortemRes() {}
+
+type UpdatePostmortemReq struct {
+	Title  OptString                    `json:"title"`
+	Blob   OptString                    `json:"blob"`
+	Status OptUpdatePostmortemReqStatus `json:"status"`
+	// Array of incident UUIDs to associate.
+	IncidentUuids []uuid.UUID `json:"incident_uuids"`
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdatePostmortemReq) GetTitle() OptString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemReq) GetBlob() OptString {
+	return s.Blob
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdatePostmortemReq) GetStatus() OptUpdatePostmortemReqStatus {
+	return s.Status
+}
+
+// GetIncidentUuids returns the value of IncidentUuids.
+func (s *UpdatePostmortemReq) GetIncidentUuids() []uuid.UUID {
+	return s.IncidentUuids
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdatePostmortemReq) SetTitle(val OptString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemReq) SetBlob(val OptString) {
+	s.Blob = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdatePostmortemReq) SetStatus(val OptUpdatePostmortemReqStatus) {
+	s.Status = val
+}
+
+// SetIncidentUuids sets the value of IncidentUuids.
+func (s *UpdatePostmortemReq) SetIncidentUuids(val []uuid.UUID) {
+	s.IncidentUuids = val
+}
+
+type UpdatePostmortemReqStatus string
+
+const (
+	UpdatePostmortemReqStatusDraft    UpdatePostmortemReqStatus = "draft"
+	UpdatePostmortemReqStatusInReview UpdatePostmortemReqStatus = "in_review"
+	UpdatePostmortemReqStatusReviewed UpdatePostmortemReqStatus = "reviewed"
+	UpdatePostmortemReqStatusClosed   UpdatePostmortemReqStatus = "closed"
+)
+
+// AllValues returns all UpdatePostmortemReqStatus values.
+func (UpdatePostmortemReqStatus) AllValues() []UpdatePostmortemReqStatus {
+	return []UpdatePostmortemReqStatus{
+		UpdatePostmortemReqStatusDraft,
+		UpdatePostmortemReqStatusInReview,
+		UpdatePostmortemReqStatusReviewed,
+		UpdatePostmortemReqStatusClosed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdatePostmortemReqStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdatePostmortemReqStatusDraft:
+		return []byte(s), nil
+	case UpdatePostmortemReqStatusInReview:
+		return []byte(s), nil
+	case UpdatePostmortemReqStatusReviewed:
+		return []byte(s), nil
+	case UpdatePostmortemReqStatusClosed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdatePostmortemReqStatus) UnmarshalText(data []byte) error {
+	switch UpdatePostmortemReqStatus(data) {
+	case UpdatePostmortemReqStatusDraft:
+		*s = UpdatePostmortemReqStatusDraft
+		return nil
+	case UpdatePostmortemReqStatusInReview:
+		*s = UpdatePostmortemReqStatusInReview
+		return nil
+	case UpdatePostmortemReqStatusReviewed:
+		*s = UpdatePostmortemReqStatusReviewed
+		return nil
+	case UpdatePostmortemReqStatusClosed:
+		*s = UpdatePostmortemReqStatusClosed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdatePostmortemTemplateByUuidNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemTemplateByUuidNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemTemplateByUuidNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemTemplateByUuidNotFound) updatePostmortemTemplateByUuidRes() {}
+
+type UpdatePostmortemTemplateByUuidOK struct {
+	PostmortemTemplate UpdatePostmortemTemplateByUuidOKPostmortemTemplate `json:"postmortem_template"`
+}
+
+// GetPostmortemTemplate returns the value of PostmortemTemplate.
+func (s *UpdatePostmortemTemplateByUuidOK) GetPostmortemTemplate() UpdatePostmortemTemplateByUuidOKPostmortemTemplate {
+	return s.PostmortemTemplate
+}
+
+// SetPostmortemTemplate sets the value of PostmortemTemplate.
+func (s *UpdatePostmortemTemplateByUuidOK) SetPostmortemTemplate(val UpdatePostmortemTemplateByUuidOKPostmortemTemplate) {
+	s.PostmortemTemplate = val
+}
+
+func (*UpdatePostmortemTemplateByUuidOK) updatePostmortemTemplateByUuidRes() {}
+
+type UpdatePostmortemTemplateByUuidOKPostmortemTemplate struct {
+	// Unique identifier of the postmortem template.
+	UUID uuid.UUID `json:"uuid"`
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob      string    `json:"blob"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdatePostmortemTemplateByUuidOKPostmortemTemplate) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type UpdatePostmortemTemplateByUuidPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemTemplateByUuidPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemTemplateByUuidPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemTemplateByUuidPaymentRequired) updatePostmortemTemplateByUuidRes() {}
+
+type UpdatePostmortemTemplateByUuidReq struct {
+	// Partial update (PATCH). Only include fields to update.
+	PostmortemTemplate UpdatePostmortemTemplateByUuidReqPostmortemTemplate `json:"postmortem_template"`
+}
+
+// GetPostmortemTemplate returns the value of PostmortemTemplate.
+func (s *UpdatePostmortemTemplateByUuidReq) GetPostmortemTemplate() UpdatePostmortemTemplateByUuidReqPostmortemTemplate {
+	return s.PostmortemTemplate
+}
+
+// SetPostmortemTemplate sets the value of PostmortemTemplate.
+func (s *UpdatePostmortemTemplateByUuidReq) SetPostmortemTemplate(val UpdatePostmortemTemplateByUuidReqPostmortemTemplate) {
+	s.PostmortemTemplate = val
+}
+
+// Partial update (PATCH). Only include fields to update.
+type UpdatePostmortemTemplateByUuidReqPostmortemTemplate struct {
+	// Title of the postmortem template.
+	Title OptNilString `json:"title"`
+	// Template content (markdown).
+	Blob OptString `json:"blob"`
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdatePostmortemTemplateByUuidReqPostmortemTemplate) GetTitle() OptNilString {
+	return s.Title
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemTemplateByUuidReqPostmortemTemplate) GetBlob() OptString {
+	return s.Blob
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdatePostmortemTemplateByUuidReqPostmortemTemplate) SetTitle(val OptNilString) {
+	s.Title = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemTemplateByUuidReqPostmortemTemplate) SetBlob(val OptString) {
+	s.Blob = val
+}
+
+type UpdatePostmortemTemplateByUuidUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdatePostmortemTemplateByUuidUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdatePostmortemTemplateByUuidUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdatePostmortemTemplateByUuidUnauthorized) updatePostmortemTemplateByUuidRes() {}
+
+type UpdatePostmortemTemplateByUuidUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemTemplateByUuidUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemTemplateByUuidUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemTemplateByUuidUnprocessableEntity) updatePostmortemTemplateByUuidRes() {}
+
+type UpdatePostmortemTemplateOK struct {
+	// Template content (markdown).
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemTemplateOK) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemTemplateOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+func (*UpdatePostmortemTemplateOK) updatePostmortemTemplateRes() {}
+
+type UpdatePostmortemTemplatePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemTemplatePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemTemplatePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemTemplatePaymentRequired) updatePostmortemTemplateRes() {}
+
+type UpdatePostmortemTemplateReq struct {
+	// Template content (markdown).
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdatePostmortemTemplateReq) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdatePostmortemTemplateReq) SetBlob(val string) {
+	s.Blob = val
+}
+
+type UpdatePostmortemTemplateUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdatePostmortemTemplateUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdatePostmortemTemplateUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdatePostmortemTemplateUnauthorized) updatePostmortemTemplateRes() {}
+
+type UpdatePostmortemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdatePostmortemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdatePostmortemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdatePostmortemUnauthorized) updatePostmortemRes() {}
+
+type UpdatePostmortemUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdatePostmortemUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdatePostmortemUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdatePostmortemUnprocessableEntity) updatePostmortemRes() {}
+
+type UpdateRunbookNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateRunbookNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateRunbookNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateRunbookNotFound) updateRunbookRes() {}
+
+type UpdateRunbookOK struct {
+	Runbook UpdateRunbookOKRunbook `json:"runbook"`
+}
+
+// GetRunbook returns the value of Runbook.
+func (s *UpdateRunbookOK) GetRunbook() UpdateRunbookOKRunbook {
+	return s.Runbook
+}
+
+// SetRunbook sets the value of Runbook.
+func (s *UpdateRunbookOK) SetRunbook(val UpdateRunbookOKRunbook) {
+	s.Runbook = val
+}
+
+func (*UpdateRunbookOK) updateRunbookRes() {}
+
+type UpdateRunbookOKRunbook struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace string `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob      string      `json:"blob"`
+	CreatedAt OptDateTime `json:"created_at"`
+	UpdatedAt OptDateTime `json:"updated_at"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *UpdateRunbookOKRunbook) GetNamespace() string {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateRunbookOKRunbook) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateRunbookOKRunbook) GetCreatedAt() OptDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateRunbookOKRunbook) GetUpdatedAt() OptDateTime {
+	return s.UpdatedAt
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *UpdateRunbookOKRunbook) SetNamespace(val string) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateRunbookOKRunbook) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateRunbookOKRunbook) SetCreatedAt(val OptDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateRunbookOKRunbook) SetUpdatedAt(val OptDateTime) {
+	s.UpdatedAt = val
+}
+
+type UpdateRunbookPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateRunbookPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateRunbookPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateRunbookPaymentRequired) updateRunbookRes() {}
+
+type UpdateRunbookReq struct {
+	// Partial update (PATCH). Only include fields to update.
+	Runbook UpdateRunbookReqRunbook `json:"runbook"`
+}
+
+// GetRunbook returns the value of Runbook.
+func (s *UpdateRunbookReq) GetRunbook() UpdateRunbookReqRunbook {
+	return s.Runbook
+}
+
+// SetRunbook sets the value of Runbook.
+func (s *UpdateRunbookReq) SetRunbook(val UpdateRunbookReqRunbook) {
+	s.Runbook = val
+}
+
+// Partial update (PATCH). Only include fields to update.
+type UpdateRunbookReqRunbook struct {
+	// Path-style namespace (e.g. /default, /api-server/recovery).
+	Namespace OptString `json:"namespace"`
+	// Markdown content of the runbook.
+	Blob OptString `json:"blob"`
+}
+
+// GetNamespace returns the value of Namespace.
+func (s *UpdateRunbookReqRunbook) GetNamespace() OptString {
+	return s.Namespace
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateRunbookReqRunbook) GetBlob() OptString {
+	return s.Blob
+}
+
+// SetNamespace sets the value of Namespace.
+func (s *UpdateRunbookReqRunbook) SetNamespace(val OptString) {
+	s.Namespace = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateRunbookReqRunbook) SetBlob(val OptString) {
+	s.Blob = val
+}
+
+type UpdateRunbookUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateRunbookUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateRunbookUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateRunbookUnauthorized) updateRunbookRes() {}
+
+type UpdateRunbookUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateRunbookUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateRunbookUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateRunbookUnprocessableEntity) updateRunbookRes() {}
+
+type UpdateServiceArchitectureContextNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceArchitectureContextNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceArchitectureContextNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateServiceArchitectureContextNotFound) updateServiceArchitectureContextRes() {}
+
+type UpdateServiceArchitectureContextOK struct {
+	ID OptNilInt `json:"id"`
+	// Architecture context content (markdown).
+	Blob      string                                    `json:"blob"`
+	CreatedAt OptNilDateTime                            `json:"created_at"`
+	UpdatedAt OptNilDateTime                            `json:"updated_at"`
+	Service   UpdateServiceArchitectureContextOKService `json:"service"`
+}
+
+// GetID returns the value of ID.
+func (s *UpdateServiceArchitectureContextOK) GetID() OptNilInt {
+	return s.ID
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateServiceArchitectureContextOK) GetBlob() string {
+	return s.Blob
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateServiceArchitectureContextOK) GetCreatedAt() OptNilDateTime {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateServiceArchitectureContextOK) GetUpdatedAt() OptNilDateTime {
+	return s.UpdatedAt
+}
+
+// GetService returns the value of Service.
+func (s *UpdateServiceArchitectureContextOK) GetService() UpdateServiceArchitectureContextOKService {
+	return s.Service
+}
+
+// SetID sets the value of ID.
+func (s *UpdateServiceArchitectureContextOK) SetID(val OptNilInt) {
+	s.ID = val
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateServiceArchitectureContextOK) SetBlob(val string) {
+	s.Blob = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateServiceArchitectureContextOK) SetCreatedAt(val OptNilDateTime) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateServiceArchitectureContextOK) SetUpdatedAt(val OptNilDateTime) {
+	s.UpdatedAt = val
+}
+
+// SetService sets the value of Service.
+func (s *UpdateServiceArchitectureContextOK) SetService(val UpdateServiceArchitectureContextOKService) {
+	s.Service = val
+}
+
+func (*UpdateServiceArchitectureContextOK) updateServiceArchitectureContextRes() {}
+
+type UpdateServiceArchitectureContextOKService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateServiceArchitectureContextOKService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *UpdateServiceArchitectureContextOKService) SetName(val string) {
+	s.Name = val
+}
+
+type UpdateServiceArchitectureContextPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceArchitectureContextPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceArchitectureContextPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateServiceArchitectureContextPaymentRequired) updateServiceArchitectureContextRes() {}
+
+type UpdateServiceArchitectureContextReq struct {
+	ServiceArchitectureContext UpdateServiceArchitectureContextReqServiceArchitectureContext `json:"service_architecture_context"`
+}
+
+// GetServiceArchitectureContext returns the value of ServiceArchitectureContext.
+func (s *UpdateServiceArchitectureContextReq) GetServiceArchitectureContext() UpdateServiceArchitectureContextReqServiceArchitectureContext {
+	return s.ServiceArchitectureContext
+}
+
+// SetServiceArchitectureContext sets the value of ServiceArchitectureContext.
+func (s *UpdateServiceArchitectureContextReq) SetServiceArchitectureContext(val UpdateServiceArchitectureContextReqServiceArchitectureContext) {
+	s.ServiceArchitectureContext = val
+}
+
+type UpdateServiceArchitectureContextReqServiceArchitectureContext struct {
+	// Architecture context content (markdown).
+	Blob string `json:"blob"`
+}
+
+// GetBlob returns the value of Blob.
+func (s *UpdateServiceArchitectureContextReqServiceArchitectureContext) GetBlob() string {
+	return s.Blob
+}
+
+// SetBlob sets the value of Blob.
+func (s *UpdateServiceArchitectureContextReqServiceArchitectureContext) SetBlob(val string) {
+	s.Blob = val
+}
+
+type UpdateServiceArchitectureContextUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateServiceArchitectureContextUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateServiceArchitectureContextUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateServiceArchitectureContextUnauthorized) updateServiceArchitectureContextRes() {}
+
+type UpdateServiceLabelNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceLabelNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceLabelNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateServiceLabelNotFound) updateServiceLabelRes() {}
+
 type UpdateServiceLabelOK struct {
-	Label Label `json:"label"`
+	Label UpdateServiceLabelOKLabel `json:"label"`
 }
 
 // GetLabel returns the value of Label.
-func (s *UpdateServiceLabelOK) GetLabel() Label {
+func (s *UpdateServiceLabelOK) GetLabel() UpdateServiceLabelOKLabel {
 	return s.Label
 }
 
 // SetLabel sets the value of Label.
-func (s *UpdateServiceLabelOK) SetLabel(val Label) {
+func (s *UpdateServiceLabelOK) SetLabel(val UpdateServiceLabelOKLabel) {
 	s.Label = val
 }
 
 func (*UpdateServiceLabelOK) updateServiceLabelRes() {}
 
-type UpdateServiceLabelReq struct {
-	// Label color in hex format (without#).
-	Color OptString `json:"color"`
-	// Label name.
-	Name OptString `json:"name"`
+type UpdateServiceLabelOKLabel struct {
+	UUID uuid.UUID `json:"uuid"`
+	Name string    `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color     string    `json:"color"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
-// GetColor returns the value of Color.
-func (s *UpdateServiceLabelReq) GetColor() OptString {
-	return s.Color
+// GetUUID returns the value of UUID.
+func (s *UpdateServiceLabelOKLabel) GetUUID() uuid.UUID {
+	return s.UUID
 }
 
 // GetName returns the value of Name.
-func (s *UpdateServiceLabelReq) GetName() OptString {
+func (s *UpdateServiceLabelOKLabel) GetName() string {
 	return s.Name
 }
 
-// SetColor sets the value of Color.
-func (s *UpdateServiceLabelReq) SetColor(val OptString) {
-	s.Color = val
+// GetColor returns the value of Color.
+func (s *UpdateServiceLabelOKLabel) GetColor() string {
+	return s.Color
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateServiceLabelOKLabel) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateServiceLabelOKLabel) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateServiceLabelOKLabel) SetUUID(val uuid.UUID) {
+	s.UUID = val
 }
 
 // SetName sets the value of Name.
-func (s *UpdateServiceLabelReq) SetName(val OptString) {
+func (s *UpdateServiceLabelOKLabel) SetName(val string) {
 	s.Name = val
 }
+
+// SetColor sets the value of Color.
+func (s *UpdateServiceLabelOKLabel) SetColor(val string) {
+	s.Color = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateServiceLabelOKLabel) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateServiceLabelOKLabel) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type UpdateServiceLabelPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceLabelPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceLabelPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateServiceLabelPaymentRequired) updateServiceLabelRes() {}
+
+type UpdateServiceLabelReq struct {
+	Label UpdateServiceLabelReqLabel `json:"label"`
+}
+
+// GetLabel returns the value of Label.
+func (s *UpdateServiceLabelReq) GetLabel() UpdateServiceLabelReqLabel {
+	return s.Label
+}
+
+// SetLabel sets the value of Label.
+func (s *UpdateServiceLabelReq) SetLabel(val UpdateServiceLabelReqLabel) {
+	s.Label = val
+}
+
+type UpdateServiceLabelReqLabel struct {
+	Name OptString `json:"name"`
+	// Hex color code (6 characters, no hash).
+	Color OptString `json:"color"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateServiceLabelReqLabel) GetName() OptString {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateServiceLabelReqLabel) GetColor() OptString {
+	return s.Color
+}
+
+// SetName sets the value of Name.
+func (s *UpdateServiceLabelReqLabel) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateServiceLabelReqLabel) SetColor(val OptString) {
+	s.Color = val
+}
+
+type UpdateServiceLabelUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateServiceLabelUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateServiceLabelUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateServiceLabelUnauthorized) updateServiceLabelRes() {}
+
+type UpdateServiceLabelUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceLabelUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceLabelUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateServiceLabelUnprocessableEntity) updateServiceLabelRes() {}
+
+type UpdateServiceRunbookRuleNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceRunbookRuleNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceRunbookRuleNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateServiceRunbookRuleNotFound) updateServiceRunbookRuleRes() {}
+
+type UpdateServiceRunbookRuleOK struct {
+	UUID uuid.UUID `json:"uuid"`
+	// Regex pattern for matching incident title or description.
+	Pattern string `json:"pattern"`
+	// Match target (title or description).
+	Target UpdateServiceRunbookRuleOKTarget `json:"target"`
+	// Priority (lower value = higher priority).
+	Priority int `json:"priority"`
+	// Namespace of the linked Runbook (e.g. /default, /api-server-recovery).
+	RunbookNamespace string    `json:"runbook_namespace"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateServiceRunbookRuleOK) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetPattern returns the value of Pattern.
+func (s *UpdateServiceRunbookRuleOK) GetPattern() string {
+	return s.Pattern
+}
+
+// GetTarget returns the value of Target.
+func (s *UpdateServiceRunbookRuleOK) GetTarget() UpdateServiceRunbookRuleOKTarget {
+	return s.Target
+}
+
+// GetPriority returns the value of Priority.
+func (s *UpdateServiceRunbookRuleOK) GetPriority() int {
+	return s.Priority
+}
+
+// GetRunbookNamespace returns the value of RunbookNamespace.
+func (s *UpdateServiceRunbookRuleOK) GetRunbookNamespace() string {
+	return s.RunbookNamespace
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateServiceRunbookRuleOK) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateServiceRunbookRuleOK) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateServiceRunbookRuleOK) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetPattern sets the value of Pattern.
+func (s *UpdateServiceRunbookRuleOK) SetPattern(val string) {
+	s.Pattern = val
+}
+
+// SetTarget sets the value of Target.
+func (s *UpdateServiceRunbookRuleOK) SetTarget(val UpdateServiceRunbookRuleOKTarget) {
+	s.Target = val
+}
+
+// SetPriority sets the value of Priority.
+func (s *UpdateServiceRunbookRuleOK) SetPriority(val int) {
+	s.Priority = val
+}
+
+// SetRunbookNamespace sets the value of RunbookNamespace.
+func (s *UpdateServiceRunbookRuleOK) SetRunbookNamespace(val string) {
+	s.RunbookNamespace = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateServiceRunbookRuleOK) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateServiceRunbookRuleOK) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+func (*UpdateServiceRunbookRuleOK) updateServiceRunbookRuleRes() {}
+
+// Match target (title or description).
+type UpdateServiceRunbookRuleOKTarget string
+
+const (
+	UpdateServiceRunbookRuleOKTargetTitle       UpdateServiceRunbookRuleOKTarget = "title"
+	UpdateServiceRunbookRuleOKTargetDescription UpdateServiceRunbookRuleOKTarget = "description"
+)
+
+// AllValues returns all UpdateServiceRunbookRuleOKTarget values.
+func (UpdateServiceRunbookRuleOKTarget) AllValues() []UpdateServiceRunbookRuleOKTarget {
+	return []UpdateServiceRunbookRuleOKTarget{
+		UpdateServiceRunbookRuleOKTargetTitle,
+		UpdateServiceRunbookRuleOKTargetDescription,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateServiceRunbookRuleOKTarget) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateServiceRunbookRuleOKTargetTitle:
+		return []byte(s), nil
+	case UpdateServiceRunbookRuleOKTargetDescription:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateServiceRunbookRuleOKTarget) UnmarshalText(data []byte) error {
+	switch UpdateServiceRunbookRuleOKTarget(data) {
+	case UpdateServiceRunbookRuleOKTargetTitle:
+		*s = UpdateServiceRunbookRuleOKTargetTitle
+		return nil
+	case UpdateServiceRunbookRuleOKTargetDescription:
+		*s = UpdateServiceRunbookRuleOKTargetDescription
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateServiceRunbookRulePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceRunbookRulePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceRunbookRulePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateServiceRunbookRulePaymentRequired) updateServiceRunbookRuleRes() {}
+
+type UpdateServiceRunbookRuleReq struct {
+	RunbookRule UpdateServiceRunbookRuleReqRunbookRule `json:"runbook_rule"`
+}
+
+// GetRunbookRule returns the value of RunbookRule.
+func (s *UpdateServiceRunbookRuleReq) GetRunbookRule() UpdateServiceRunbookRuleReqRunbookRule {
+	return s.RunbookRule
+}
+
+// SetRunbookRule sets the value of RunbookRule.
+func (s *UpdateServiceRunbookRuleReq) SetRunbookRule(val UpdateServiceRunbookRuleReqRunbookRule) {
+	s.RunbookRule = val
+}
+
+type UpdateServiceRunbookRuleReqRunbookRule struct {
+	Pattern          OptString                                       `json:"pattern"`
+	Target           OptUpdateServiceRunbookRuleReqRunbookRuleTarget `json:"target"`
+	Priority         OptInt                                          `json:"priority"`
+	RunbookNamespace OptString                                       `json:"runbook_namespace"`
+}
+
+// GetPattern returns the value of Pattern.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) GetPattern() OptString {
+	return s.Pattern
+}
+
+// GetTarget returns the value of Target.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) GetTarget() OptUpdateServiceRunbookRuleReqRunbookRuleTarget {
+	return s.Target
+}
+
+// GetPriority returns the value of Priority.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) GetPriority() OptInt {
+	return s.Priority
+}
+
+// GetRunbookNamespace returns the value of RunbookNamespace.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) GetRunbookNamespace() OptString {
+	return s.RunbookNamespace
+}
+
+// SetPattern sets the value of Pattern.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) SetPattern(val OptString) {
+	s.Pattern = val
+}
+
+// SetTarget sets the value of Target.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) SetTarget(val OptUpdateServiceRunbookRuleReqRunbookRuleTarget) {
+	s.Target = val
+}
+
+// SetPriority sets the value of Priority.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) SetPriority(val OptInt) {
+	s.Priority = val
+}
+
+// SetRunbookNamespace sets the value of RunbookNamespace.
+func (s *UpdateServiceRunbookRuleReqRunbookRule) SetRunbookNamespace(val OptString) {
+	s.RunbookNamespace = val
+}
+
+type UpdateServiceRunbookRuleReqRunbookRuleTarget string
+
+const (
+	UpdateServiceRunbookRuleReqRunbookRuleTargetTitle       UpdateServiceRunbookRuleReqRunbookRuleTarget = "title"
+	UpdateServiceRunbookRuleReqRunbookRuleTargetDescription UpdateServiceRunbookRuleReqRunbookRuleTarget = "description"
+)
+
+// AllValues returns all UpdateServiceRunbookRuleReqRunbookRuleTarget values.
+func (UpdateServiceRunbookRuleReqRunbookRuleTarget) AllValues() []UpdateServiceRunbookRuleReqRunbookRuleTarget {
+	return []UpdateServiceRunbookRuleReqRunbookRuleTarget{
+		UpdateServiceRunbookRuleReqRunbookRuleTargetTitle,
+		UpdateServiceRunbookRuleReqRunbookRuleTargetDescription,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateServiceRunbookRuleReqRunbookRuleTarget) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateServiceRunbookRuleReqRunbookRuleTargetTitle:
+		return []byte(s), nil
+	case UpdateServiceRunbookRuleReqRunbookRuleTargetDescription:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateServiceRunbookRuleReqRunbookRuleTarget) UnmarshalText(data []byte) error {
+	switch UpdateServiceRunbookRuleReqRunbookRuleTarget(data) {
+	case UpdateServiceRunbookRuleReqRunbookRuleTargetTitle:
+		*s = UpdateServiceRunbookRuleReqRunbookRuleTargetTitle
+		return nil
+	case UpdateServiceRunbookRuleReqRunbookRuleTargetDescription:
+		*s = UpdateServiceRunbookRuleReqRunbookRuleTargetDescription
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateServiceRunbookRuleUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateServiceRunbookRuleUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateServiceRunbookRuleUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateServiceRunbookRuleUnauthorized) updateServiceRunbookRuleRes() {}
+
+type UpdateServiceRunbookRuleUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateServiceRunbookRuleUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateServiceRunbookRuleUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateServiceRunbookRuleUnprocessableEntity) updateServiceRunbookRuleRes() {}

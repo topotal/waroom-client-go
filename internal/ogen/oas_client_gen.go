@@ -4,6 +4,7 @@ package ogen
 
 import (
 	"context"
+	"io"
 	"net/url"
 	"strings"
 
@@ -21,84 +22,350 @@ func trimTrailingSlashes(u *url.URL) {
 
 // Invoker invokes operations described by OpenAPI v3 specification.
 type Invoker interface {
+	// CreateIncident invokes createIncident operation.
+	//
+	// Create a new incident.
+	//
+	// POST /api/v0/incidents
+	CreateIncident(ctx context.Context, request *CreateIncidentReq) (CreateIncidentRes, error)
+	// CreateIncidentActionItem invokes createIncidentActionItem operation.
+	//
+	// Create a new action item for an incident.
+	//
+	// POST /api/v0/incidents/{uuid}/action_items
+	CreateIncidentActionItem(ctx context.Context, request *CreateIncidentActionItemReq, params CreateIncidentActionItemParams) (CreateIncidentActionItemRes, error)
 	// CreateIncidentMetrics invokes createIncidentMetrics operation.
 	//
-	// Create a new activity to track incident metrics.
+	// Creates an incident response activity to track metrics like TTD, TTA, TTI, TTF, TTR.
 	//
-	// POST /incidents/{uuid}/metrics
+	// POST /api/v0/incidents/{uuid}/metrics
 	CreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (CreateIncidentMetricsRes, error)
 	// CreatePostmortem invokes createPostmortem operation.
 	//
 	// Create a new postmortem.
 	//
-	// POST /postmortems
+	// POST /api/v0/postmortems
 	CreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (CreatePostmortemRes, error)
+	// CreatePostmortemTemplate invokes createPostmortemTemplate operation.
+	//
+	// Create a postmortem template.
+	//
+	// POST /api/v0/postmortem_templates
+	CreatePostmortemTemplate(ctx context.Context, request *CreatePostmortemTemplateReq) (CreatePostmortemTemplateRes, error)
+	// CreateRunbook invokes createRunbook operation.
+	//
+	// Create a runbook.
+	//
+	// POST /api/v0/runbooks
+	CreateRunbook(ctx context.Context, request *CreateRunbookReq) (CreateRunbookRes, error)
 	// CreateServiceLabel invokes createServiceLabel operation.
 	//
-	// Create label on a service.
+	// Create a new label for a service.
 	//
-	// POST /services/{name}/labels
+	// POST /api/v0/services/{name}/labels
 	CreateServiceLabel(ctx context.Context, request *CreateServiceLabelReq, params CreateServiceLabelParams) (CreateServiceLabelRes, error)
+	// CreateServiceRunbookRule invokes createServiceRunbookRule operation.
+	//
+	// Create a new runbook rule for a service.
+	//
+	// POST /api/v0/services/{name}/runbook_rules
+	CreateServiceRunbookRule(ctx context.Context, request *CreateServiceRunbookRuleReq, params CreateServiceRunbookRuleParams) (CreateServiceRunbookRuleRes, error)
+	// DeleteIncident invokes deleteIncident operation.
+	//
+	// Delete an incident.
+	//
+	// DELETE /api/v0/incidents/{uuid}
+	DeleteIncident(ctx context.Context, params DeleteIncidentParams) (DeleteIncidentRes, error)
+	// DeleteIncidentActionItem invokes deleteIncidentActionItem operation.
+	//
+	// Delete an action item.
+	//
+	// DELETE /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+	DeleteIncidentActionItem(ctx context.Context, params DeleteIncidentActionItemParams) (DeleteIncidentActionItemRes, error)
+	// DeleteIncidentDescriptionTemplate invokes deleteIncidentDescriptionTemplate operation.
+	//
+	// Delete the organization's incident description template. Requires Pro plan.
+	//
+	// DELETE /api/v0/incident_description_template
+	DeleteIncidentDescriptionTemplate(ctx context.Context) (DeleteIncidentDescriptionTemplateRes, error)
+	// DeleteIncidentDocumentTemplate invokes deleteIncidentDocumentTemplate operation.
+	//
+	// Removes the incident document template for this service. When no template is set, no-op and returns
+	// 204.
+	//
+	// DELETE /api/v0/services/{name}/incident_document_template
+	DeleteIncidentDocumentTemplate(ctx context.Context, params DeleteIncidentDocumentTemplateParams) (DeleteIncidentDocumentTemplateRes, error)
+	// DeletePostmortem invokes deletePostmortem operation.
+	//
+	// Delete a postmortem.
+	//
+	// DELETE /api/v0/postmortems/{uuid}
+	DeletePostmortem(ctx context.Context, params DeletePostmortemParams) (DeletePostmortemRes, error)
+	// DeletePostmortemTemplateByUuid invokes deletePostmortemTemplateByUuid operation.
+	//
+	// Delete a postmortem template.
+	//
+	// DELETE /api/v0/postmortem_templates/{uuid}
+	DeletePostmortemTemplateByUuid(ctx context.Context, params DeletePostmortemTemplateByUuidParams) (DeletePostmortemTemplateByUuidRes, error)
+	// DeleteRunbook invokes deleteRunbook operation.
+	//
+	// Delete a runbook.
+	//
+	// DELETE /api/v0/runbooks/{namespace}
+	DeleteRunbook(ctx context.Context, params DeleteRunbookParams) (DeleteRunbookRes, error)
 	// DeleteServiceLabel invokes deleteServiceLabel operation.
 	//
 	// Delete a label.
 	//
-	// DELETE /services/{name}/labels/{uuid}
+	// DELETE /api/v0/services/{name}/labels/{uuid}
 	DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) (DeleteServiceLabelRes, error)
+	// DeleteServiceNotificationSlackChannel invokes deleteServiceNotificationSlackChannel operation.
+	//
+	// Removes the Slack channel configured for incident notifications for this service. Returns 404 when
+	// no channel is configured.
+	//
+	// DELETE /api/v0/services/{name}/service_notification_slack_channel
+	DeleteServiceNotificationSlackChannel(ctx context.Context, params DeleteServiceNotificationSlackChannelParams) (DeleteServiceNotificationSlackChannelRes, error)
+	// DeleteServiceRunbookRule invokes deleteServiceRunbookRule operation.
+	//
+	// Delete a runbook rule.
+	//
+	// DELETE /api/v0/services/{name}/runbook_rules/{uuid}
+	DeleteServiceRunbookRule(ctx context.Context, params DeleteServiceRunbookRuleParams) (DeleteServiceRunbookRuleRes, error)
 	// GetIncident invokes getIncident operation.
 	//
-	// Retrieve a specific incident by its UUID.
+	// Get incident details.
 	//
-	// GET /incidents/{uuid}
+	// GET /api/v0/incidents/{uuid}
 	GetIncident(ctx context.Context, params GetIncidentParams) (GetIncidentRes, error)
+	// GetIncidentActionItem invokes getIncidentActionItem operation.
+	//
+	// Get action item details.
+	//
+	// GET /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+	GetIncidentActionItem(ctx context.Context, params GetIncidentActionItemParams) (GetIncidentActionItemRes, error)
+	// GetIncidentDescriptionTemplate invokes getIncidentDescriptionTemplate operation.
+	//
+	// Returns the organization's incident description template.
+	//
+	// GET /api/v0/incident_description_template
+	GetIncidentDescriptionTemplate(ctx context.Context) (GetIncidentDescriptionTemplateRes, error)
+	// GetIncidentDocumentTemplate invokes getIncidentDocumentTemplate operation.
+	//
+	// Returns the incident document template for this service. When no template is set, returns 200 with
+	// blob set to empty string.
+	//
+	// GET /api/v0/services/{name}/incident_document_template
+	GetIncidentDocumentTemplate(ctx context.Context, params GetIncidentDocumentTemplateParams) (GetIncidentDocumentTemplateRes, error)
+	// GetPostmortem invokes getPostmortem operation.
+	//
+	// Get a postmortem.
+	//
+	// GET /api/v0/postmortems/{uuid}
+	GetPostmortem(ctx context.Context, params GetPostmortemParams) (GetPostmortemRes, error)
+	// GetPostmortemTemplate invokes getPostmortemTemplate operation.
+	//
+	// Get postmortem template.
+	//
+	// GET /api/v0/postmortem_template
+	GetPostmortemTemplate(ctx context.Context) (GetPostmortemTemplateRes, error)
+	// GetPostmortemTemplateByUuid invokes getPostmortemTemplateByUuid operation.
+	//
+	// Get a postmortem template by UUID.
+	//
+	// GET /api/v0/postmortem_templates/{uuid}
+	GetPostmortemTemplateByUuid(ctx context.Context, params GetPostmortemTemplateByUuidParams) (GetPostmortemTemplateByUuidRes, error)
+	// GetRunbook invokes getRunbook operation.
+	//
+	// Namespace in the URL is path-style without leading slash. For example, use /api/v0/runbooks/default
+	// or /api/v0/runbooks/api-server/recovery.
+	//
+	// GET /api/v0/runbooks/{namespace}
+	GetRunbook(ctx context.Context, params GetRunbookParams) (GetRunbookRes, error)
+	// GetServiceArchitectureContext invokes getServiceArchitectureContext operation.
+	//
+	// Get service architecture context.
+	//
+	// GET /api/v0/services/{name}/service_architecture_context
+	GetServiceArchitectureContext(ctx context.Context, params GetServiceArchitectureContextParams) (GetServiceArchitectureContextRes, error)
+	// GetServiceNotificationSlackChannel invokes getServiceNotificationSlackChannel operation.
+	//
+	// Returns the Slack channel configured for incident notifications for this service. Returns 404 when
+	// no channel is configured.
+	//
+	// GET /api/v0/services/{name}/service_notification_slack_channel
+	GetServiceNotificationSlackChannel(ctx context.Context, params GetServiceNotificationSlackChannelParams) (GetServiceNotificationSlackChannelRes, error)
+	// GetServiceWebhookConfiguration invokes getServiceWebhookConfiguration operation.
+	//
+	// Get a webhook configuration.
+	//
+	// GET /api/v0/services/{name}/webhook_configurations/{uuid}
+	GetServiceWebhookConfiguration(ctx context.Context, params GetServiceWebhookConfigurationParams) (GetServiceWebhookConfigurationRes, error)
+	// ListIncidentActionItems invokes listIncidentActionItems operation.
+	//
+	// List action items for an incident.
+	//
+	// GET /api/v0/incidents/{uuid}/action_items
+	ListIncidentActionItems(ctx context.Context, params ListIncidentActionItemsParams) (ListIncidentActionItemsRes, error)
 	// ListIncidents invokes listIncidents operation.
 	//
-	// Retrieve a paginated list of incidents.
+	// List incidents.
 	//
-	// GET /incidents
+	// GET /api/v0/incidents
 	ListIncidents(ctx context.Context, params ListIncidentsParams) (ListIncidentsRes, error)
+	// ListPostmortemTemplates invokes listPostmortemTemplates operation.
+	//
+	// Returns postmortem templates for the organization.
+	//
+	// GET /api/v0/postmortem_templates
+	ListPostmortemTemplates(ctx context.Context, params ListPostmortemTemplatesParams) (ListPostmortemTemplatesRes, error)
 	// ListPostmortems invokes listPostmortems operation.
 	//
-	// Retrieve a paginated list of postmortems.
+	// List postmortems.
 	//
-	// GET /postmortems
+	// GET /api/v0/postmortems
 	ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error)
+	// ListRunbooks invokes listRunbooks operation.
+	//
+	// Returns runbooks for the organization. Tutorial runbook is excluded.
+	//
+	// GET /api/v0/runbooks
+	ListRunbooks(ctx context.Context, params ListRunbooksParams) (ListRunbooksRes, error)
 	// ListServiceLabels invokes listServiceLabels operation.
 	//
-	// List labels on a service.
+	// List labels for a service.
 	//
-	// GET /services/{name}/labels
+	// GET /api/v0/services/{name}/labels
 	ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) (ListServiceLabelsRes, error)
+	// ListServiceRunbookRules invokes listServiceRunbookRules operation.
+	//
+	// List runbook rules for a service.
+	//
+	// GET /api/v0/services/{name}/runbook_rules
+	ListServiceRunbookRules(ctx context.Context, params ListServiceRunbookRulesParams) (ListServiceRunbookRulesRes, error)
+	// ListServiceWebhookConfigurations invokes listServiceWebhookConfigurations operation.
+	//
+	// List webhook configurations for a service.
+	//
+	// GET /api/v0/services/{name}/webhook_configurations
+	ListServiceWebhookConfigurations(ctx context.Context, params ListServiceWebhookConfigurationsParams) (ListServiceWebhookConfigurationsRes, error)
 	// ListServices invokes listServices operation.
 	//
-	// Retrieve a paginated list of services.
+	// List services.
 	//
-	// GET /services
-	ListServices(ctx context.Context, params ListServicesParams) (ListServicesRes, error)
+	// GET /api/v0/services
+	ListServices(ctx context.Context) (ListServicesRes, error)
+	// ListUsers invokes listUsers operation.
+	//
+	// List users.
+	//
+	// GET /api/v0/users
+	ListUsers(ctx context.Context, params ListUsersParams) (ListUsersRes, error)
+	// PutServiceNotificationSlackChannel invokes putServiceNotificationSlackChannel operation.
+	//
+	// Sets the Slack channel for incident notifications for this service. The channel name is resolved
+	// from the given channel ID (key) via Slack API (conversations.info). If no channel is configured,
+	// creates one. If already configured, updates it.
+	//
+	// PUT /api/v0/services/{name}/service_notification_slack_channel
+	PutServiceNotificationSlackChannel(ctx context.Context, request *PutServiceNotificationSlackChannelReq, params PutServiceNotificationSlackChannelParams) (PutServiceNotificationSlackChannelRes, error)
+	// UpdateIncident invokes updateIncident operation.
+	//
+	// Update an incident's title and/or description.
+	//
+	// PATCH /api/v0/incidents/{uuid}
+	UpdateIncident(ctx context.Context, request *UpdateIncidentReq, params UpdateIncidentParams) (UpdateIncidentRes, error)
+	// UpdateIncidentCommander invokes updateIncidentCommander operation.
+	//
+	// Update incident commander.
+	//
+	// PATCH /api/v0/incidents/{uuid}/commander
+	UpdateIncidentCommander(ctx context.Context, request *UpdateIncidentCommanderReq, params UpdateIncidentCommanderParams) (UpdateIncidentCommanderRes, error)
+	// UpdateIncidentDescriptionTemplate invokes updateIncidentDescriptionTemplate operation.
+	//
+	// Update the organization's incident description template. Requires Pro plan.
+	//
+	// PATCH /api/v0/incident_description_template
+	UpdateIncidentDescriptionTemplate(ctx context.Context, request *UpdateIncidentDescriptionTemplateReq) (UpdateIncidentDescriptionTemplateRes, error)
+	// UpdateIncidentDocumentTemplate invokes updateIncidentDocumentTemplate operation.
+	//
+	// Updates the incident document template for this service. Used by ChatGPT to control the structure of
+	// generated incident reports.
+	//
+	// PATCH /api/v0/services/{name}/incident_document_template
+	UpdateIncidentDocumentTemplate(ctx context.Context, request *UpdateIncidentDocumentTemplateReq, params UpdateIncidentDocumentTemplateParams) (UpdateIncidentDocumentTemplateRes, error)
 	// UpdateIncidentLabels invokes updateIncidentLabels operation.
 	//
-	// Update the labels associated with an incident.
+	// Replace all labels on an incident with the specified labels.
 	//
-	// PATCH /incidents/{uuid}/labels
+	// PATCH /api/v0/incidents/{uuid}/labels
 	UpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (UpdateIncidentLabelsRes, error)
+	// UpdateIncidentResponders invokes updateIncidentResponders operation.
+	//
+	// Update incident responders.
+	//
+	// PATCH /api/v0/incidents/{uuid}/responders
+	UpdateIncidentResponders(ctx context.Context, request *UpdateIncidentRespondersReq, params UpdateIncidentRespondersParams) (UpdateIncidentRespondersRes, error)
+	// UpdateIncidentService invokes updateIncidentService operation.
+	//
+	// Update incident service.
+	//
+	// PATCH /api/v0/incidents/{uuid}/service
+	UpdateIncidentService(ctx context.Context, request *UpdateIncidentServiceReq, params UpdateIncidentServiceParams) (UpdateIncidentServiceRes, error)
 	// UpdateIncidentSeverity invokes updateIncidentSeverity operation.
 	//
-	// Update the severity of an incident.
+	// Update incident severity.
 	//
-	// PATCH /incidents/{uuid}/severity
+	// PATCH /api/v0/incidents/{uuid}/severity
 	UpdateIncidentSeverity(ctx context.Context, request *UpdateIncidentSeverityReq, params UpdateIncidentSeverityParams) (UpdateIncidentSeverityRes, error)
 	// UpdateIncidentStatus invokes updateIncidentStatus operation.
 	//
-	// Update the status of an incident.
+	// Update incident status.
 	//
-	// PATCH /incidents/{uuid}/status
+	// PATCH /api/v0/incidents/{uuid}/status
 	UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error)
+	// UpdatePostmortem invokes updatePostmortem operation.
+	//
+	// Update a postmortem.
+	//
+	// PATCH /api/v0/postmortems/{uuid}
+	UpdatePostmortem(ctx context.Context, request *UpdatePostmortemReq, params UpdatePostmortemParams) (UpdatePostmortemRes, error)
+	// UpdatePostmortemTemplate invokes updatePostmortemTemplate operation.
+	//
+	// Update postmortem template.
+	//
+	// PATCH /api/v0/postmortem_template
+	UpdatePostmortemTemplate(ctx context.Context, request *UpdatePostmortemTemplateReq) (UpdatePostmortemTemplateRes, error)
+	// UpdatePostmortemTemplateByUuid invokes updatePostmortemTemplateByUuid operation.
+	//
+	// Update a postmortem template.
+	//
+	// PATCH /api/v0/postmortem_templates/{uuid}
+	UpdatePostmortemTemplateByUuid(ctx context.Context, request *UpdatePostmortemTemplateByUuidReq, params UpdatePostmortemTemplateByUuidParams) (UpdatePostmortemTemplateByUuidRes, error)
+	// UpdateRunbook invokes updateRunbook operation.
+	//
+	// Update a runbook.
+	//
+	// PATCH /api/v0/runbooks/{namespace}
+	UpdateRunbook(ctx context.Context, request *UpdateRunbookReq, params UpdateRunbookParams) (UpdateRunbookRes, error)
+	// UpdateServiceArchitectureContext invokes updateServiceArchitectureContext operation.
+	//
+	// Update service architecture context.
+	//
+	// PATCH /api/v0/services/{name}/service_architecture_context
+	UpdateServiceArchitectureContext(ctx context.Context, request *UpdateServiceArchitectureContextReq, params UpdateServiceArchitectureContextParams) (UpdateServiceArchitectureContextRes, error)
 	// UpdateServiceLabel invokes updateServiceLabel operation.
 	//
-	// Update/replace a label.
+	// Update a label.
 	//
-	// PATCH /services/{name}/labels/{uuid}
+	// PATCH /api/v0/services/{name}/labels/{uuid}
 	UpdateServiceLabel(ctx context.Context, request *UpdateServiceLabelReq, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error)
+	// UpdateServiceRunbookRule invokes updateServiceRunbookRule operation.
+	//
+	// Update a runbook rule.
+	//
+	// PATCH /api/v0/services/{name}/runbook_rules/{uuid}
+	UpdateServiceRunbookRule(ctx context.Context, request *UpdateServiceRunbookRuleReq, params UpdateServiceRunbookRuleParams) (UpdateServiceRunbookRuleRes, error)
 }
 
 // Client implements OAS client.
@@ -142,21 +409,225 @@ func (c *Client) requestURL(ctx context.Context) *url.URL {
 	return u
 }
 
+// CreateIncident invokes createIncident operation.
+//
+// Create a new incident.
+//
+// POST /api/v0/incidents
+func (c *Client) CreateIncident(ctx context.Context, request *CreateIncidentReq) (CreateIncidentRes, error) {
+	res, err := c.sendCreateIncident(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateIncident(ctx context.Context, request *CreateIncidentReq) (res CreateIncidentRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/incidents"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateIncidentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateIncidentOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateIncidentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateIncidentActionItem invokes createIncidentActionItem operation.
+//
+// Create a new action item for an incident.
+//
+// POST /api/v0/incidents/{uuid}/action_items
+func (c *Client) CreateIncidentActionItem(ctx context.Context, request *CreateIncidentActionItemReq, params CreateIncidentActionItemParams) (CreateIncidentActionItemRes, error) {
+	res, err := c.sendCreateIncidentActionItem(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateIncidentActionItem(ctx context.Context, request *CreateIncidentActionItemReq, params CreateIncidentActionItemParams) (res CreateIncidentActionItemRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/action_items"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateIncidentActionItemRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateIncidentActionItemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateIncidentActionItemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // CreateIncidentMetrics invokes createIncidentMetrics operation.
 //
-// Create a new activity to track incident metrics.
+// Creates an incident response activity to track metrics like TTD, TTA, TTI, TTF, TTR.
 //
-// POST /incidents/{uuid}/metrics
+// POST /api/v0/incidents/{uuid}/metrics
 func (c *Client) CreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (CreateIncidentMetricsRes, error) {
 	res, err := c.sendCreateIncidentMetrics(ctx, request, params)
 	return res, err
 }
 
 func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (res CreateIncidentMetricsRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/incidents/"
+	pathParts[0] = "/api/v0/incidents/"
 	{
 		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -191,13 +662,13 @@ func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateI
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, CreateIncidentMetricsOperation, r); {
+			switch err := c.securityBearerAuth(ctx, CreateIncidentMetricsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -224,7 +695,13 @@ func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateI
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeCreateIncidentMetricsResponse(resp)
 	if err != nil {
@@ -238,7 +715,7 @@ func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateI
 //
 // Create a new postmortem.
 //
-// POST /postmortems
+// POST /api/v0/postmortems
 func (c *Client) CreatePostmortem(ctx context.Context, request *CreatePostmortemReq) (CreatePostmortemRes, error) {
 	res, err := c.sendCreatePostmortem(ctx, request)
 	return res, err
@@ -257,7 +734,7 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/postmortems"
+	pathParts[0] = "/api/v0/postmortems"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	r, err := ht.NewRequest(ctx, "POST", u)
@@ -273,13 +750,13 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, CreatePostmortemOperation, r); {
+			switch err := c.securityBearerAuth(ctx, CreatePostmortemOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -306,7 +783,13 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeCreatePostmortemResponse(resp)
 	if err != nil {
@@ -316,11 +799,178 @@ func (c *Client) sendCreatePostmortem(ctx context.Context, request *CreatePostmo
 	return result, nil
 }
 
+// CreatePostmortemTemplate invokes createPostmortemTemplate operation.
+//
+// Create a postmortem template.
+//
+// POST /api/v0/postmortem_templates
+func (c *Client) CreatePostmortemTemplate(ctx context.Context, request *CreatePostmortemTemplateReq) (CreatePostmortemTemplateRes, error) {
+	res, err := c.sendCreatePostmortemTemplate(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreatePostmortemTemplate(ctx context.Context, request *CreatePostmortemTemplateReq) (res CreatePostmortemTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/postmortem_templates"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreatePostmortemTemplateRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreatePostmortemTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreatePostmortemTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateRunbook invokes createRunbook operation.
+//
+// Create a runbook.
+//
+// POST /api/v0/runbooks
+func (c *Client) CreateRunbook(ctx context.Context, request *CreateRunbookReq) (CreateRunbookRes, error) {
+	res, err := c.sendCreateRunbook(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateRunbook(ctx context.Context, request *CreateRunbookReq) (res CreateRunbookRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/runbooks"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateRunbookRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateRunbookOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateRunbookResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // CreateServiceLabel invokes createServiceLabel operation.
 //
-// Create label on a service.
+// Create a new label for a service.
 //
-// POST /services/{name}/labels
+// POST /api/v0/services/{name}/labels
 func (c *Client) CreateServiceLabel(ctx context.Context, request *CreateServiceLabelReq, params CreateServiceLabelParams) (CreateServiceLabelRes, error) {
 	res, err := c.sendCreateServiceLabel(ctx, request, params)
 	return res, err
@@ -339,7 +989,7 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServ
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/services/"
+	pathParts[0] = "/api/v0/services/"
 	{
 		// Encode "name" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -374,13 +1024,13 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServ
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, CreateServiceLabelOperation, r); {
+			switch err := c.securityBearerAuth(ctx, CreateServiceLabelOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -407,9 +1057,783 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServ
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeCreateServiceLabelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateServiceRunbookRule invokes createServiceRunbookRule operation.
+//
+// Create a new runbook rule for a service.
+//
+// POST /api/v0/services/{name}/runbook_rules
+func (c *Client) CreateServiceRunbookRule(ctx context.Context, request *CreateServiceRunbookRuleReq, params CreateServiceRunbookRuleParams) (CreateServiceRunbookRuleRes, error) {
+	res, err := c.sendCreateServiceRunbookRule(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateServiceRunbookRule(ctx context.Context, request *CreateServiceRunbookRuleReq, params CreateServiceRunbookRuleParams) (res CreateServiceRunbookRuleRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/runbook_rules"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateServiceRunbookRuleRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateServiceRunbookRuleOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateServiceRunbookRuleResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteIncident invokes deleteIncident operation.
+//
+// Delete an incident.
+//
+// DELETE /api/v0/incidents/{uuid}
+func (c *Client) DeleteIncident(ctx context.Context, params DeleteIncidentParams) (DeleteIncidentRes, error) {
+	res, err := c.sendDeleteIncident(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteIncident(ctx context.Context, params DeleteIncidentParams) (res DeleteIncidentRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteIncidentOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteIncidentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteIncidentActionItem invokes deleteIncidentActionItem operation.
+//
+// Delete an action item.
+//
+// DELETE /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+func (c *Client) DeleteIncidentActionItem(ctx context.Context, params DeleteIncidentActionItemParams) (DeleteIncidentActionItemRes, error) {
+	res, err := c.sendDeleteIncidentActionItem(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteIncidentActionItem(ctx context.Context, params DeleteIncidentActionItemParams) (res DeleteIncidentActionItemRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/action_items/"
+	{
+		// Encode "action_item_uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "action_item_uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.ActionItemUUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteIncidentActionItemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteIncidentActionItemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteIncidentDescriptionTemplate invokes deleteIncidentDescriptionTemplate operation.
+//
+// Delete the organization's incident description template. Requires Pro plan.
+//
+// DELETE /api/v0/incident_description_template
+func (c *Client) DeleteIncidentDescriptionTemplate(ctx context.Context) (DeleteIncidentDescriptionTemplateRes, error) {
+	res, err := c.sendDeleteIncidentDescriptionTemplate(ctx)
+	return res, err
+}
+
+func (c *Client) sendDeleteIncidentDescriptionTemplate(ctx context.Context) (res DeleteIncidentDescriptionTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/incident_description_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteIncidentDescriptionTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteIncidentDescriptionTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteIncidentDocumentTemplate invokes deleteIncidentDocumentTemplate operation.
+//
+// Removes the incident document template for this service. When no template is set, no-op and returns
+// 204.
+//
+// DELETE /api/v0/services/{name}/incident_document_template
+func (c *Client) DeleteIncidentDocumentTemplate(ctx context.Context, params DeleteIncidentDocumentTemplateParams) (DeleteIncidentDocumentTemplateRes, error) {
+	res, err := c.sendDeleteIncidentDocumentTemplate(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteIncidentDocumentTemplate(ctx context.Context, params DeleteIncidentDocumentTemplateParams) (res DeleteIncidentDocumentTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/incident_document_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteIncidentDocumentTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteIncidentDocumentTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeletePostmortem invokes deletePostmortem operation.
+//
+// Delete a postmortem.
+//
+// DELETE /api/v0/postmortems/{uuid}
+func (c *Client) DeletePostmortem(ctx context.Context, params DeletePostmortemParams) (DeletePostmortemRes, error) {
+	res, err := c.sendDeletePostmortem(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeletePostmortem(ctx context.Context, params DeletePostmortemParams) (res DeletePostmortemRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortems/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeletePostmortemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeletePostmortemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeletePostmortemTemplateByUuid invokes deletePostmortemTemplateByUuid operation.
+//
+// Delete a postmortem template.
+//
+// DELETE /api/v0/postmortem_templates/{uuid}
+func (c *Client) DeletePostmortemTemplateByUuid(ctx context.Context, params DeletePostmortemTemplateByUuidParams) (DeletePostmortemTemplateByUuidRes, error) {
+	res, err := c.sendDeletePostmortemTemplateByUuid(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeletePostmortemTemplateByUuid(ctx context.Context, params DeletePostmortemTemplateByUuidParams) (res DeletePostmortemTemplateByUuidRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortem_templates/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeletePostmortemTemplateByUuidOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeletePostmortemTemplateByUuidResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteRunbook invokes deleteRunbook operation.
+//
+// Delete a runbook.
+//
+// DELETE /api/v0/runbooks/{namespace}
+func (c *Client) DeleteRunbook(ctx context.Context, params DeleteRunbookParams) (DeleteRunbookRes, error) {
+	res, err := c.sendDeleteRunbook(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteRunbook(ctx context.Context, params DeleteRunbookParams) (res DeleteRunbookRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/runbooks/"
+	{
+		// Encode "namespace" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "namespace",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Namespace))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteRunbookOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteRunbookResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -421,7 +1845,7 @@ func (c *Client) sendCreateServiceLabel(ctx context.Context, request *CreateServ
 //
 // Delete a label.
 //
-// DELETE /services/{name}/labels/{uuid}
+// DELETE /api/v0/services/{name}/labels/{uuid}
 func (c *Client) DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) (DeleteServiceLabelRes, error) {
 	res, err := c.sendDeleteServiceLabel(ctx, params)
 	return res, err
@@ -431,7 +1855,7 @@ func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServic
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [4]string
-	pathParts[0] = "/services/"
+	pathParts[0] = "/api/v0/services/"
 	{
 		// Encode "name" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -481,13 +1905,13 @@ func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServic
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, DeleteServiceLabelOperation, r); {
+			switch err := c.securityBearerAuth(ctx, DeleteServiceLabelOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -514,7 +1938,13 @@ func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServic
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeDeleteServiceLabelResponse(resp)
 	if err != nil {
@@ -524,11 +1954,220 @@ func (c *Client) sendDeleteServiceLabel(ctx context.Context, params DeleteServic
 	return result, nil
 }
 
+// DeleteServiceNotificationSlackChannel invokes deleteServiceNotificationSlackChannel operation.
+//
+// Removes the Slack channel configured for incident notifications for this service. Returns 404 when
+// no channel is configured.
+//
+// DELETE /api/v0/services/{name}/service_notification_slack_channel
+func (c *Client) DeleteServiceNotificationSlackChannel(ctx context.Context, params DeleteServiceNotificationSlackChannelParams) (DeleteServiceNotificationSlackChannelRes, error) {
+	res, err := c.sendDeleteServiceNotificationSlackChannel(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteServiceNotificationSlackChannel(ctx context.Context, params DeleteServiceNotificationSlackChannelParams) (res DeleteServiceNotificationSlackChannelRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service_notification_slack_channel"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteServiceNotificationSlackChannelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteServiceNotificationSlackChannelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteServiceRunbookRule invokes deleteServiceRunbookRule operation.
+//
+// Delete a runbook rule.
+//
+// DELETE /api/v0/services/{name}/runbook_rules/{uuid}
+func (c *Client) DeleteServiceRunbookRule(ctx context.Context, params DeleteServiceRunbookRuleParams) (DeleteServiceRunbookRuleRes, error) {
+	res, err := c.sendDeleteServiceRunbookRule(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteServiceRunbookRule(ctx context.Context, params DeleteServiceRunbookRuleParams) (res DeleteServiceRunbookRuleRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/runbook_rules/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteServiceRunbookRuleOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteServiceRunbookRuleResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // GetIncident invokes getIncident operation.
 //
-// Retrieve a specific incident by its UUID.
+// Get incident details.
 //
-// GET /incidents/{uuid}
+// GET /api/v0/incidents/{uuid}
 func (c *Client) GetIncident(ctx context.Context, params GetIncidentParams) (GetIncidentRes, error) {
 	res, err := c.sendGetIncident(ctx, params)
 	return res, err
@@ -538,7 +2177,7 @@ func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) 
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
-	pathParts[0] = "/incidents/"
+	pathParts[0] = "/api/v0/incidents/"
 	{
 		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -569,13 +2208,13 @@ func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) 
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, GetIncidentOperation, r); {
+			switch err := c.securityBearerAuth(ctx, GetIncidentOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -602,7 +2241,13 @@ func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) 
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeGetIncidentResponse(resp)
 	if err != nil {
@@ -612,11 +2257,1091 @@ func (c *Client) sendGetIncident(ctx context.Context, params GetIncidentParams) 
 	return result, nil
 }
 
+// GetIncidentActionItem invokes getIncidentActionItem operation.
+//
+// Get action item details.
+//
+// GET /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+func (c *Client) GetIncidentActionItem(ctx context.Context, params GetIncidentActionItemParams) (GetIncidentActionItemRes, error) {
+	res, err := c.sendGetIncidentActionItem(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetIncidentActionItem(ctx context.Context, params GetIncidentActionItemParams) (res GetIncidentActionItemRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/action_items/"
+	{
+		// Encode "action_item_uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "action_item_uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.ActionItemUUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetIncidentActionItemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetIncidentActionItemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetIncidentDescriptionTemplate invokes getIncidentDescriptionTemplate operation.
+//
+// Returns the organization's incident description template.
+//
+// GET /api/v0/incident_description_template
+func (c *Client) GetIncidentDescriptionTemplate(ctx context.Context) (GetIncidentDescriptionTemplateRes, error) {
+	res, err := c.sendGetIncidentDescriptionTemplate(ctx)
+	return res, err
+}
+
+func (c *Client) sendGetIncidentDescriptionTemplate(ctx context.Context) (res GetIncidentDescriptionTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/incident_description_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetIncidentDescriptionTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetIncidentDescriptionTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetIncidentDocumentTemplate invokes getIncidentDocumentTemplate operation.
+//
+// Returns the incident document template for this service. When no template is set, returns 200 with
+// blob set to empty string.
+//
+// GET /api/v0/services/{name}/incident_document_template
+func (c *Client) GetIncidentDocumentTemplate(ctx context.Context, params GetIncidentDocumentTemplateParams) (GetIncidentDocumentTemplateRes, error) {
+	res, err := c.sendGetIncidentDocumentTemplate(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetIncidentDocumentTemplate(ctx context.Context, params GetIncidentDocumentTemplateParams) (res GetIncidentDocumentTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/incident_document_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetIncidentDocumentTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetIncidentDocumentTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetPostmortem invokes getPostmortem operation.
+//
+// Get a postmortem.
+//
+// GET /api/v0/postmortems/{uuid}
+func (c *Client) GetPostmortem(ctx context.Context, params GetPostmortemParams) (GetPostmortemRes, error) {
+	res, err := c.sendGetPostmortem(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetPostmortem(ctx context.Context, params GetPostmortemParams) (res GetPostmortemRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortems/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetPostmortemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetPostmortemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetPostmortemTemplate invokes getPostmortemTemplate operation.
+//
+// Get postmortem template.
+//
+// GET /api/v0/postmortem_template
+func (c *Client) GetPostmortemTemplate(ctx context.Context) (GetPostmortemTemplateRes, error) {
+	res, err := c.sendGetPostmortemTemplate(ctx)
+	return res, err
+}
+
+func (c *Client) sendGetPostmortemTemplate(ctx context.Context) (res GetPostmortemTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/postmortem_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetPostmortemTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetPostmortemTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetPostmortemTemplateByUuid invokes getPostmortemTemplateByUuid operation.
+//
+// Get a postmortem template by UUID.
+//
+// GET /api/v0/postmortem_templates/{uuid}
+func (c *Client) GetPostmortemTemplateByUuid(ctx context.Context, params GetPostmortemTemplateByUuidParams) (GetPostmortemTemplateByUuidRes, error) {
+	res, err := c.sendGetPostmortemTemplateByUuid(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetPostmortemTemplateByUuid(ctx context.Context, params GetPostmortemTemplateByUuidParams) (res GetPostmortemTemplateByUuidRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortem_templates/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetPostmortemTemplateByUuidOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetPostmortemTemplateByUuidResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetRunbook invokes getRunbook operation.
+//
+// Namespace in the URL is path-style without leading slash. For example, use /api/v0/runbooks/default
+// or /api/v0/runbooks/api-server/recovery.
+//
+// GET /api/v0/runbooks/{namespace}
+func (c *Client) GetRunbook(ctx context.Context, params GetRunbookParams) (GetRunbookRes, error) {
+	res, err := c.sendGetRunbook(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetRunbook(ctx context.Context, params GetRunbookParams) (res GetRunbookRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/runbooks/"
+	{
+		// Encode "namespace" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "namespace",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Namespace))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetRunbookOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetRunbookResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetServiceArchitectureContext invokes getServiceArchitectureContext operation.
+//
+// Get service architecture context.
+//
+// GET /api/v0/services/{name}/service_architecture_context
+func (c *Client) GetServiceArchitectureContext(ctx context.Context, params GetServiceArchitectureContextParams) (GetServiceArchitectureContextRes, error) {
+	res, err := c.sendGetServiceArchitectureContext(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetServiceArchitectureContext(ctx context.Context, params GetServiceArchitectureContextParams) (res GetServiceArchitectureContextRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service_architecture_context"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetServiceArchitectureContextOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetServiceArchitectureContextResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetServiceNotificationSlackChannel invokes getServiceNotificationSlackChannel operation.
+//
+// Returns the Slack channel configured for incident notifications for this service. Returns 404 when
+// no channel is configured.
+//
+// GET /api/v0/services/{name}/service_notification_slack_channel
+func (c *Client) GetServiceNotificationSlackChannel(ctx context.Context, params GetServiceNotificationSlackChannelParams) (GetServiceNotificationSlackChannelRes, error) {
+	res, err := c.sendGetServiceNotificationSlackChannel(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetServiceNotificationSlackChannel(ctx context.Context, params GetServiceNotificationSlackChannelParams) (res GetServiceNotificationSlackChannelRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service_notification_slack_channel"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetServiceNotificationSlackChannelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetServiceNotificationSlackChannelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetServiceWebhookConfiguration invokes getServiceWebhookConfiguration operation.
+//
+// Get a webhook configuration.
+//
+// GET /api/v0/services/{name}/webhook_configurations/{uuid}
+func (c *Client) GetServiceWebhookConfiguration(ctx context.Context, params GetServiceWebhookConfigurationParams) (GetServiceWebhookConfigurationRes, error) {
+	res, err := c.sendGetServiceWebhookConfiguration(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetServiceWebhookConfiguration(ctx context.Context, params GetServiceWebhookConfigurationParams) (res GetServiceWebhookConfigurationRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/webhook_configurations/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetServiceWebhookConfigurationOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetServiceWebhookConfigurationResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListIncidentActionItems invokes listIncidentActionItems operation.
+//
+// List action items for an incident.
+//
+// GET /api/v0/incidents/{uuid}/action_items
+func (c *Client) ListIncidentActionItems(ctx context.Context, params ListIncidentActionItemsParams) (ListIncidentActionItemsRes, error) {
+	res, err := c.sendListIncidentActionItems(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListIncidentActionItems(ctx context.Context, params ListIncidentActionItemsParams) (res ListIncidentActionItemsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/action_items"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListIncidentActionItemsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListIncidentActionItemsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // ListIncidents invokes listIncidents operation.
 //
-// Retrieve a paginated list of incidents.
+// List incidents.
 //
-// GET /incidents
+// GET /api/v0/incidents
 func (c *Client) ListIncidents(ctx context.Context, params ListIncidentsParams) (ListIncidentsRes, error) {
 	res, err := c.sendListIncidents(ctx, params)
 	return res, err
@@ -626,7 +3351,7 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/incidents"
+	pathParts[0] = "/api/v0/incidents"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	q := uri.NewQueryEncoder()
@@ -664,6 +3389,23 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 			return res, errors.Wrap(err, "encode query")
 		}
 	}
+	{
+		// Encode "sort_order" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "sort_order",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SortOrder.Get(); ok {
+				return e.EncodeValue(conv.StringToString(string(val)))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
 	u.RawQuery = q.Values().Encode()
 
 	r, err := ht.NewRequest(ctx, "GET", u)
@@ -676,13 +3418,13 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, ListIncidentsOperation, r); {
+			switch err := c.securityBearerAuth(ctx, ListIncidentsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -709,7 +3451,13 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeListIncidentsResponse(resp)
 	if err != nil {
@@ -719,21 +3467,21 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 	return result, nil
 }
 
-// ListPostmortems invokes listPostmortems operation.
+// ListPostmortemTemplates invokes listPostmortemTemplates operation.
 //
-// Retrieve a paginated list of postmortems.
+// Returns postmortem templates for the organization.
 //
-// GET /postmortems
-func (c *Client) ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error) {
-	res, err := c.sendListPostmortems(ctx, params)
+// GET /api/v0/postmortem_templates
+func (c *Client) ListPostmortemTemplates(ctx context.Context, params ListPostmortemTemplatesParams) (ListPostmortemTemplatesRes, error) {
+	res, err := c.sendListPostmortemTemplates(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortemsParams) (res ListPostmortemsRes, err error) {
+func (c *Client) sendListPostmortemTemplates(ctx context.Context, params ListPostmortemTemplatesParams) (res ListPostmortemTemplatesRes, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/postmortems"
+	pathParts[0] = "/api/v0/postmortem_templates"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	q := uri.NewQueryEncoder()
@@ -783,13 +3531,13 @@ func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortems
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, ListPostmortemsOperation, r); {
+			switch err := c.securityBearerAuth(ctx, ListPostmortemTemplatesOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -816,7 +3564,126 @@ func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortems
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListPostmortemTemplatesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListPostmortems invokes listPostmortems operation.
+//
+// List postmortems.
+//
+// GET /api/v0/postmortems
+func (c *Client) ListPostmortems(ctx context.Context, params ListPostmortemsParams) (ListPostmortemsRes, error) {
+	res, err := c.sendListPostmortems(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortemsParams) (res ListPostmortemsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/postmortems"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListPostmortemsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeListPostmortemsResponse(resp)
 	if err != nil {
@@ -826,11 +3693,124 @@ func (c *Client) sendListPostmortems(ctx context.Context, params ListPostmortems
 	return result, nil
 }
 
+// ListRunbooks invokes listRunbooks operation.
+//
+// Returns runbooks for the organization. Tutorial runbook is excluded.
+//
+// GET /api/v0/runbooks
+func (c *Client) ListRunbooks(ctx context.Context, params ListRunbooksParams) (ListRunbooksRes, error) {
+	res, err := c.sendListRunbooks(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListRunbooks(ctx context.Context, params ListRunbooksParams) (res ListRunbooksRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/runbooks"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListRunbooksOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListRunbooksResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // ListServiceLabels invokes listServiceLabels operation.
 //
-// List labels on a service.
+// List labels for a service.
 //
-// GET /services/{name}/labels
+// GET /api/v0/services/{name}/labels
 func (c *Client) ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) (ListServiceLabelsRes, error) {
 	res, err := c.sendListServiceLabels(ctx, params)
 	return res, err
@@ -840,7 +3820,7 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/services/"
+	pathParts[0] = "/api/v0/services/"
 	{
 		// Encode "name" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -862,6 +3842,43 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 	pathParts[2] = "/labels"
 	uri.AddPathParts(u, pathParts[:]...)
 
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
 		return res, errors.Wrap(err, "create request")
@@ -872,13 +3889,13 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, ListServiceLabelsOperation, r); {
+			switch err := c.securityBearerAuth(ctx, ListServiceLabelsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -905,7 +3922,13 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeListServiceLabelsResponse(resp)
 	if err != nil {
@@ -915,21 +3938,40 @@ func (c *Client) sendListServiceLabels(ctx context.Context, params ListServiceLa
 	return result, nil
 }
 
-// ListServices invokes listServices operation.
+// ListServiceRunbookRules invokes listServiceRunbookRules operation.
 //
-// Retrieve a paginated list of services.
+// List runbook rules for a service.
 //
-// GET /services
-func (c *Client) ListServices(ctx context.Context, params ListServicesParams) (ListServicesRes, error) {
-	res, err := c.sendListServices(ctx, params)
+// GET /api/v0/services/{name}/runbook_rules
+func (c *Client) ListServiceRunbookRules(ctx context.Context, params ListServiceRunbookRulesParams) (ListServiceRunbookRulesRes, error) {
+	res, err := c.sendListServiceRunbookRules(ctx, params)
 	return res, err
 }
 
-func (c *Client) sendListServices(ctx context.Context, params ListServicesParams) (res ListServicesRes, err error) {
+func (c *Client) sendListServiceRunbookRules(ctx context.Context, params ListServiceRunbookRulesParams) (res ListServiceRunbookRulesRes, err error) {
 
 	u := uri.Clone(c.requestURL(ctx))
-	var pathParts [1]string
-	pathParts[0] = "/services"
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/runbook_rules"
 	uri.AddPathParts(u, pathParts[:]...)
 
 	q := uri.NewQueryEncoder()
@@ -979,13 +4021,13 @@ func (c *Client) sendListServices(ctx context.Context, params ListServicesParams
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, ListServicesOperation, r); {
+			switch err := c.securityBearerAuth(ctx, ListServiceRunbookRulesOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -1012,7 +4054,221 @@ func (c *Client) sendListServices(ctx context.Context, params ListServicesParams
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListServiceRunbookRulesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListServiceWebhookConfigurations invokes listServiceWebhookConfigurations operation.
+//
+// List webhook configurations for a service.
+//
+// GET /api/v0/services/{name}/webhook_configurations
+func (c *Client) ListServiceWebhookConfigurations(ctx context.Context, params ListServiceWebhookConfigurationsParams) (ListServiceWebhookConfigurationsRes, error) {
+	res, err := c.sendListServiceWebhookConfigurations(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListServiceWebhookConfigurations(ctx context.Context, params ListServiceWebhookConfigurationsParams) (res ListServiceWebhookConfigurationsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/webhook_configurations"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListServiceWebhookConfigurationsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListServiceWebhookConfigurationsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListServices invokes listServices operation.
+//
+// List services.
+//
+// GET /api/v0/services
+func (c *Client) ListServices(ctx context.Context) (ListServicesRes, error) {
+	res, err := c.sendListServices(ctx)
+	return res, err
+}
+
+func (c *Client) sendListServices(ctx context.Context) (res ListServicesRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/services"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListServicesOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeListServicesResponse(resp)
 	if err != nil {
@@ -1022,30 +4278,607 @@ func (c *Client) sendListServices(ctx context.Context, params ListServicesParams
 	return result, nil
 }
 
+// ListUsers invokes listUsers operation.
+//
+// List users.
+//
+// GET /api/v0/users
+func (c *Client) ListUsers(ctx context.Context, params ListUsersParams) (ListUsersRes, error) {
+	res, err := c.sendListUsers(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListUsers(ctx context.Context, params ListUsersParams) (res ListUsersRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/users"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListUsersOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListUsersResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// PutServiceNotificationSlackChannel invokes putServiceNotificationSlackChannel operation.
+//
+// Sets the Slack channel for incident notifications for this service. The channel name is resolved
+// from the given channel ID (key) via Slack API (conversations.info). If no channel is configured,
+// creates one. If already configured, updates it.
+//
+// PUT /api/v0/services/{name}/service_notification_slack_channel
+func (c *Client) PutServiceNotificationSlackChannel(ctx context.Context, request *PutServiceNotificationSlackChannelReq, params PutServiceNotificationSlackChannelParams) (PutServiceNotificationSlackChannelRes, error) {
+	res, err := c.sendPutServiceNotificationSlackChannel(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendPutServiceNotificationSlackChannel(ctx context.Context, request *PutServiceNotificationSlackChannelReq, params PutServiceNotificationSlackChannelParams) (res PutServiceNotificationSlackChannelRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service_notification_slack_channel"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PUT", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodePutServiceNotificationSlackChannelRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, PutServiceNotificationSlackChannelOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodePutServiceNotificationSlackChannelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncident invokes updateIncident operation.
+//
+// Update an incident's title and/or description.
+//
+// PATCH /api/v0/incidents/{uuid}
+func (c *Client) UpdateIncident(ctx context.Context, request *UpdateIncidentReq, params UpdateIncidentParams) (UpdateIncidentRes, error) {
+	res, err := c.sendUpdateIncident(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncident(ctx context.Context, request *UpdateIncidentReq, params UpdateIncidentParams) (res UpdateIncidentRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentCommander invokes updateIncidentCommander operation.
+//
+// Update incident commander.
+//
+// PATCH /api/v0/incidents/{uuid}/commander
+func (c *Client) UpdateIncidentCommander(ctx context.Context, request *UpdateIncidentCommanderReq, params UpdateIncidentCommanderParams) (UpdateIncidentCommanderRes, error) {
+	res, err := c.sendUpdateIncidentCommander(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentCommander(ctx context.Context, request *UpdateIncidentCommanderReq, params UpdateIncidentCommanderParams) (res UpdateIncidentCommanderRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/commander"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentCommanderRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentCommanderOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentCommanderResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentDescriptionTemplate invokes updateIncidentDescriptionTemplate operation.
+//
+// Update the organization's incident description template. Requires Pro plan.
+//
+// PATCH /api/v0/incident_description_template
+func (c *Client) UpdateIncidentDescriptionTemplate(ctx context.Context, request *UpdateIncidentDescriptionTemplateReq) (UpdateIncidentDescriptionTemplateRes, error) {
+	res, err := c.sendUpdateIncidentDescriptionTemplate(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentDescriptionTemplate(ctx context.Context, request *UpdateIncidentDescriptionTemplateReq) (res UpdateIncidentDescriptionTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/incident_description_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentDescriptionTemplateRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentDescriptionTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentDescriptionTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentDocumentTemplate invokes updateIncidentDocumentTemplate operation.
+//
+// Updates the incident document template for this service. Used by ChatGPT to control the structure of
+// generated incident reports.
+//
+// PATCH /api/v0/services/{name}/incident_document_template
+func (c *Client) UpdateIncidentDocumentTemplate(ctx context.Context, request *UpdateIncidentDocumentTemplateReq, params UpdateIncidentDocumentTemplateParams) (UpdateIncidentDocumentTemplateRes, error) {
+	res, err := c.sendUpdateIncidentDocumentTemplate(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentDocumentTemplate(ctx context.Context, request *UpdateIncidentDocumentTemplateReq, params UpdateIncidentDocumentTemplateParams) (res UpdateIncidentDocumentTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/incident_document_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentDocumentTemplateRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentDocumentTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentDocumentTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // UpdateIncidentLabels invokes updateIncidentLabels operation.
 //
-// Update the labels associated with an incident.
+// Replace all labels on an incident with the specified labels.
 //
-// PATCH /incidents/{uuid}/labels
+// PATCH /api/v0/incidents/{uuid}/labels
 func (c *Client) UpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (UpdateIncidentLabelsRes, error) {
 	res, err := c.sendUpdateIncidentLabels(ctx, request, params)
 	return res, err
 }
 
 func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) (res UpdateIncidentLabelsRes, err error) {
-	// Validate request before sending.
-	if err := func() error {
-		if err := request.Validate(); err != nil {
-			return err
-		}
-		return nil
-	}(); err != nil {
-		return res, errors.Wrap(err, "validate")
-	}
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/incidents/"
+	pathParts[0] = "/api/v0/incidents/"
 	{
 		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -1080,13 +4913,13 @@ func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIn
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentLabelsOperation, r); {
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentLabelsOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -1113,7 +4946,13 @@ func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIn
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeUpdateIncidentLabelsResponse(resp)
 	if err != nil {
@@ -1123,11 +4962,216 @@ func (c *Client) sendUpdateIncidentLabels(ctx context.Context, request *UpdateIn
 	return result, nil
 }
 
+// UpdateIncidentResponders invokes updateIncidentResponders operation.
+//
+// Update incident responders.
+//
+// PATCH /api/v0/incidents/{uuid}/responders
+func (c *Client) UpdateIncidentResponders(ctx context.Context, request *UpdateIncidentRespondersReq, params UpdateIncidentRespondersParams) (UpdateIncidentRespondersRes, error) {
+	res, err := c.sendUpdateIncidentResponders(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentResponders(ctx context.Context, request *UpdateIncidentRespondersReq, params UpdateIncidentRespondersParams) (res UpdateIncidentRespondersRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/responders"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentRespondersRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentRespondersOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentRespondersResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentService invokes updateIncidentService operation.
+//
+// Update incident service.
+//
+// PATCH /api/v0/incidents/{uuid}/service
+func (c *Client) UpdateIncidentService(ctx context.Context, request *UpdateIncidentServiceReq, params UpdateIncidentServiceParams) (UpdateIncidentServiceRes, error) {
+	res, err := c.sendUpdateIncidentService(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentService(ctx context.Context, request *UpdateIncidentServiceReq, params UpdateIncidentServiceParams) (res UpdateIncidentServiceRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentServiceRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentServiceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentServiceResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // UpdateIncidentSeverity invokes updateIncidentSeverity operation.
 //
-// Update the severity of an incident.
+// Update incident severity.
 //
-// PATCH /incidents/{uuid}/severity
+// PATCH /api/v0/incidents/{uuid}/severity
 func (c *Client) UpdateIncidentSeverity(ctx context.Context, request *UpdateIncidentSeverityReq, params UpdateIncidentSeverityParams) (UpdateIncidentSeverityRes, error) {
 	res, err := c.sendUpdateIncidentSeverity(ctx, request, params)
 	return res, err
@@ -1146,7 +5190,7 @@ func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *Update
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/incidents/"
+	pathParts[0] = "/api/v0/incidents/"
 	{
 		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -1181,13 +5225,13 @@ func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *Update
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentSeverityOperation, r); {
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentSeverityOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -1214,7 +5258,13 @@ func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *Update
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeUpdateIncidentSeverityResponse(resp)
 	if err != nil {
@@ -1226,9 +5276,9 @@ func (c *Client) sendUpdateIncidentSeverity(ctx context.Context, request *Update
 
 // UpdateIncidentStatus invokes updateIncidentStatus operation.
 //
-// Update the status of an incident.
+// Update incident status.
 //
-// PATCH /incidents/{uuid}/status
+// PATCH /api/v0/incidents/{uuid}/status
 func (c *Client) UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error) {
 	res, err := c.sendUpdateIncidentStatus(ctx, request, params)
 	return res, err
@@ -1247,7 +5297,7 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [3]string
-	pathParts[0] = "/incidents/"
+	pathParts[0] = "/api/v0/incidents/"
 	{
 		// Encode "uuid" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -1282,13 +5332,13 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, UpdateIncidentStatusOperation, r); {
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentStatusOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -1315,7 +5365,13 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeUpdateIncidentStatusResponse(resp)
 	if err != nil {
@@ -1325,11 +5381,497 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 	return result, nil
 }
 
+// UpdatePostmortem invokes updatePostmortem operation.
+//
+// Update a postmortem.
+//
+// PATCH /api/v0/postmortems/{uuid}
+func (c *Client) UpdatePostmortem(ctx context.Context, request *UpdatePostmortemReq, params UpdatePostmortemParams) (UpdatePostmortemRes, error) {
+	res, err := c.sendUpdatePostmortem(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdatePostmortem(ctx context.Context, request *UpdatePostmortemReq, params UpdatePostmortemParams) (res UpdatePostmortemRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortems/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdatePostmortemRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdatePostmortemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdatePostmortemResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdatePostmortemTemplate invokes updatePostmortemTemplate operation.
+//
+// Update postmortem template.
+//
+// PATCH /api/v0/postmortem_template
+func (c *Client) UpdatePostmortemTemplate(ctx context.Context, request *UpdatePostmortemTemplateReq) (UpdatePostmortemTemplateRes, error) {
+	res, err := c.sendUpdatePostmortemTemplate(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendUpdatePostmortemTemplate(ctx context.Context, request *UpdatePostmortemTemplateReq) (res UpdatePostmortemTemplateRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/postmortem_template"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdatePostmortemTemplateRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdatePostmortemTemplateOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdatePostmortemTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdatePostmortemTemplateByUuid invokes updatePostmortemTemplateByUuid operation.
+//
+// Update a postmortem template.
+//
+// PATCH /api/v0/postmortem_templates/{uuid}
+func (c *Client) UpdatePostmortemTemplateByUuid(ctx context.Context, request *UpdatePostmortemTemplateByUuidReq, params UpdatePostmortemTemplateByUuidParams) (UpdatePostmortemTemplateByUuidRes, error) {
+	res, err := c.sendUpdatePostmortemTemplateByUuid(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdatePostmortemTemplateByUuid(ctx context.Context, request *UpdatePostmortemTemplateByUuidReq, params UpdatePostmortemTemplateByUuidParams) (res UpdatePostmortemTemplateByUuidRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/postmortem_templates/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdatePostmortemTemplateByUuidRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdatePostmortemTemplateByUuidOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdatePostmortemTemplateByUuidResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateRunbook invokes updateRunbook operation.
+//
+// Update a runbook.
+//
+// PATCH /api/v0/runbooks/{namespace}
+func (c *Client) UpdateRunbook(ctx context.Context, request *UpdateRunbookReq, params UpdateRunbookParams) (UpdateRunbookRes, error) {
+	res, err := c.sendUpdateRunbook(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateRunbook(ctx context.Context, request *UpdateRunbookReq, params UpdateRunbookParams) (res UpdateRunbookRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/runbooks/"
+	{
+		// Encode "namespace" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "namespace",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Namespace))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateRunbookRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateRunbookOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateRunbookResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateServiceArchitectureContext invokes updateServiceArchitectureContext operation.
+//
+// Update service architecture context.
+//
+// PATCH /api/v0/services/{name}/service_architecture_context
+func (c *Client) UpdateServiceArchitectureContext(ctx context.Context, request *UpdateServiceArchitectureContextReq, params UpdateServiceArchitectureContextParams) (UpdateServiceArchitectureContextRes, error) {
+	res, err := c.sendUpdateServiceArchitectureContext(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateServiceArchitectureContext(ctx context.Context, request *UpdateServiceArchitectureContextReq, params UpdateServiceArchitectureContextParams) (res UpdateServiceArchitectureContextRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/service_architecture_context"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateServiceArchitectureContextRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateServiceArchitectureContextOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateServiceArchitectureContextResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // UpdateServiceLabel invokes updateServiceLabel operation.
 //
-// Update/replace a label.
+// Update a label.
 //
-// PATCH /services/{name}/labels/{uuid}
+// PATCH /api/v0/services/{name}/labels/{uuid}
 func (c *Client) UpdateServiceLabel(ctx context.Context, request *UpdateServiceLabelReq, params UpdateServiceLabelParams) (UpdateServiceLabelRes, error) {
 	res, err := c.sendUpdateServiceLabel(ctx, request, params)
 	return res, err
@@ -1348,7 +5890,7 @@ func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *UpdateServ
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [4]string
-	pathParts[0] = "/services/"
+	pathParts[0] = "/api/v0/services/"
 	{
 		// Encode "name" parameter.
 		e := uri.NewPathEncoder(uri.PathEncoderConfig{
@@ -1401,13 +5943,13 @@ func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *UpdateServ
 		var satisfied bitset
 		{
 
-			switch err := c.securityApiKeyAuth(ctx, UpdateServiceLabelOperation, r); {
+			switch err := c.securityBearerAuth(ctx, UpdateServiceLabelOperation, r); {
 			case err == nil: // if NO error
 				satisfied[0] |= 1 << 0
 			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
 				// Skip this security.
 			default:
-				return res, errors.Wrap(err, "security \"ApiKeyAuth\"")
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
 			}
 		}
 
@@ -1434,9 +5976,140 @@ func (c *Client) sendUpdateServiceLabel(ctx context.Context, request *UpdateServ
 		return res, errors.Wrap(err, "do request")
 	}
 	body := resp.Body
-	defer body.Close()
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
 
 	result, err := decodeUpdateServiceLabelResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateServiceRunbookRule invokes updateServiceRunbookRule operation.
+//
+// Update a runbook rule.
+//
+// PATCH /api/v0/services/{name}/runbook_rules/{uuid}
+func (c *Client) UpdateServiceRunbookRule(ctx context.Context, request *UpdateServiceRunbookRuleReq, params UpdateServiceRunbookRuleParams) (UpdateServiceRunbookRuleRes, error) {
+	res, err := c.sendUpdateServiceRunbookRule(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateServiceRunbookRule(ctx context.Context, request *UpdateServiceRunbookRuleReq, params UpdateServiceRunbookRuleParams) (res UpdateServiceRunbookRuleRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/services/"
+	{
+		// Encode "name" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "name",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Name))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/runbook_rules/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateServiceRunbookRuleRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateServiceRunbookRuleOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateServiceRunbookRuleResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

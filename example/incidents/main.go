@@ -47,7 +47,7 @@ func newClient() *waroom.Client {
 	ctx := context.Background()
 
 	client, err := waroom.NewClient(ctx,
-		waroom.WithBaseURL("https://api.staging.waroom.com/api/v0"),
+		waroom.WithBaseURL("https://api.staging.waroom.com"),
 		waroom.WithUserAgent("waroom-sdk-go/0.0.1"),
 		waroom.WithRequestDump(),
 	)
