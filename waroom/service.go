@@ -17,16 +17,16 @@ func NewServiceService(client *Client) *ServiceService {
 }
 
 func (s *ServiceService) ListServices(ctx context.Context, params ListServicesParams) ([]Service, error) {
-	res, err := s.client.raw.ListServices(ctx, params)
+	res, err := s.client.raw.ListServices(ctx)
 
 	if err != nil {
 		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
 	}
 
 	switch res := res.(type) {
-	case *gen.ServicesListResponse:
+	case *gen.ListServicesOK:
 		return res.Services, nil
-	case *gen.UnauthorizedError:
+	case *gen.ListServicesUnauthorized:
 		return nil, errors.New("unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)

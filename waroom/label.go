@@ -26,15 +26,15 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params ListService
 	switch res := res.(type) {
 	case *gen.ListServiceLabelsOK:
 		return res.Labels, nil
-	case *gen.UnauthorizedError:
+	case *gen.ListServiceLabelsUnauthorized:
 		return nil, errors.New("unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
 	}
 }
 
-func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateServiceLabelReq, params CreateServiceLabelParams) (*Label, error) {
-	res, err := s.client.raw.CreateServiceLabel(ctx, &req, params)
+func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateServiceLabelReq, params CreateServiceLabelParams) (*CreatedLabel, error) {
+	res, err := s.client.raw.CreateServiceLabel(ctx, &gen.CreateServiceLabelReq{Label: req}, params)
 	if err != nil {
 		return nil, errors.Wrap(err, "create service label")
 	}
@@ -42,15 +42,15 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateService
 	switch res := res.(type) {
 	case *gen.CreateServiceLabelCreated:
 		return &res.Label, nil
-	case *gen.UnauthorizedError:
+	case *gen.CreateServiceLabelUnauthorized:
 		return nil, errors.Wrap(err, "unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
 	}
 }
 
-func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateServiceLabelReq, params UpdateServiceLabelParams) (*Label, error) {
-	res, err := s.client.raw.UpdateServiceLabel(ctx, &req, params)
+func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateServiceLabelReq, params UpdateServiceLabelParams) (*UpdatedLabel, error) {
+	res, err := s.client.raw.UpdateServiceLabel(ctx, &gen.UpdateServiceLabelReq{Label: req}, params)
 	if err != nil {
 		return nil, errors.Wrap(err, "update service label")
 	}
@@ -58,9 +58,9 @@ func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateService
 	switch res := res.(type) {
 	case *gen.UpdateServiceLabelOK:
 		return &res.Label, nil
-	case *gen.UnauthorizedError:
+	case *gen.UpdateServiceLabelUnauthorized:
 		return nil, errors.Wrap(err, "unauthorized")
-	case *gen.NotFoundError:
+	case *gen.UpdateServiceLabelNotFound:
 		return nil, errors.Errorf("not found: service=%s, uuid=%s", params.Name, params.UUID)
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
@@ -76,9 +76,9 @@ func (s *LabelService) DeleteServiceLabel(ctx context.Context, params DeleteServ
 	switch res := res.(type) {
 	case *gen.DeleteServiceLabelNoContent:
 		return nil
-	case *gen.UnauthorizedError:
+	case *gen.DeleteServiceLabelUnauthorized:
 		return errors.New("unauthorized")
-	case *gen.NotFoundError:
+	case *gen.DeleteServiceLabelNotFound:
 		return errors.Errorf("not found: service=%s, uuid=%s", params.Name, params.UUID)
 	default:
 		return errors.Errorf("unhandled response %T", res)

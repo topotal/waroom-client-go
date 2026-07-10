@@ -13,7 +13,7 @@ import (
 
 func TestLabelService_ListServiceLabels(t *testing.T) {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/services/test-service/labels", testutil.JSONFixtureHandler(t, "testdata/labels_list_response.json"))
+	mux.HandleFunc("/api/v0/services/test-service/labels", testutil.JSONFixtureHandler(t, "testdata/labels_list_response.json"))
 
 	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 		ctx := context.Background()
@@ -32,11 +32,11 @@ func TestLabelService_ListServiceLabels(t *testing.T) {
 
 	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440001"), labels[0].UUID)
 	assert.Equal(t, "production", labels[0].Name)
-	assert.Equal(t, "FF0000", labels[0].Color.Value)
+	assert.Equal(t, "FF0000", labels[0].Color)
 
 	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440002"), labels[1].UUID)
 	assert.Equal(t, "staging", labels[1].Name)
-	assert.Equal(t, "00FF00", labels[1].Color.Value)
+	assert.Equal(t, "00FF00", labels[1].Color)
 }
 
 func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
@@ -52,7 +52,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 	for _, tt := range errorTests {
 		t.Run(tt.name, func(t *testing.T) {
 			mux := http.NewServeMux()
-			mux.HandleFunc("/services/test-service/labels", tt.handler)
+			mux.HandleFunc("/api/v0/services/test-service/labels", tt.handler)
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
@@ -77,7 +77,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 
 func TestLabelService_CreateServiceLabel(t *testing.T) {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/services/test-service/labels", testutil.JSONFixtureHandler(
+	mux.HandleFunc("/api/v0/services/test-service/labels", testutil.JSONFixtureHandler(
 		t,
 		"testdata/label_create_response.json",
 		testutil.WithStatus(http.StatusCreated),
@@ -102,7 +102,7 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 	require.NotNil(t, label)
 	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440001"), label.UUID)
 	assert.Equal(t, "production", label.Name)
-	assert.Equal(t, "FF0000", label.Color.Value)
+	assert.Equal(t, "FF0000", label.Color)
 }
 
 func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
@@ -118,7 +118,7 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 	for _, tt := range errorTests {
 		t.Run(tt.name, func(t *testing.T) {
 			mux := http.NewServeMux()
-			mux.HandleFunc("/services/test-service/labels", tt.handler)
+			mux.HandleFunc("/api/v0/services/test-service/labels", tt.handler)
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
@@ -148,7 +148,7 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", testutil.JSONFixtureHandler(
+	mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", testutil.JSONFixtureHandler(
 		t,
 		"testdata/label_update_response.json",
 	))
@@ -173,7 +173,7 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 	require.NotNil(t, label)
 	assert.Equal(t, testUUID, label.UUID)
 	assert.Equal(t, "production-updated", label.Name)
-	assert.Equal(t, "0000FF", label.Color.Value)
+	assert.Equal(t, "0000FF", label.Color)
 }
 
 func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
@@ -192,7 +192,7 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 	for _, tt := range errorTests {
 		t.Run(tt.name, func(t *testing.T) {
 			mux := http.NewServeMux()
-			mux.HandleFunc("/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
+			mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()
@@ -222,7 +222,7 @@ func TestLabelService_DeleteServiceLabel(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
@@ -258,7 +258,7 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 	for _, tt := range errorTests {
 		t.Run(tt.name, func(t *testing.T) {
 			mux := http.NewServeMux()
-			mux.HandleFunc("/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
+			mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
 
 			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
 				ctx := context.Background()

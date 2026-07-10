@@ -19,23 +19,28 @@ func NewOptDateTime(v time.Time) OptDateTime { return gen.NewOptDateTime(v) }
 func NewOptInt(v int) OptInt                 { return gen.NewOptInt(v) }
 func NewOptNillInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
 
-type Incident = gen.Incident
-type IncidentLabel = gen.IncidentLabel
-type IncidentMetrics = gen.IncidentMetrics
-type IncidentSeverity = gen.IncidentSeverity
+// 新specはcomponents/schemasを持たずレスポンススキーマが全てインライン定義のため、
+// 一覧と単体取得で別の生成型になる
+type Incident = gen.GetIncidentOK
+type IncidentListItem = gen.ListIncidentsOKIncidentsItem
+type IncidentLabel = gen.GetIncidentOKLabelsItem
+type IncidentMetrics = gen.GetIncidentOKMetrics
 type ListIncidentsParams = gen.ListIncidentsParams
 
-type Label = gen.Label
-type Service = gen.Service
+type Label = gen.ListServiceLabelsOKLabelsItem
+type CreatedLabel = gen.CreateServiceLabelCreatedLabel
+type UpdatedLabel = gen.UpdateServiceLabelOKLabel
+type Service = gen.ListServicesOKServicesItem
 
-type ListServicesParams = gen.ListServicesParams
+// ListServicesParams は新specでクエリパラメータが無くなったため空
+type ListServicesParams struct{}
 type ListServiceLabelsParams = gen.ListServiceLabelsParams
 
 type CreateServiceLabelParams = gen.CreateServiceLabelParams
-type CreateServiceLabelReq = gen.CreateServiceLabelReq
+type CreateServiceLabelReq = gen.CreateServiceLabelReqLabel
 
 type UpdateServiceLabelParams = gen.UpdateServiceLabelParams
-type UpdateServiceLabelReq = gen.UpdateServiceLabelReq
+type UpdateServiceLabelReq = gen.UpdateServiceLabelReqLabel
 type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
 
 // TODO: 追加
