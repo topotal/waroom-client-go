@@ -1,0 +1,18 @@
+{
+  "labels": [
+    {
+      "uuid": "550e8400-e29b-41d4-a716-446655440003",
+      "name": "backend",
+      "color": "0000FF",
+      "created_at": "2024-01-03T00:00:00Z",
+      "updated_at": "2024-01-03T00:00:00Z"
+    }
+  ],
+  "response_metadata": {
+    "current_page": 2,
+    "next_page": null,
+    "prev_page": 1,
+    "total_pages": 2,
+    "total_count": 3
+  }
+}

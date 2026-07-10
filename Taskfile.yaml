@@ -27,6 +27,12 @@ tasks:
     cmds:
       - go generate ./...
 
+  gen:check:
+    desc: "Verify generated code is up to date (CI drift gate)"
+    deps: [gen]
+    cmds:
+      - git diff --exit-code
+
   # sdk releaseだけなので今のとこいらない
   # build:
   #   desc: "Build app"

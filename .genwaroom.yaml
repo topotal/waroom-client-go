@@ -1,0 +1,13 @@
+# genwaroom configuration. All keys are optional; an empty file means pure
+# convention over the whole spec. See internal/cmd/genwaroom/doc.go.
+#
+# Phase 1: limit generation to the operations the hand-written package
+# covered. Remove this list to generate the full API surface.
+include:
+  - listServices
+  - listIncidents
+  - getIncident
+  - listServiceLabels
+  - createServiceLabel
+  - updateServiceLabel
+  - deleteServiceLabel

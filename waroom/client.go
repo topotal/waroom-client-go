@@ -83,7 +83,7 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 		return nil, errors.New("API key is required: set it via WithAPIKey option or WAROOM_API_KEY environment variable")
 	}
 
-	auth := waroomBearerAuth{apiKey: apiKey}
+	auth := staticTokenSource{apiKey: apiKey}
 	raw, err := gen.NewClient(cfg.BaseURL, &auth, gen.WithClient(cfg.HTTPClient))
 
 	if err != nil {
