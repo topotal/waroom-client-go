@@ -3,8 +3,10 @@
 //
 // It only handles the 3.1 features actually used by the Waroom API spec:
 // type arrays with "null" (e.g. `type: [integer, "null"]`) are rewritten
-// to the 3.0 form (`type: integer` + `nullable: true`). Any other
-// non-convertible construct results in an error.
+// to the 3.0 form (`type: integer` + `nullable: true`). A type array with
+// multiple concrete types is not representable in 3.0 and results in an
+// error. Other 3.1-only constructs (e.g. const, prefixItems) are NOT
+// detected and pass through unchanged; ogen is expected to reject them.
 package main
 
 import (

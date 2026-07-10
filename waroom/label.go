@@ -43,7 +43,7 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateService
 	case *gen.CreateServiceLabelCreated:
 		return &res.Label, nil
 	case *gen.CreateServiceLabelUnauthorized:
-		return nil, errors.Wrap(err, "unauthorized")
+		return nil, errors.New("unauthorized")
 	default:
 		return nil, errors.Errorf("unhandled response %T", res)
 	}
@@ -59,7 +59,7 @@ func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateService
 	case *gen.UpdateServiceLabelOK:
 		return &res.Label, nil
 	case *gen.UpdateServiceLabelUnauthorized:
-		return nil, errors.Wrap(err, "unauthorized")
+		return nil, errors.New("unauthorized")
 	case *gen.UpdateServiceLabelNotFound:
 		return nil, errors.Errorf("not found: service=%s, uuid=%s", params.Name, params.UUID)
 	default:
