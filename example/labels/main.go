@@ -22,21 +22,27 @@ func getServiceLabels(sname string) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
-	param := waroom.ListServiceLabelsParams{
-		Name: sname,
-	}
-
-	//TODO: pagination
-	res, err := svc.ListServiceLabels(ctx, param)
+	// 1ページ分をページ情報付きで取得
+	list, err := c.Labels().ListServiceLabels(ctx, sname, waroom.ListServiceLabelsOptions{
+		PerPage: waroom.NewOptInt(50),
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("%d labels (page %d/%d)\n", list.TotalCount, list.CurrentPage, list.TotalPages)
 
-	for _, label := range res {
+	for _, label := range list.Items {
 		fmt.Println(label.UUID)
 		fmt.Println(label.Name)
 		fmt.Println(label.Color)
+	}
+
+	// 全件が欲しい場合はイテレータでページングを自動化
+	for label, err := range c.Labels().ListServiceLabelsAll(ctx, sname, waroom.ListServiceLabelsOptions{}) {
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(label.Name)
 	}
 }
 
@@ -44,18 +50,10 @@ func createServiceLabel(sname, label, color string) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
-
-	param := waroom.CreateServiceLabelParams{
-		Name: sname,
-	}
-
-	body := waroom.CreateServiceLabelReq{
+	res, err := c.Labels().CreateServiceLabel(ctx, sname, waroom.CreateServiceLabelRequest{
 		Name:  label,
 		Color: color,
-	}
-
-	res, err := svc.CreateServiceLabel(ctx, body, param)
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,22 +63,14 @@ func createServiceLabel(sname, label, color string) {
 	fmt.Println(res.Color)
 }
 
-func updateServiceLabel(service_name string, id uuid.UUID) {
+func updateServiceLabel(sname string, id uuid.UUID) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
-	param := waroom.UpdateServiceLabelParams{
-		UUID: id,
-		Name: service_name,
-	}
-
-	body := waroom.UpdateServiceLabelReq{
+	label, err := c.Labels().UpdateServiceLabel(ctx, sname, id, waroom.UpdateServiceLabelRequest{
 		Name:  waroom.NewOptString("updated-label"),
 		Color: waroom.NewOptString("FF00FF"),
-	}
-
-	label, err := svc.UpdateServiceLabel(ctx, body, param)
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -91,12 +81,7 @@ func deleteServiceLabel(sname string, id uuid.UUID) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
-	param := waroom.DeleteServiceLabelParams{
-		Name: sname,
-		UUID: id,
-	}
-	if err := svc.DeleteServiceLabel(ctx, param); err != nil {
+	if err := c.Labels().DeleteServiceLabel(ctx, sname, id); err != nil {
 		log.Fatal(err)
 	}
 }

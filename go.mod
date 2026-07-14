@@ -5,9 +5,12 @@ go 1.25.1
 require (
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
+	github.com/go-faster/yaml v0.4.6
 	github.com/google/uuid v1.6.0
 	github.com/ogen-go/ogen v1.23.0
 	github.com/stretchr/testify v1.11.1
+	go.uber.org/zap v1.28.0
+	golang.org/x/tools v0.48.0
 )
 
 require (
@@ -16,7 +19,6 @@ require (
 	github.com/dlclark/regexp2 v1.12.0 // indirect
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
@@ -24,7 +26,6 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/yuin/goldmark v1.8.2 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	go.uber.org/zap v1.28.0 // indirect
 	golang.org/x/exp v0.0.0-20231110203233-9a3e6036ecaa // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
 	golang.org/x/lint v0.0.0-20241112194109-818c5a804067 // indirect
@@ -34,7 +35,6 @@ require (
 	golang.org/x/sys v0.47.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260708182218-49f421fb7959 // indirect
 	golang.org/x/text v0.40.0 // indirect
-	golang.org/x/tools v0.48.0 // indirect
 	golang.org/x/tools/cmd/godoc v0.1.0-deprecated // indirect
 	golang.org/x/tools/godoc v0.1.0-deprecated // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
@@ -43,7 +43,6 @@ require (
 )
 
 tool (
-	github.com/ogen-go/ogen/cmd/ogen
 	github.com/topotal/waroom-client-go
 	golang.org/x/lint/golint
 	golang.org/x/tools/cmd/godoc

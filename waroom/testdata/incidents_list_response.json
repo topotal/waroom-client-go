@@ -1,0 +1,55 @@
+{
+  "incidents": [
+    {
+      "uuid": "d32fc8dd-e424-4974-b27e-c55bb323a6cb",
+      "title": "Database outage",
+      "severity": "SEV1",
+      "status": "解決済み",
+      "root_cause": "設定ミス",
+      "experimental": false,
+      "metrics": {
+        "ttd": 60,
+        "tta": 120,
+        "tti": null,
+        "ttf": null,
+        "ttr": 3600
+      },
+      "service": {
+        "name": "Test Service 1"
+      },
+      "labels": [
+        {
+          "name": "production"
+        }
+      ],
+      "created_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "uuid": "a1b2c3d4-e5f6-4789-8abc-def012345678",
+      "title": "API latency spike",
+      "severity": "SEV3",
+      "status": "対応中",
+      "root_cause": "不明",
+      "experimental": true,
+      "metrics": {
+        "ttd": null,
+        "tta": null,
+        "tti": null,
+        "ttf": null,
+        "ttr": null
+      },
+      "service": {
+        "name": "Test Service 2"
+      },
+      "labels": [],
+      "created_at": "2024-01-02T00:00:00Z"
+    }
+  ],
+  "response_metadata": {
+    "current_page": 1,
+    "next_page": null,
+    "prev_page": null,
+    "total_pages": 1,
+    "total_count": 2
+  }
+}

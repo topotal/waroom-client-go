@@ -15,38 +15,120 @@ func TestLabelService_ListServiceLabels(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v0/services/test-service/labels", testutil.JSONFixtureHandler(t, "testdata/labels_list_response.json"))
 
-	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-		ctx := context.Background()
-		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-	})
+	client, cleanup := setupTestClient(t, mux)
 	defer cleanup()
 
-	ctx := context.Background()
-	svc := NewLabelService(client)
-	labels, err := svc.ListServiceLabels(ctx, ListServiceLabelsParams{
-		Name: "test-service",
-	})
+	list, err := client.Labels().ListServiceLabels(context.Background(), "test-service", ListServiceLabelsOptions{})
 
 	require.NoError(t, err)
-	assert.Len(t, labels, 2)
+	assert.Len(t, list.Items, 2)
 
-	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440001"), labels[0].UUID)
-	assert.Equal(t, "production", labels[0].Name)
-	assert.Equal(t, "FF0000", labels[0].Color)
+	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440001"), list.Items[0].UUID)
+	assert.Equal(t, "production", list.Items[0].Name)
+	assert.Equal(t, "FF0000", list.Items[0].Color)
 
-	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440002"), labels[1].UUID)
-	assert.Equal(t, "staging", labels[1].Name)
-	assert.Equal(t, "00FF00", labels[1].Color)
+	assert.Equal(t, uuid.MustParse("550e8400-e29b-41d4-a716-446655440002"), list.Items[1].UUID)
+	assert.Equal(t, "staging", list.Items[1].Name)
+	assert.Equal(t, "00FF00", list.Items[1].Color)
+
+	assert.Equal(t, 1, list.CurrentPage)
+	assert.Equal(t, 1, list.TotalPages)
+	assert.Equal(t, 2, list.TotalCount)
+	assert.Nil(t, list.NextPage)
+	assert.Nil(t, list.PrevPage)
+}
+
+func TestLabelService_ListServiceLabelsAll(t *testing.T) {
+	page1 := testutil.LoadFixture(t, "testdata/labels_list_page1.json")
+	page2 := testutil.LoadFixture(t, "testdata/labels_list_page2.json")
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/v0/services/test-service/labels", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if r.URL.Query().Get("page") == "2" {
+			_, _ = w.Write(page2)
+			return
+		}
+		_, _ = w.Write(page1)
+	})
+
+	client, cleanup := setupTestClient(t, mux)
+	defer cleanup()
+
+	var names []string
+	for label, err := range client.Labels().ListServiceLabelsAll(context.Background(), "test-service", ListServiceLabelsOptions{}) {
+		require.NoError(t, err)
+		names = append(names, label.Name)
+	}
+
+	assert.Equal(t, []string{"production", "staging", "backend"}, names)
+}
+
+func TestLabelService_ListServiceLabelsAll_Break(t *testing.T) {
+	page1 := testutil.LoadFixture(t, "testdata/labels_list_page1.json")
+
+	var requests int
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/v0/services/test-service/labels", func(w http.ResponseWriter, r *http.Request) {
+		requests++
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write(page1)
+	})
+
+	client, cleanup := setupTestClient(t, mux)
+	defer cleanup()
+
+	var names []string
+	for label, err := range client.Labels().ListServiceLabelsAll(context.Background(), "test-service", ListServiceLabelsOptions{}) {
+		require.NoError(t, err)
+		names = append(names, label.Name)
+		break // 1 件で打ち切り: 次ページは取得されないこと
+	}
+
+	assert.Equal(t, []string{"production"}, names)
+	assert.Equal(t, 1, requests)
+}
+
+func TestLabelService_ListServiceLabelsAll_ErrorStops(t *testing.T) {
+	page1 := testutil.LoadFixture(t, "testdata/labels_list_page1.json")
+
+	mux := http.NewServeMux()
+	unauthorized := testutil.UnauthorizedHandler(t)
+	mux.HandleFunc("/api/v0/services/test-service/labels", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Query().Get("page") == "2" {
+			unauthorized(w, r)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write(page1)
+	})
+
+	client, cleanup := setupTestClient(t, mux)
+	defer cleanup()
+
+	var names []string
+	var iterErr error
+	for label, err := range client.Labels().ListServiceLabelsAll(context.Background(), "test-service", ListServiceLabelsOptions{}) {
+		if err != nil {
+			iterErr = err
+			continue // エラー yield 後にイテレータが停止すること(continue しても再開しない)
+		}
+		names = append(names, label.Name)
+	}
+
+	assert.Equal(t, []string{"production", "staging"}, names)
+	require.Error(t, iterErr)
+	assert.ErrorIs(t, iterErr, ErrUnauthorized)
 }
 
 func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 	errorTests := []struct {
-		name       string
-		handler    http.HandlerFunc
-		wantErrMsg string
+		name    string
+		handler http.HandlerFunc
+		wantErr error
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{"unauthorized error", testutil.UnauthorizedHandler(t), ErrUnauthorized},
+		{"server error", testutil.InternalServerErrorHandler(), nil},
 	}
 
 	for _, tt := range errorTests {
@@ -54,22 +136,15 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/api/v0/services/test-service/labels", tt.handler)
 
-			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-				ctx := context.Background()
-				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-			})
+			client, cleanup := setupTestClient(t, mux)
 			defer cleanup()
 
-			ctx := context.Background()
-			svc := NewLabelService(client)
-			labels, err := svc.ListServiceLabels(ctx, ListServiceLabelsParams{
-				Name: "test-service",
-			})
+			list, err := client.Labels().ListServiceLabels(context.Background(), "test-service", ListServiceLabelsOptions{})
 
 			require.Error(t, err)
-			assert.Nil(t, labels)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
+			assert.Nil(t, list)
+			if tt.wantErr != nil {
+				assert.ErrorIs(t, err, tt.wantErr)
 			}
 		})
 	}
@@ -83,19 +158,12 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 		testutil.WithStatus(http.StatusCreated),
 	))
 
-	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-		ctx := context.Background()
-		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-	})
+	client, cleanup := setupTestClient(t, mux)
 	defer cleanup()
 
-	ctx := context.Background()
-	svc := NewLabelService(client)
-	label, err := svc.CreateServiceLabel(ctx, CreateServiceLabelReq{
+	label, err := client.Labels().CreateServiceLabel(context.Background(), "test-service", CreateServiceLabelRequest{
 		Name:  "production",
 		Color: "FF0000",
-	}, CreateServiceLabelParams{
-		Name: "test-service",
 	})
 
 	require.NoError(t, err)
@@ -106,13 +174,20 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 }
 
 func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
+	unprocessableHandler := func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		_, _ = w.Write([]byte(`{"error": "Validation failed"}`))
+	}
+
 	errorTests := []struct {
-		name       string
-		handler    http.HandlerFunc
-		wantErrMsg string
+		name    string
+		handler http.HandlerFunc
+		wantErr error
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{"unauthorized error", testutil.UnauthorizedHandler(t), ErrUnauthorized},
+		{"unprocessable entity error", unprocessableHandler, ErrUnprocessableEntity},
+		{"server error", testutil.InternalServerErrorHandler(), nil},
 	}
 
 	for _, tt := range errorTests {
@@ -120,28 +195,43 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/api/v0/services/test-service/labels", tt.handler)
 
-			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-				ctx := context.Background()
-				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-			})
+			client, cleanup := setupTestClient(t, mux)
 			defer cleanup()
 
-			ctx := context.Background()
-			svc := NewLabelService(client)
-			label, err := svc.CreateServiceLabel(ctx, CreateServiceLabelReq{
+			label, err := client.Labels().CreateServiceLabel(context.Background(), "test-service", CreateServiceLabelRequest{
 				Name:  "production",
 				Color: "FF0000",
-			}, CreateServiceLabelParams{
-				Name: "test-service",
 			})
 
 			require.Error(t, err)
 			assert.Nil(t, label)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
+			if tt.wantErr != nil {
+				assert.ErrorIs(t, err, tt.wantErr)
 			}
 		})
 	}
+}
+
+func TestLabelService_CreateServiceLabel_UnprocessableEntityMessage(t *testing.T) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/v0/services/test-service/labels", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		_, _ = w.Write([]byte(`{"error": "Validation failed: Name has already been taken"}`))
+	})
+
+	client, cleanup := setupTestClient(t, mux)
+	defer cleanup()
+
+	_, err := client.Labels().CreateServiceLabel(context.Background(), "test-service", CreateServiceLabelRequest{
+		Name:  "production",
+		Color: "FF0000",
+	})
+
+	var apiErr *APIError
+	require.ErrorAs(t, err, &apiErr)
+	assert.Equal(t, 422, apiErr.StatusCode)
+	assert.Equal(t, []string{"Validation failed: Name has already been taken"}, apiErr.Messages)
 }
 
 func TestLabelService_UpdateServiceLabel(t *testing.T) {
@@ -153,20 +243,12 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 		"testdata/label_update_response.json",
 	))
 
-	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-		ctx := context.Background()
-		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-	})
+	client, cleanup := setupTestClient(t, mux)
 	defer cleanup()
 
-	ctx := context.Background()
-	svc := NewLabelService(client)
-	label, err := svc.UpdateServiceLabel(ctx, UpdateServiceLabelReq{
+	label, err := client.Labels().UpdateServiceLabel(context.Background(), "test-service", testUUID, UpdateServiceLabelRequest{
 		Name:  NewOptString("production-updated"),
 		Color: NewOptString("0000FF"),
-	}, UpdateServiceLabelParams{
-		Name: "test-service",
-		UUID: testUUID,
 	})
 
 	require.NoError(t, err)
@@ -180,13 +262,13 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	errorTests := []struct {
-		name       string
-		handler    http.HandlerFunc
-		wantErrMsg string
+		name    string
+		handler http.HandlerFunc
+		wantErr error
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"not found error", testutil.NotFoundHandler(t), "not found"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{"unauthorized error", testutil.UnauthorizedHandler(t), ErrUnauthorized},
+		{"not found error", testutil.NotFoundHandler(t), ErrNotFound},
+		{"server error", testutil.InternalServerErrorHandler(), nil},
 	}
 
 	for _, tt := range errorTests {
@@ -194,25 +276,17 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
 
-			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-				ctx := context.Background()
-				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-			})
+			client, cleanup := setupTestClient(t, mux)
 			defer cleanup()
 
-			ctx := context.Background()
-			svc := NewLabelService(client)
-			label, err := svc.UpdateServiceLabel(ctx, UpdateServiceLabelReq{
+			label, err := client.Labels().UpdateServiceLabel(context.Background(), "test-service", testUUID, UpdateServiceLabelRequest{
 				Name: NewOptString("production-updated"),
-			}, UpdateServiceLabelParams{
-				Name: "test-service",
-				UUID: testUUID,
 			})
 
 			require.Error(t, err)
 			assert.Nil(t, label)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
+			if tt.wantErr != nil {
+				assert.ErrorIs(t, err, tt.wantErr)
 			}
 		})
 	}
@@ -226,18 +300,10 @@ func TestLabelService_DeleteServiceLabel(t *testing.T) {
 		w.WriteHeader(http.StatusNoContent)
 	})
 
-	client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-		ctx := context.Background()
-		return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-	})
+	client, cleanup := setupTestClient(t, mux)
 	defer cleanup()
 
-	ctx := context.Background()
-	svc := NewLabelService(client)
-	err := svc.DeleteServiceLabel(ctx, DeleteServiceLabelParams{
-		Name: "test-service",
-		UUID: testUUID,
-	})
+	err := client.Labels().DeleteServiceLabel(context.Background(), "test-service", testUUID)
 
 	require.NoError(t, err)
 }
@@ -246,13 +312,13 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	errorTests := []struct {
-		name       string
-		handler    http.HandlerFunc
-		wantErrMsg string
+		name    string
+		handler http.HandlerFunc
+		wantErr error
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"not found error", testutil.NotFoundHandler(t), "not found"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{"unauthorized error", testutil.UnauthorizedHandler(t), ErrUnauthorized},
+		{"not found error", testutil.NotFoundHandler(t), ErrNotFound},
+		{"server error", testutil.InternalServerErrorHandler(), nil},
 	}
 
 	for _, tt := range errorTests {
@@ -260,22 +326,14 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/api/v0/services/test-service/labels/550e8400-e29b-41d4-a716-446655440001", tt.handler)
 
-			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
-				ctx := context.Background()
-				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
-			})
+			client, cleanup := setupTestClient(t, mux)
 			defer cleanup()
 
-			ctx := context.Background()
-			svc := NewLabelService(client)
-			err := svc.DeleteServiceLabel(ctx, DeleteServiceLabelParams{
-				Name: "test-service",
-				UUID: testUUID,
-			})
+			err := client.Labels().DeleteServiceLabel(context.Background(), "test-service", testUUID)
 
 			require.Error(t, err)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
+			if tt.wantErr != nil {
+				assert.ErrorIs(t, err, tt.wantErr)
 			}
 		})
 	}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 
@@ -17,12 +18,14 @@ func main() {
 func getIncidentUUID() {
 	ctx := context.Background()
 
-	client := newClient()
-	svc := waroom.NewIncidentService(client)
+	c := newClient()
 
-	// 例: 1ページだけ取得
 	uuid, _ := uuid.Parse("d32fc8dd-e424-4974-b27e-c55bb323a6cb")
-	res, err := svc.GetIncident(ctx, uuid)
+	res, err := c.Incidents().GetIncident(ctx, uuid)
+	if errors.Is(err, waroom.ErrNotFound) {
+		fmt.Println("incident not found")
+		return
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,17 +33,26 @@ func getIncidentUUID() {
 }
 
 func listIncidents() {
-	client := newClient()
-	svc := waroom.NewIncidentService(client)
-	param := waroom.ListIncidentsParams{}
-
-	//TODO: pagination
 	ctx := context.Background()
-	res, err := svc.ListIncidents(ctx, param)
+	c := newClient()
+
+	// 1ページ分をページ情報付きで取得
+	list, err := c.Incidents().ListIncidents(ctx, waroom.ListIncidentsOptions{
+		SortOrder: waroom.NewOptListIncidentsSortOrder(waroom.ListIncidentsSortOrderDesc),
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(res)
+	fmt.Printf("%d incidents (page %d/%d)\n", list.TotalCount, list.CurrentPage, list.TotalPages)
+	fmt.Println(list.Items)
+
+	// 全件が欲しい場合はイテレータでページングを自動化
+	for inc, err := range c.Incidents().ListIncidentsAll(ctx, waroom.ListIncidentsOptions{}) {
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(inc.Title)
+	}
 }
 
 func newClient() *waroom.Client {
