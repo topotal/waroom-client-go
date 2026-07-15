@@ -81,3 +81,14 @@ func NotFoundHandler(t *testing.T) http.HandlerFunc {
 		WithStatus(http.StatusNotFound),
 	)
 }
+
+// PaymentRequiredHandler returns an HTTP handler that responds with a 402 Payment Required
+// error using the payment_required_error.json fixture.
+func PaymentRequiredHandler(t *testing.T) http.HandlerFunc {
+	t.Helper()
+	return JSONFixtureHandler(
+		t,
+		"testdata/payment_required_error.json",
+		WithStatus(http.StatusPaymentRequired),
+	)
+}

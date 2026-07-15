@@ -2,10 +2,10 @@ package waroom
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 
 	gen "github.com/topotal/waroom-client-go/internal/ogen"
-
-	"github.com/go-faster/errors"
 )
 
 type ServiceService struct {
@@ -18,17 +18,18 @@ func NewServiceService(client *Client) *ServiceService {
 
 func (s *ServiceService) ListServices(ctx context.Context, params ListServicesParams) ([]Service, error) {
 	res, err := s.client.raw.ListServices(ctx)
-
 	if err != nil {
-		return nil, errors.Wrap(err, "err") //TODO ちゃんとする
+		return nil, fmt.Errorf("waroom: list services: %w", err)
 	}
 
 	switch res := res.(type) {
 	case *gen.ListServicesOK:
 		return res.Services, nil
 	case *gen.ListServicesUnauthorized:
-		return nil, errors.New("unauthorized")
+		return nil, fmt.Errorf("waroom: list services: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+	case *gen.ListServicesPaymentRequired:
+		return nil, fmt.Errorf("waroom: list services: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
 	default:
-		return nil, errors.Errorf("unhandled response %T", res)
+		return nil, fmt.Errorf("waroom: list services: unhandled response %T", res)
 	}
 }
