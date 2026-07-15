@@ -92,3 +92,14 @@ func PaymentRequiredHandler(t *testing.T) http.HandlerFunc {
 		WithStatus(http.StatusPaymentRequired),
 	)
 }
+
+// UnprocessableEntityHandler returns an HTTP handler that responds with a 422 Unprocessable Entity
+// error using the unprocessable_entity_error.json fixture.
+func UnprocessableEntityHandler(t *testing.T) http.HandlerFunc {
+	t.Helper()
+	return JSONFixtureHandler(
+		t,
+		"testdata/unprocessable_entity_error.json",
+		WithStatus(http.StatusUnprocessableEntity),
+	)
+}

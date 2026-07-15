@@ -6,11 +6,11 @@ import (
 	"strings"
 )
 
-// APIError は Waroom API サーバーが返したエラーレスポンスを表す。
-// トランスポート層のエラー(接続失敗・デコード失敗)は含まない。
+// APIError represents an error response returned by the Waroom API server.
+// Transport-layer errors (connection or decode failures) are never APIErrors.
 type APIError struct {
-	StatusCode int      // 400, 401, 402, 404, 422
-	Messages   []string // レスポンスボディの error / errors を正規化したもの
+	StatusCode int      // 400, 401, 402, 404, or 422
+	Messages   []string // normalized from the response body's error / errors field
 }
 
 func (e *APIError) Error() string {
@@ -24,7 +24,6 @@ func (e *APIError) Error() string {
 	return msg
 }
 
-// optMessages は OptString のエラーメッセージを []string に正規化する。未設定なら nil。
 func optMessages(s OptString) []string {
 	if v, ok := s.Get(); ok {
 		return []string{v}

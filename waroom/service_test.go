@@ -37,7 +37,7 @@ func TestServiceService_ListServices_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantAPIErr *APIError // nil ならトランスポート層エラー(APIError にならない)を期待
+		wantAPIErr *APIError // nil expects a transport-layer error (not an APIError)
 	}{
 		{
 			name:       "unauthorized error",

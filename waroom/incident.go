@@ -36,7 +36,6 @@ func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncident
 	}
 }
 
-// GET /incidents/{uuid}
 func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*Incident, error) {
 	params := gen.GetIncidentParams{UUID: uuid}
 
