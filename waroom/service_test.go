@@ -2,6 +2,7 @@ package waroom
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -36,10 +37,23 @@ func TestServiceService_ListServices_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantErrMsg string
+		wantAPIErr *APIError // nil expects a transport-layer error (not an APIError)
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+		{
+			name:       "payment required error",
+			handler:    testutil.PaymentRequiredHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{"Payment Required"}},
+		},
+		{
+			name:       "server error",
+			handler:    testutil.InternalServerErrorHandler(),
+			wantAPIErr: nil,
+		},
 	}
 
 	for _, tt := range errorTests {
@@ -59,8 +73,14 @@ func TestServiceService_ListServices_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, services)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
+
+			var apiErr *APIError
+			if tt.wantAPIErr != nil {
+				require.True(t, errors.As(err, &apiErr))
+				assert.Equal(t, tt.wantAPIErr, apiErr)
+				assert.Contains(t, err.Error(), "waroom: list services:")
+			} else {
+				assert.False(t, errors.As(err, &apiErr))
 			}
 		})
 	}

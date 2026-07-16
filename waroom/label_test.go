@@ -2,6 +2,7 @@ package waroom
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"testing"
 
@@ -43,10 +44,23 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantErrMsg string
+		wantAPIErr *APIError
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+		{
+			name:       "not found error",
+			handler:    testutil.NotFoundHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusNotFound, Messages: []string{"Not found"}},
+		},
+		{
+			name:       "server error",
+			handler:    testutil.InternalServerErrorHandler(),
+			wantAPIErr: nil,
+		},
 	}
 
 	for _, tt := range errorTests {
@@ -68,9 +82,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, labels)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
-			}
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: list service labels:")
 		})
 	}
 }
@@ -109,10 +121,23 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantErrMsg string
+		wantAPIErr *APIError
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+		{
+			name:       "unprocessable entity error",
+			handler:    testutil.UnprocessableEntityHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnprocessableEntity, Messages: []string{"Name has already been taken"}},
+		},
+		{
+			name:       "server error",
+			handler:    testutil.InternalServerErrorHandler(),
+			wantAPIErr: nil,
+		},
 	}
 
 	for _, tt := range errorTests {
@@ -137,9 +162,7 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, label)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
-			}
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: create service label:")
 		})
 	}
 }
@@ -182,11 +205,28 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantErrMsg string
+		wantAPIErr *APIError
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"not found error", testutil.NotFoundHandler(t), "not found"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+		{
+			name:       "not found error",
+			handler:    testutil.NotFoundHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusNotFound, Messages: []string{"Not found"}},
+		},
+		{
+			name:       "unprocessable entity error",
+			handler:    testutil.UnprocessableEntityHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnprocessableEntity, Messages: []string{"Name has already been taken"}},
+		},
+		{
+			name:       "server error",
+			handler:    testutil.InternalServerErrorHandler(),
+			wantAPIErr: nil,
+		},
 	}
 
 	for _, tt := range errorTests {
@@ -211,9 +251,7 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, label)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
-			}
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: update service label:")
 		})
 	}
 }
@@ -248,11 +286,23 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
-		wantErrMsg string
+		wantAPIErr *APIError
 	}{
-		{"unauthorized error", testutil.UnauthorizedHandler(t), "unauthorized"},
-		{"not found error", testutil.NotFoundHandler(t), "not found"},
-		{"server error", testutil.InternalServerErrorHandler(), ""},
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+		{
+			name:       "not found error",
+			handler:    testutil.NotFoundHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusNotFound, Messages: []string{"Not found"}},
+		},
+		{
+			name:       "server error",
+			handler:    testutil.InternalServerErrorHandler(),
+			wantAPIErr: nil,
+		},
 	}
 
 	for _, tt := range errorTests {
@@ -274,9 +324,23 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 			})
 
 			require.Error(t, err)
-			if tt.wantErrMsg != "" {
-				assert.Contains(t, err.Error(), tt.wantErrMsg)
-			}
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: delete service label:")
 		})
 	}
+}
+
+// assertAPIError asserts that err unwraps to the expected *APIError and that
+// its message carries the operation prefix. A nil want asserts that err does
+// not unwrap to *APIError (i.e. it is a transport-layer error).
+func assertAPIError(t *testing.T, err error, want *APIError, wantPrefix string) {
+	t.Helper()
+
+	var apiErr *APIError
+	if want == nil {
+		assert.False(t, errors.As(err, &apiErr))
+		return
+	}
+	require.True(t, errors.As(err, &apiErr))
+	assert.Equal(t, want, apiErr)
+	assert.Contains(t, err.Error(), wantPrefix)
 }
