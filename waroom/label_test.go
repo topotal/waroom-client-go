@@ -12,7 +12,7 @@ import (
 	"github.com/topotal/waroom-client-go/internal/testutil"
 )
 
-func TestLabelService_ListServiceLabels(t *testing.T) {
+func TestLabelService_List(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v0/services/test-service/labels", testutil.JSONFixtureHandler(t, "testdata/labels_list_response.json"))
 
@@ -23,8 +23,7 @@ func TestLabelService_ListServiceLabels(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewLabelService(client)
-	labels, err := svc.ListServiceLabels(ctx, ListServiceLabelsParams{
+	labels, err := client.Labels.List(ctx, ListServiceLabelsParams{
 		Name: "test-service",
 	})
 
@@ -40,7 +39,7 @@ func TestLabelService_ListServiceLabels(t *testing.T) {
 	assert.Equal(t, "00FF00", labels[1].Color)
 }
 
-func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
+func TestLabelService_List_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
@@ -75,8 +74,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 			defer cleanup()
 
 			ctx := context.Background()
-			svc := NewLabelService(client)
-			labels, err := svc.ListServiceLabels(ctx, ListServiceLabelsParams{
+			labels, err := client.Labels.List(ctx, ListServiceLabelsParams{
 				Name: "test-service",
 			})
 
@@ -87,7 +85,7 @@ func TestLabelService_ListServiceLabels_Errors(t *testing.T) {
 	}
 }
 
-func TestLabelService_CreateServiceLabel(t *testing.T) {
+func TestLabelService_Create(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v0/services/test-service/labels", testutil.JSONFixtureHandler(
 		t,
@@ -102,8 +100,7 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewLabelService(client)
-	label, err := svc.CreateServiceLabel(ctx, CreateServiceLabelReq{
+	label, err := client.Labels.Create(ctx, CreateServiceLabelReq{
 		Name:  "production",
 		Color: "FF0000",
 	}, CreateServiceLabelParams{
@@ -117,7 +114,7 @@ func TestLabelService_CreateServiceLabel(t *testing.T) {
 	assert.Equal(t, "FF0000", label.Color)
 }
 
-func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
+func TestLabelService_Create_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
@@ -152,8 +149,7 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 			defer cleanup()
 
 			ctx := context.Background()
-			svc := NewLabelService(client)
-			label, err := svc.CreateServiceLabel(ctx, CreateServiceLabelReq{
+			label, err := client.Labels.Create(ctx, CreateServiceLabelReq{
 				Name:  "production",
 				Color: "FF0000",
 			}, CreateServiceLabelParams{
@@ -167,7 +163,7 @@ func TestLabelService_CreateServiceLabel_Errors(t *testing.T) {
 	}
 }
 
-func TestLabelService_UpdateServiceLabel(t *testing.T) {
+func TestLabelService_Update(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	mux := http.NewServeMux()
@@ -183,8 +179,7 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewLabelService(client)
-	label, err := svc.UpdateServiceLabel(ctx, UpdateServiceLabelReq{
+	label, err := client.Labels.Update(ctx, UpdateServiceLabelReq{
 		Name:  NewOptString("production-updated"),
 		Color: NewOptString("0000FF"),
 	}, UpdateServiceLabelParams{
@@ -199,7 +194,7 @@ func TestLabelService_UpdateServiceLabel(t *testing.T) {
 	assert.Equal(t, "0000FF", label.Color)
 }
 
-func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
+func TestLabelService_Update_Errors(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	errorTests := []struct {
@@ -241,8 +236,7 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 			defer cleanup()
 
 			ctx := context.Background()
-			svc := NewLabelService(client)
-			label, err := svc.UpdateServiceLabel(ctx, UpdateServiceLabelReq{
+			label, err := client.Labels.Update(ctx, UpdateServiceLabelReq{
 				Name: NewOptString("production-updated"),
 			}, UpdateServiceLabelParams{
 				Name: "test-service",
@@ -256,7 +250,7 @@ func TestLabelService_UpdateServiceLabel_Errors(t *testing.T) {
 	}
 }
 
-func TestLabelService_DeleteServiceLabel(t *testing.T) {
+func TestLabelService_Delete(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	mux := http.NewServeMux()
@@ -271,8 +265,7 @@ func TestLabelService_DeleteServiceLabel(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewLabelService(client)
-	err := svc.DeleteServiceLabel(ctx, DeleteServiceLabelParams{
+	err := client.Labels.Delete(ctx, DeleteServiceLabelParams{
 		Name: "test-service",
 		UUID: testUUID,
 	})
@@ -280,7 +273,7 @@ func TestLabelService_DeleteServiceLabel(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
+func TestLabelService_Delete_Errors(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	errorTests := []struct {
@@ -317,8 +310,7 @@ func TestLabelService_DeleteServiceLabel_Errors(t *testing.T) {
 			defer cleanup()
 
 			ctx := context.Background()
-			svc := NewLabelService(client)
-			err := svc.DeleteServiceLabel(ctx, DeleteServiceLabelParams{
+			err := client.Labels.Delete(ctx, DeleteServiceLabelParams{
 				Name: "test-service",
 				UUID: testUUID,
 			})

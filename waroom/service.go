@@ -8,15 +8,18 @@ import (
 	gen "github.com/topotal/waroom-client-go/internal/ogen"
 )
 
-type ServiceService struct {
-	client *Client
-}
+// ServiceService handles communication with the service related
+// methods of the Waroom API. Use it via Client.Services.
+type ServiceService service
 
+// NewServiceService returns client.Services.
+//
+// Deprecated: Use Client.Services instead.
 func NewServiceService(client *Client) *ServiceService {
-	return &ServiceService{client: client}
+	return client.Services
 }
 
-func (s *ServiceService) ListServices(ctx context.Context, params ListServicesParams) ([]Service, error) {
+func (s *ServiceService) List(ctx context.Context, params ListServicesParams) ([]Service, error) {
 	res, err := s.client.raw.ListServices(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("waroom: list services: %w", err)

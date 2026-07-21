@@ -8,15 +8,18 @@ import (
 	gen "github.com/topotal/waroom-client-go/internal/ogen"
 )
 
-type LabelService struct {
-	client *Client
-}
+// LabelService handles communication with the service label related
+// methods of the Waroom API. Use it via Client.Labels.
+type LabelService service
 
+// NewLabelService returns client.Labels.
+//
+// Deprecated: Use Client.Labels instead.
 func NewLabelService(client *Client) *LabelService {
-	return &LabelService{client: client}
+	return client.Labels
 }
 
-func (s *LabelService) ListServiceLabels(ctx context.Context, params ListServiceLabelsParams) ([]Label, error) {
+func (s *LabelService) List(ctx context.Context, params ListServiceLabelsParams) ([]Label, error) {
 	res, err := s.client.raw.ListServiceLabels(ctx, params)
 	if err != nil {
 		return nil, fmt.Errorf("waroom: list service labels: %w", err)
@@ -36,7 +39,7 @@ func (s *LabelService) ListServiceLabels(ctx context.Context, params ListService
 	}
 }
 
-func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateServiceLabelReq, params CreateServiceLabelParams) (*CreatedLabel, error) {
+func (s *LabelService) Create(ctx context.Context, req CreateServiceLabelReq, params CreateServiceLabelParams) (*CreatedLabel, error) {
 	res, err := s.client.raw.CreateServiceLabel(ctx, &gen.CreateServiceLabelReq{Label: req}, params)
 	if err != nil {
 		return nil, fmt.Errorf("waroom: create service label: %w", err)
@@ -58,7 +61,7 @@ func (s *LabelService) CreateServiceLabel(ctx context.Context, req CreateService
 	}
 }
 
-func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateServiceLabelReq, params UpdateServiceLabelParams) (*UpdatedLabel, error) {
+func (s *LabelService) Update(ctx context.Context, req UpdateServiceLabelReq, params UpdateServiceLabelParams) (*UpdatedLabel, error) {
 	res, err := s.client.raw.UpdateServiceLabel(ctx, &gen.UpdateServiceLabelReq{Label: req}, params)
 	if err != nil {
 		return nil, fmt.Errorf("waroom: update service label: %w", err)
@@ -80,7 +83,7 @@ func (s *LabelService) UpdateServiceLabel(ctx context.Context, req UpdateService
 	}
 }
 
-func (s *LabelService) DeleteServiceLabel(ctx context.Context, params DeleteServiceLabelParams) error {
+func (s *LabelService) Delete(ctx context.Context, params DeleteServiceLabelParams) error {
 	res, err := s.client.raw.DeleteServiceLabel(ctx, params)
 	if err != nil {
 		return fmt.Errorf("waroom: delete service label: %w", err)

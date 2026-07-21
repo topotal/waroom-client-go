@@ -12,7 +12,7 @@ import (
 	"github.com/topotal/waroom-client-go/internal/testutil"
 )
 
-func TestIncidentService_ListIncidents_Errors(t *testing.T) {
+func TestIncidentService_List_Errors(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v0/incidents", testutil.UnauthorizedHandler(t))
 
@@ -23,8 +23,7 @@ func TestIncidentService_ListIncidents_Errors(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewIncidentService(client)
-	incidents, err := svc.ListIncidents(ctx, ListIncidentsParams{})
+	incidents, err := client.Incidents.List(ctx, ListIncidentsParams{})
 
 	require.Error(t, err)
 	assert.Nil(t, incidents)
@@ -35,7 +34,7 @@ func TestIncidentService_ListIncidents_Errors(t *testing.T) {
 	assert.Contains(t, err.Error(), "waroom: list incidents:")
 }
 
-func TestIncidentService_GetIncident_Errors(t *testing.T) {
+func TestIncidentService_Get_Errors(t *testing.T) {
 	testUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
 
 	mux := http.NewServeMux()
@@ -48,8 +47,7 @@ func TestIncidentService_GetIncident_Errors(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewIncidentService(client)
-	incident, err := svc.GetIncident(ctx, testUUID)
+	incident, err := client.Incidents.Get(ctx, testUUID)
 
 	require.Error(t, err)
 	assert.Nil(t, incident)

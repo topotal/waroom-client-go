@@ -22,13 +22,12 @@ func getServiceLabels(sname string) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
 	param := waroom.ListServiceLabelsParams{
 		Name: sname,
 	}
 
 	//TODO: pagination
-	res, err := svc.ListServiceLabels(ctx, param)
+	res, err := c.Labels.List(ctx, param)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,8 +43,6 @@ func createServiceLabel(sname, label, color string) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
-
 	param := waroom.CreateServiceLabelParams{
 		Name: sname,
 	}
@@ -55,7 +52,7 @@ func createServiceLabel(sname, label, color string) {
 		Color: color,
 	}
 
-	res, err := svc.CreateServiceLabel(ctx, body, param)
+	res, err := c.Labels.Create(ctx, body, param)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,7 +66,6 @@ func updateServiceLabel(service_name string, id uuid.UUID) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
 	param := waroom.UpdateServiceLabelParams{
 		UUID: id,
 		Name: service_name,
@@ -80,7 +76,7 @@ func updateServiceLabel(service_name string, id uuid.UUID) {
 		Color: waroom.NewOptString("FF00FF"),
 	}
 
-	label, err := svc.UpdateServiceLabel(ctx, body, param)
+	label, err := c.Labels.Update(ctx, body, param)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -91,12 +87,11 @@ func deleteServiceLabel(sname string, id uuid.UUID) {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewLabelService(c)
 	param := waroom.DeleteServiceLabelParams{
 		Name: sname,
 		UUID: id,
 	}
-	if err := svc.DeleteServiceLabel(ctx, param); err != nil {
+	if err := c.Labels.Delete(ctx, param); err != nil {
 		log.Fatal(err)
 	}
 }

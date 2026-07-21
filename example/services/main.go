@@ -17,11 +17,10 @@ func listServices() {
 	ctx := context.Background()
 	c := newClient()
 
-	svc := waroom.NewServiceService(c)
 	param := waroom.ListServicesParams{}
 
 	//TODO: pagination
-	res, err := svc.ListServices(ctx, param)
+	res, err := c.Services.List(ctx, param)
 	if err != nil {
 		log.Fatal(err)
 	}

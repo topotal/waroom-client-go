@@ -24,8 +24,7 @@ func main() {
         return
     }
 
-    svc := waroom.NewServiceService(client)
-    res, err := svc.ListServices(ctx, &waroom.ListServiceParams{})
+    res, err := client.Services.List(ctx, waroom.ListServicesParams{})
     if err != nil {
         fmt.Println("Error listing services:", err)
         return

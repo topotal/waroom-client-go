@@ -30,10 +30,23 @@ func WithResponseDump() Option             { return func(c *config) { c.Response
 func WithAPIKey(apiKey string) Option      { return func(c *config) { c.APIKey = apiKey } }
 
 type Client struct {
-	raw *gen.Client
+	raw    *gen.Client
+	common service
+
+	Incidents *IncidentService
+	Services  *ServiceService
+	Labels    *LabelService
 }
 
-// 新specはパス側に /api/v0 プレフィックスを含むため、ベースURLはホストのみ
+// service holds the state shared by all resource services. Each service
+// type is a cast of Client.common, so every service points back to the
+// same client instance.
+type service struct {
+	client *Client
+}
+
+// The API spec includes the /api/v0 prefix in each path, so the base URL
+// contains the host only.
 const DefaultBaseURL = "https://api.staging.waroom.com"
 const DefaultUserAgent = "waroom-sdk-go/0.0.1"
 
@@ -49,7 +62,7 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	cfg := &config{
 		BaseURL: DefaultBaseURL,
 		HTTPClient: &http.Client{
-			Timeout:   10 * time.Second, //TODO: 外部から変更可能に
+			Timeout:   10 * time.Second, // TODO: make the timeout configurable
 			Transport: http.DefaultTransport,
 		},
 		UserAgent:    DefaultUserAgent,
@@ -60,7 +73,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 		opt(cfg)
 	}
 
-	// Build Http Transport Chain
 	tp := cfg.HTTPClient.Transport
 	var trippers []func(http.RoundTripper) http.RoundTripper
 
@@ -89,5 +101,11 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Client{raw: raw}, nil
+
+	c := &Client{raw: raw}
+	c.common.client = c
+	c.Incidents = (*IncidentService)(&c.common)
+	c.Services = (*ServiceService)(&c.common)
+	c.Labels = (*LabelService)(&c.common)
+	return c, nil
 }
