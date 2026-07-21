@@ -33,12 +33,13 @@ type Client struct {
 	raw    *gen.Client
 	common service
 
-	Incidents    *IncidentService
-	Services     *ServiceService
-	Labels       *LabelService
-	Users        *UserService
-	Runbooks     *RunbookService
-	RunbookRules *RunbookRuleService
+	Incidents             *IncidentService
+	Services              *ServiceService
+	Labels                *LabelService
+	Users                 *UserService
+	Runbooks              *RunbookService
+	RunbookRules          *RunbookRuleService
+	WebhookConfigurations *WebhookConfigurationService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -113,5 +114,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.Users = (*UserService)(&c.common)
 	c.Runbooks = (*RunbookService)(&c.common)
 	c.RunbookRules = (*RunbookRuleService)(&c.common)
+	c.WebhookConfigurations = (*WebhookConfigurationService)(&c.common)
 	return c, nil
 }

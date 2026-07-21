@@ -67,4 +67,9 @@ type CreateServiceRunbookRuleParams = gen.CreateServiceRunbookRuleParams
 type UpdateServiceRunbookRuleParams = gen.UpdateServiceRunbookRuleParams
 type DeleteServiceRunbookRuleParams = gen.DeleteServiceRunbookRuleParams
 
+type WebhookConfigurationListItem = gen.ListServiceWebhookConfigurationsOKWebhookConfigurationsItem
+type WebhookConfiguration = gen.GetServiceWebhookConfigurationOKWebhookConfiguration
+type ListServiceWebhookConfigurationsParams = gen.ListServiceWebhookConfigurationsParams
+type GetServiceWebhookConfigurationParams = gen.GetServiceWebhookConfigurationParams
+
 // TODO: 追加
