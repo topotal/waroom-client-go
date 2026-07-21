@@ -57,4 +57,14 @@ type GetRunbookParams = gen.GetRunbookParams
 type UpdateRunbookParams = gen.UpdateRunbookParams
 type DeleteRunbookParams = gen.DeleteRunbookParams
 
+type RunbookRuleListItem = gen.ListServiceRunbookRulesOKRunbookRulesItem
+type CreatedRunbookRule = gen.CreateServiceRunbookRuleCreated
+type UpdatedRunbookRule = gen.UpdateServiceRunbookRuleOK
+type CreateRunbookRuleReq = gen.CreateServiceRunbookRuleReqRunbookRule
+type UpdateRunbookRuleReq = gen.UpdateServiceRunbookRuleReqRunbookRule
+type ListServiceRunbookRulesParams = gen.ListServiceRunbookRulesParams
+type CreateServiceRunbookRuleParams = gen.CreateServiceRunbookRuleParams
+type UpdateServiceRunbookRuleParams = gen.UpdateServiceRunbookRuleParams
+type DeleteServiceRunbookRuleParams = gen.DeleteServiceRunbookRuleParams
+
 // TODO: 追加

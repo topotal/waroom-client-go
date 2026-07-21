@@ -33,11 +33,12 @@ type Client struct {
 	raw    *gen.Client
 	common service
 
-	Incidents *IncidentService
-	Services  *ServiceService
-	Labels    *LabelService
-	Users     *UserService
-	Runbooks  *RunbookService
+	Incidents    *IncidentService
+	Services     *ServiceService
+	Labels       *LabelService
+	Users        *UserService
+	Runbooks     *RunbookService
+	RunbookRules *RunbookRuleService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -111,5 +112,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.Labels = (*LabelService)(&c.common)
 	c.Users = (*UserService)(&c.common)
 	c.Runbooks = (*RunbookService)(&c.common)
+	c.RunbookRules = (*RunbookRuleService)(&c.common)
 	return c, nil
 }
