@@ -43,4 +43,7 @@ type UpdateServiceLabelParams = gen.UpdateServiceLabelParams
 type UpdateServiceLabelReq = gen.UpdateServiceLabelReqLabel
 type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
 
+type User = gen.ListUsersOKUsersItem
+type ListUsersParams = gen.ListUsersParams
+
 // TODO: 追加

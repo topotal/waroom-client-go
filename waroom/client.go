@@ -36,6 +36,7 @@ type Client struct {
 	Incidents *IncidentService
 	Services  *ServiceService
 	Labels    *LabelService
+	Users     *UserService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -107,5 +108,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.Incidents = (*IncidentService)(&c.common)
 	c.Services = (*ServiceService)(&c.common)
 	c.Labels = (*LabelService)(&c.common)
+	c.Users = (*UserService)(&c.common)
 	return c, nil
 }
