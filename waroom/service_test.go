@@ -11,7 +11,7 @@ import (
 	"github.com/topotal/waroom-client-go/internal/testutil"
 )
 
-func TestServiceService_ListServices(t *testing.T) {
+func TestServiceService_List(t *testing.T) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/api/v0/services", testutil.JSONFixtureHandler(t, "testdata/services_list_response.json"))
 
@@ -22,18 +22,16 @@ func TestServiceService_ListServices(t *testing.T) {
 	defer cleanup()
 
 	ctx := context.Background()
-	svc := NewServiceService(client)
-	services, err := svc.ListServices(ctx, ListServicesParams{})
+	services, err := client.Services.List(ctx, ListServicesParams{})
 
 	require.NoError(t, err)
 	assert.Len(t, services, 2)
 
-	// 新specではserviceはnameのみを返す(labelsフィールドは無くなった)
 	assert.Equal(t, "Test Service 1", services[0].Name)
 	assert.Equal(t, "Test Service 2", services[1].Name)
 }
 
-func TestServiceService_ListServices_Errors(t *testing.T) {
+func TestServiceService_List_Errors(t *testing.T) {
 	errorTests := []struct {
 		name       string
 		handler    http.HandlerFunc
@@ -68,8 +66,7 @@ func TestServiceService_ListServices_Errors(t *testing.T) {
 			defer cleanup()
 
 			ctx := context.Background()
-			svc := NewServiceService(client)
-			services, err := svc.ListServices(ctx, ListServicesParams{})
+			services, err := client.Services.List(ctx, ListServicesParams{})
 
 			require.Error(t, err)
 			assert.Nil(t, services)

@@ -10,15 +10,18 @@ import (
 	"github.com/google/uuid"
 )
 
-type IncidentService struct {
-	client *Client
-}
+// IncidentService handles communication with the incident related
+// methods of the Waroom API. Use it via Client.Incidents.
+type IncidentService service
 
+// NewIncidentService returns client.Incidents.
+//
+// Deprecated: Use Client.Incidents instead.
 func NewIncidentService(client *Client) *IncidentService {
-	return &IncidentService{client: client}
+	return client.Incidents
 }
 
-func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncidentsParams) ([]IncidentListItem, error) {
+func (s *IncidentService) List(ctx context.Context, params ListIncidentsParams) ([]IncidentListItem, error) {
 	res, err := s.client.raw.ListIncidents(ctx, params)
 	if err != nil {
 		return nil, fmt.Errorf("waroom: list incidents: %w", err)
@@ -36,7 +39,7 @@ func (s *IncidentService) ListIncidents(ctx context.Context, params ListIncident
 	}
 }
 
-func (s *IncidentService) GetIncident(ctx context.Context, uuid uuid.UUID) (*Incident, error) {
+func (s *IncidentService) Get(ctx context.Context, uuid uuid.UUID) (*Incident, error) {
 	params := gen.GetIncidentParams{UUID: uuid}
 
 	res, err := s.client.raw.GetIncident(ctx, params)

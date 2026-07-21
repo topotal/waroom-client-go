@@ -18,11 +18,9 @@ func getIncidentUUID() {
 	ctx := context.Background()
 
 	client := newClient()
-	svc := waroom.NewIncidentService(client)
 
-	// 例: 1ページだけ取得
 	uuid, _ := uuid.Parse("d32fc8dd-e424-4974-b27e-c55bb323a6cb")
-	res, err := svc.GetIncident(ctx, uuid)
+	res, err := client.Incidents.Get(ctx, uuid)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -31,12 +29,11 @@ func getIncidentUUID() {
 
 func listIncidents() {
 	client := newClient()
-	svc := waroom.NewIncidentService(client)
 	param := waroom.ListIncidentsParams{}
 
 	//TODO: pagination
 	ctx := context.Background()
-	res, err := svc.ListIncidents(ctx, param)
+	res, err := client.Incidents.List(ctx, param)
 	if err != nil {
 		log.Fatal(err)
 	}
