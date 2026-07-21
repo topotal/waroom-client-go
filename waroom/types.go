@@ -46,4 +46,15 @@ type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
 type User = gen.ListUsersOKUsersItem
 type ListUsersParams = gen.ListUsersParams
 
+type Runbook = gen.GetRunbookOKRunbook
+type RunbookListItem = gen.ListRunbooksOKRunbooksItem
+type CreatedRunbook = gen.CreateRunbookCreatedRunbook
+type UpdatedRunbook = gen.UpdateRunbookOKRunbook
+type CreateRunbookReq = gen.CreateRunbookReqRunbook
+type UpdateRunbookReq = gen.UpdateRunbookReqRunbook
+type ListRunbooksParams = gen.ListRunbooksParams
+type GetRunbookParams = gen.GetRunbookParams
+type UpdateRunbookParams = gen.UpdateRunbookParams
+type DeleteRunbookParams = gen.DeleteRunbookParams
+
 // TODO: 追加
