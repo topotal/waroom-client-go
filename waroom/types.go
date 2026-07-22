@@ -106,4 +106,8 @@ type CreateIncidentActionItemParams = gen.CreateIncidentActionItemParams
 type GetIncidentActionItemParams = gen.GetIncidentActionItemParams
 type DeleteIncidentActionItemParams = gen.DeleteIncidentActionItemParams
 
+type IncidentDescriptionTemplate = gen.GetIncidentDescriptionTemplateOK
+type UpdatedIncidentDescriptionTemplate = gen.UpdateIncidentDescriptionTemplateOK
+type UpdateIncidentDescriptionTemplateReq = gen.UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate
+
 // TODO: 追加
