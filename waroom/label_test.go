@@ -321,6 +321,42 @@ func TestLabelService_Delete_Errors(t *testing.T) {
 	}
 }
 
+func TestLabelService_UpdateIncidentLabels_Errors(t *testing.T) {
+	incidentUUID := uuid.MustParse("550e8400-e29b-41d4-a716-446655440001")
+
+	errorTests := []struct {
+		name       string
+		handler    http.HandlerFunc
+		wantAPIErr *APIError
+	}{
+		{
+			name:       "unauthorized error",
+			handler:    testutil.UnauthorizedHandler(t),
+			wantAPIErr: &APIError{StatusCode: http.StatusUnauthorized, Messages: []string{"Not Authenticated"}},
+		},
+	}
+
+	for _, tt := range errorTests {
+		t.Run(tt.name, func(t *testing.T) {
+			mux := http.NewServeMux()
+			mux.HandleFunc("/api/v0/incidents/550e8400-e29b-41d4-a716-446655440001/labels", tt.handler)
+
+			client, cleanup := testutil.SetupTestClient(t, mux, func(baseURL string) (*Client, error) {
+				ctx := context.Background()
+				return NewClient(ctx, WithAPIKey("test-api-key"), WithBaseURL(baseURL))
+			})
+			defer cleanup()
+
+			ctx := context.Background()
+			labels, err := client.Labels.UpdateIncidentLabels(ctx, UpdateIncidentLabelsReq{}, UpdateIncidentLabelsParams{UUID: incidentUUID})
+
+			require.Error(t, err)
+			assert.Nil(t, labels)
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: update incident labels:")
+		})
+	}
+}
+
 // assertAPIError asserts that err unwraps to the expected *APIError and that
 // its message carries the operation prefix. A nil want asserts that err does
 // not unwrap to *APIError (i.e. it is a transport-layer error).

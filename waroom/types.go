@@ -24,6 +24,7 @@ func NewOptNillInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
 type Incident = gen.GetIncidentOK
 type IncidentListItem = gen.ListIncidentsOKIncidentsItem
 type IncidentLabel = gen.GetIncidentOKLabelsItem
+type UpdatedIncidentLabel = gen.UpdateIncidentLabelsOKLabelsItem
 type IncidentMetrics = gen.GetIncidentOKMetrics
 type ListIncidentsParams = gen.ListIncidentsParams
 
@@ -144,6 +145,8 @@ type UpdateArchitectureContextReq = gen.UpdateServiceArchitectureContextReqServi
 type PutNotificationSlackChannelReq = gen.PutServiceNotificationSlackChannelReqServiceNotificationSlackChannel
 type UpdateIncidentDocumentTemplateReq = gen.UpdateIncidentDocumentTemplateReqIncidentDocumentTemplate
 type UpdateIncidentServiceParams = gen.UpdateIncidentServiceParams
+type UpdateIncidentLabelsReq = gen.UpdateIncidentLabelsReq
+type UpdateIncidentLabelsParams = gen.UpdateIncidentLabelsParams
 type GetServiceArchitectureContextParams = gen.GetServiceArchitectureContextParams
 type UpdateServiceArchitectureContextParams = gen.UpdateServiceArchitectureContextParams
 type GetServiceNotificationSlackChannelParams = gen.GetServiceNotificationSlackChannelParams

@@ -263,3 +263,8 @@ func (s *IncidentService) CreateMetrics(ctx context.Context, req CreateIncidentM
 		return nil, fmt.Errorf("waroom: create incident metrics: unhandled response %T", res)
 	}
 }
+
+// UpdateLabels is a convenience wrapper for Client.Labels.UpdateIncidentLabels.
+func (s *IncidentService) UpdateLabels(ctx context.Context, req UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) ([]UpdatedIncidentLabel, error) {
+	return s.client.Labels.UpdateIncidentLabels(ctx, req, params)
+}

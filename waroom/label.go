@@ -102,3 +102,23 @@ func (s *LabelService) Delete(ctx context.Context, params DeleteServiceLabelPara
 		return fmt.Errorf("waroom: delete service label: unhandled response %T", res)
 	}
 }
+
+func (s *LabelService) UpdateIncidentLabels(ctx context.Context, req UpdateIncidentLabelsReq, params UpdateIncidentLabelsParams) ([]UpdatedIncidentLabel, error) {
+	res, err := s.client.raw.UpdateIncidentLabels(ctx, &req, params)
+	if err != nil {
+		return nil, fmt.Errorf("waroom: update incident labels: %w", err)
+	}
+
+	switch res := res.(type) {
+	case *gen.UpdateIncidentLabelsOK:
+		return res.Labels, nil
+	case *gen.UpdateIncidentLabelsUnauthorized:
+		return nil, fmt.Errorf("waroom: update incident labels: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+	case *gen.UpdateIncidentLabelsNotFound:
+		return nil, fmt.Errorf("waroom: update incident labels: %w", &APIError{StatusCode: http.StatusNotFound, Messages: optMessages(res.Error)})
+	case *gen.UpdateIncidentLabelsPaymentRequired:
+		return nil, fmt.Errorf("waroom: update incident labels: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+	default:
+		return nil, fmt.Errorf("waroom: update incident labels: unhandled response %T", res)
+	}
+}
