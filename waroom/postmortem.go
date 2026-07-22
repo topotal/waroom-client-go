@@ -122,35 +122,35 @@ func (s *PostmortemService) Delete(ctx context.Context, params DeletePostmortemP
 func (s *PostmortemService) GetTemplate(ctx context.Context) (*PostmortemDefaultTemplate, error) {
 	res, err := s.client.raw.GetPostmortemTemplate(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("waroom: get postmortem template: %w", err)
+		return nil, fmt.Errorf("waroom: get default postmortem template: %w", err)
 	}
 
 	switch res := res.(type) {
 	case *gen.GetPostmortemTemplateOK:
 		return res, nil
 	case *gen.GetPostmortemTemplateUnauthorized:
-		return nil, fmt.Errorf("waroom: get postmortem template: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+		return nil, fmt.Errorf("waroom: get default postmortem template: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
 	case *gen.GetPostmortemTemplatePaymentRequired:
-		return nil, fmt.Errorf("waroom: get postmortem template: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+		return nil, fmt.Errorf("waroom: get default postmortem template: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
 	default:
-		return nil, fmt.Errorf("waroom: get postmortem template: unhandled response %T", res)
+		return nil, fmt.Errorf("waroom: get default postmortem template: unhandled response %T", res)
 	}
 }
 
 func (s *PostmortemService) UpdateTemplate(ctx context.Context, req UpdatePostmortemTemplateReq) (*UpdatedPostmortemDefaultTemplate, error) {
 	res, err := s.client.raw.UpdatePostmortemTemplate(ctx, &req)
 	if err != nil {
-		return nil, fmt.Errorf("waroom: update postmortem template: %w", err)
+		return nil, fmt.Errorf("waroom: update default postmortem template: %w", err)
 	}
 
 	switch res := res.(type) {
 	case *gen.UpdatePostmortemTemplateOK:
 		return res, nil
 	case *gen.UpdatePostmortemTemplateUnauthorized:
-		return nil, fmt.Errorf("waroom: update postmortem template: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+		return nil, fmt.Errorf("waroom: update default postmortem template: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
 	case *gen.UpdatePostmortemTemplatePaymentRequired:
-		return nil, fmt.Errorf("waroom: update postmortem template: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+		return nil, fmt.Errorf("waroom: update default postmortem template: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
 	default:
-		return nil, fmt.Errorf("waroom: update postmortem template: unhandled response %T", res)
+		return nil, fmt.Errorf("waroom: update default postmortem template: unhandled response %T", res)
 	}
 }
