@@ -42,6 +42,7 @@ type Client struct {
 	WebhookConfigurations *WebhookConfigurationService
 	Postmortems           *PostmortemService
 	PostmortemTemplates   *PostmortemTemplateService
+	ActionItems           *ActionItemService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -119,5 +120,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.WebhookConfigurations = (*WebhookConfigurationService)(&c.common)
 	c.Postmortems = (*PostmortemService)(&c.common)
 	c.PostmortemTemplates = (*PostmortemTemplateService)(&c.common)
+	c.ActionItems = (*ActionItemService)(&c.common)
 	return c, nil
 }

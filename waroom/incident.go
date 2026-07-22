@@ -60,3 +60,23 @@ func (s *IncidentService) Get(ctx context.Context, uuid uuid.UUID) (*Incident, e
 		return nil, fmt.Errorf("waroom: get incident: unhandled response %T", res)
 	}
 }
+
+// ListActionItems is a convenience wrapper for Client.ActionItems.List.
+func (s *IncidentService) ListActionItems(ctx context.Context, params ListIncidentActionItemsParams) ([]ActionItemListItem, error) {
+	return s.client.ActionItems.List(ctx, params)
+}
+
+// CreateActionItem is a convenience wrapper for Client.ActionItems.Create.
+func (s *IncidentService) CreateActionItem(ctx context.Context, req CreateActionItemReq, params CreateIncidentActionItemParams) (*CreatedActionItem, error) {
+	return s.client.ActionItems.Create(ctx, req, params)
+}
+
+// GetActionItem is a convenience wrapper for Client.ActionItems.Get.
+func (s *IncidentService) GetActionItem(ctx context.Context, params GetIncidentActionItemParams) (*ActionItem, error) {
+	return s.client.ActionItems.Get(ctx, params)
+}
+
+// DeleteActionItem is a convenience wrapper for Client.ActionItems.Delete.
+func (s *IncidentService) DeleteActionItem(ctx context.Context, params DeleteIncidentActionItemParams) error {
+	return s.client.ActionItems.Delete(ctx, params)
+}

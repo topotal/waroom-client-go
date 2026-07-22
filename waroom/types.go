@@ -97,4 +97,13 @@ type GetPostmortemTemplateByUuidParams = gen.GetPostmortemTemplateByUuidParams
 type UpdatePostmortemTemplateByUuidParams = gen.UpdatePostmortemTemplateByUuidParams
 type DeletePostmortemTemplateByUuidParams = gen.DeletePostmortemTemplateByUuidParams
 
+type ActionItemListItem = gen.ListIncidentActionItemsOKActionItemsItem
+type ActionItem = gen.GetIncidentActionItemOKActionItem
+type CreatedActionItem = gen.CreateIncidentActionItemCreatedActionItem
+type CreateActionItemReq = gen.CreateIncidentActionItemReqActionItem
+type ListIncidentActionItemsParams = gen.ListIncidentActionItemsParams
+type CreateIncidentActionItemParams = gen.CreateIncidentActionItemParams
+type GetIncidentActionItemParams = gen.GetIncidentActionItemParams
+type DeleteIncidentActionItemParams = gen.DeleteIncidentActionItemParams
+
 // TODO: 追加
