@@ -72,4 +72,18 @@ type WebhookConfiguration = gen.GetServiceWebhookConfigurationOKWebhookConfigura
 type ListServiceWebhookConfigurationsParams = gen.ListServiceWebhookConfigurationsParams
 type GetServiceWebhookConfigurationParams = gen.GetServiceWebhookConfigurationParams
 
+type PostmortemListItem = gen.ListPostmortemsOKPostmortemsItem
+type Postmortem = gen.GetPostmortemOKPostmortem
+type CreatedPostmortem = gen.CreatePostmortemOK
+type UpdatedPostmortem = gen.UpdatePostmortemOKPostmortem
+type CreatePostmortemReq = gen.CreatePostmortemReq
+type UpdatePostmortemReq = gen.UpdatePostmortemReq
+type PostmortemDefaultTemplate = gen.GetPostmortemTemplateOK
+type UpdatedPostmortemDefaultTemplate = gen.UpdatePostmortemTemplateOK
+type UpdatePostmortemTemplateReq = gen.UpdatePostmortemTemplateReq
+type ListPostmortemsParams = gen.ListPostmortemsParams
+type GetPostmortemParams = gen.GetPostmortemParams
+type UpdatePostmortemParams = gen.UpdatePostmortemParams
+type DeletePostmortemParams = gen.DeletePostmortemParams
+
 // TODO: 追加
