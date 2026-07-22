@@ -41,6 +41,7 @@ type Client struct {
 	RunbookRules          *RunbookRuleService
 	WebhookConfigurations *WebhookConfigurationService
 	Postmortems           *PostmortemService
+	PostmortemTemplates   *PostmortemTemplateService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -117,5 +118,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.RunbookRules = (*RunbookRuleService)(&c.common)
 	c.WebhookConfigurations = (*WebhookConfigurationService)(&c.common)
 	c.Postmortems = (*PostmortemService)(&c.common)
+	c.PostmortemTemplates = (*PostmortemTemplateService)(&c.common)
 	return c, nil
 }

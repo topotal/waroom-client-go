@@ -86,4 +86,15 @@ type GetPostmortemParams = gen.GetPostmortemParams
 type UpdatePostmortemParams = gen.UpdatePostmortemParams
 type DeletePostmortemParams = gen.DeletePostmortemParams
 
+type PostmortemTemplateListItem = gen.ListPostmortemTemplatesOKPostmortemTemplatesItem
+type PostmortemTemplate = gen.GetPostmortemTemplateByUuidOKPostmortemTemplate
+type CreatedPostmortemTemplate = gen.CreatePostmortemTemplateCreatedPostmortemTemplate
+type UpdatedPostmortemTemplate = gen.UpdatePostmortemTemplateByUuidOKPostmortemTemplate
+type CreatePostmortemTemplateReq = gen.CreatePostmortemTemplateReqPostmortemTemplate
+type UpdatePostmortemTemplateByUuidReq = gen.UpdatePostmortemTemplateByUuidReqPostmortemTemplate
+type ListPostmortemTemplatesParams = gen.ListPostmortemTemplatesParams
+type GetPostmortemTemplateByUuidParams = gen.GetPostmortemTemplateByUuidParams
+type UpdatePostmortemTemplateByUuidParams = gen.UpdatePostmortemTemplateByUuidParams
+type DeletePostmortemTemplateByUuidParams = gen.DeletePostmortemTemplateByUuidParams
+
 // TODO: 追加
