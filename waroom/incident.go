@@ -81,6 +81,11 @@ func (s *IncidentService) DeleteActionItem(ctx context.Context, params DeleteInc
 	return s.client.ActionItems.Delete(ctx, params)
 }
 
+// UpdateService is a convenience wrapper for Client.Services.UpdateIncidentService.
+func (s *IncidentService) UpdateService(ctx context.Context, req UpdateIncidentServiceReq, params UpdateIncidentServiceParams) (*IncidentServiceAssignment, error) {
+	return s.client.Services.UpdateIncidentService(ctx, req, params)
+}
+
 func (s *IncidentService) Create(ctx context.Context, req CreateIncidentReq) (*CreatedIncident, error) {
 	res, err := s.client.raw.CreateIncident(ctx, &gen.CreateIncidentReq{Incident: req})
 	if err != nil {
