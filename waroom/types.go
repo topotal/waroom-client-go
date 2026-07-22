@@ -110,4 +110,26 @@ type IncidentDescriptionTemplate = gen.GetIncidentDescriptionTemplateOK
 type UpdatedIncidentDescriptionTemplate = gen.UpdateIncidentDescriptionTemplateOK
 type UpdateIncidentDescriptionTemplateReq = gen.UpdateIncidentDescriptionTemplateReqIncidentDescriptionTemplate
 
+type CreatedIncident = gen.CreateIncidentCreated
+type UpdatedIncident = gen.UpdateIncidentOK
+type IncidentStatus = gen.UpdateIncidentStatusOK
+type IncidentSeverity = gen.UpdateIncidentSeverityOK
+type IncidentCommander = gen.UpdateIncidentCommanderOK
+type IncidentResponders = gen.UpdateIncidentRespondersOK
+type IncidentMetricsActivity = gen.CreateIncidentMetricsOK
+type CreateIncidentReq = gen.CreateIncidentReqIncident
+type UpdateIncidentReq = gen.UpdateIncidentReqIncident
+type UpdateIncidentStatusReq = gen.UpdateIncidentStatusReqStatus
+type UpdateIncidentSeverityReq = gen.UpdateIncidentSeverityReqSeverity
+type UpdateIncidentCommanderReq = gen.UpdateIncidentCommanderReqIncident
+type UpdateIncidentRespondersReq = gen.UpdateIncidentRespondersReqIncident
+type CreateIncidentMetricsReq = gen.CreateIncidentMetricsReq
+type UpdateIncidentParams = gen.UpdateIncidentParams
+type DeleteIncidentParams = gen.DeleteIncidentParams
+type UpdateIncidentStatusParams = gen.UpdateIncidentStatusParams
+type UpdateIncidentSeverityParams = gen.UpdateIncidentSeverityParams
+type UpdateIncidentCommanderParams = gen.UpdateIncidentCommanderParams
+type UpdateIncidentRespondersParams = gen.UpdateIncidentRespondersParams
+type CreateIncidentMetricsParams = gen.CreateIncidentMetricsParams
+
 // TODO: 追加
