@@ -34,6 +34,26 @@ func main() {
 }
 ```
 
+## Available services
+
+Access each service through a field on `*waroom.Client` (e.g. `client.Incidents.List(ctx, ...)`).
+
+| Field | Methods |
+| --- | --- |
+| `Incidents` | `List`, `Get`, `Create`, `Update`, `Delete`, `UpdateStatus`, `UpdateSeverity`, `UpdateCommander`, `UpdateResponders`, `CreateMetrics` |
+| `Services` | `List`, `UpdateIncidentService`, `GetArchitectureContext`, `UpdateArchitectureContext`, `GetNotificationSlackChannel`, `PutNotificationSlackChannel`, `DeleteNotificationSlackChannel`, `GetIncidentDocumentTemplate`, `UpdateIncidentDocumentTemplate`, `DeleteIncidentDocumentTemplate` |
+| `Labels` | `List`, `Create`, `Update`, `Delete`, `UpdateIncidentLabels` |
+| `ActionItems` | `List`, `Create`, `Get`, `Delete` |
+| `RunbookRules` | `List`, `Create`, `Update`, `Delete` |
+| `WebhookConfigurations` | `List`, `Get` |
+| `Postmortems` | `List`, `Create`, `Get`, `Update`, `Delete`, `GetTemplate`, `UpdateTemplate` |
+| `PostmortemTemplates` | `List`, `Create`, `Get`, `Update`, `Delete` |
+| `Runbooks` | `List`, `Create`, `Get`, `Update`, `Delete` |
+| `IncidentDescriptionTemplate` | `Get`, `Update`, `Delete` |
+| `Users` | `List` |
+
+For convenience, `Incidents` also exposes wrappers that delegate to the canonical services: `ListActionItems` / `CreateActionItem` / `GetActionItem` / `DeleteActionItem` (→ `ActionItems`), `UpdateLabels` (→ `Labels.UpdateIncidentLabels`), and `UpdateService` (→ `Services.UpdateIncidentService`).
+
 ## Development
 
 ### Prerequisites
