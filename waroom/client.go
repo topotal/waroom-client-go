@@ -33,9 +33,17 @@ type Client struct {
 	raw    *gen.Client
 	common service
 
-	Incidents *IncidentService
-	Services  *ServiceService
-	Labels    *LabelService
+	Incidents                   *IncidentService
+	Services                    *ServiceService
+	Labels                      *LabelService
+	Users                       *UserService
+	Runbooks                    *RunbookService
+	RunbookRules                *RunbookRuleService
+	WebhookConfigurations       *WebhookConfigurationService
+	Postmortems                 *PostmortemService
+	PostmortemTemplates         *PostmortemTemplateService
+	ActionItems                 *ActionItemService
+	IncidentDescriptionTemplate *IncidentDescriptionTemplateService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -107,5 +115,13 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.Incidents = (*IncidentService)(&c.common)
 	c.Services = (*ServiceService)(&c.common)
 	c.Labels = (*LabelService)(&c.common)
+	c.Users = (*UserService)(&c.common)
+	c.Runbooks = (*RunbookService)(&c.common)
+	c.RunbookRules = (*RunbookRuleService)(&c.common)
+	c.WebhookConfigurations = (*WebhookConfigurationService)(&c.common)
+	c.Postmortems = (*PostmortemService)(&c.common)
+	c.PostmortemTemplates = (*PostmortemTemplateService)(&c.common)
+	c.ActionItems = (*ActionItemService)(&c.common)
+	c.IncidentDescriptionTemplate = (*IncidentDescriptionTemplateService)(&c.common)
 	return c, nil
 }
