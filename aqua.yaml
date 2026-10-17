@@ -2,4 +2,4 @@ registries:
 - type: standard
   ref: v4.575.0 # renovate: depName=aquaproj/aqua-registry
 packages:
-- name: go-task/task@v3.50.0
+- name: go-task/task@v3.54.0
