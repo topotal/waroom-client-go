@@ -41,7 +41,7 @@ jobs:
 
       - name: Commit changes
         if: steps.check-changes.outputs.has_changes == 'true'
-        uses: suzuki-shunsuke/commit-action@44cc32c01e261a029c0161ff908a3a2895bfc46f # v0.1.2
+        uses: suzuki-shunsuke/commit-action@5eaa5ecce3ffe93d09a85b946dc5136e3713b1b7 # v1.1.0
         with:
           commit_message: "api: auto-generate code from OpenAPI spec"
           app_id: ${{secrets.APP_ID}}
