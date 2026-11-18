@@ -4,5 +4,7 @@
     "github>topotal/renovate-config",
     "github>aquaproj/aqua-renovate-config#2.15.0", // doc: https://zenn.dev/shunsuke_suzuki/books/aqua-handbook/viewer/renovate
     "github>suzuki-shunsuke/renovate-config#4.0.0",
-  ]
+  ],
+  //Set the MySQL and Redis versions in docker-compose to match those in `waroom`.
+  "ignoreDeps": ["mysql", "redis"],
 }

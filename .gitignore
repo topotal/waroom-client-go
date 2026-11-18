@@ -35,3 +35,5 @@ dist/
 
 # LLM
 .claude/settings.local.json
+
+temp/
