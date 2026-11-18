@@ -1,3 +1,3 @@
 package ogen
 
-//go:generate go run github.com/ogen-go/ogen/cmd/ogen@latest --clean --target internal/ogen --package ogen api/openapi.yaml
+//go:generate go tool ogen --clean --target internal/ogen --package ogen api/openapi.yaml
