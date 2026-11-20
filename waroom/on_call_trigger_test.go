@@ -188,16 +188,16 @@ func TestOnCallTriggerService_Get_Errors(t *testing.T) {
 }
 
 func newCreateOnCallTriggerReq() CreateOnCallTriggerReq {
-	req := CreateOnCallTriggerReq{
+	return CreateOnCallTriggerReq{
 		Name:                  "critical incidents",
 		ServiceName:           "test-service",
 		EscalationPolicyUuids: []string{"880e8400-e29b-41d4-a716-446655440001"},
+		SeverityFilters:       []CreateOnCallTriggerSeverityFilter{"critical", "high"},
+		SourceFilters:         []CreateOnCallTriggerSourceFilter{"integration", "slack"},
 		Enabled:               NewOptBool(true),
+		EventType:             NewOptCreateOnCallTriggerEventType("incident_created"),
 		RetryCount:            NewOptInt(1),
 	}
-	req.SeverityFilters = append(req.SeverityFilters, "critical", "high")
-	req.SourceFilters = append(req.SourceFilters, "integration", "slack")
-	return req
 }
 
 func TestOnCallTriggerService_Create(t *testing.T) {
@@ -217,6 +217,7 @@ func TestOnCallTriggerService_Create(t *testing.T) {
 				"severity_filters":        []any{"critical", "high"},
 				"source_filters":          []any{"integration", "slack"},
 				"enabled":                 true,
+				"event_type":              "incident_created",
 				"retry_count":             float64(1),
 			},
 		}, body)

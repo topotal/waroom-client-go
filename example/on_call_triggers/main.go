@@ -39,15 +39,13 @@ func createOnCallTrigger(sname, name, escalationPolicyUUID string) {
 	ctx := context.Background()
 	c := newClient()
 
-	req := waroom.CreateOnCallTriggerReq{
+	trigger, err := c.OnCallTriggers.Create(ctx, waroom.CreateOnCallTriggerReq{
 		Name:                  name,
 		ServiceName:           sname,
 		EscalationPolicyUuids: []string{escalationPolicyUUID},
+		SeverityFilters:       []waroom.CreateOnCallTriggerSeverityFilter{"critical", "high"},
 		RetryCount:            waroom.NewOptInt(1),
-	}
-	req.SeverityFilters = append(req.SeverityFilters, "critical", "high")
-
-	trigger, err := c.OnCallTriggers.Create(ctx, req)
+	})
 	if err != nil {
 		log.Fatal(err)
 	}

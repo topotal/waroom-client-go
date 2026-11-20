@@ -226,9 +226,25 @@ type CreatedOnCallTrigger = gen.CreateOnCallTriggerCreatedTrigger
 type UpdatedOnCallTrigger = gen.UpdateOnCallTriggerOKTrigger
 type CreateOnCallTriggerReq = gen.CreateOnCallTriggerReqTrigger
 type UpdateOnCallTriggerReq = gen.UpdateOnCallTriggerReqTrigger
+type CreateOnCallTriggerSeverityFilter = gen.CreateOnCallTriggerReqTriggerSeverityFiltersItem
+type CreateOnCallTriggerSourceFilter = gen.CreateOnCallTriggerReqTriggerSourceFiltersItem
+type CreateOnCallTriggerEventType = gen.CreateOnCallTriggerReqTriggerEventType
+type OptCreateOnCallTriggerEventType = gen.OptCreateOnCallTriggerReqTriggerEventType
+type UpdateOnCallTriggerSeverityFilter = gen.UpdateOnCallTriggerReqTriggerSeverityFiltersItem
+type UpdateOnCallTriggerSourceFilter = gen.UpdateOnCallTriggerReqTriggerSourceFiltersItem
+type UpdateOnCallTriggerEventType = gen.UpdateOnCallTriggerReqTriggerEventType
+type OptUpdateOnCallTriggerEventType = gen.OptUpdateOnCallTriggerReqTriggerEventType
 type ListOnCallTriggersParams = gen.ListOnCallTriggersParams
 type GetOnCallTriggerParams = gen.GetOnCallTriggerParams
 type UpdateOnCallTriggerParams = gen.UpdateOnCallTriggerParams
 type DeleteOnCallTriggerParams = gen.DeleteOnCallTriggerParams
+
+func NewOptCreateOnCallTriggerEventType(v CreateOnCallTriggerEventType) OptCreateOnCallTriggerEventType {
+	return gen.NewOptCreateOnCallTriggerReqTriggerEventType(v)
+}
+
+func NewOptUpdateOnCallTriggerEventType(v UpdateOnCallTriggerEventType) OptUpdateOnCallTriggerEventType {
+	return gen.NewOptUpdateOnCallTriggerReqTriggerEventType(v)
+}
 
 // TODO: 追加
