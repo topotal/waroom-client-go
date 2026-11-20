@@ -12,7 +12,7 @@ import (
     "context"
     "fmt"
 
-    "github.com/waroom/waroom-client-go/waroom"
+    "github.com/topotal/waroom-client-go/waroom"
 )
 
 func main() {
