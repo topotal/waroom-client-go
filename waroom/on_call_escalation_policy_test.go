@@ -174,7 +174,8 @@ func TestOnCallEscalationPolicyService_Create(t *testing.T) {
 	defer cleanup()
 
 	fallback := CreateOnCallEscalationPolicyStep{TeamUUID: "880e8400-e29b-41d4-a716-446655440002"}
-	fallback.StepType.SetTo("fallback")
+	stepType := "fallback"
+	fallback.StepType.SetTo(CreateOnCallEscalationPolicyStepType(stepType))
 	fallback.SimultaneousCall.SetTo(true)
 	req := CreateOnCallEscalationPolicyReq{
 		Name:     "Primary escalation",
@@ -351,7 +352,7 @@ func TestOnCallEscalationPolicyService_GetSchedule_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, schedule)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: get the on-call schedule of an escalation policy:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: get on-call escalation policy schedule:")
 		})
 	}
 }

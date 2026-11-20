@@ -125,21 +125,21 @@ func (s *OnCallEscalationPolicyService) Delete(ctx context.Context, params Delet
 func (s *OnCallEscalationPolicyService) GetSchedule(ctx context.Context, params GetOnCallEscalationPolicyScheduleParams) (*OnCallEscalationPolicySchedule, error) {
 	res, err := s.client.raw.GetOnCallEscalationPolicySchedule(ctx, params)
 	if err != nil {
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: %w", err)
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: %w", err)
 	}
 
 	switch res := res.(type) {
 	case *gen.GetOnCallEscalationPolicyScheduleOK:
 		return &res.Schedule, nil
 	case *gen.GetOnCallEscalationPolicyScheduleBadRequest:
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: %w", &APIError{StatusCode: http.StatusBadRequest, Messages: optMessages(res.Error)})
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: %w", &APIError{StatusCode: http.StatusBadRequest, Messages: optMessages(res.Error)})
 	case *gen.GetOnCallEscalationPolicyScheduleUnauthorized:
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
 	case *gen.GetOnCallEscalationPolicySchedulePaymentRequired:
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
 	case *gen.GetOnCallEscalationPolicyScheduleNotFound:
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: %w", &APIError{StatusCode: http.StatusNotFound, Messages: optMessages(res.Error)})
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: %w", &APIError{StatusCode: http.StatusNotFound, Messages: optMessages(res.Error)})
 	default:
-		return nil, fmt.Errorf("waroom: get the on-call schedule of an escalation policy: unhandled response %T", res)
+		return nil, fmt.Errorf("waroom: get on-call escalation policy schedule: unhandled response %T", res)
 	}
 }
