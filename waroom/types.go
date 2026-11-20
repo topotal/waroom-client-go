@@ -45,7 +45,11 @@ type UpdateServiceLabelReq = gen.UpdateServiceLabelReqLabel
 type DeleteServiceLabelParams = gen.DeleteServiceLabelParams
 
 type User = gen.ListUsersOKUsersItem
+type UserDetail = gen.GetUserOKUser
+type InvitedUser = gen.InviteUsersAcceptedUsersItem
+type InviteUsersReq = gen.InviteUsersReqInvitation
 type ListUsersParams = gen.ListUsersParams
+type GetUserParams = gen.GetUserParams
 
 type Runbook = gen.GetRunbookOKRunbook
 type RunbookListItem = gen.ListRunbooksOKRunbooksItem

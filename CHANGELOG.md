@@ -15,5 +15,6 @@ First release of the Go client library for the Waroom API.
 - API key authentication via the `WithAPIKey` option or the `WAROOM_API_KEY` environment variable.
 - `APIError` type for server-side API errors, carrying the status code and error messages.
 - Client options: `WithBaseURL`, `WithHTTPClient`, `WithUserAgent`, `WithRequestDump`, `WithResponseDump`.
+- `Users.Get` to get a user by sub (`GetUserParams`, `UserDetail`) and `Users.Invite` to invite users by email (`InviteUsersReq`, `InvitedUser`). Invitations are processed asynchronously, so the returned users are `invitation_pending`.
 
 [Unreleased]: https://github.com/topotal/waroom-client-go/compare/v0.0.0-alpha...HEAD

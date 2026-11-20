@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "sub": "auth0|invited001",
+      "nickname": "bob",
+      "picture": "https://example.com/bob.png",
+      "status": "invitation_pending",
+      "slack_user": null,
+      "phone_verified": false,
+      "created_at": "2025-01-02T00:00:00Z"
+    },
+    {
+      "sub": "auth0|invited002",
+      "nickname": "carol",
+      "picture": "https://example.com/carol.png",
+      "status": "invitation_pending",
+      "slack_user": null,
+      "phone_verified": false,
+      "created_at": "2025-01-02T00:00:00Z"
+    }
+  ]
+}
