@@ -319,6 +319,8 @@ func TestOnCallTeamService_Update_Rotations(t *testing.T) {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc(testOnCallTeamPath, func(w http.ResponseWriter, r *http.Request) {
+		assert.Equal(t, http.MethodPatch, r.Method)
+
 		var body map[string]any
 		require.NoError(t, json.NewDecoder(r.Body).Decode(&body))
 		assert.Equal(t, map[string]any{
