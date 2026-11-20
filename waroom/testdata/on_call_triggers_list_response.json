@@ -1,0 +1,42 @@
+{
+  "triggers": [
+    {
+      "uuid": "770e8400-e29b-41d4-a716-446655440001",
+      "name": "critical incidents",
+      "enabled": true,
+      "event_type": "incident_created",
+      "severity_filters": ["critical", "high"],
+      "source_filters": ["integration"],
+      "retry_count": 2,
+      "service": {
+        "name": "test-service"
+      },
+      "escalation_policies": [
+        {
+          "uuid": "880e8400-e29b-41d4-a716-446655440001",
+          "name": "primary"
+        }
+      ]
+    },
+    {
+      "uuid": "770e8400-e29b-41d4-a716-446655440002",
+      "name": "all incidents",
+      "enabled": false,
+      "event_type": "incident_created",
+      "severity_filters": ["critical", "high", "low", "info", "unknown"],
+      "source_filters": ["integration", "slack", "web"],
+      "retry_count": 0,
+      "service": {
+        "name": "test-service"
+      },
+      "escalation_policies": []
+    }
+  ],
+  "response_metadata": {
+    "current_page": 1,
+    "next_page": null,
+    "prev_page": null,
+    "total_pages": 1,
+    "total_count": 2
+  }
+}
