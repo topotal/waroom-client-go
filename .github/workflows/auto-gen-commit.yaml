@@ -81,8 +81,8 @@ jobs:
       - id: app-token
         uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          client-id: ${{ vars.WAROOM_ECOSYSTEM_APP_CLIENT_ID }}
+          private-key: ${{ secrets.WAROOM_ECOSYSTEM_APP_PRIVATE_KEY }}
           permission-contents: write
 
       - uses: suzuki-shunsuke/commit-action@5eaa5ecce3ffe93d09a85b946dc5136e3713b1b7 # v1.1.0
