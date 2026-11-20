@@ -28,6 +28,7 @@ First release of the Go client library for the Waroom API.
 - API key authentication via the `WithAPIKey` option or the `WAROOM_API_KEY` environment variable.
 - `APIError` type for server-side API errors, carrying the status code and error messages.
 - Client options: `WithBaseURL`, `WithHTTPClient`, `WithUserAgent`, `WithRequestDump`, `WithResponseDump`.
+- `ActionItems.Update` to update an action item's title, status and assignee (`UpdateActionItemReq`, `UpdateIncidentActionItemParams`, `UpdatedActionItem`), plus `OptNilString` / `NewOptNilString` for nullable request fields such as `assignee_nickname`.
 
 [Unreleased]: https://github.com/topotal/waroom-client-go/compare/v0.0.2-alpha...HEAD
 [v0.0.2-alpha]: https://github.com/topotal/waroom-client-go/compare/v0.0.1-alpha...v0.0.2-alpha
