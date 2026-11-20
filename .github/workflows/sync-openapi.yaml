@@ -1,0 +1,196 @@
+name: Sync OpenAPI Spec
+
+# Opens a PR syncing api/openapi.yaml with the published spec; recreated from main when the spec moves.
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Mon 09:00 JST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-openapi
+  cancel-in-progress: false
+
+env:
+  SYNC_BRANCH: chore/sync-openapi
+  OPENAPI_URL: https://static.waroom.com/openapi/v0.yaml
+
+jobs:
+  sync:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      # No write credentials while task gen runs
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install aqua
+        uses: aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461 # v4.1.1
+        with:
+          aqua_version: v2.66.1
+
+      - name: Fetch OpenAPI spec
+        id: fetch
+        run: |
+          task fetch:openapi OPENAPI_URL="$OPENAPI_URL" HEADERS_OUT="$RUNNER_TEMP/headers"
+
+          # Sanitized: goes into the PR body
+          header() { sed -nE "s/^$1: *//Ip" "$RUNNER_TEMP/headers" | head -n1 | tr -cd "$2"; }
+          {
+            echo "last_modified=$(header last-modified 'A-Za-z0-9 :,')"
+            echo "etag=$(header etag 'A-Za-z0-9-')"
+            echo "s3_version_id=$(header x-amz-version-id 'A-Za-z0-9._-')"
+            echo "sha256=$(sha256sum api/openapi.yaml | cut -d' ' -f1)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Run task gen
+        run: task gen
+
+      - name: Compare with main and the existing sync PR
+        id: state
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          outside=$(git status --porcelain --untracked-files=all | grep -vE '^.. (api/openapi\.yaml|internal/ogen/)' || true)
+          if [ -n "$outside" ]; then
+            echo "::error::fetch/gen changed files outside api/openapi.yaml and internal/ogen/:"
+            echo "$outside"
+            exit 1
+          fi
+
+          spec_version() { awk '/^info:/{f=1;next} f&&/^[^ ]/{exit} f&&/^  version:/{v=$2; gsub(/["\047]/,"",v); print v; exit}' | tr -cd 'A-Za-z0-9.+-'; }
+          echo "main_version=$(git show HEAD:api/openapi.yaml | spec_version)" >> "$GITHUB_OUTPUT"
+          echo "version=$(spec_version < api/openapi.yaml)" >> "$GITHUB_OUTPUT"
+
+          if [ -z "$(git status --porcelain --untracked-files=all)" ]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          # Skip same-named branches from forks
+          pr=$(gh pr list --head "$SYNC_BRANCH" --state open --json number,isCrossRepository,author \
+            -q '[.[] | select(.isCrossRepository | not) | select(.author.is_bot)][0].number // empty')
+          echo "pr=$pr" >> "$GITHUB_OUTPUT"
+
+          if git rev-parse --verify --quiet "origin/$SYNC_BRANCH" > /dev/null; then
+            echo "branch_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "branch_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -n "$pr" ] && git diff --quiet "origin/$SYNC_BRANCH" -- api/openapi.yaml internal/ogen; then
+            echo "up_to_date=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "up_to_date=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Minted after task gen. PRs created with GITHUB_TOKEN would not trigger CI.
+      - name: Create GitHub App token
+        id: app-token
+        if: steps.state.outputs.up_to_date == 'false' && (steps.state.outputs.has_changes == 'true' || steps.state.outputs.pr != '' || steps.state.outputs.branch_exists == 'true')
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Close the outdated sync PR
+        if: steps.app-token.outcome == 'success' && (steps.state.outputs.pr != '' || steps.state.outputs.branch_exists == 'true')
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR: ${{ steps.state.outputs.pr }}
+          BRANCH_EXISTS: ${{ steps.state.outputs.branch_exists }}
+          HAS_CHANGES: ${{ steps.state.outputs.has_changes }}
+          VERSION: ${{ steps.state.outputs.version }}
+          LAST_MODIFIED: ${{ steps.fetch.outputs.last_modified }}
+        run: |
+          if [ "$HAS_CHANGES" = "false" ]; then
+            reason="Closing: main already matches the published spec (version: ${VERSION})."
+          else
+            reason="Closing: the published spec was updated (version: ${VERSION}, last-modified: ${LAST_MODIFIED}). A new PR will be opened from the latest main."
+          fi
+          if [ -n "$PR" ]; then
+            gh pr close "$PR" --comment "$reason"
+          fi
+          if [ "$BRANCH_EXISTS" = "true" ]; then
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/git/refs/heads/${SYNC_BRANCH}"
+          fi
+
+      - name: Commit changes
+        if: steps.app-token.outcome == 'success' && steps.state.outputs.has_changes == 'true'
+        uses: suzuki-shunsuke/commit-action@5eaa5ecce3ffe93d09a85b946dc5136e3713b1b7 # v1.1.0
+        with:
+          commit_message: "chore: sync api/openapi.yaml with the published spec (version: ${{ steps.state.outputs.version }})"
+          branch: ${{ env.SYNC_BRANCH }}
+          github_token: ${{ steps.app-token.outputs.token }}
+
+      - name: Create pull request
+        if: steps.app-token.outcome == 'success' && steps.state.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          MAIN_VERSION: ${{ steps.state.outputs.main_version }}
+          VERSION: ${{ steps.state.outputs.version }}
+          LAST_MODIFIED: ${{ steps.fetch.outputs.last_modified }}
+          ETAG: ${{ steps.fetch.outputs.etag }}
+          S3_VERSION_ID: ${{ steps.fetch.outputs.s3_version_id }}
+          SHA256: ${{ steps.fetch.outputs.sha256 }}
+          OLD_PR: ${{ steps.state.outputs.pr }}
+        run: |
+          # Set difference, so reordering in the spec is not reported
+          list_ops() { sed -nE 's/^ *operationId: *//p' | grep -E '^[A-Za-z][A-Za-z0-9_]*$' | sort -u; }
+          git show HEAD:api/openapi.yaml | list_ops > "$RUNNER_TEMP/ops-main"
+          list_ops < api/openapi.yaml > "$RUNNER_TEMP/ops-sync"
+          ops=$( (comm -13 "$RUNNER_TEMP/ops-main" "$RUNNER_TEMP/ops-sync" | sed 's/^/+ /'
+                  comm -23 "$RUNNER_TEMP/ops-main" "$RUNNER_TEMP/ops-sync" | sed 's/^/- /') )
+
+          {
+            echo "Sync \`api/openapi.yaml\` with the published spec and regenerate \`internal/ogen\`."
+            echo
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| spec | ${OPENAPI_URL} |"
+            echo "| version | \`${MAIN_VERSION}\` → \`${VERSION}\` |"
+            echo "| last-modified | ${LAST_MODIFIED} |"
+            echo "| etag | \`${ETAG}\` |"
+            echo "| x-amz-version-id | \`${S3_VERSION_ID}\` |"
+            echo "| sha256 | \`${SHA256}\` |"
+            if [ -n "$OLD_PR" ]; then
+              echo "| replaces | #${OLD_PR} |"
+            fi
+            echo
+            echo "## Added / removed operationIds"
+            echo
+            if [ -n "$ops" ]; then
+              echo '```diff'
+              echo "$ops"
+              echo '```'
+            else
+              echo "None (changes to existing operations only)."
+            fi
+            echo
+            echo "## Checklist"
+            echo
+            echo "- [ ] UnitTest passes (a failure means existing wrappers are affected by the spec change)"
+            echo "- [ ] File issues for added operations with the spec-coverage skill"
+          } > "$RUNNER_TEMP/pr-body.md"
+
+          gh pr create --base main --head "$SYNC_BRANCH" \
+            --title "chore: sync api/openapi.yaml with the published spec (version: ${VERSION})" \
+            --body-file "$RUNNER_TEMP/pr-body.md"
