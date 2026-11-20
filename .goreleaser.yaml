@@ -1,42 +1,24 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
-
-# The lines below are called `modelines`. See `:help modeline`
-# Feel free to remove those if you don't want/need to use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
 version: 2
 project_name: waroom-client-go
 
-before:
-  hooks:
-    # You may remove this if you don't use go modules.
-    - go mod tidy
-    # you may remove this if you don't need go generate
-    - go generate ./...
-
 dist: dist
 
+# This is a library: publish a GitHub Release only, no binaries.
+builds:
+  - skip: true
+
+# Release notes come from the tag's section of CHANGELOG.md
+# (passed with --release-notes by .github/workflows/release.yaml).
 changelog:
-  use: github-native
-  sort: asc
-  filters:
-    exclude:
-      # - '^docs?:'
-      # - '^chore:'
-      # - '^ci:'
-      # - '^test:'
-      - 'merge pull request'
-      - 'Merge branch'
+  disable: true
 
 release:
-  draft: false
-  replace_existing_draft: true
+  prerelease: auto
   footer: >-
 
     ---
 
     Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
-
-
