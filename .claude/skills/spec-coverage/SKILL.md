@@ -159,7 +159,7 @@ Wrap the following operations of the Waroom public API in `waroom.<Service>` (<n
 - [ ] Add type aliases to `waroom/types.go`
 - [ ] Implement the methods (<new file `waroom/<file>.go` + register in `Client` | add to `waroom/<file>.go`>)
 - [ ] Unit tests (`waroom/<file>_test.go`)
-- [ ] Update `CHANGELOG.md` (and `llms.txt` / `example/` if a new Service is added)
+- [ ] Update `llms.txt` / `example/` if a new Service is added
 
 ## If we decide not to support this
 

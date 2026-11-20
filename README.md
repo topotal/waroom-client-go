@@ -66,10 +66,9 @@ For convenience, `Incidents` also exposes wrappers that delegate to the canonica
 
 ### Release
 
-1. Move the entries under `## [Unreleased]` in `CHANGELOG.md` into a new `## [vX.Y.Z] - YYYY-MM-DD` section, update the compare links at the bottom, and merge it to `main`.
-2. Tag the merge commit and push the tag:
-   ```sh
-   git tag vX.Y.Z origin/main
-   git push origin vX.Y.Z
-   ```
-3. `.github/workflows/release.yaml` runs GoReleaser and publishes a GitHub Release whose notes are that version's section of `CHANGELOG.md` (tags with a suffix such as `-alpha` become prereleases). The workflow fails if `CHANGELOG.md` has no section for the tag.
+Releases are automated by [tagpr](https://github.com/Songmu/tagpr) (`.github/workflows/release.yaml`). Don't push tags or edit `CHANGELOG.md` by hand.
+
+1. On every push to `main`, tagpr opens or updates a release pull request (`tagpr` label) that bumps the version and adds the release's entry to `CHANGELOG.md`.
+2. The release notes are GitHub's generated notes from the merged pull requests, grouped by label as configured in `.github/release.yml` (`enhancement` → Features, `bug` → Fixes, ...). Label your pull requests accordingly.
+3. The next version is a patch bump by default. Add the `tagpr:minor` or `tagpr:major` label to the release pull request for a bigger bump.
+4. Merging the release pull request tags `main`, and GoReleaser publishes the GitHub Release.

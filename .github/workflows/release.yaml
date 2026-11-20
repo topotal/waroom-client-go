@@ -1,39 +1,56 @@
 name: Release
 
+# tagpr keeps a release PR open for unreleased changes and tags main when it is merged; GoReleaser then publishes the GitHub Release.
+
 on:
   push:
-    tags: [ 'v*' ]
+    branches: [ main ]
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      # The App must be a bypass actor of the release-tag ruleset to push v* tags
+      - name: Generate token
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.WAROOM_ECOSYSTEM_APP_CLIENT_ID }}
+          private-key: ${{ secrets.WAROOM_ECOSYSTEM_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-issues: read
+
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
         with:
           fetch-depth: 0
+          persist-credentials: false
+
+      - id: tagpr
+        uses: Songmu/tagpr@047aec4b6c0ce166f52958b5a97f5a3d927fd65b # v1.22.0
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Set up Go
+        if: steps.tagpr.outputs.tag != ''
         uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
         with:
           go-version-file: go.mod
           cache: true
 
-      - name: Extract release notes from CHANGELOG.md
-        env:
-          TAG: ${{ github.ref_name }}
-        run: |
-          awk -v tag="[$TAG]" '/^## /{p = ($2 == tag); next} /^\[[^]]+\]: /{p = 0} p' CHANGELOG.md > "$RUNNER_TEMP/release-notes.md"
-          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/release-notes.md"; then
-            echo "::error::CHANGELOG.md has no section for $TAG"
-            exit 1
-          fi
-
       - uses: goreleaser/goreleaser-action@a4f02ab5355a589de60d917a659ce617ed19b3de # v7.3.0
+        if: steps.tagpr.outputs.tag != ''
         with:
           version: v2.20.2
-          args: release --clean --release-notes ${{ runner.temp }}/release-notes.md
+          args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,10 @@
+# tagpr configuration (git config format). See https://github.com/Songmu/tagpr
+#
+# - versionFile = -: tag-only releases; this library keeps no version file.
+# - release = false: GoReleaser publishes the GitHub Release (.github/workflows/release.yaml).
+[tagpr]
+	vPrefix = true
+	releaseBranch = main
+	versionFile = -
+	changelog = true
+	release = false

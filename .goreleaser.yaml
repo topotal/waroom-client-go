@@ -10,10 +10,10 @@ dist: dist
 builds:
   - skip: true
 
-# Release notes come from the tag's section of CHANGELOG.md
-# (passed with --release-notes by .github/workflows/release.yaml).
+# GitHub's generated release notes, categorized by .github/release.yml
+# (the same notes tagpr writes to CHANGELOG.md).
 changelog:
-  disable: true
+  use: github-native
 
 release:
   prerelease: auto
