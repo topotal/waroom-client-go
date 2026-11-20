@@ -1,0 +1,51 @@
+{
+  "schedule": {
+    "escalation_policy": {
+      "uuid": "770e8400-e29b-41d4-a716-446655440001",
+      "name": "Primary escalation",
+      "timezone": "Asia/Tokyo"
+    },
+    "days": [
+      {
+        "date": "2026-11-23",
+        "day_of_week": 1,
+        "active": true,
+        "entries": [
+          {
+            "escalation_policy_step": {
+              "uuid": "770e8400-e29b-41d4-a716-446655440011",
+              "position": 0,
+              "step_type": "primary",
+              "simultaneous_call": false,
+              "team": {
+                "uuid": "880e8400-e29b-41d4-a716-446655440001",
+                "name": "SRE",
+                "color": "FF0000"
+              }
+            },
+            "on_duty_user": {
+              "sub": "auth0|alice",
+              "nickname": "alice",
+              "picture": "https://example.com/alice.png",
+              "status": "active",
+              "slack_user": {
+                "key": "U0123456789"
+              },
+              "phone_verified": true,
+              "created_at": "2026-01-01T00:00:00+09:00"
+            },
+            "start_at": "2026-11-23T09:00:00+09:00",
+            "end_at": "2026-11-23T18:00:00+09:00",
+            "override": null
+          }
+        ]
+      },
+      {
+        "date": "2026-11-24",
+        "day_of_week": 2,
+        "active": false,
+        "entries": []
+      }
+    ]
+  }
+}

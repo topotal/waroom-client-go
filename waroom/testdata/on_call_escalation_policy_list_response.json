@@ -1,0 +1,64 @@
+{
+  "escalation_policies": [
+  {
+    "uuid": "770e8400-e29b-41d4-a716-446655440001",
+    "name": "Primary escalation",
+    "timezone": "Asia/Tokyo",
+    "team_call_mode": "all_members",
+    "steps": [
+      {
+        "uuid": "770e8400-e29b-41d4-a716-446655440011",
+        "position": 0,
+        "step_type": "primary",
+        "simultaneous_call": false,
+        "team": {
+          "uuid": "880e8400-e29b-41d4-a716-446655440001",
+          "name": "SRE",
+          "color": "FF0000"
+        }
+      },
+      {
+        "uuid": "770e8400-e29b-41d4-a716-446655440012",
+        "position": 1,
+        "step_type": "fallback",
+        "simultaneous_call": true,
+        "team": {
+          "uuid": "880e8400-e29b-41d4-a716-446655440002",
+          "name": "Backend",
+          "color": "00FF00"
+        }
+      }
+    ],
+    "time_slots": [
+      {
+        "uuid": "770e8400-e29b-41d4-a716-446655440021",
+        "day_of_week": 1,
+        "start_time": "09:00",
+        "end_time": "18:00"
+      }
+    ]
+  },
+  {
+    "uuid": "770e8400-e29b-41d4-a716-446655440002",
+    "name": "Night shift",
+    "timezone": "UTC",
+    "team_call_mode": "on_duty_only",
+    "steps": [],
+    "time_slots": [
+      {
+        "uuid": "770e8400-e29b-41d4-a716-446655440022",
+        "day_of_week": 0,
+        "start_time": "22:00",
+        "end_time": "02:00"
+      }
+    ]
+  }
+  ],
+  "response_metadata": {
+    "current_page": 1,
+    "next_page": null,
+    "prev_page": null,
+    "total_pages": 1,
+    "total_count": 2
+  }
+}
