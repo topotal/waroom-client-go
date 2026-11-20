@@ -106,8 +106,8 @@ jobs:
         if: steps.state.outputs.up_to_date == 'false' && (steps.state.outputs.has_changes == 'true' || steps.state.outputs.pr != '' || steps.state.outputs.branch_exists == 'true')
         uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
         with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          client-id: ${{ vars.WAROOM_ECOSYSTEM_APP_CLIENT_ID }}
+          private-key: ${{ secrets.WAROOM_ECOSYSTEM_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
 
