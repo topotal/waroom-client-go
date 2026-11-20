@@ -16,6 +16,12 @@ type CreateIncidentMetricsParams struct {
 	UUID uuid.UUID
 }
 
+// CreateOnCallUserAbsenceParams is parameters of createOnCallUserAbsence operation.
+type CreateOnCallUserAbsenceParams struct {
+	// ユーザーの sub（`|` などは URL エンコードする）.
+	Sub string
+}
+
 // CreateServiceLabelParams is parameters of createServiceLabel operation.
 type CreateServiceLabelParams struct {
 	// Service name.
@@ -45,6 +51,32 @@ type DeleteIncidentActionItemParams struct {
 type DeleteIncidentDocumentTemplateParams struct {
 	// Service name.
 	Name string
+}
+
+// DeleteOnCallEscalationPolicyParams is parameters of deleteOnCallEscalationPolicy operation.
+type DeleteOnCallEscalationPolicyParams struct {
+	// On-call escalation policy UUID.
+	UUID string
+}
+
+// DeleteOnCallTeamParams is parameters of deleteOnCallTeam operation.
+type DeleteOnCallTeamParams struct {
+	// On-call team UUID.
+	UUID string
+}
+
+// DeleteOnCallTriggerParams is parameters of deleteOnCallTrigger operation.
+type DeleteOnCallTriggerParams struct {
+	// On-call trigger UUID.
+	UUID string
+}
+
+// DeleteOnCallUserAbsenceParams is parameters of deleteOnCallUserAbsence operation.
+type DeleteOnCallUserAbsenceParams struct {
+	// ユーザーの sub（`|` などは URL エンコードする）.
+	Sub string
+	// Absence UUID.
+	UUID string
 }
 
 // DeletePostmortemParams is parameters of deletePostmortem operation.
@@ -105,6 +137,49 @@ type GetIncidentDocumentTemplateParams struct {
 	Name string
 }
 
+// GetOnCallEscalationPolicyParams is parameters of getOnCallEscalationPolicy operation.
+type GetOnCallEscalationPolicyParams struct {
+	// Escalation policy UUID.
+	UUID string
+}
+
+// GetOnCallEscalationPolicyScheduleParams is parameters of getOnCallEscalationPolicySchedule operation.
+type GetOnCallEscalationPolicyScheduleParams struct {
+	// Escalation policy UUID.
+	UUID string
+	// 開始日（YYYY-MM-DD）。省略時は end_date から 7
+	// 日分さかのぼった日、両方省略時は今日.
+	StartDate OptDate `json:",omitempty,omitzero"`
+	// 終了日（YYYY-MM-DD）。省略時は start_date から 7 日分.
+	EndDate OptDate `json:",omitempty,omitzero"`
+}
+
+// GetOnCallSessionParams is parameters of getOnCallSession operation.
+type GetOnCallSessionParams struct {
+	// On-call session UUID.
+	UUID string
+}
+
+// GetOnCallTeamParams is parameters of getOnCallTeam operation.
+type GetOnCallTeamParams struct {
+	// On-call team UUID.
+	UUID string
+}
+
+// GetOnCallTriggerParams is parameters of getOnCallTrigger operation.
+type GetOnCallTriggerParams struct {
+	// On-call trigger UUID.
+	UUID string
+}
+
+// GetOnCallUserAbsenceParams is parameters of getOnCallUserAbsence operation.
+type GetOnCallUserAbsenceParams struct {
+	// ユーザーの sub（`|` などは URL エンコードする）.
+	Sub string
+	// Absence UUID.
+	UUID string
+}
+
 // GetPostmortemParams is parameters of getPostmortem operation.
 type GetPostmortemParams struct {
 	UUID uuid.UUID
@@ -142,6 +217,12 @@ type GetServiceWebhookConfigurationParams struct {
 	UUID uuid.UUID
 }
 
+// GetUserParams is parameters of getUser operation.
+type GetUserParams struct {
+	// User sub.
+	Sub string
+}
+
 // ListIncidentActionItemsParams is parameters of listIncidentActionItems operation.
 type ListIncidentActionItemsParams struct {
 	UUID    uuid.UUID
@@ -154,6 +235,46 @@ type ListIncidentsParams struct {
 	Page      OptInt                    `json:",omitempty,omitzero"`
 	PerPage   OptInt                    `json:",omitempty,omitzero"`
 	SortOrder OptListIncidentsSortOrder `json:",omitempty,omitzero"`
+}
+
+// ListOnCallEscalationPoliciesParams is parameters of listOnCallEscalationPolicies operation.
+type ListOnCallEscalationPoliciesParams struct {
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListOnCallSessionsParams is parameters of listOnCallSessions operation.
+type ListOnCallSessionsParams struct {
+	// この状態のセッションだけを返す.
+	Status OptListOnCallSessionsStatus `json:",omitempty,omitzero"`
+	// このインシデントのセッションだけを返す.
+	IncidentUUID OptString `json:",omitempty,omitzero"`
+	Page         OptInt    `json:",omitempty,omitzero"`
+	PerPage      OptInt    `json:",omitempty,omitzero"`
+}
+
+// ListOnCallTeamsParams is parameters of listOnCallTeams operation.
+type ListOnCallTeamsParams struct {
+	Page    OptInt `json:",omitempty,omitzero"`
+	PerPage OptInt `json:",omitempty,omitzero"`
+}
+
+// ListOnCallTriggersParams is parameters of listOnCallTriggers operation.
+type ListOnCallTriggersParams struct {
+	// このサービスのトリガーだけを返す.
+	ServiceName OptString `json:",omitempty,omitzero"`
+	Page        OptInt    `json:",omitempty,omitzero"`
+	PerPage     OptInt    `json:",omitempty,omitzero"`
+}
+
+// ListOnCallUserAbsencesParams is parameters of listOnCallUserAbsences operation.
+type ListOnCallUserAbsencesParams struct {
+	// ユーザーの sub（`|` などは URL エンコードする）.
+	Sub string
+	// True のとき、終わった単発の不在も返す.
+	IncludeExpired OptBool `json:",omitempty,omitzero"`
+	Page           OptInt  `json:",omitempty,omitzero"`
+	PerPage        OptInt  `json:",omitempty,omitzero"`
 }
 
 // ListPostmortemTemplatesParams is parameters of listPostmortemTemplates operation.
@@ -202,6 +323,13 @@ type ListServiceWebhookConfigurationsParams struct {
 type ListUsersParams struct {
 	Page    OptInt `json:",omitempty,omitzero"`
 	PerPage OptInt `json:",omitempty,omitzero"`
+	// Nickname が完全に一致するユーザーだけを返す.
+	Nickname OptString `json:",omitempty,omitzero"`
+	// Slack のユーザー ID（例 U0123ABCD）に紐づくユーザーだけを返す.
+	SlackUserKey OptString `json:",omitempty,omitzero"`
+	// Status
+	// が一致するユーザーだけを返す。招待（`POST /api/v0/users/invitations`）の進み具合を確かめるときに使う.
+	Status OptListUsersStatus `json:",omitempty,omitzero"`
 }
 
 // PutServiceNotificationSlackChannelParams is parameters of putServiceNotificationSlackChannel operation.
@@ -213,6 +341,14 @@ type PutServiceNotificationSlackChannelParams struct {
 // UpdateIncidentParams is parameters of updateIncident operation.
 type UpdateIncidentParams struct {
 	UUID uuid.UUID
+}
+
+// UpdateIncidentActionItemParams is parameters of updateIncidentActionItem operation.
+type UpdateIncidentActionItemParams struct {
+	// Incident UUID.
+	UUID uuid.UUID
+	// Action item UUID.
+	ActionItemUUID uuid.UUID
 }
 
 // UpdateIncidentCommanderParams is parameters of updateIncidentCommander operation.
@@ -249,6 +385,32 @@ type UpdateIncidentSeverityParams struct {
 // UpdateIncidentStatusParams is parameters of updateIncidentStatus operation.
 type UpdateIncidentStatusParams struct {
 	UUID uuid.UUID
+}
+
+// UpdateOnCallEscalationPolicyParams is parameters of updateOnCallEscalationPolicy operation.
+type UpdateOnCallEscalationPolicyParams struct {
+	// On-call escalation policy UUID.
+	UUID string
+}
+
+// UpdateOnCallTeamParams is parameters of updateOnCallTeam operation.
+type UpdateOnCallTeamParams struct {
+	// On-call team UUID.
+	UUID string
+}
+
+// UpdateOnCallTriggerParams is parameters of updateOnCallTrigger operation.
+type UpdateOnCallTriggerParams struct {
+	// On-call trigger UUID.
+	UUID string
+}
+
+// UpdateOnCallUserAbsenceParams is parameters of updateOnCallUserAbsence operation.
+type UpdateOnCallUserAbsenceParams struct {
+	// ユーザーの sub（`|` などは URL エンコードする）.
+	Sub string
+	// Absence UUID.
+	UUID string
 }
 
 // UpdatePostmortemParams is parameters of updatePostmortem operation.

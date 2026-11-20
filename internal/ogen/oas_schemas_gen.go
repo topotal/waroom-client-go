@@ -52,12 +52,13 @@ func (s *CreateIncidentActionItemCreated) SetActionItem(val CreateIncidentAction
 func (*CreateIncidentActionItemCreated) createIncidentActionItemRes() {}
 
 type CreateIncidentActionItemCreatedActionItem struct {
-	UUID      uuid.UUID                                       `json:"uuid"`
-	Title     string                                          `json:"title"`
-	Status    CreateIncidentActionItemCreatedActionItemStatus `json:"status"`
-	Position  int                                             `json:"position"`
-	CreatedAt time.Time                                       `json:"created_at"`
-	UpdatedAt time.Time                                       `json:"updated_at"`
+	UUID      uuid.UUID                                            `json:"uuid"`
+	Title     string                                               `json:"title"`
+	Status    CreateIncidentActionItemCreatedActionItemStatus      `json:"status"`
+	Position  int                                                  `json:"position"`
+	Assignee  NilCreateIncidentActionItemCreatedActionItemAssignee `json:"assignee"`
+	CreatedAt time.Time                                            `json:"created_at"`
+	UpdatedAt time.Time                                            `json:"updated_at"`
 }
 
 // GetUUID returns the value of UUID.
@@ -78,6 +79,11 @@ func (s *CreateIncidentActionItemCreatedActionItem) GetStatus() CreateIncidentAc
 // GetPosition returns the value of Position.
 func (s *CreateIncidentActionItemCreatedActionItem) GetPosition() int {
 	return s.Position
+}
+
+// GetAssignee returns the value of Assignee.
+func (s *CreateIncidentActionItemCreatedActionItem) GetAssignee() NilCreateIncidentActionItemCreatedActionItemAssignee {
+	return s.Assignee
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -110,6 +116,11 @@ func (s *CreateIncidentActionItemCreatedActionItem) SetPosition(val int) {
 	s.Position = val
 }
 
+// SetAssignee sets the value of Assignee.
+func (s *CreateIncidentActionItemCreatedActionItem) SetAssignee(val NilCreateIncidentActionItemCreatedActionItemAssignee) {
+	s.Assignee = val
+}
+
 // SetCreatedAt sets the value of CreatedAt.
 func (s *CreateIncidentActionItemCreatedActionItem) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
@@ -118,6 +129,170 @@ func (s *CreateIncidentActionItemCreatedActionItem) SetCreatedAt(val time.Time) 
 // SetUpdatedAt sets the value of UpdatedAt.
 func (s *CreateIncidentActionItemCreatedActionItem) SetUpdatedAt(val time.Time) {
 	s.UpdatedAt = val
+}
+
+type CreateIncidentActionItemCreatedActionItemAssignee struct {
+	Sub       string                                                        `json:"sub"`
+	Nickname  string                                                        `json:"nickname"`
+	Picture   string                                                        `json:"picture"`
+	Status    CreateIncidentActionItemCreatedActionItemAssigneeStatus       `json:"status"`
+	SlackUser NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetStatus() CreateIncidentActionItemCreatedActionItemAssigneeStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetSlackUser() NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetStatus(val CreateIncidentActionItemCreatedActionItemAssigneeStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetSlackUser(val NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateIncidentActionItemCreatedActionItemAssignee) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateIncidentActionItemCreatedActionItemAssigneeSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateIncidentActionItemCreatedActionItemAssigneeSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateIncidentActionItemCreatedActionItemAssigneeSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateIncidentActionItemCreatedActionItemAssigneeStatus string
+
+const (
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusActive            CreateIncidentActionItemCreatedActionItemAssigneeStatus = "active"
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusInactive          CreateIncidentActionItemCreatedActionItemAssigneeStatus = "inactive"
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusInvited           CreateIncidentActionItemCreatedActionItemAssigneeStatus = "invited"
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationPending CreateIncidentActionItemCreatedActionItemAssigneeStatus = "invitation_pending"
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationFailed  CreateIncidentActionItemCreatedActionItemAssigneeStatus = "invitation_failed"
+	CreateIncidentActionItemCreatedActionItemAssigneeStatusDeactivated       CreateIncidentActionItemCreatedActionItemAssigneeStatus = "deactivated"
+)
+
+// AllValues returns all CreateIncidentActionItemCreatedActionItemAssigneeStatus values.
+func (CreateIncidentActionItemCreatedActionItemAssigneeStatus) AllValues() []CreateIncidentActionItemCreatedActionItemAssigneeStatus {
+	return []CreateIncidentActionItemCreatedActionItemAssigneeStatus{
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusActive,
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusInactive,
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusInvited,
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationPending,
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationFailed,
+		CreateIncidentActionItemCreatedActionItemAssigneeStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateIncidentActionItemCreatedActionItemAssigneeStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusActive:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInactive:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvited:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationPending:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateIncidentActionItemCreatedActionItemAssigneeStatus) UnmarshalText(data []byte) error {
+	switch CreateIncidentActionItemCreatedActionItemAssigneeStatus(data) {
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusActive:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusActive
+		return nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInactive:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusInactive
+		return nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvited:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusInvited
+		return nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationPending:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationPending
+		return nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationFailed:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusInvitationFailed
+		return nil
+	case CreateIncidentActionItemCreatedActionItemAssigneeStatusDeactivated:
+		*s = CreateIncidentActionItemCreatedActionItemAssigneeStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type CreateIncidentActionItemCreatedActionItemStatus string
@@ -1032,6 +1207,3745 @@ func (s *CreateIncidentUnprocessableEntity) SetError(val OptString) {
 
 func (*CreateIncidentUnprocessableEntity) createIncidentRes() {}
 
+type CreateOnCallEscalationPolicyBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallEscalationPolicyBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallEscalationPolicyBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateOnCallEscalationPolicyBadRequest) createOnCallEscalationPolicyRes() {}
+
+type CreateOnCallEscalationPolicyCreated struct {
+	EscalationPolicy CreateOnCallEscalationPolicyCreatedEscalationPolicy `json:"escalation_policy"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *CreateOnCallEscalationPolicyCreated) GetEscalationPolicy() CreateOnCallEscalationPolicyCreatedEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *CreateOnCallEscalationPolicyCreated) SetEscalationPolicy(val CreateOnCallEscalationPolicyCreatedEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+func (*CreateOnCallEscalationPolicyCreated) createOnCallEscalationPolicyRes() {}
+
+type CreateOnCallEscalationPolicyCreatedEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
+	Timezone string `json:"timezone"`
+	// 各ステップのチームで誰に架電するか。 all_members
+	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+	// on_duty_only
+	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+	TeamCallMode CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// エスカレーションの順番（position の昇順）.
+	Steps []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem `json:"steps"`
+	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
+	TimeSlots []CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetTeamCallMode() CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetSteps() []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetTimeSlots() []CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTeamCallMode(val CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetSteps(val []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTimeSlots(val []CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem struct {
+	UUID string `json:"uuid"`
+	// エスカレーションの順番。0 から始まる.
+	Position int                                                                  `json:"position"`
+	StepType CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType `json:"step_type"`
+	// True
+	// のステップでは、チームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）.
+	SimultaneousCall bool                                                             `json:"simultaneous_call"`
+	Team             CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam `json:"team"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetStepType returns the value of StepType.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) GetStepType() CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) GetSimultaneousCall() bool {
+	return s.SimultaneousCall
+}
+
+// GetTeam returns the value of Team.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) GetTeam() CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam {
+	return s.Team
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) SetStepType(val CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) SetSimultaneousCall(val bool) {
+	s.SimultaneousCall = val
+}
+
+// SetTeam sets the value of Team.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) SetTeam(val CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) {
+	s.Team = val
+}
+
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType string
+
+const (
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypePrimary  CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType = "primary"
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypeFallback CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType = "fallback"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType values.
+func (CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType) AllValues() []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType {
+	return []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType{
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypePrimary,
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType(data) {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypePrimary:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypePrimary
+		return nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypeFallback:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) GetColor() string {
+	return s.Color
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// 各ステップのチームで誰に架電するか。 all_members
+// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+// on_duty_only
+// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode string
+
+const (
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode = "all_members"
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode values.
+func (CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) AllValues() []CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode {
+	return []CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode{
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers,
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode(data) {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers
+		return nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。エスカレーションポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。エスカレーションポリシーの timezone における時刻。
+	// start_time より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。
+	// 23:59 は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type CreateOnCallEscalationPolicyPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallEscalationPolicyPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallEscalationPolicyPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateOnCallEscalationPolicyPaymentRequired) createOnCallEscalationPolicyRes() {}
+
+type CreateOnCallEscalationPolicyReq struct {
+	EscalationPolicy CreateOnCallEscalationPolicyReqEscalationPolicy `json:"escalation_policy"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *CreateOnCallEscalationPolicyReq) GetEscalationPolicy() CreateOnCallEscalationPolicyReqEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *CreateOnCallEscalationPolicyReq) SetEscalationPolicy(val CreateOnCallEscalationPolicyReqEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+type CreateOnCallEscalationPolicyReqEscalationPolicy struct {
+	Name string `json:"name"`
+	// 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo.
+	Timezone OptString `json:"timezone"`
+	// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
+	// を参照）。省略すると all_members.
+	TeamCallMode OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// ステップ。配列の順がエスカレーションの順（position）になる。省略するとステップなし.
+	Steps []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem `json:"steps"`
+	// 呼び出しの対象になる曜日・時間。1 つ以上必要.
+	TimeSlots []CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem `json:"time_slots"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetTimezone() OptString {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetTeamCallMode() OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetSteps() []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetTimeSlots() []CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTimezone(val OptString) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTeamCallMode(val OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetSteps(val []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTimeSlots(val []CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem struct {
+	// 呼び出すオンコールのチームの UUID.
+	TeamUUID string `json:"team_uuid"`
+	// 省略すると primary.
+	StepType OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType `json:"step_type"`
+	// True
+	// にすると、このステップではチームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）。省略すると
+	// false.
+	SimultaneousCall OptBool `json:"simultaneous_call"`
+}
+
+// GetTeamUUID returns the value of TeamUUID.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetTeamUUID() string {
+	return s.TeamUUID
+}
+
+// GetStepType returns the value of StepType.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetStepType() OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetSimultaneousCall() OptBool {
+	return s.SimultaneousCall
+}
+
+// SetTeamUUID sets the value of TeamUUID.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetTeamUUID(val string) {
+	s.TeamUUID = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetStepType(val OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetSimultaneousCall(val OptBool) {
+	s.SimultaneousCall = val
+}
+
+// 省略すると primary.
+type CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType string
+
+const (
+	CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary  CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType = "primary"
+	CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType = "fallback"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType values.
+func (CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) AllValues() []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
+		CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary,
+		CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(data) {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary
+		return nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
+// を参照）。省略すると all_members.
+type CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode string
+
+const (
+	CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "all_members"
+	CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode values.
+func (CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) AllValues() []CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return []CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
+		CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers,
+		CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(data) {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
+		return nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem struct {
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。start_time より前なら翌日まで続く。23:59
+	// は日末までを含む.
+	EndTime string `json:"end_time"`
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type CreateOnCallEscalationPolicyUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallEscalationPolicyUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallEscalationPolicyUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateOnCallEscalationPolicyUnauthorized) createOnCallEscalationPolicyRes() {}
+
+type CreateOnCallEscalationPolicyUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallEscalationPolicyUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *CreateOnCallEscalationPolicyUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallEscalationPolicyUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *CreateOnCallEscalationPolicyUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*CreateOnCallEscalationPolicyUnprocessableEntity) createOnCallEscalationPolicyRes() {}
+
+type CreateOnCallTeamBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallTeamBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallTeamBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateOnCallTeamBadRequest) createOnCallTeamRes() {}
+
+type CreateOnCallTeamCreated struct {
+	Team CreateOnCallTeamCreatedTeam `json:"team"`
+}
+
+// GetTeam returns the value of Team.
+func (s *CreateOnCallTeamCreated) GetTeam() CreateOnCallTeamCreatedTeam {
+	return s.Team
+}
+
+// SetTeam sets the value of Team.
+func (s *CreateOnCallTeamCreated) SetTeam(val CreateOnCallTeamCreatedTeam) {
+	s.Team = val
+}
+
+func (*CreateOnCallTeamCreated) createOnCallTeamRes() {}
+
+type CreateOnCallTeamCreatedTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+	// 並び順（position）が最初のローテーション。ローテーションが設定されていないチームでは
+	// null になる。 1
+	// つのチームに複数のローテーション（平日・土日など）を持てるため、すべてを扱うときは
+	// rotations を使う.
+	Rotation NilCreateOnCallTeamCreatedTeamRotation `json:"rotation"`
+	// チームのローテーション。position の昇順.
+	Rotations []CreateOnCallTeamCreatedTeamRotationsItem `json:"rotations"`
+	// このチームで今呼ばれる人。今有効なローテーションのうち、position
+	// が最も小さいものの当番。 そのローテーションの当番が null
+	// のとき（参加者が全員不在など）は、ほかのローテーションには回さず
+	// null になる。 どのローテーションも有効でないときも null になる.
+	OnDutyParticipant NilCreateOnCallTeamCreatedTeamOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTeamCreatedTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *CreateOnCallTeamCreatedTeam) GetColor() string {
+	return s.Color
+}
+
+// GetRotation returns the value of Rotation.
+func (s *CreateOnCallTeamCreatedTeam) GetRotation() NilCreateOnCallTeamCreatedTeamRotation {
+	return s.Rotation
+}
+
+// GetRotations returns the value of Rotations.
+func (s *CreateOnCallTeamCreatedTeam) GetRotations() []CreateOnCallTeamCreatedTeamRotationsItem {
+	return s.Rotations
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeam) GetOnDutyParticipant() NilCreateOnCallTeamCreatedTeamOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTeamCreatedTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *CreateOnCallTeamCreatedTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// SetRotation sets the value of Rotation.
+func (s *CreateOnCallTeamCreatedTeam) SetRotation(val NilCreateOnCallTeamCreatedTeamRotation) {
+	s.Rotation = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *CreateOnCallTeamCreatedTeam) SetRotations(val []CreateOnCallTeamCreatedTeamRotationsItem) {
+	s.Rotations = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeam) SetOnDutyParticipant(val NilCreateOnCallTeamCreatedTeamOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type CreateOnCallTeamCreatedTeamOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role CreateOnCallTeamCreatedTeamOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                             `json:"absent"`
+	User   CreateOnCallTeamCreatedTeamOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) GetRole() CreateOnCallTeamCreatedTeamOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) GetUser() CreateOnCallTeamCreatedTeamOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) SetRole(val CreateOnCallTeamCreatedTeamOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipant) SetUser(val CreateOnCallTeamCreatedTeamOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type CreateOnCallTeamCreatedTeamOnDutyParticipantRole string
+
+const (
+	CreateOnCallTeamCreatedTeamOnDutyParticipantRoleMember     CreateOnCallTeamCreatedTeamOnDutyParticipantRole = "member"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantRoleSubstitute CreateOnCallTeamCreatedTeamOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamOnDutyParticipantRole values.
+func (CreateOnCallTeamCreatedTeamOnDutyParticipantRole) AllValues() []CreateOnCallTeamCreatedTeamOnDutyParticipantRole {
+	return []CreateOnCallTeamCreatedTeamOnDutyParticipantRole{
+		CreateOnCallTeamCreatedTeamOnDutyParticipantRoleMember,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamOnDutyParticipantRole(data) {
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantRoleMember:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantRoleMember
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantRoleSubstitute:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamOnDutyParticipantUser struct {
+	Sub       string                                                       `json:"sub"`
+	Nickname  string                                                       `json:"nickname"`
+	Picture   string                                                       `json:"picture"`
+	Status    CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetStatus() CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetSlackUser() NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetStatus(val CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetSlackUser(val NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus string
+
+const (
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusActive            CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "active"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInactive          CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "inactive"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvited           CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "invited"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationPending CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "invitation_pending"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationFailed  CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "invitation_failed"
+	CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusDeactivated       CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus values.
+func (CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus) AllValues() []CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus {
+	return []CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus{
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusActive,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInactive,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvited,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationPending,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationFailed,
+		CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatus(data) {
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusActive:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusActive
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInactive:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInactive
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvited:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvited
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationPending:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationFailed:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusDeactivated:
+		*s = CreateOnCallTeamCreatedTeamOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotation struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []CreateOnCallTeamCreatedTeamRotationTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []CreateOnCallTeamCreatedTeamRotationParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetTimeSlots() []CreateOnCallTeamCreatedTeamRotationTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetParticipants() []CreateOnCallTeamCreatedTeamRotationParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeamRotation) GetOnDutyParticipant() NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetTimeSlots(val []CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetParticipants(val []CreateOnCallTeamCreatedTeamRotationParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeamRotation) SetOnDutyParticipant(val NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                     `json:"absent"`
+	User   CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) GetRole() CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) GetUser() CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetRole(val CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetUser(val CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleMember     CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole = "member"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleSubstitute CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole values.
+func (CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole) AllValues() []CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole {
+	return []CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole{
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleMember,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRole(data) {
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleMember:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleMember
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleSubstitute:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser struct {
+	Sub       string                                                               `json:"sub"`
+	Nickname  string                                                               `json:"nickname"`
+	Picture   string                                                               `json:"picture"`
+	Status    CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetStatus() CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetSlackUser() NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetStatus(val CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetSlackUser(val NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusActive            CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "active"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInactive          CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "inactive"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvited           CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "invited"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationPending CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "invitation_pending"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationFailed  CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "invitation_failed"
+	CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusDeactivated       CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus values.
+func (CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus) AllValues() []CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus {
+	return []CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus{
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusActive,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInactive,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvited,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationPending,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationFailed,
+		CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatus(data) {
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusActive:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusActive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInactive:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInactive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvited:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvited
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusDeactivated:
+		*s = CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role CreateOnCallTeamCreatedTeamRotationParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                    `json:"absent"`
+	User   CreateOnCallTeamCreatedTeamRotationParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) GetRole() CreateOnCallTeamCreatedTeamRotationParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) GetUser() CreateOnCallTeamCreatedTeamRotationParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) SetRole(val CreateOnCallTeamCreatedTeamRotationParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItem) SetUser(val CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type CreateOnCallTeamCreatedTeamRotationParticipantsItemRole string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleMember     CreateOnCallTeamCreatedTeamRotationParticipantsItemRole = "member"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleSubstitute CreateOnCallTeamCreatedTeamRotationParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationParticipantsItemRole values.
+func (CreateOnCallTeamCreatedTeamRotationParticipantsItemRole) AllValues() []CreateOnCallTeamCreatedTeamRotationParticipantsItemRole {
+	return []CreateOnCallTeamCreatedTeamRotationParticipantsItemRole{
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleMember,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleMember:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationParticipantsItemRole(data) {
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleMember:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleMember
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleSubstitute:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationParticipantsItemUser struct {
+	Sub       string                                                              `json:"sub"`
+	Nickname  string                                                              `json:"nickname"`
+	Picture   string                                                              `json:"picture"`
+	Status    CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetStatus() CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetSlackUser() NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetStatus(val CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetSlackUser(val NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusActive            CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "active"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInactive          CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "inactive"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvited           CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "invited"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationPending CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "invitation_pending"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationFailed  CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "invitation_failed"
+	CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusDeactivated       CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus values.
+func (CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus) AllValues() []CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus {
+	return []CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus{
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusActive,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInactive,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvited,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationPending,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationFailed,
+		CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatus(data) {
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusActive:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusActive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInactive:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInactive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvited:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvited
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationPending:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationPending
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationFailed:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusInvitationFailed
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusDeactivated:
+		*s = CreateOnCallTeamCreatedTeamRotationParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *CreateOnCallTeamCreatedTeamRotationTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItem struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetTimeSlots() []CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetParticipants() []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) GetOnDutyParticipant() NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetTimeSlots(val []CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetParticipants(val []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *CreateOnCallTeamCreatedTeamRotationsItem) SetOnDutyParticipant(val NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                          `json:"absent"`
+	User   CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) GetRole() CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) GetUser() CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetRole(val CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetUser(val CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleMember     CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole = "member"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleSubstitute CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole values.
+func (CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole) AllValues() []CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole {
+	return []CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole{
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleMember,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRole(data) {
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleMember:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleMember
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser struct {
+	Sub       string                                                                    `json:"sub"`
+	Nickname  string                                                                    `json:"nickname"`
+	Picture   string                                                                    `json:"picture"`
+	Status    CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetStatus() CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetSlackUser() NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetStatus(val CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetSlackUser(val NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusActive            CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "active"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInactive          CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "inactive"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvited           CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "invited"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationPending CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "invitation_pending"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed  CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "invitation_failed"
+	CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusDeactivated       CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus values.
+func (CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus) AllValues() []CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus {
+	return []CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus{
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusActive,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInactive,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvited,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationPending,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed,
+		CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatus(data) {
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusActive:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusActive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInactive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvited
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                         `json:"absent"`
+	User   CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) GetRole() CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) GetUser() CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) SetRole(val CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItem) SetUser(val CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleMember     CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole = "member"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleSubstitute CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole values.
+func (CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole) AllValues() []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole {
+	return []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole{
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleMember,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleMember:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRole(data) {
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleMember:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleMember
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleSubstitute:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser struct {
+	Sub       string                                                                   `json:"sub"`
+	Nickname  string                                                                   `json:"nickname"`
+	Picture   string                                                                   `json:"picture"`
+	Status    CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetStatus() CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetSlackUser() NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetStatus(val CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetSlackUser(val NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus string
+
+const (
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusActive            CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "active"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInactive          CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "inactive"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvited           CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "invited"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationPending CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "invitation_pending"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationFailed  CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "invitation_failed"
+	CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusDeactivated       CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus values.
+func (CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus) AllValues() []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus {
+	return []CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus{
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusActive,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInactive,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvited,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationPending,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationFailed,
+		CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatus(data) {
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusActive:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusActive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInactive:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInactive
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvited:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvited
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationPending
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusInvitationFailed
+		return nil
+	case CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		*s = CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *CreateOnCallTeamCreatedTeamRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type CreateOnCallTeamPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallTeamPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallTeamPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateOnCallTeamPaymentRequired) createOnCallTeamRes() {}
+
+type CreateOnCallTeamReq struct {
+	Team CreateOnCallTeamReqTeam `json:"team"`
+}
+
+// GetTeam returns the value of Team.
+func (s *CreateOnCallTeamReq) GetTeam() CreateOnCallTeamReqTeam {
+	return s.Team
+}
+
+// SetTeam sets the value of Team.
+func (s *CreateOnCallTeamReq) SetTeam(val CreateOnCallTeamReqTeam) {
+	s.Team = val
+}
+
+type CreateOnCallTeamReqTeam struct {
+	Name string `json:"name"`
+	// 色（6 桁の 16 進数、# なし）.
+	Color string `json:"color"`
+	// ローテーション。1 つ以上必要で、配列の順が並び順になる.
+	Rotations []CreateOnCallTeamReqTeamRotationsItem `json:"rotations"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTeamReqTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *CreateOnCallTeamReqTeam) GetColor() string {
+	return s.Color
+}
+
+// GetRotations returns the value of Rotations.
+func (s *CreateOnCallTeamReqTeam) GetRotations() []CreateOnCallTeamReqTeamRotationsItem {
+	return s.Rotations
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTeamReqTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *CreateOnCallTeamReqTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *CreateOnCallTeamReqTeam) SetRotations(val []CreateOnCallTeamReqTeamRotationsItem) {
+	s.Rotations = val
+}
+
+// チームのローテーション 1
+// つ分の入力。配列の順がローテーションの並び順（position）になる。.
+type CreateOnCallTeamReqTeamRotationsItem struct {
+	// 今あるローテーションを残して更新するときに指定する。省略すると新しいローテーションを作る.
+	UUID OptString `json:"uuid"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式。例 Asia/Tokyo）.
+	Timezone string `json:"timezone"`
+	// 最初のシフトの基準日時（ISO 8601）。shift_handoff_wday / shift_handoff_time
+	// に合わせて補正して保存する。 interval_days が 7
+	// の倍数のときは、この日時以前で直近の交代の曜日・時刻に、それ以外は同じ日の交代の時刻にする.
+	StartedAt string `json:"started_at"`
+	// 交代の時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// 交代の曜日（0 が日曜、6 が土曜）。interval_days が 7 の倍数のときは必須.
+	ShiftHandoffWday OptNilInt `json:"shift_handoff_wday"`
+	// 交代の間隔（日数、1〜14）。省略すると、今あるローテーションは今の値、新しいローテーションは
+	// 7.
+	IntervalDays OptInt `json:"interval_days"`
+	// 参加者。送ると丸ごと置き換える（空の配列なら参加者なし）。
+	// 省略すると、uuid
+	// を指定した今あるローテーションは今の参加者のまま、新しいローテーションは参加者なし。
+	// 電話番号の確認が済んでいるユーザーだけを指定できる.
+	Participants []CreateOnCallTeamReqTeamRotationsItemParticipantsItem `json:"participants"`
+	// 有効な曜日・時間。送ると丸ごと置き換える（空の配列なら、いつでも有効）。
+	// 省略すると、uuid
+	// を指定した今あるローテーションは今のまま、新しいローテーションはいつでも有効.
+	TimeSlots []CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetUUID() OptString {
+	return s.UUID
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetStartedAt() string {
+	return s.StartedAt
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetShiftHandoffWday() OptNilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetIntervalDays() OptInt {
+	return s.IntervalDays
+}
+
+// GetParticipants returns the value of Participants.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetParticipants() []CreateOnCallTeamReqTeamRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *CreateOnCallTeamReqTeamRotationsItem) GetTimeSlots() []CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetUUID(val OptString) {
+	s.UUID = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetStartedAt(val string) {
+	s.StartedAt = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetShiftHandoffWday(val OptNilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetIntervalDays(val OptInt) {
+	s.IntervalDays = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetParticipants(val []CreateOnCallTeamReqTeamRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *CreateOnCallTeamReqTeamRotationsItem) SetTimeSlots(val []CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type CreateOnCallTeamReqTeamRotationsItemParticipantsItem struct {
+	// ユーザーの sub（GET /api/v0/users で調べられる）.
+	UserSub string `json:"user_sub"`
+	// 当番の順番（0 から）.
+	Position int `json:"position"`
+}
+
+// GetUserSub returns the value of UserSub.
+func (s *CreateOnCallTeamReqTeamRotationsItemParticipantsItem) GetUserSub() string {
+	return s.UserSub
+}
+
+// GetPosition returns the value of Position.
+func (s *CreateOnCallTeamReqTeamRotationsItemParticipantsItem) GetPosition() int {
+	return s.Position
+}
+
+// SetUserSub sets the value of UserSub.
+func (s *CreateOnCallTeamReqTeamRotationsItemParticipantsItem) SetUserSub(val string) {
+	s.UserSub = val
+}
+
+// SetPosition sets the value of Position.
+func (s *CreateOnCallTeamReqTeamRotationsItemParticipantsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+type CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem struct {
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。start_time より前なら翌日まで続く。23:59
+	// は日末までを含む.
+	EndTime string `json:"end_time"`
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type CreateOnCallTeamUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallTeamUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallTeamUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateOnCallTeamUnauthorized) createOnCallTeamRes() {}
+
+type CreateOnCallTeamUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallTeamUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *CreateOnCallTeamUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallTeamUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *CreateOnCallTeamUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*CreateOnCallTeamUnprocessableEntity) createOnCallTeamRes() {}
+
+type CreateOnCallTriggerBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallTriggerBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallTriggerBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateOnCallTriggerBadRequest) createOnCallTriggerRes() {}
+
+type CreateOnCallTriggerCreated struct {
+	Trigger CreateOnCallTriggerCreatedTrigger `json:"trigger"`
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *CreateOnCallTriggerCreated) GetTrigger() CreateOnCallTriggerCreatedTrigger {
+	return s.Trigger
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *CreateOnCallTriggerCreated) SetTrigger(val CreateOnCallTriggerCreatedTrigger) {
+	s.Trigger = val
+}
+
+func (*CreateOnCallTriggerCreated) createOnCallTriggerRes() {}
+
+type CreateOnCallTriggerCreatedTrigger struct {
+	UUID    string `json:"uuid"`
+	Name    string `json:"name"`
+	Enabled bool   `json:"enabled"`
+	// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+	EventType CreateOnCallTriggerCreatedTriggerEventType `json:"event_type"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []CreateOnCallTriggerCreatedTriggerSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元.
+	SourceFilters []CreateOnCallTriggerCreatedTriggerSourceFiltersItem `json:"source_filters"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数.
+	RetryCount int                                      `json:"retry_count"`
+	Service    CreateOnCallTriggerCreatedTriggerService `json:"service"`
+	// 呼び出すエスカレーションポリシー.
+	EscalationPolicies []CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem `json:"escalation_policies"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTriggerCreatedTrigger) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTriggerCreatedTrigger) GetName() string {
+	return s.Name
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *CreateOnCallTriggerCreatedTrigger) GetEnabled() bool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *CreateOnCallTriggerCreatedTrigger) GetEventType() CreateOnCallTriggerCreatedTriggerEventType {
+	return s.EventType
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *CreateOnCallTriggerCreatedTrigger) GetSeverityFilters() []CreateOnCallTriggerCreatedTriggerSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *CreateOnCallTriggerCreatedTrigger) GetSourceFilters() []CreateOnCallTriggerCreatedTriggerSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *CreateOnCallTriggerCreatedTrigger) GetRetryCount() int {
+	return s.RetryCount
+}
+
+// GetService returns the value of Service.
+func (s *CreateOnCallTriggerCreatedTrigger) GetService() CreateOnCallTriggerCreatedTriggerService {
+	return s.Service
+}
+
+// GetEscalationPolicies returns the value of EscalationPolicies.
+func (s *CreateOnCallTriggerCreatedTrigger) GetEscalationPolicies() []CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem {
+	return s.EscalationPolicies
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTriggerCreatedTrigger) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTriggerCreatedTrigger) SetName(val string) {
+	s.Name = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *CreateOnCallTriggerCreatedTrigger) SetEnabled(val bool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *CreateOnCallTriggerCreatedTrigger) SetEventType(val CreateOnCallTriggerCreatedTriggerEventType) {
+	s.EventType = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *CreateOnCallTriggerCreatedTrigger) SetSeverityFilters(val []CreateOnCallTriggerCreatedTriggerSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *CreateOnCallTriggerCreatedTrigger) SetSourceFilters(val []CreateOnCallTriggerCreatedTriggerSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *CreateOnCallTriggerCreatedTrigger) SetRetryCount(val int) {
+	s.RetryCount = val
+}
+
+// SetService sets the value of Service.
+func (s *CreateOnCallTriggerCreatedTrigger) SetService(val CreateOnCallTriggerCreatedTriggerService) {
+	s.Service = val
+}
+
+// SetEscalationPolicies sets the value of EscalationPolicies.
+func (s *CreateOnCallTriggerCreatedTrigger) SetEscalationPolicies(val []CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem) {
+	s.EscalationPolicies = val
+}
+
+type CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTriggerCreatedTriggerEscalationPoliciesItem) SetName(val string) {
+	s.Name = val
+}
+
+// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+type CreateOnCallTriggerCreatedTriggerEventType string
+
+const (
+	CreateOnCallTriggerCreatedTriggerEventTypeIncidentCreated CreateOnCallTriggerCreatedTriggerEventType = "incident_created"
+)
+
+// AllValues returns all CreateOnCallTriggerCreatedTriggerEventType values.
+func (CreateOnCallTriggerCreatedTriggerEventType) AllValues() []CreateOnCallTriggerCreatedTriggerEventType {
+	return []CreateOnCallTriggerCreatedTriggerEventType{
+		CreateOnCallTriggerCreatedTriggerEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerCreatedTriggerEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerCreatedTriggerEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerCreatedTriggerEventType) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerCreatedTriggerEventType(data) {
+	case CreateOnCallTriggerCreatedTriggerEventTypeIncidentCreated:
+		*s = CreateOnCallTriggerCreatedTriggerEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerCreatedTriggerService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTriggerCreatedTriggerService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTriggerCreatedTriggerService) SetName(val string) {
+	s.Name = val
+}
+
+type CreateOnCallTriggerCreatedTriggerSeverityFiltersItem string
+
+const (
+	CreateOnCallTriggerCreatedTriggerSeverityFiltersItemCritical CreateOnCallTriggerCreatedTriggerSeverityFiltersItem = "critical"
+	CreateOnCallTriggerCreatedTriggerSeverityFiltersItemHigh     CreateOnCallTriggerCreatedTriggerSeverityFiltersItem = "high"
+	CreateOnCallTriggerCreatedTriggerSeverityFiltersItemLow      CreateOnCallTriggerCreatedTriggerSeverityFiltersItem = "low"
+	CreateOnCallTriggerCreatedTriggerSeverityFiltersItemInfo     CreateOnCallTriggerCreatedTriggerSeverityFiltersItem = "info"
+	CreateOnCallTriggerCreatedTriggerSeverityFiltersItemUnknown  CreateOnCallTriggerCreatedTriggerSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all CreateOnCallTriggerCreatedTriggerSeverityFiltersItem values.
+func (CreateOnCallTriggerCreatedTriggerSeverityFiltersItem) AllValues() []CreateOnCallTriggerCreatedTriggerSeverityFiltersItem {
+	return []CreateOnCallTriggerCreatedTriggerSeverityFiltersItem{
+		CreateOnCallTriggerCreatedTriggerSeverityFiltersItemCritical,
+		CreateOnCallTriggerCreatedTriggerSeverityFiltersItemHigh,
+		CreateOnCallTriggerCreatedTriggerSeverityFiltersItemLow,
+		CreateOnCallTriggerCreatedTriggerSeverityFiltersItemInfo,
+		CreateOnCallTriggerCreatedTriggerSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerCreatedTriggerSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemLow:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerCreatedTriggerSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerCreatedTriggerSeverityFiltersItem(data) {
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemCritical:
+		*s = CreateOnCallTriggerCreatedTriggerSeverityFiltersItemCritical
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemHigh:
+		*s = CreateOnCallTriggerCreatedTriggerSeverityFiltersItemHigh
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemLow:
+		*s = CreateOnCallTriggerCreatedTriggerSeverityFiltersItemLow
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemInfo:
+		*s = CreateOnCallTriggerCreatedTriggerSeverityFiltersItemInfo
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSeverityFiltersItemUnknown:
+		*s = CreateOnCallTriggerCreatedTriggerSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerCreatedTriggerSourceFiltersItem string
+
+const (
+	CreateOnCallTriggerCreatedTriggerSourceFiltersItemIntegration CreateOnCallTriggerCreatedTriggerSourceFiltersItem = "integration"
+	CreateOnCallTriggerCreatedTriggerSourceFiltersItemSlack       CreateOnCallTriggerCreatedTriggerSourceFiltersItem = "slack"
+	CreateOnCallTriggerCreatedTriggerSourceFiltersItemWeb         CreateOnCallTriggerCreatedTriggerSourceFiltersItem = "web"
+)
+
+// AllValues returns all CreateOnCallTriggerCreatedTriggerSourceFiltersItem values.
+func (CreateOnCallTriggerCreatedTriggerSourceFiltersItem) AllValues() []CreateOnCallTriggerCreatedTriggerSourceFiltersItem {
+	return []CreateOnCallTriggerCreatedTriggerSourceFiltersItem{
+		CreateOnCallTriggerCreatedTriggerSourceFiltersItemIntegration,
+		CreateOnCallTriggerCreatedTriggerSourceFiltersItemSlack,
+		CreateOnCallTriggerCreatedTriggerSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerCreatedTriggerSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemSlack:
+		return []byte(s), nil
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerCreatedTriggerSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerCreatedTriggerSourceFiltersItem(data) {
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemIntegration:
+		*s = CreateOnCallTriggerCreatedTriggerSourceFiltersItemIntegration
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemSlack:
+		*s = CreateOnCallTriggerCreatedTriggerSourceFiltersItemSlack
+		return nil
+	case CreateOnCallTriggerCreatedTriggerSourceFiltersItemWeb:
+		*s = CreateOnCallTriggerCreatedTriggerSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallTriggerPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallTriggerPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateOnCallTriggerPaymentRequired) createOnCallTriggerRes() {}
+
+type CreateOnCallTriggerReq struct {
+	Trigger CreateOnCallTriggerReqTrigger `json:"trigger"`
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *CreateOnCallTriggerReq) GetTrigger() CreateOnCallTriggerReqTrigger {
+	return s.Trigger
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *CreateOnCallTriggerReq) SetTrigger(val CreateOnCallTriggerReqTrigger) {
+	s.Trigger = val
+}
+
+type CreateOnCallTriggerReqTrigger struct {
+	Name string `json:"name"`
+	// トリガーを付けるサービスの名前.
+	ServiceName string `json:"service_name"`
+	// 呼び出すエスカレーションポリシーの UUID。1 つ以上必要.
+	EscalationPolicyUuids []string `json:"escalation_policy_uuids"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []CreateOnCallTriggerReqTriggerSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元。POST で省略すると integration
+	// だけ.
+	SourceFilters []CreateOnCallTriggerReqTriggerSourceFiltersItem `json:"source_filters"`
+	// POST で省略すると true.
+	Enabled OptBool `json:"enabled"`
+	// POST で省略すると incident_created.
+	EventType OptCreateOnCallTriggerReqTriggerEventType `json:"event_type"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数（0〜10）。POST
+	// で省略すると 0.
+	RetryCount OptInt `json:"retry_count"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateOnCallTriggerReqTrigger) GetName() string {
+	return s.Name
+}
+
+// GetServiceName returns the value of ServiceName.
+func (s *CreateOnCallTriggerReqTrigger) GetServiceName() string {
+	return s.ServiceName
+}
+
+// GetEscalationPolicyUuids returns the value of EscalationPolicyUuids.
+func (s *CreateOnCallTriggerReqTrigger) GetEscalationPolicyUuids() []string {
+	return s.EscalationPolicyUuids
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *CreateOnCallTriggerReqTrigger) GetSeverityFilters() []CreateOnCallTriggerReqTriggerSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *CreateOnCallTriggerReqTrigger) GetSourceFilters() []CreateOnCallTriggerReqTriggerSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *CreateOnCallTriggerReqTrigger) GetEnabled() OptBool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *CreateOnCallTriggerReqTrigger) GetEventType() OptCreateOnCallTriggerReqTriggerEventType {
+	return s.EventType
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *CreateOnCallTriggerReqTrigger) GetRetryCount() OptInt {
+	return s.RetryCount
+}
+
+// SetName sets the value of Name.
+func (s *CreateOnCallTriggerReqTrigger) SetName(val string) {
+	s.Name = val
+}
+
+// SetServiceName sets the value of ServiceName.
+func (s *CreateOnCallTriggerReqTrigger) SetServiceName(val string) {
+	s.ServiceName = val
+}
+
+// SetEscalationPolicyUuids sets the value of EscalationPolicyUuids.
+func (s *CreateOnCallTriggerReqTrigger) SetEscalationPolicyUuids(val []string) {
+	s.EscalationPolicyUuids = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *CreateOnCallTriggerReqTrigger) SetSeverityFilters(val []CreateOnCallTriggerReqTriggerSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *CreateOnCallTriggerReqTrigger) SetSourceFilters(val []CreateOnCallTriggerReqTriggerSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *CreateOnCallTriggerReqTrigger) SetEnabled(val OptBool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *CreateOnCallTriggerReqTrigger) SetEventType(val OptCreateOnCallTriggerReqTriggerEventType) {
+	s.EventType = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *CreateOnCallTriggerReqTrigger) SetRetryCount(val OptInt) {
+	s.RetryCount = val
+}
+
+// POST で省略すると incident_created.
+type CreateOnCallTriggerReqTriggerEventType string
+
+const (
+	CreateOnCallTriggerReqTriggerEventTypeIncidentCreated CreateOnCallTriggerReqTriggerEventType = "incident_created"
+)
+
+// AllValues returns all CreateOnCallTriggerReqTriggerEventType values.
+func (CreateOnCallTriggerReqTriggerEventType) AllValues() []CreateOnCallTriggerReqTriggerEventType {
+	return []CreateOnCallTriggerReqTriggerEventType{
+		CreateOnCallTriggerReqTriggerEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerReqTriggerEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerReqTriggerEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerReqTriggerEventType) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerReqTriggerEventType(data) {
+	case CreateOnCallTriggerReqTriggerEventTypeIncidentCreated:
+		*s = CreateOnCallTriggerReqTriggerEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerReqTriggerSeverityFiltersItem string
+
+const (
+	CreateOnCallTriggerReqTriggerSeverityFiltersItemCritical CreateOnCallTriggerReqTriggerSeverityFiltersItem = "critical"
+	CreateOnCallTriggerReqTriggerSeverityFiltersItemHigh     CreateOnCallTriggerReqTriggerSeverityFiltersItem = "high"
+	CreateOnCallTriggerReqTriggerSeverityFiltersItemLow      CreateOnCallTriggerReqTriggerSeverityFiltersItem = "low"
+	CreateOnCallTriggerReqTriggerSeverityFiltersItemInfo     CreateOnCallTriggerReqTriggerSeverityFiltersItem = "info"
+	CreateOnCallTriggerReqTriggerSeverityFiltersItemUnknown  CreateOnCallTriggerReqTriggerSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all CreateOnCallTriggerReqTriggerSeverityFiltersItem values.
+func (CreateOnCallTriggerReqTriggerSeverityFiltersItem) AllValues() []CreateOnCallTriggerReqTriggerSeverityFiltersItem {
+	return []CreateOnCallTriggerReqTriggerSeverityFiltersItem{
+		CreateOnCallTriggerReqTriggerSeverityFiltersItemCritical,
+		CreateOnCallTriggerReqTriggerSeverityFiltersItemHigh,
+		CreateOnCallTriggerReqTriggerSeverityFiltersItemLow,
+		CreateOnCallTriggerReqTriggerSeverityFiltersItemInfo,
+		CreateOnCallTriggerReqTriggerSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerReqTriggerSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemLow:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerReqTriggerSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerReqTriggerSeverityFiltersItem(data) {
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemCritical:
+		*s = CreateOnCallTriggerReqTriggerSeverityFiltersItemCritical
+		return nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemHigh:
+		*s = CreateOnCallTriggerReqTriggerSeverityFiltersItemHigh
+		return nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemLow:
+		*s = CreateOnCallTriggerReqTriggerSeverityFiltersItemLow
+		return nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemInfo:
+		*s = CreateOnCallTriggerReqTriggerSeverityFiltersItemInfo
+		return nil
+	case CreateOnCallTriggerReqTriggerSeverityFiltersItemUnknown:
+		*s = CreateOnCallTriggerReqTriggerSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerReqTriggerSourceFiltersItem string
+
+const (
+	CreateOnCallTriggerReqTriggerSourceFiltersItemIntegration CreateOnCallTriggerReqTriggerSourceFiltersItem = "integration"
+	CreateOnCallTriggerReqTriggerSourceFiltersItemSlack       CreateOnCallTriggerReqTriggerSourceFiltersItem = "slack"
+	CreateOnCallTriggerReqTriggerSourceFiltersItemWeb         CreateOnCallTriggerReqTriggerSourceFiltersItem = "web"
+)
+
+// AllValues returns all CreateOnCallTriggerReqTriggerSourceFiltersItem values.
+func (CreateOnCallTriggerReqTriggerSourceFiltersItem) AllValues() []CreateOnCallTriggerReqTriggerSourceFiltersItem {
+	return []CreateOnCallTriggerReqTriggerSourceFiltersItem{
+		CreateOnCallTriggerReqTriggerSourceFiltersItemIntegration,
+		CreateOnCallTriggerReqTriggerSourceFiltersItemSlack,
+		CreateOnCallTriggerReqTriggerSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallTriggerReqTriggerSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemSlack:
+		return []byte(s), nil
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallTriggerReqTriggerSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch CreateOnCallTriggerReqTriggerSourceFiltersItem(data) {
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemIntegration:
+		*s = CreateOnCallTriggerReqTriggerSourceFiltersItemIntegration
+		return nil
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemSlack:
+		*s = CreateOnCallTriggerReqTriggerSourceFiltersItemSlack
+		return nil
+	case CreateOnCallTriggerReqTriggerSourceFiltersItemWeb:
+		*s = CreateOnCallTriggerReqTriggerSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallTriggerUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallTriggerUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallTriggerUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateOnCallTriggerUnauthorized) createOnCallTriggerRes() {}
+
+type CreateOnCallTriggerUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallTriggerUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *CreateOnCallTriggerUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallTriggerUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *CreateOnCallTriggerUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*CreateOnCallTriggerUnprocessableEntity) createOnCallTriggerRes() {}
+
+type CreateOnCallUserAbsenceBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallUserAbsenceBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallUserAbsenceBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateOnCallUserAbsenceBadRequest) createOnCallUserAbsenceRes() {}
+
+type CreateOnCallUserAbsenceCreated struct {
+	Absence CreateOnCallUserAbsenceCreatedAbsence `json:"absence"`
+}
+
+// GetAbsence returns the value of Absence.
+func (s *CreateOnCallUserAbsenceCreated) GetAbsence() CreateOnCallUserAbsenceCreatedAbsence {
+	return s.Absence
+}
+
+// SetAbsence sets the value of Absence.
+func (s *CreateOnCallUserAbsenceCreated) SetAbsence(val CreateOnCallUserAbsenceCreatedAbsence) {
+	s.Absence = val
+}
+
+func (*CreateOnCallUserAbsenceCreated) createOnCallUserAbsenceRes() {}
+
+type CreateOnCallUserAbsenceCreatedAbsence struct {
+	UUID    string    `json:"uuid"`
+	StartAt time.Time `json:"start_at"`
+	EndAt   time.Time `json:"end_at"`
+	// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+	// は日・時刻）を毎週・毎月くり返す.
+	RepeatType CreateOnCallUserAbsenceCreatedAbsenceRepeatType `json:"repeat_type"`
+	Reason     NilString                                       `json:"reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) GetUUID() string {
+	return s.UUID
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) GetRepeatType() CreateOnCallUserAbsenceCreatedAbsenceRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) GetReason() NilString {
+	return s.Reason
+}
+
+// SetUUID sets the value of UUID.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) SetRepeatType(val CreateOnCallUserAbsenceCreatedAbsenceRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *CreateOnCallUserAbsenceCreatedAbsence) SetReason(val NilString) {
+	s.Reason = val
+}
+
+// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+// は日・時刻）を毎週・毎月くり返す.
+type CreateOnCallUserAbsenceCreatedAbsenceRepeatType string
+
+const (
+	CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeNone    CreateOnCallUserAbsenceCreatedAbsenceRepeatType = "none"
+	CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeWeekly  CreateOnCallUserAbsenceCreatedAbsenceRepeatType = "weekly"
+	CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeMonthly CreateOnCallUserAbsenceCreatedAbsenceRepeatType = "monthly"
+)
+
+// AllValues returns all CreateOnCallUserAbsenceCreatedAbsenceRepeatType values.
+func (CreateOnCallUserAbsenceCreatedAbsenceRepeatType) AllValues() []CreateOnCallUserAbsenceCreatedAbsenceRepeatType {
+	return []CreateOnCallUserAbsenceCreatedAbsenceRepeatType{
+		CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeNone,
+		CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeWeekly,
+		CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallUserAbsenceCreatedAbsenceRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeNone:
+		return []byte(s), nil
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeWeekly:
+		return []byte(s), nil
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallUserAbsenceCreatedAbsenceRepeatType) UnmarshalText(data []byte) error {
+	switch CreateOnCallUserAbsenceCreatedAbsenceRepeatType(data) {
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeNone:
+		*s = CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeNone
+		return nil
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeWeekly:
+		*s = CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeWeekly
+		return nil
+	case CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeMonthly:
+		*s = CreateOnCallUserAbsenceCreatedAbsenceRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallUserAbsenceNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallUserAbsenceNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallUserAbsenceNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateOnCallUserAbsenceNotFound) createOnCallUserAbsenceRes() {}
+
+type CreateOnCallUserAbsencePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateOnCallUserAbsencePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateOnCallUserAbsencePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateOnCallUserAbsencePaymentRequired) createOnCallUserAbsenceRes() {}
+
+type CreateOnCallUserAbsenceReq struct {
+	Absence CreateOnCallUserAbsenceReqAbsence `json:"absence"`
+}
+
+// GetAbsence returns the value of Absence.
+func (s *CreateOnCallUserAbsenceReq) GetAbsence() CreateOnCallUserAbsenceReqAbsence {
+	return s.Absence
+}
+
+// SetAbsence sets the value of Absence.
+func (s *CreateOnCallUserAbsenceReq) SetAbsence(val CreateOnCallUserAbsenceReqAbsence) {
+	s.Absence = val
+}
+
+type CreateOnCallUserAbsenceReqAbsence struct {
+	// 開始日時（ISO 8601）.
+	StartAt string `json:"start_at"`
+	// 終了日時（ISO 8601）。start_at より後.
+	EndAt string `json:"end_at"`
+	// POST で省略すると none（単発）.
+	RepeatType OptCreateOnCallUserAbsenceReqAbsenceRepeatType `json:"repeat_type"`
+	Reason     OptNilString                                   `json:"reason"`
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *CreateOnCallUserAbsenceReqAbsence) GetStartAt() string {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *CreateOnCallUserAbsenceReqAbsence) GetEndAt() string {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *CreateOnCallUserAbsenceReqAbsence) GetRepeatType() OptCreateOnCallUserAbsenceReqAbsenceRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *CreateOnCallUserAbsenceReqAbsence) GetReason() OptNilString {
+	return s.Reason
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *CreateOnCallUserAbsenceReqAbsence) SetStartAt(val string) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *CreateOnCallUserAbsenceReqAbsence) SetEndAt(val string) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *CreateOnCallUserAbsenceReqAbsence) SetRepeatType(val OptCreateOnCallUserAbsenceReqAbsenceRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *CreateOnCallUserAbsenceReqAbsence) SetReason(val OptNilString) {
+	s.Reason = val
+}
+
+// POST で省略すると none（単発）.
+type CreateOnCallUserAbsenceReqAbsenceRepeatType string
+
+const (
+	CreateOnCallUserAbsenceReqAbsenceRepeatTypeNone    CreateOnCallUserAbsenceReqAbsenceRepeatType = "none"
+	CreateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly  CreateOnCallUserAbsenceReqAbsenceRepeatType = "weekly"
+	CreateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly CreateOnCallUserAbsenceReqAbsenceRepeatType = "monthly"
+)
+
+// AllValues returns all CreateOnCallUserAbsenceReqAbsenceRepeatType values.
+func (CreateOnCallUserAbsenceReqAbsenceRepeatType) AllValues() []CreateOnCallUserAbsenceReqAbsenceRepeatType {
+	return []CreateOnCallUserAbsenceReqAbsenceRepeatType{
+		CreateOnCallUserAbsenceReqAbsenceRepeatTypeNone,
+		CreateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly,
+		CreateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallUserAbsenceReqAbsenceRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeNone:
+		return []byte(s), nil
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly:
+		return []byte(s), nil
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallUserAbsenceReqAbsenceRepeatType) UnmarshalText(data []byte) error {
+	switch CreateOnCallUserAbsenceReqAbsenceRepeatType(data) {
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeNone:
+		*s = CreateOnCallUserAbsenceReqAbsenceRepeatTypeNone
+		return nil
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly:
+		*s = CreateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly
+		return nil
+	case CreateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly:
+		*s = CreateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type CreateOnCallUserAbsenceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallUserAbsenceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallUserAbsenceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateOnCallUserAbsenceUnauthorized) createOnCallUserAbsenceRes() {}
+
+type CreateOnCallUserAbsenceUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateOnCallUserAbsenceUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *CreateOnCallUserAbsenceUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateOnCallUserAbsenceUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *CreateOnCallUserAbsenceUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*CreateOnCallUserAbsenceUnprocessableEntity) createOnCallUserAbsenceRes() {}
+
 type CreatePostmortemOK struct {
 	UUID  uuid.UUID `json:"uuid"`
 	Title string    `json:"title"`
@@ -1815,6 +5729,52 @@ func (s *CreateRunbookUnprocessableEntity) SetError(val OptString) {
 
 func (*CreateRunbookUnprocessableEntity) createRunbookRes() {}
 
+type CreateServiceBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceBadRequest) createServiceRes() {}
+
+type CreateServiceCreated struct {
+	Service CreateServiceCreatedService `json:"service"`
+}
+
+// GetService returns the value of Service.
+func (s *CreateServiceCreated) GetService() CreateServiceCreatedService {
+	return s.Service
+}
+
+// SetService sets the value of Service.
+func (s *CreateServiceCreated) SetService(val CreateServiceCreatedService) {
+	s.Service = val
+}
+
+func (*CreateServiceCreated) createServiceRes() {}
+
+type CreateServiceCreatedService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateServiceCreatedService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreateServiceCreatedService) SetName(val string) {
+	s.Name = val
+}
+
 type CreateServiceLabelCreated struct {
 	Label CreateServiceLabelCreatedLabel `json:"label"`
 }
@@ -1993,6 +5953,51 @@ func (s *CreateServiceLabelUnprocessableEntity) SetError(val OptString) {
 }
 
 func (*CreateServiceLabelUnprocessableEntity) createServiceLabelRes() {}
+
+type CreateServicePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServicePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServicePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*CreateServicePaymentRequired) createServiceRes() {}
+
+type CreateServiceReq struct {
+	Service CreateServiceReqService `json:"service"`
+}
+
+// GetService returns the value of Service.
+func (s *CreateServiceReq) GetService() CreateServiceReqService {
+	return s.Service
+}
+
+// SetService sets the value of Service.
+func (s *CreateServiceReq) SetService(val CreateServiceReqService) {
+	s.Service = val
+}
+
+type CreateServiceReqService struct {
+	// Service name. Letters, digits, underscores, hyphens, Hiragana, Katakana and Kanji are allowed.
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *CreateServiceReqService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *CreateServiceReqService) SetName(val string) {
+	s.Name = val
+}
 
 type CreateServiceRunbookRuleCreated struct {
 	UUID uuid.UUID `json:"uuid"`
@@ -2326,6 +6331,38 @@ func (s *CreateServiceRunbookRuleUnprocessableEntity) SetError(val OptString) {
 
 func (*CreateServiceRunbookRuleUnprocessableEntity) createServiceRunbookRuleRes() {}
 
+type CreateServiceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *CreateServiceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *CreateServiceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*CreateServiceUnauthorized) createServiceRes() {}
+
+type CreateServiceUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *CreateServiceUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *CreateServiceUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*CreateServiceUnprocessableEntity) createServiceRes() {}
+
 // DeleteIncidentActionItemNoContent is response for DeleteIncidentActionItem operation.
 type DeleteIncidentActionItemNoContent struct{}
 
@@ -2537,6 +6574,272 @@ func (s *DeleteIncidentUnauthorized) SetErrors(val []string) {
 }
 
 func (*DeleteIncidentUnauthorized) deleteIncidentRes() {}
+
+// DeleteOnCallEscalationPolicyNoContent is response for DeleteOnCallEscalationPolicy operation.
+type DeleteOnCallEscalationPolicyNoContent struct{}
+
+func (*DeleteOnCallEscalationPolicyNoContent) deleteOnCallEscalationPolicyRes() {}
+
+type DeleteOnCallEscalationPolicyNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallEscalationPolicyNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallEscalationPolicyNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteOnCallEscalationPolicyNotFound) deleteOnCallEscalationPolicyRes() {}
+
+type DeleteOnCallEscalationPolicyPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallEscalationPolicyPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallEscalationPolicyPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteOnCallEscalationPolicyPaymentRequired) deleteOnCallEscalationPolicyRes() {}
+
+type DeleteOnCallEscalationPolicyUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallEscalationPolicyUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallEscalationPolicyUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteOnCallEscalationPolicyUnauthorized) deleteOnCallEscalationPolicyRes() {}
+
+type DeleteOnCallEscalationPolicyUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallEscalationPolicyUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *DeleteOnCallEscalationPolicyUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallEscalationPolicyUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *DeleteOnCallEscalationPolicyUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*DeleteOnCallEscalationPolicyUnprocessableEntity) deleteOnCallEscalationPolicyRes() {}
+
+// DeleteOnCallTeamNoContent is response for DeleteOnCallTeam operation.
+type DeleteOnCallTeamNoContent struct{}
+
+func (*DeleteOnCallTeamNoContent) deleteOnCallTeamRes() {}
+
+type DeleteOnCallTeamNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallTeamNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallTeamNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteOnCallTeamNotFound) deleteOnCallTeamRes() {}
+
+type DeleteOnCallTeamPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallTeamPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallTeamPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteOnCallTeamPaymentRequired) deleteOnCallTeamRes() {}
+
+type DeleteOnCallTeamUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallTeamUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallTeamUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteOnCallTeamUnauthorized) deleteOnCallTeamRes() {}
+
+type DeleteOnCallTeamUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallTeamUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *DeleteOnCallTeamUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallTeamUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *DeleteOnCallTeamUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*DeleteOnCallTeamUnprocessableEntity) deleteOnCallTeamRes() {}
+
+// DeleteOnCallTriggerNoContent is response for DeleteOnCallTrigger operation.
+type DeleteOnCallTriggerNoContent struct{}
+
+func (*DeleteOnCallTriggerNoContent) deleteOnCallTriggerRes() {}
+
+type DeleteOnCallTriggerNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallTriggerNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallTriggerNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteOnCallTriggerNotFound) deleteOnCallTriggerRes() {}
+
+type DeleteOnCallTriggerPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallTriggerPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallTriggerPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteOnCallTriggerPaymentRequired) deleteOnCallTriggerRes() {}
+
+type DeleteOnCallTriggerUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallTriggerUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallTriggerUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteOnCallTriggerUnauthorized) deleteOnCallTriggerRes() {}
+
+// DeleteOnCallUserAbsenceNoContent is response for DeleteOnCallUserAbsence operation.
+type DeleteOnCallUserAbsenceNoContent struct{}
+
+func (*DeleteOnCallUserAbsenceNoContent) deleteOnCallUserAbsenceRes() {}
+
+type DeleteOnCallUserAbsenceNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallUserAbsenceNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallUserAbsenceNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*DeleteOnCallUserAbsenceNotFound) deleteOnCallUserAbsenceRes() {}
+
+type DeleteOnCallUserAbsencePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *DeleteOnCallUserAbsencePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *DeleteOnCallUserAbsencePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*DeleteOnCallUserAbsencePaymentRequired) deleteOnCallUserAbsenceRes() {}
+
+type DeleteOnCallUserAbsenceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *DeleteOnCallUserAbsenceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *DeleteOnCallUserAbsenceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*DeleteOnCallUserAbsenceUnauthorized) deleteOnCallUserAbsenceRes() {}
 
 // DeletePostmortemNoContent is response for DeletePostmortem operation.
 type DeletePostmortemNoContent struct{}
@@ -2907,12 +7210,13 @@ func (s *GetIncidentActionItemOK) SetActionItem(val GetIncidentActionItemOKActio
 func (*GetIncidentActionItemOK) getIncidentActionItemRes() {}
 
 type GetIncidentActionItemOKActionItem struct {
-	UUID      uuid.UUID                               `json:"uuid"`
-	Title     string                                  `json:"title"`
-	Status    GetIncidentActionItemOKActionItemStatus `json:"status"`
-	Position  int                                     `json:"position"`
-	CreatedAt time.Time                               `json:"created_at"`
-	UpdatedAt time.Time                               `json:"updated_at"`
+	UUID      uuid.UUID                                    `json:"uuid"`
+	Title     string                                       `json:"title"`
+	Status    GetIncidentActionItemOKActionItemStatus      `json:"status"`
+	Position  int                                          `json:"position"`
+	Assignee  NilGetIncidentActionItemOKActionItemAssignee `json:"assignee"`
+	CreatedAt time.Time                                    `json:"created_at"`
+	UpdatedAt time.Time                                    `json:"updated_at"`
 }
 
 // GetUUID returns the value of UUID.
@@ -2933,6 +7237,11 @@ func (s *GetIncidentActionItemOKActionItem) GetStatus() GetIncidentActionItemOKA
 // GetPosition returns the value of Position.
 func (s *GetIncidentActionItemOKActionItem) GetPosition() int {
 	return s.Position
+}
+
+// GetAssignee returns the value of Assignee.
+func (s *GetIncidentActionItemOKActionItem) GetAssignee() NilGetIncidentActionItemOKActionItemAssignee {
+	return s.Assignee
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -2965,6 +7274,11 @@ func (s *GetIncidentActionItemOKActionItem) SetPosition(val int) {
 	s.Position = val
 }
 
+// SetAssignee sets the value of Assignee.
+func (s *GetIncidentActionItemOKActionItem) SetAssignee(val NilGetIncidentActionItemOKActionItemAssignee) {
+	s.Assignee = val
+}
+
 // SetCreatedAt sets the value of CreatedAt.
 func (s *GetIncidentActionItemOKActionItem) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
@@ -2973,6 +7287,170 @@ func (s *GetIncidentActionItemOKActionItem) SetCreatedAt(val time.Time) {
 // SetUpdatedAt sets the value of UpdatedAt.
 func (s *GetIncidentActionItemOKActionItem) SetUpdatedAt(val time.Time) {
 	s.UpdatedAt = val
+}
+
+type GetIncidentActionItemOKActionItemAssignee struct {
+	Sub       string                                                `json:"sub"`
+	Nickname  string                                                `json:"nickname"`
+	Picture   string                                                `json:"picture"`
+	Status    GetIncidentActionItemOKActionItemAssigneeStatus       `json:"status"`
+	SlackUser NilGetIncidentActionItemOKActionItemAssigneeSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetStatus() GetIncidentActionItemOKActionItemAssigneeStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetSlackUser() NilGetIncidentActionItemOKActionItemAssigneeSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetIncidentActionItemOKActionItemAssignee) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetStatus(val GetIncidentActionItemOKActionItemAssigneeStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetSlackUser(val NilGetIncidentActionItemOKActionItemAssigneeSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetIncidentActionItemOKActionItemAssignee) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetIncidentActionItemOKActionItemAssigneeSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetIncidentActionItemOKActionItemAssigneeSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetIncidentActionItemOKActionItemAssigneeSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetIncidentActionItemOKActionItemAssigneeStatus string
+
+const (
+	GetIncidentActionItemOKActionItemAssigneeStatusActive            GetIncidentActionItemOKActionItemAssigneeStatus = "active"
+	GetIncidentActionItemOKActionItemAssigneeStatusInactive          GetIncidentActionItemOKActionItemAssigneeStatus = "inactive"
+	GetIncidentActionItemOKActionItemAssigneeStatusInvited           GetIncidentActionItemOKActionItemAssigneeStatus = "invited"
+	GetIncidentActionItemOKActionItemAssigneeStatusInvitationPending GetIncidentActionItemOKActionItemAssigneeStatus = "invitation_pending"
+	GetIncidentActionItemOKActionItemAssigneeStatusInvitationFailed  GetIncidentActionItemOKActionItemAssigneeStatus = "invitation_failed"
+	GetIncidentActionItemOKActionItemAssigneeStatusDeactivated       GetIncidentActionItemOKActionItemAssigneeStatus = "deactivated"
+)
+
+// AllValues returns all GetIncidentActionItemOKActionItemAssigneeStatus values.
+func (GetIncidentActionItemOKActionItemAssigneeStatus) AllValues() []GetIncidentActionItemOKActionItemAssigneeStatus {
+	return []GetIncidentActionItemOKActionItemAssigneeStatus{
+		GetIncidentActionItemOKActionItemAssigneeStatusActive,
+		GetIncidentActionItemOKActionItemAssigneeStatusInactive,
+		GetIncidentActionItemOKActionItemAssigneeStatusInvited,
+		GetIncidentActionItemOKActionItemAssigneeStatusInvitationPending,
+		GetIncidentActionItemOKActionItemAssigneeStatusInvitationFailed,
+		GetIncidentActionItemOKActionItemAssigneeStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetIncidentActionItemOKActionItemAssigneeStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetIncidentActionItemOKActionItemAssigneeStatusActive:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInactive:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvited:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvitationPending:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvitationFailed:
+		return []byte(s), nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetIncidentActionItemOKActionItemAssigneeStatus) UnmarshalText(data []byte) error {
+	switch GetIncidentActionItemOKActionItemAssigneeStatus(data) {
+	case GetIncidentActionItemOKActionItemAssigneeStatusActive:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusActive
+		return nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInactive:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusInactive
+		return nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvited:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusInvited
+		return nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvitationPending:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusInvitationPending
+		return nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusInvitationFailed:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusInvitationFailed
+		return nil
+	case GetIncidentActionItemOKActionItemAssigneeStatusDeactivated:
+		*s = GetIncidentActionItemOKActionItemAssigneeStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type GetIncidentActionItemOKActionItemStatus string
@@ -3475,6 +7953,5184 @@ func (s *GetIncidentUnauthorized) SetErrors(val []string) {
 }
 
 func (*GetIncidentUnauthorized) getIncidentRes() {}
+
+type GetOnCallEscalationPolicyNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallEscalationPolicyNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallEscalationPolicyNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallEscalationPolicyNotFound) getOnCallEscalationPolicyRes() {}
+
+type GetOnCallEscalationPolicyOK struct {
+	EscalationPolicy GetOnCallEscalationPolicyOKEscalationPolicy `json:"escalation_policy"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *GetOnCallEscalationPolicyOK) GetEscalationPolicy() GetOnCallEscalationPolicyOKEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *GetOnCallEscalationPolicyOK) SetEscalationPolicy(val GetOnCallEscalationPolicyOKEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+func (*GetOnCallEscalationPolicyOK) getOnCallEscalationPolicyRes() {}
+
+type GetOnCallEscalationPolicyOKEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
+	Timezone string `json:"timezone"`
+	// 各ステップのチームで誰に架電するか。 all_members
+	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+	// on_duty_only
+	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+	TeamCallMode GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// エスカレーションの順番（position の昇順）.
+	Steps []GetOnCallEscalationPolicyOKEscalationPolicyStepsItem `json:"steps"`
+	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
+	TimeSlots []GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetTeamCallMode() GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetSteps() []GetOnCallEscalationPolicyOKEscalationPolicyStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetTimeSlots() []GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTeamCallMode(val GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetSteps(val []GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTimeSlots(val []GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type GetOnCallEscalationPolicyOKEscalationPolicyStepsItem struct {
+	UUID string `json:"uuid"`
+	// エスカレーションの順番。0 から始まる.
+	Position int                                                          `json:"position"`
+	StepType GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType `json:"step_type"`
+	// True
+	// のステップでは、チームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）.
+	SimultaneousCall bool                                                     `json:"simultaneous_call"`
+	Team             GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam `json:"team"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetStepType returns the value of StepType.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetStepType() GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetSimultaneousCall() bool {
+	return s.SimultaneousCall
+}
+
+// GetTeam returns the value of Team.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetTeam() GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam {
+	return s.Team
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetStepType(val GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetSimultaneousCall(val bool) {
+	s.SimultaneousCall = val
+}
+
+// SetTeam sets the value of Team.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetTeam(val GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) {
+	s.Team = val
+}
+
+type GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType string
+
+const (
+	GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary  GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType = "primary"
+	GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType = "fallback"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType values.
+func (GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) AllValues() []GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType {
+	return []GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType{
+		GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary,
+		GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType(data) {
+	case GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary
+		return nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetColor() string {
+	return s.Color
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// 各ステップのチームで誰に架電するか。 all_members
+// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+// on_duty_only
+// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+type GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode string
+
+const (
+	GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "all_members"
+	GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode values.
+func (GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) AllValues() []GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
+	return []GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode{
+		GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers,
+		GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(data) {
+	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
+		return nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。エスカレーションポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。エスカレーションポリシーの timezone における時刻。
+	// start_time より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。
+	// 23:59 は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type GetOnCallEscalationPolicyPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallEscalationPolicyPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallEscalationPolicyPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallEscalationPolicyPaymentRequired) getOnCallEscalationPolicyRes() {}
+
+type GetOnCallEscalationPolicyScheduleBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallEscalationPolicyScheduleBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallEscalationPolicyScheduleBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallEscalationPolicyScheduleBadRequest) getOnCallEscalationPolicyScheduleRes() {}
+
+type GetOnCallEscalationPolicyScheduleNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallEscalationPolicyScheduleNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallEscalationPolicyScheduleNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallEscalationPolicyScheduleNotFound) getOnCallEscalationPolicyScheduleRes() {}
+
+type GetOnCallEscalationPolicyScheduleOK struct {
+	Schedule GetOnCallEscalationPolicyScheduleOKSchedule `json:"schedule"`
+}
+
+// GetSchedule returns the value of Schedule.
+func (s *GetOnCallEscalationPolicyScheduleOK) GetSchedule() GetOnCallEscalationPolicyScheduleOKSchedule {
+	return s.Schedule
+}
+
+// SetSchedule sets the value of Schedule.
+func (s *GetOnCallEscalationPolicyScheduleOK) SetSchedule(val GetOnCallEscalationPolicyScheduleOKSchedule) {
+	s.Schedule = val
+}
+
+func (*GetOnCallEscalationPolicyScheduleOK) getOnCallEscalationPolicyScheduleRes() {}
+
+type GetOnCallEscalationPolicyScheduleOKSchedule struct {
+	EscalationPolicy GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy `json:"escalation_policy"`
+	// Start_date から end_date までの各日。日付をまたぐ時間帯があると、 最終日の
+	// entry の end_at が end_date の翌日になることがある。 逆に start_date
+	// の前日から続く時間帯は含まれない。.
+	Days []GetOnCallEscalationPolicyScheduleOKScheduleDaysItem `json:"days"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *GetOnCallEscalationPolicyScheduleOKSchedule) GetEscalationPolicy() GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// GetDays returns the value of Days.
+func (s *GetOnCallEscalationPolicyScheduleOKSchedule) GetDays() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItem {
+	return s.Days
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *GetOnCallEscalationPolicyScheduleOKSchedule) SetEscalationPolicy(val GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+// SetDays sets the value of Days.
+func (s *GetOnCallEscalationPolicyScheduleOKSchedule) SetDays(val []GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) {
+	s.Days = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItem struct {
+	Date time.Time `json:"date"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// その日に entries
+	// があり得るかどうか。その曜日に時間帯が設定されているときと、
+	// 前日から日付をまたぐ時間帯が交代時刻で区切られ、その日に始まる区間があるときに
+	// true になる。 false のとき entries は空になる.
+	Active bool `json:"active"`
+	// その日に始まる当番の区間。時間帯の途中でローテーションの交代があるときは、交代時刻で区切った区間ごとに分かれる。
+	// 日付をまたぐ時間帯を交代時刻で区切った後ろ側は、区間が始まる日（翌日）の
+	// entries に入る.
+	Entries []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem `json:"entries"`
+}
+
+// GetDate returns the value of Date.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) GetDate() time.Time {
+	return s.Date
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetActive returns the value of Active.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) GetActive() bool {
+	return s.Active
+}
+
+// GetEntries returns the value of Entries.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) GetEntries() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem {
+	return s.Entries
+}
+
+// SetDate sets the value of Date.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) SetDate(val time.Time) {
+	s.Date = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetActive sets the value of Active.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) SetActive(val bool) {
+	s.Active = val
+}
+
+// SetEntries sets the value of Entries.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItem) SetEntries(val []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) {
+	s.Entries = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem struct {
+	EscalationPolicyStep GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep `json:"escalation_policy_step"`
+	// その時間帯の当番。次の場合は null になる。
+	// ローテーションの参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき。.
+	OnDutyUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser `json:"on_duty_user"`
+	// 開始時刻。オフセットはエスカレーションポリシーの timezone に従う.
+	StartAt time.Time `json:"start_at"`
+	// 終了時刻。オフセットはエスカレーションポリシーの timezone に従う。
+	// 日付をまたぐ時間帯（例 22:00-02:00）では、start_at の翌日になる。
+	// 時間帯の終了時刻が 23:59 のときは、翌日の 00:00 になる。.
+	EndAt time.Time `json:"end_at"`
+	// この時間帯の当番が代役のときの代役の登録。
+	// 代役が不在などで本来の当番の次の人が当番になっている時間帯や、代役の登録が無い時間帯では
+	// null になる。.
+	Override NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride `json:"override"`
+}
+
+// GetEscalationPolicyStep returns the value of EscalationPolicyStep.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetEscalationPolicyStep() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep {
+	return s.EscalationPolicyStep
+}
+
+// GetOnDutyUser returns the value of OnDutyUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetOnDutyUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser {
+	return s.OnDutyUser
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetOverride returns the value of Override.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetOverride() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride {
+	return s.Override
+}
+
+// SetEscalationPolicyStep sets the value of EscalationPolicyStep.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetEscalationPolicyStep(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) {
+	s.EscalationPolicyStep = val
+}
+
+// SetOnDutyUser sets the value of OnDutyUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetOnDutyUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) {
+	s.OnDutyUser = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetOverride sets the value of Override.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetOverride(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) {
+	s.Override = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep struct {
+	UUID string `json:"uuid"`
+	// エスカレーションの順番。0 から始まる.
+	Position int                                                                                        `json:"position"`
+	StepType GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType `json:"step_type"`
+	// True
+	// のステップでは、チームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）.
+	SimultaneousCall bool                                                                                   `json:"simultaneous_call"`
+	Team             GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam `json:"team"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) GetPosition() int {
+	return s.Position
+}
+
+// GetStepType returns the value of StepType.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) GetStepType() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) GetSimultaneousCall() bool {
+	return s.SimultaneousCall
+}
+
+// GetTeam returns the value of Team.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) GetTeam() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam {
+	return s.Team
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) SetStepType(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) SetSimultaneousCall(val bool) {
+	s.SimultaneousCall = val
+}
+
+// SetTeam sets the value of Team.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) SetTeam(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) {
+	s.Team = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType string
+
+const (
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypePrimary  GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType = "primary"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypeFallback GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType = "fallback"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType values.
+func (GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType) AllValues() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType {
+	return []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType{
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypePrimary,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypePrimary:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepType(data) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypePrimary:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypePrimary
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypeFallback:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) GetColor() string {
+	return s.Color
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStepTeam) SetColor(val string) {
+	s.Color = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser struct {
+	Sub       string                                                                               `json:"sub"`
+	Nickname  string                                                                               `json:"nickname"`
+	Picture   string                                                                               `json:"picture"`
+	Status    GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus       `json:"status"`
+	SlackUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetStatus() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetSlackUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetStatus(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetSlackUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus string
+
+const (
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusActive            GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "active"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInactive          GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "inactive"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvited           GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "invited"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationPending GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "invitation_pending"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationFailed  GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "invitation_failed"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusDeactivated       GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus values.
+func (GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus) AllValues() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus {
+	return []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus{
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusActive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInactive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvited,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationPending,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationFailed,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatus(data) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusActive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusActive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInactive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInactive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvited:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvited
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationPending:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationPending
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationFailed:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusInvitationFailed
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusDeactivated:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// ローテーションの代役の登録。start_at から end_at
+// の直前まで、本来の当番より user が当番になる.
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride struct {
+	UUID string                                                                     `json:"uuid"`
+	User GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser `json:"user"`
+	// 登録した時点（期間の開始時刻）で本来の当番だった人。記録用。ユーザーが削除されていると
+	// null.
+	ReplacedUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser `json:"replaced_user"`
+	// 開始時刻。オフセットはエスカレーションポリシーの timezone に従う.
+	StartAt time.Time `json:"start_at"`
+	// 終了時刻（この時刻は含まない）。オフセットはエスカレーションポリシーの
+	// timezone に従う.
+	EndAt  time.Time `json:"end_at"`
+	Reason NilString `json:"reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetUUID() string {
+	return s.UUID
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetUser() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser {
+	return s.User
+}
+
+// GetReplacedUser returns the value of ReplacedUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetReplacedUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser {
+	return s.ReplacedUser
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetReason returns the value of Reason.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetReason() NilString {
+	return s.Reason
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetUser(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) {
+	s.User = val
+}
+
+// SetReplacedUser sets the value of ReplacedUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetReplacedUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) {
+	s.ReplacedUser = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetReason sets the value of Reason.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetReason(val NilString) {
+	s.Reason = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser struct {
+	Sub       string                                                                                         `json:"sub"`
+	Nickname  string                                                                                         `json:"nickname"`
+	Picture   string                                                                                         `json:"picture"`
+	Status    GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus       `json:"status"`
+	SlackUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetStatus() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetSlackUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetStatus(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetSlackUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus string
+
+const (
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusActive            GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "active"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInactive          GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "inactive"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvited           GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "invited"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationPending GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "invitation_pending"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationFailed  GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "invitation_failed"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusDeactivated       GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus values.
+func (GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus) AllValues() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus {
+	return []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus{
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusActive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInactive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvited,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationPending,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationFailed,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatus(data) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusActive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusActive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInactive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInactive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvited:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvited
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationPending:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationPending
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationFailed:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusInvitationFailed
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusDeactivated:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser struct {
+	Sub       string                                                                                 `json:"sub"`
+	Nickname  string                                                                                 `json:"nickname"`
+	Picture   string                                                                                 `json:"picture"`
+	Status    GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus       `json:"status"`
+	SlackUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetStatus() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetSlackUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetStatus(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetSlackUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus string
+
+const (
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusActive            GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "active"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInactive          GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "inactive"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvited           GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "invited"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationPending GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "invitation_pending"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationFailed  GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "invitation_failed"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated       GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus values.
+func (GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) AllValues() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus {
+	return []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus{
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusActive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInactive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvited,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationPending,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationFailed,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus(data) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusActive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusActive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInactive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInactive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvited:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvited
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationPending:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationPending
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationFailed:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusInvitationFailed
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 当番表を組む基準になるタイムゾーン（IANA 形式）。start_at / end_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) GetTimezone() string {
+	return s.Timezone
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleEscalationPolicy) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+type GetOnCallEscalationPolicySchedulePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallEscalationPolicySchedulePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallEscalationPolicySchedulePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallEscalationPolicySchedulePaymentRequired) getOnCallEscalationPolicyScheduleRes() {}
+
+type GetOnCallEscalationPolicyScheduleUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallEscalationPolicyScheduleUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallEscalationPolicyScheduleUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallEscalationPolicyScheduleUnauthorized) getOnCallEscalationPolicyScheduleRes() {}
+
+type GetOnCallEscalationPolicyUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallEscalationPolicyUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallEscalationPolicyUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallEscalationPolicyUnauthorized) getOnCallEscalationPolicyRes() {}
+
+type GetOnCallSessionNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallSessionNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallSessionNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallSessionNotFound) getOnCallSessionRes() {}
+
+type GetOnCallSessionOK struct {
+	Session GetOnCallSessionOKSession `json:"session"`
+}
+
+// GetSession returns the value of Session.
+func (s *GetOnCallSessionOK) GetSession() GetOnCallSessionOKSession {
+	return s.Session
+}
+
+// SetSession sets the value of Session.
+func (s *GetOnCallSessionOK) SetSession(val GetOnCallSessionOKSession) {
+	s.Session = val
+}
+
+func (*GetOnCallSessionOK) getOnCallSessionRes() {}
+
+// Merged schema.
+type GetOnCallSessionOKSession struct {
+	UUID string `json:"uuid"`
+	// Running は架電中、repeating
+	// はエスカレーションを最初からやり直している途中、acked
+	// は誰かが応答した、 exhausted は誰も応答しないまま終わった、cancelled
+	// は取り消された.
+	Status GetOnCallSessionOKSessionStatus `json:"status"`
+	// オンコールを呼び出した起点.
+	Source GetOnCallSessionOKSessionSource `json:"source"`
+	// いま架電しているエスカレーションポリシーのステップの位置.
+	CurrentStepPosition int `json:"current_step_position"`
+	// エスカレーションを最初からやり直した回数.
+	CurrentRepeat int                               `json:"current_repeat"`
+	Incident      GetOnCallSessionOKSessionIncident `json:"incident"`
+	// 呼び出したエスカレーションポリシー。1
+	// 人だけに架電したセッションでは null（代わりに target_user を持つ）.
+	EscalationPolicy NilGetOnCallSessionOKSessionEscalationPolicy `json:"escalation_policy"`
+	// 1
+	// 人だけに架電したセッションで架電した相手。エスカレーションポリシーを辿ったセッションや、ユーザーが削除されたときは
+	// null.
+	TargetUser NilGetOnCallSessionOKSessionTargetUser `json:"target_user"`
+	// 呼び出したトリガー。手動で呼び出したときや、トリガーが削除されたときは
+	// null.
+	Trigger NilGetOnCallSessionOKSessionTrigger `json:"trigger"`
+	// 手動で呼び出したユーザー。トリガーから呼び出したときは null.
+	CreatedBy NilGetOnCallSessionOKSessionCreatedBy `json:"created_by"`
+	// 応答したユーザー.
+	AckedBy    NilGetOnCallSessionOKSessionAckedBy       `json:"acked_by"`
+	AckedAt    NilDateTime                               `json:"acked_at"`
+	CreatedAt  time.Time                                 `json:"created_at"`
+	Activities []GetOnCallSessionOKSessionActivitiesItem `json:"activities"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSession) GetUUID() string {
+	return s.UUID
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallSessionOKSession) GetStatus() GetOnCallSessionOKSessionStatus {
+	return s.Status
+}
+
+// GetSource returns the value of Source.
+func (s *GetOnCallSessionOKSession) GetSource() GetOnCallSessionOKSessionSource {
+	return s.Source
+}
+
+// GetCurrentStepPosition returns the value of CurrentStepPosition.
+func (s *GetOnCallSessionOKSession) GetCurrentStepPosition() int {
+	return s.CurrentStepPosition
+}
+
+// GetCurrentRepeat returns the value of CurrentRepeat.
+func (s *GetOnCallSessionOKSession) GetCurrentRepeat() int {
+	return s.CurrentRepeat
+}
+
+// GetIncident returns the value of Incident.
+func (s *GetOnCallSessionOKSession) GetIncident() GetOnCallSessionOKSessionIncident {
+	return s.Incident
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *GetOnCallSessionOKSession) GetEscalationPolicy() NilGetOnCallSessionOKSessionEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// GetTargetUser returns the value of TargetUser.
+func (s *GetOnCallSessionOKSession) GetTargetUser() NilGetOnCallSessionOKSessionTargetUser {
+	return s.TargetUser
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *GetOnCallSessionOKSession) GetTrigger() NilGetOnCallSessionOKSessionTrigger {
+	return s.Trigger
+}
+
+// GetCreatedBy returns the value of CreatedBy.
+func (s *GetOnCallSessionOKSession) GetCreatedBy() NilGetOnCallSessionOKSessionCreatedBy {
+	return s.CreatedBy
+}
+
+// GetAckedBy returns the value of AckedBy.
+func (s *GetOnCallSessionOKSession) GetAckedBy() NilGetOnCallSessionOKSessionAckedBy {
+	return s.AckedBy
+}
+
+// GetAckedAt returns the value of AckedAt.
+func (s *GetOnCallSessionOKSession) GetAckedAt() NilDateTime {
+	return s.AckedAt
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallSessionOKSession) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetActivities returns the value of Activities.
+func (s *GetOnCallSessionOKSession) GetActivities() []GetOnCallSessionOKSessionActivitiesItem {
+	return s.Activities
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSession) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallSessionOKSession) SetStatus(val GetOnCallSessionOKSessionStatus) {
+	s.Status = val
+}
+
+// SetSource sets the value of Source.
+func (s *GetOnCallSessionOKSession) SetSource(val GetOnCallSessionOKSessionSource) {
+	s.Source = val
+}
+
+// SetCurrentStepPosition sets the value of CurrentStepPosition.
+func (s *GetOnCallSessionOKSession) SetCurrentStepPosition(val int) {
+	s.CurrentStepPosition = val
+}
+
+// SetCurrentRepeat sets the value of CurrentRepeat.
+func (s *GetOnCallSessionOKSession) SetCurrentRepeat(val int) {
+	s.CurrentRepeat = val
+}
+
+// SetIncident sets the value of Incident.
+func (s *GetOnCallSessionOKSession) SetIncident(val GetOnCallSessionOKSessionIncident) {
+	s.Incident = val
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *GetOnCallSessionOKSession) SetEscalationPolicy(val NilGetOnCallSessionOKSessionEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+// SetTargetUser sets the value of TargetUser.
+func (s *GetOnCallSessionOKSession) SetTargetUser(val NilGetOnCallSessionOKSessionTargetUser) {
+	s.TargetUser = val
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *GetOnCallSessionOKSession) SetTrigger(val NilGetOnCallSessionOKSessionTrigger) {
+	s.Trigger = val
+}
+
+// SetCreatedBy sets the value of CreatedBy.
+func (s *GetOnCallSessionOKSession) SetCreatedBy(val NilGetOnCallSessionOKSessionCreatedBy) {
+	s.CreatedBy = val
+}
+
+// SetAckedBy sets the value of AckedBy.
+func (s *GetOnCallSessionOKSession) SetAckedBy(val NilGetOnCallSessionOKSessionAckedBy) {
+	s.AckedBy = val
+}
+
+// SetAckedAt sets the value of AckedAt.
+func (s *GetOnCallSessionOKSession) SetAckedAt(val NilDateTime) {
+	s.AckedAt = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallSessionOKSession) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetActivities sets the value of Activities.
+func (s *GetOnCallSessionOKSession) SetActivities(val []GetOnCallSessionOKSessionActivitiesItem) {
+	s.Activities = val
+}
+
+type GetOnCallSessionOKSessionAckedBy struct {
+	Sub       string                                       `json:"sub"`
+	Nickname  string                                       `json:"nickname"`
+	Picture   string                                       `json:"picture"`
+	Status    GetOnCallSessionOKSessionAckedByStatus       `json:"status"`
+	SlackUser NilGetOnCallSessionOKSessionAckedBySlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallSessionOKSessionAckedBy) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallSessionOKSessionAckedBy) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallSessionOKSessionAckedBy) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallSessionOKSessionAckedBy) GetStatus() GetOnCallSessionOKSessionAckedByStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallSessionOKSessionAckedBy) GetSlackUser() NilGetOnCallSessionOKSessionAckedBySlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionAckedBy) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionAckedBy) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallSessionOKSessionAckedBy) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallSessionOKSessionAckedBy) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallSessionOKSessionAckedBy) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallSessionOKSessionAckedBy) SetStatus(val GetOnCallSessionOKSessionAckedByStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallSessionOKSessionAckedBy) SetSlackUser(val NilGetOnCallSessionOKSessionAckedBySlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionAckedBy) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionAckedBy) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallSessionOKSessionAckedBySlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallSessionOKSessionAckedBySlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallSessionOKSessionAckedBySlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallSessionOKSessionAckedByStatus string
+
+const (
+	GetOnCallSessionOKSessionAckedByStatusActive            GetOnCallSessionOKSessionAckedByStatus = "active"
+	GetOnCallSessionOKSessionAckedByStatusInactive          GetOnCallSessionOKSessionAckedByStatus = "inactive"
+	GetOnCallSessionOKSessionAckedByStatusInvited           GetOnCallSessionOKSessionAckedByStatus = "invited"
+	GetOnCallSessionOKSessionAckedByStatusInvitationPending GetOnCallSessionOKSessionAckedByStatus = "invitation_pending"
+	GetOnCallSessionOKSessionAckedByStatusInvitationFailed  GetOnCallSessionOKSessionAckedByStatus = "invitation_failed"
+	GetOnCallSessionOKSessionAckedByStatusDeactivated       GetOnCallSessionOKSessionAckedByStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionAckedByStatus values.
+func (GetOnCallSessionOKSessionAckedByStatus) AllValues() []GetOnCallSessionOKSessionAckedByStatus {
+	return []GetOnCallSessionOKSessionAckedByStatus{
+		GetOnCallSessionOKSessionAckedByStatusActive,
+		GetOnCallSessionOKSessionAckedByStatusInactive,
+		GetOnCallSessionOKSessionAckedByStatusInvited,
+		GetOnCallSessionOKSessionAckedByStatusInvitationPending,
+		GetOnCallSessionOKSessionAckedByStatusInvitationFailed,
+		GetOnCallSessionOKSessionAckedByStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionAckedByStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionAckedByStatusActive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionAckedByStatusInactive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionAckedByStatusInvited:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionAckedByStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionAckedByStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionAckedByStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionAckedByStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionAckedByStatus(data) {
+	case GetOnCallSessionOKSessionAckedByStatusActive:
+		*s = GetOnCallSessionOKSessionAckedByStatusActive
+		return nil
+	case GetOnCallSessionOKSessionAckedByStatusInactive:
+		*s = GetOnCallSessionOKSessionAckedByStatusInactive
+		return nil
+	case GetOnCallSessionOKSessionAckedByStatusInvited:
+		*s = GetOnCallSessionOKSessionAckedByStatusInvited
+		return nil
+	case GetOnCallSessionOKSessionAckedByStatusInvitationPending:
+		*s = GetOnCallSessionOKSessionAckedByStatusInvitationPending
+		return nil
+	case GetOnCallSessionOKSessionAckedByStatusInvitationFailed:
+		*s = GetOnCallSessionOKSessionAckedByStatusInvitationFailed
+		return nil
+	case GetOnCallSessionOKSessionAckedByStatusDeactivated:
+		*s = GetOnCallSessionOKSessionAckedByStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionActivitiesItem struct {
+	UUID string `json:"uuid"`
+	//  - session_created: セッションが始まった
+	//  - call_started: user に架電した
+	//  - call_connected: user が電話に出た
+	//  - dtmf_received: user がボタンを押した（押した内容は dtmf_action）
+	//  - call_timeout: user が時間内に応答しなかった
+	//  - acked: user が応答した
+	//  - user_skipped: user を飛ばした（理由は skip_reason）
+	//  - team_exhausted: team に架電できる人がいなくなった
+	//  - team_changed: 次の team に移った（user は前の team で最後に架電した相手）
+	//  - session_repeating: エスカレーションを最初からやり直した
+	//  - session_exhausted: 誰も応答しないまま終わった
+	//  - session_cancelled: 取り消された
+	ActivityType GetOnCallSessionOKSessionActivitiesItemActivityType `json:"activity_type"`
+	OccurredAt   time.Time                                           `json:"occurred_at"`
+	// 架電した相手などのユーザー。ユーザーに関わらない activity
+	// や、ユーザーが削除されたときは null.
+	User NilGetOnCallSessionOKSessionActivitiesItemUser `json:"user"`
+	// 架電したときのオンコールのチーム。チームに関わらない activity
+	// や、チームが削除されたときは null.
+	Team NilGetOnCallSessionOKSessionActivitiesItemTeam `json:"team"`
+	// Dtmf_received のとき、押したボタンの意味。acknowledged は応答、escalated
+	// は次の人へのエスカレーション、ignored は無視.
+	DtmfAction NilGetOnCallSessionOKSessionActivitiesItemDtmfAction `json:"dtmf_action"`
+	// User_skipped のとき、飛ばした理由.
+	SkipReason NilGetOnCallSessionOKSessionActivitiesItemSkipReason `json:"skip_reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetActivityType returns the value of ActivityType.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetActivityType() GetOnCallSessionOKSessionActivitiesItemActivityType {
+	return s.ActivityType
+}
+
+// GetOccurredAt returns the value of OccurredAt.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetOccurredAt() time.Time {
+	return s.OccurredAt
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetUser() NilGetOnCallSessionOKSessionActivitiesItemUser {
+	return s.User
+}
+
+// GetTeam returns the value of Team.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetTeam() NilGetOnCallSessionOKSessionActivitiesItemTeam {
+	return s.Team
+}
+
+// GetDtmfAction returns the value of DtmfAction.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetDtmfAction() NilGetOnCallSessionOKSessionActivitiesItemDtmfAction {
+	return s.DtmfAction
+}
+
+// GetSkipReason returns the value of SkipReason.
+func (s *GetOnCallSessionOKSessionActivitiesItem) GetSkipReason() NilGetOnCallSessionOKSessionActivitiesItemSkipReason {
+	return s.SkipReason
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetActivityType sets the value of ActivityType.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetActivityType(val GetOnCallSessionOKSessionActivitiesItemActivityType) {
+	s.ActivityType = val
+}
+
+// SetOccurredAt sets the value of OccurredAt.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetOccurredAt(val time.Time) {
+	s.OccurredAt = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetUser(val NilGetOnCallSessionOKSessionActivitiesItemUser) {
+	s.User = val
+}
+
+// SetTeam sets the value of Team.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetTeam(val NilGetOnCallSessionOKSessionActivitiesItemTeam) {
+	s.Team = val
+}
+
+// SetDtmfAction sets the value of DtmfAction.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetDtmfAction(val NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) {
+	s.DtmfAction = val
+}
+
+// SetSkipReason sets the value of SkipReason.
+func (s *GetOnCallSessionOKSessionActivitiesItem) SetSkipReason(val NilGetOnCallSessionOKSessionActivitiesItemSkipReason) {
+	s.SkipReason = val
+}
+
+// - session_created: セッションが始まった
+// - call_started: user に架電した
+// - call_connected: user が電話に出た
+// - dtmf_received: user がボタンを押した（押した内容は dtmf_action）
+// - call_timeout: user が時間内に応答しなかった
+// - acked: user が応答した
+// - user_skipped: user を飛ばした（理由は skip_reason）
+// - team_exhausted: team に架電できる人がいなくなった
+// - team_changed: 次の team に移った（user は前の team で最後に架電した相手）
+// - session_repeating: エスカレーションを最初からやり直した
+// - session_exhausted: 誰も応答しないまま終わった
+// - session_cancelled: 取り消された
+type GetOnCallSessionOKSessionActivitiesItemActivityType string
+
+const (
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCreated   GetOnCallSessionOKSessionActivitiesItemActivityType = "session_created"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeCallStarted      GetOnCallSessionOKSessionActivitiesItemActivityType = "call_started"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeCallConnected    GetOnCallSessionOKSessionActivitiesItemActivityType = "call_connected"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeDtmfReceived     GetOnCallSessionOKSessionActivitiesItemActivityType = "dtmf_received"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeCallTimeout      GetOnCallSessionOKSessionActivitiesItemActivityType = "call_timeout"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeAcked            GetOnCallSessionOKSessionActivitiesItemActivityType = "acked"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeUserSkipped      GetOnCallSessionOKSessionActivitiesItemActivityType = "user_skipped"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamExhausted    GetOnCallSessionOKSessionActivitiesItemActivityType = "team_exhausted"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamChanged      GetOnCallSessionOKSessionActivitiesItemActivityType = "team_changed"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionRepeating GetOnCallSessionOKSessionActivitiesItemActivityType = "session_repeating"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionExhausted GetOnCallSessionOKSessionActivitiesItemActivityType = "session_exhausted"
+	GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCancelled GetOnCallSessionOKSessionActivitiesItemActivityType = "session_cancelled"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionActivitiesItemActivityType values.
+func (GetOnCallSessionOKSessionActivitiesItemActivityType) AllValues() []GetOnCallSessionOKSessionActivitiesItemActivityType {
+	return []GetOnCallSessionOKSessionActivitiesItemActivityType{
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCreated,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeCallStarted,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeCallConnected,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeDtmfReceived,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeCallTimeout,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeAcked,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeUserSkipped,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamExhausted,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamChanged,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionRepeating,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionExhausted,
+		GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCancelled,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionActivitiesItemActivityType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCreated:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallStarted:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallConnected:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeDtmfReceived:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallTimeout:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeAcked:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeUserSkipped:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamExhausted:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamChanged:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionRepeating:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionExhausted:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCancelled:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionActivitiesItemActivityType) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionActivitiesItemActivityType(data) {
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCreated:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCreated
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallStarted:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeCallStarted
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallConnected:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeCallConnected
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeDtmfReceived:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeDtmfReceived
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeCallTimeout:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeCallTimeout
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeAcked:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeAcked
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeUserSkipped:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeUserSkipped
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamExhausted:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamExhausted
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamChanged:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeTeamChanged
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionRepeating:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionRepeating
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionExhausted:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionExhausted
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCancelled:
+		*s = GetOnCallSessionOKSessionActivitiesItemActivityTypeSessionCancelled
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionActivitiesItemDtmfAction string
+
+const (
+	GetOnCallSessionOKSessionActivitiesItemDtmfActionAcknowledged GetOnCallSessionOKSessionActivitiesItemDtmfAction = "acknowledged"
+	GetOnCallSessionOKSessionActivitiesItemDtmfActionEscalated    GetOnCallSessionOKSessionActivitiesItemDtmfAction = "escalated"
+	GetOnCallSessionOKSessionActivitiesItemDtmfActionIgnored      GetOnCallSessionOKSessionActivitiesItemDtmfAction = "ignored"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionActivitiesItemDtmfAction values.
+func (GetOnCallSessionOKSessionActivitiesItemDtmfAction) AllValues() []GetOnCallSessionOKSessionActivitiesItemDtmfAction {
+	return []GetOnCallSessionOKSessionActivitiesItemDtmfAction{
+		GetOnCallSessionOKSessionActivitiesItemDtmfActionAcknowledged,
+		GetOnCallSessionOKSessionActivitiesItemDtmfActionEscalated,
+		GetOnCallSessionOKSessionActivitiesItemDtmfActionIgnored,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionActivitiesItemDtmfAction) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionAcknowledged:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionEscalated:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionIgnored:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionActivitiesItemDtmfAction) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionActivitiesItemDtmfAction(data) {
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionAcknowledged:
+		*s = GetOnCallSessionOKSessionActivitiesItemDtmfActionAcknowledged
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionEscalated:
+		*s = GetOnCallSessionOKSessionActivitiesItemDtmfActionEscalated
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemDtmfActionIgnored:
+		*s = GetOnCallSessionOKSessionActivitiesItemDtmfActionIgnored
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionActivitiesItemSkipReason string
+
+const (
+	GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberMissing    GetOnCallSessionOKSessionActivitiesItemSkipReason = "phone_number_missing"
+	GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberUnverified GetOnCallSessionOKSessionActivitiesItemSkipReason = "phone_number_unverified"
+	GetOnCallSessionOKSessionActivitiesItemSkipReasonCallInitiationFailed  GetOnCallSessionOKSessionActivitiesItemSkipReason = "call_initiation_failed"
+	GetOnCallSessionOKSessionActivitiesItemSkipReasonAbsence               GetOnCallSessionOKSessionActivitiesItemSkipReason = "absence"
+	GetOnCallSessionOKSessionActivitiesItemSkipReasonCallFailed            GetOnCallSessionOKSessionActivitiesItemSkipReason = "call_failed"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionActivitiesItemSkipReason values.
+func (GetOnCallSessionOKSessionActivitiesItemSkipReason) AllValues() []GetOnCallSessionOKSessionActivitiesItemSkipReason {
+	return []GetOnCallSessionOKSessionActivitiesItemSkipReason{
+		GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberMissing,
+		GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberUnverified,
+		GetOnCallSessionOKSessionActivitiesItemSkipReasonCallInitiationFailed,
+		GetOnCallSessionOKSessionActivitiesItemSkipReasonAbsence,
+		GetOnCallSessionOKSessionActivitiesItemSkipReasonCallFailed,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionActivitiesItemSkipReason) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberMissing:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberUnverified:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonCallInitiationFailed:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonAbsence:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonCallFailed:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionActivitiesItemSkipReason) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionActivitiesItemSkipReason(data) {
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberMissing:
+		*s = GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberMissing
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberUnverified:
+		*s = GetOnCallSessionOKSessionActivitiesItemSkipReasonPhoneNumberUnverified
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonCallInitiationFailed:
+		*s = GetOnCallSessionOKSessionActivitiesItemSkipReasonCallInitiationFailed
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonAbsence:
+		*s = GetOnCallSessionOKSessionActivitiesItemSkipReasonAbsence
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemSkipReasonCallFailed:
+		*s = GetOnCallSessionOKSessionActivitiesItemSkipReasonCallFailed
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionActivitiesItemTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSessionActivitiesItemTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallSessionOKSessionActivitiesItemTeam) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSessionActivitiesItemTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallSessionOKSessionActivitiesItemTeam) SetName(val string) {
+	s.Name = val
+}
+
+type GetOnCallSessionOKSessionActivitiesItemUser struct {
+	Sub       string                                                  `json:"sub"`
+	Nickname  string                                                  `json:"nickname"`
+	Picture   string                                                  `json:"picture"`
+	Status    GetOnCallSessionOKSessionActivitiesItemUserStatus       `json:"status"`
+	SlackUser NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetStatus() GetOnCallSessionOKSessionActivitiesItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetSlackUser() NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetStatus(val GetOnCallSessionOKSessionActivitiesItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetSlackUser(val NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionActivitiesItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallSessionOKSessionActivitiesItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallSessionOKSessionActivitiesItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallSessionOKSessionActivitiesItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallSessionOKSessionActivitiesItemUserStatus string
+
+const (
+	GetOnCallSessionOKSessionActivitiesItemUserStatusActive            GetOnCallSessionOKSessionActivitiesItemUserStatus = "active"
+	GetOnCallSessionOKSessionActivitiesItemUserStatusInactive          GetOnCallSessionOKSessionActivitiesItemUserStatus = "inactive"
+	GetOnCallSessionOKSessionActivitiesItemUserStatusInvited           GetOnCallSessionOKSessionActivitiesItemUserStatus = "invited"
+	GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationPending GetOnCallSessionOKSessionActivitiesItemUserStatus = "invitation_pending"
+	GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationFailed  GetOnCallSessionOKSessionActivitiesItemUserStatus = "invitation_failed"
+	GetOnCallSessionOKSessionActivitiesItemUserStatusDeactivated       GetOnCallSessionOKSessionActivitiesItemUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionActivitiesItemUserStatus values.
+func (GetOnCallSessionOKSessionActivitiesItemUserStatus) AllValues() []GetOnCallSessionOKSessionActivitiesItemUserStatus {
+	return []GetOnCallSessionOKSessionActivitiesItemUserStatus{
+		GetOnCallSessionOKSessionActivitiesItemUserStatusActive,
+		GetOnCallSessionOKSessionActivitiesItemUserStatusInactive,
+		GetOnCallSessionOKSessionActivitiesItemUserStatusInvited,
+		GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationPending,
+		GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationFailed,
+		GetOnCallSessionOKSessionActivitiesItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionActivitiesItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionActivitiesItemUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionActivitiesItemUserStatus(data) {
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusActive:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusActive
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInactive:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusInactive
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvited:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusInvited
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationPending:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationPending
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationFailed:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusInvitationFailed
+		return nil
+	case GetOnCallSessionOKSessionActivitiesItemUserStatusDeactivated:
+		*s = GetOnCallSessionOKSessionActivitiesItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionCreatedBy struct {
+	Sub       string                                         `json:"sub"`
+	Nickname  string                                         `json:"nickname"`
+	Picture   string                                         `json:"picture"`
+	Status    GetOnCallSessionOKSessionCreatedByStatus       `json:"status"`
+	SlackUser NilGetOnCallSessionOKSessionCreatedBySlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetStatus() GetOnCallSessionOKSessionCreatedByStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetSlackUser() NilGetOnCallSessionOKSessionCreatedBySlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionCreatedBy) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetStatus(val GetOnCallSessionOKSessionCreatedByStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetSlackUser(val NilGetOnCallSessionOKSessionCreatedBySlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionCreatedBy) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallSessionOKSessionCreatedBySlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallSessionOKSessionCreatedBySlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallSessionOKSessionCreatedBySlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallSessionOKSessionCreatedByStatus string
+
+const (
+	GetOnCallSessionOKSessionCreatedByStatusActive            GetOnCallSessionOKSessionCreatedByStatus = "active"
+	GetOnCallSessionOKSessionCreatedByStatusInactive          GetOnCallSessionOKSessionCreatedByStatus = "inactive"
+	GetOnCallSessionOKSessionCreatedByStatusInvited           GetOnCallSessionOKSessionCreatedByStatus = "invited"
+	GetOnCallSessionOKSessionCreatedByStatusInvitationPending GetOnCallSessionOKSessionCreatedByStatus = "invitation_pending"
+	GetOnCallSessionOKSessionCreatedByStatusInvitationFailed  GetOnCallSessionOKSessionCreatedByStatus = "invitation_failed"
+	GetOnCallSessionOKSessionCreatedByStatusDeactivated       GetOnCallSessionOKSessionCreatedByStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionCreatedByStatus values.
+func (GetOnCallSessionOKSessionCreatedByStatus) AllValues() []GetOnCallSessionOKSessionCreatedByStatus {
+	return []GetOnCallSessionOKSessionCreatedByStatus{
+		GetOnCallSessionOKSessionCreatedByStatusActive,
+		GetOnCallSessionOKSessionCreatedByStatusInactive,
+		GetOnCallSessionOKSessionCreatedByStatusInvited,
+		GetOnCallSessionOKSessionCreatedByStatusInvitationPending,
+		GetOnCallSessionOKSessionCreatedByStatusInvitationFailed,
+		GetOnCallSessionOKSessionCreatedByStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionCreatedByStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionCreatedByStatusActive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionCreatedByStatusInactive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvited:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionCreatedByStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionCreatedByStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionCreatedByStatus(data) {
+	case GetOnCallSessionOKSessionCreatedByStatusActive:
+		*s = GetOnCallSessionOKSessionCreatedByStatusActive
+		return nil
+	case GetOnCallSessionOKSessionCreatedByStatusInactive:
+		*s = GetOnCallSessionOKSessionCreatedByStatusInactive
+		return nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvited:
+		*s = GetOnCallSessionOKSessionCreatedByStatusInvited
+		return nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvitationPending:
+		*s = GetOnCallSessionOKSessionCreatedByStatusInvitationPending
+		return nil
+	case GetOnCallSessionOKSessionCreatedByStatusInvitationFailed:
+		*s = GetOnCallSessionOKSessionCreatedByStatusInvitationFailed
+		return nil
+	case GetOnCallSessionOKSessionCreatedByStatusDeactivated:
+		*s = GetOnCallSessionOKSessionCreatedByStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSessionEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallSessionOKSessionEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSessionEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallSessionOKSessionEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+type GetOnCallSessionOKSessionIncident struct {
+	UUID string `json:"uuid"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSessionIncident) GetUUID() string {
+	return s.UUID
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSessionIncident) SetUUID(val string) {
+	s.UUID = val
+}
+
+// オンコールを呼び出した起点.
+type GetOnCallSessionOKSessionSource string
+
+const (
+	GetOnCallSessionOKSessionSourceIntegration GetOnCallSessionOKSessionSource = "integration"
+	GetOnCallSessionOKSessionSourceSlack       GetOnCallSessionOKSessionSource = "slack"
+	GetOnCallSessionOKSessionSourceWeb         GetOnCallSessionOKSessionSource = "web"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionSource values.
+func (GetOnCallSessionOKSessionSource) AllValues() []GetOnCallSessionOKSessionSource {
+	return []GetOnCallSessionOKSessionSource{
+		GetOnCallSessionOKSessionSourceIntegration,
+		GetOnCallSessionOKSessionSourceSlack,
+		GetOnCallSessionOKSessionSourceWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionSource) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionSourceIntegration:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionSourceSlack:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionSourceWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionSource) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionSource(data) {
+	case GetOnCallSessionOKSessionSourceIntegration:
+		*s = GetOnCallSessionOKSessionSourceIntegration
+		return nil
+	case GetOnCallSessionOKSessionSourceSlack:
+		*s = GetOnCallSessionOKSessionSourceSlack
+		return nil
+	case GetOnCallSessionOKSessionSourceWeb:
+		*s = GetOnCallSessionOKSessionSourceWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Running は架電中、repeating
+// はエスカレーションを最初からやり直している途中、acked
+// は誰かが応答した、 exhausted は誰も応答しないまま終わった、cancelled
+// は取り消された.
+type GetOnCallSessionOKSessionStatus string
+
+const (
+	GetOnCallSessionOKSessionStatusRunning   GetOnCallSessionOKSessionStatus = "running"
+	GetOnCallSessionOKSessionStatusRepeating GetOnCallSessionOKSessionStatus = "repeating"
+	GetOnCallSessionOKSessionStatusAcked     GetOnCallSessionOKSessionStatus = "acked"
+	GetOnCallSessionOKSessionStatusExhausted GetOnCallSessionOKSessionStatus = "exhausted"
+	GetOnCallSessionOKSessionStatusCancelled GetOnCallSessionOKSessionStatus = "cancelled"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionStatus values.
+func (GetOnCallSessionOKSessionStatus) AllValues() []GetOnCallSessionOKSessionStatus {
+	return []GetOnCallSessionOKSessionStatus{
+		GetOnCallSessionOKSessionStatusRunning,
+		GetOnCallSessionOKSessionStatusRepeating,
+		GetOnCallSessionOKSessionStatusAcked,
+		GetOnCallSessionOKSessionStatusExhausted,
+		GetOnCallSessionOKSessionStatusCancelled,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionStatusRunning:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionStatusRepeating:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionStatusAcked:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionStatusExhausted:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionStatusCancelled:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionStatus(data) {
+	case GetOnCallSessionOKSessionStatusRunning:
+		*s = GetOnCallSessionOKSessionStatusRunning
+		return nil
+	case GetOnCallSessionOKSessionStatusRepeating:
+		*s = GetOnCallSessionOKSessionStatusRepeating
+		return nil
+	case GetOnCallSessionOKSessionStatusAcked:
+		*s = GetOnCallSessionOKSessionStatusAcked
+		return nil
+	case GetOnCallSessionOKSessionStatusExhausted:
+		*s = GetOnCallSessionOKSessionStatusExhausted
+		return nil
+	case GetOnCallSessionOKSessionStatusCancelled:
+		*s = GetOnCallSessionOKSessionStatusCancelled
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionTargetUser struct {
+	Sub       string                                          `json:"sub"`
+	Nickname  string                                          `json:"nickname"`
+	Picture   string                                          `json:"picture"`
+	Status    GetOnCallSessionOKSessionTargetUserStatus       `json:"status"`
+	SlackUser NilGetOnCallSessionOKSessionTargetUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallSessionOKSessionTargetUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallSessionOKSessionTargetUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallSessionOKSessionTargetUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallSessionOKSessionTargetUser) GetStatus() GetOnCallSessionOKSessionTargetUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallSessionOKSessionTargetUser) GetSlackUser() NilGetOnCallSessionOKSessionTargetUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionTargetUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionTargetUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallSessionOKSessionTargetUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallSessionOKSessionTargetUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallSessionOKSessionTargetUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallSessionOKSessionTargetUser) SetStatus(val GetOnCallSessionOKSessionTargetUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallSessionOKSessionTargetUser) SetSlackUser(val NilGetOnCallSessionOKSessionTargetUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallSessionOKSessionTargetUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallSessionOKSessionTargetUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallSessionOKSessionTargetUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallSessionOKSessionTargetUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallSessionOKSessionTargetUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallSessionOKSessionTargetUserStatus string
+
+const (
+	GetOnCallSessionOKSessionTargetUserStatusActive            GetOnCallSessionOKSessionTargetUserStatus = "active"
+	GetOnCallSessionOKSessionTargetUserStatusInactive          GetOnCallSessionOKSessionTargetUserStatus = "inactive"
+	GetOnCallSessionOKSessionTargetUserStatusInvited           GetOnCallSessionOKSessionTargetUserStatus = "invited"
+	GetOnCallSessionOKSessionTargetUserStatusInvitationPending GetOnCallSessionOKSessionTargetUserStatus = "invitation_pending"
+	GetOnCallSessionOKSessionTargetUserStatusInvitationFailed  GetOnCallSessionOKSessionTargetUserStatus = "invitation_failed"
+	GetOnCallSessionOKSessionTargetUserStatusDeactivated       GetOnCallSessionOKSessionTargetUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallSessionOKSessionTargetUserStatus values.
+func (GetOnCallSessionOKSessionTargetUserStatus) AllValues() []GetOnCallSessionOKSessionTargetUserStatus {
+	return []GetOnCallSessionOKSessionTargetUserStatus{
+		GetOnCallSessionOKSessionTargetUserStatusActive,
+		GetOnCallSessionOKSessionTargetUserStatusInactive,
+		GetOnCallSessionOKSessionTargetUserStatusInvited,
+		GetOnCallSessionOKSessionTargetUserStatusInvitationPending,
+		GetOnCallSessionOKSessionTargetUserStatusInvitationFailed,
+		GetOnCallSessionOKSessionTargetUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallSessionOKSessionTargetUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallSessionOKSessionTargetUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionTargetUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallSessionOKSessionTargetUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallSessionOKSessionTargetUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallSessionOKSessionTargetUserStatus(data) {
+	case GetOnCallSessionOKSessionTargetUserStatusActive:
+		*s = GetOnCallSessionOKSessionTargetUserStatusActive
+		return nil
+	case GetOnCallSessionOKSessionTargetUserStatusInactive:
+		*s = GetOnCallSessionOKSessionTargetUserStatusInactive
+		return nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvited:
+		*s = GetOnCallSessionOKSessionTargetUserStatusInvited
+		return nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvitationPending:
+		*s = GetOnCallSessionOKSessionTargetUserStatusInvitationPending
+		return nil
+	case GetOnCallSessionOKSessionTargetUserStatusInvitationFailed:
+		*s = GetOnCallSessionOKSessionTargetUserStatusInvitationFailed
+		return nil
+	case GetOnCallSessionOKSessionTargetUserStatusDeactivated:
+		*s = GetOnCallSessionOKSessionTargetUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallSessionOKSessionTrigger struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallSessionOKSessionTrigger) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallSessionOKSessionTrigger) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallSessionOKSessionTrigger) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallSessionOKSessionTrigger) SetName(val string) {
+	s.Name = val
+}
+
+type GetOnCallSessionPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallSessionPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallSessionPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallSessionPaymentRequired) getOnCallSessionRes() {}
+
+type GetOnCallSessionUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallSessionUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallSessionUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallSessionUnauthorized) getOnCallSessionRes() {}
+
+type GetOnCallTeamNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallTeamNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallTeamNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallTeamNotFound) getOnCallTeamRes() {}
+
+type GetOnCallTeamOK struct {
+	Team GetOnCallTeamOKTeam `json:"team"`
+}
+
+// GetTeam returns the value of Team.
+func (s *GetOnCallTeamOK) GetTeam() GetOnCallTeamOKTeam {
+	return s.Team
+}
+
+// SetTeam sets the value of Team.
+func (s *GetOnCallTeamOK) SetTeam(val GetOnCallTeamOKTeam) {
+	s.Team = val
+}
+
+func (*GetOnCallTeamOK) getOnCallTeamRes() {}
+
+type GetOnCallTeamOKTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+	// 並び順（position）が最初のローテーション。ローテーションが設定されていないチームでは
+	// null になる。 1
+	// つのチームに複数のローテーション（平日・土日など）を持てるため、すべてを扱うときは
+	// rotations を使う.
+	Rotation NilGetOnCallTeamOKTeamRotation `json:"rotation"`
+	// チームのローテーション。position の昇順.
+	Rotations []GetOnCallTeamOKTeamRotationsItem `json:"rotations"`
+	// このチームで今呼ばれる人。今有効なローテーションのうち、position
+	// が最も小さいものの当番。 そのローテーションの当番が null
+	// のとき（参加者が全員不在など）は、ほかのローテーションには回さず
+	// null になる。 どのローテーションも有効でないときも null になる.
+	OnDutyParticipant NilGetOnCallTeamOKTeamOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallTeamOKTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *GetOnCallTeamOKTeam) GetColor() string {
+	return s.Color
+}
+
+// GetRotation returns the value of Rotation.
+func (s *GetOnCallTeamOKTeam) GetRotation() NilGetOnCallTeamOKTeamRotation {
+	return s.Rotation
+}
+
+// GetRotations returns the value of Rotations.
+func (s *GetOnCallTeamOKTeam) GetRotations() []GetOnCallTeamOKTeamRotationsItem {
+	return s.Rotations
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeam) GetOnDutyParticipant() NilGetOnCallTeamOKTeamOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallTeamOKTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *GetOnCallTeamOKTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// SetRotation sets the value of Rotation.
+func (s *GetOnCallTeamOKTeam) SetRotation(val NilGetOnCallTeamOKTeamRotation) {
+	s.Rotation = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *GetOnCallTeamOKTeam) SetRotations(val []GetOnCallTeamOKTeamRotationsItem) {
+	s.Rotations = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeam) SetOnDutyParticipant(val NilGetOnCallTeamOKTeamOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type GetOnCallTeamOKTeamOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role GetOnCallTeamOKTeamOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                     `json:"absent"`
+	User   GetOnCallTeamOKTeamOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) GetRole() GetOnCallTeamOKTeamOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) GetUser() GetOnCallTeamOKTeamOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) SetRole(val GetOnCallTeamOKTeamOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallTeamOKTeamOnDutyParticipant) SetUser(val GetOnCallTeamOKTeamOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type GetOnCallTeamOKTeamOnDutyParticipantRole string
+
+const (
+	GetOnCallTeamOKTeamOnDutyParticipantRoleMember     GetOnCallTeamOKTeamOnDutyParticipantRole = "member"
+	GetOnCallTeamOKTeamOnDutyParticipantRoleSubstitute GetOnCallTeamOKTeamOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamOnDutyParticipantRole values.
+func (GetOnCallTeamOKTeamOnDutyParticipantRole) AllValues() []GetOnCallTeamOKTeamOnDutyParticipantRole {
+	return []GetOnCallTeamOKTeamOnDutyParticipantRole{
+		GetOnCallTeamOKTeamOnDutyParticipantRoleMember,
+		GetOnCallTeamOKTeamOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamOnDutyParticipantRole(data) {
+	case GetOnCallTeamOKTeamOnDutyParticipantRoleMember:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantRoleMember
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantRoleSubstitute:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamOnDutyParticipantUser struct {
+	Sub       string                                               `json:"sub"`
+	Nickname  string                                               `json:"nickname"`
+	Picture   string                                               `json:"picture"`
+	Status    GetOnCallTeamOKTeamOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetStatus() GetOnCallTeamOKTeamOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetSlackUser() NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetStatus(val GetOnCallTeamOKTeamOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetSlackUser(val NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallTeamOKTeamOnDutyParticipantUserStatus string
+
+const (
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusActive            GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "active"
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusInactive          GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "inactive"
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvited           GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "invited"
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "invitation_pending"
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed  GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "invitation_failed"
+	GetOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated       GetOnCallTeamOKTeamOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamOnDutyParticipantUserStatus values.
+func (GetOnCallTeamOKTeamOnDutyParticipantUserStatus) AllValues() []GetOnCallTeamOKTeamOnDutyParticipantUserStatus {
+	return []GetOnCallTeamOKTeamOnDutyParticipantUserStatus{
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusActive,
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusInactive,
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvited,
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending,
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed,
+		GetOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamOnDutyParticipantUserStatus(data) {
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusActive:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusActive
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInactive:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusInactive
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvited:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvited
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case GetOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated:
+		*s = GetOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotation struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []GetOnCallTeamOKTeamRotationTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []GetOnCallTeamOKTeamRotationParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilGetOnCallTeamOKTeamRotationOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotation) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotation) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *GetOnCallTeamOKTeamRotation) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *GetOnCallTeamOKTeamRotation) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *GetOnCallTeamOKTeamRotation) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *GetOnCallTeamOKTeamRotation) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *GetOnCallTeamOKTeamRotation) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *GetOnCallTeamOKTeamRotation) GetTimeSlots() []GetOnCallTeamOKTeamRotationTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *GetOnCallTeamOKTeamRotation) GetParticipants() []GetOnCallTeamOKTeamRotationParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeamRotation) GetOnDutyParticipant() NilGetOnCallTeamOKTeamRotationOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotation) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotation) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *GetOnCallTeamOKTeamRotation) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *GetOnCallTeamOKTeamRotation) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *GetOnCallTeamOKTeamRotation) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *GetOnCallTeamOKTeamRotation) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *GetOnCallTeamOKTeamRotation) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *GetOnCallTeamOKTeamRotation) SetTimeSlots(val []GetOnCallTeamOKTeamRotationTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *GetOnCallTeamOKTeamRotation) SetParticipants(val []GetOnCallTeamOKTeamRotationParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeamRotation) SetOnDutyParticipant(val NilGetOnCallTeamOKTeamRotationOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type GetOnCallTeamOKTeamRotationOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role GetOnCallTeamOKTeamRotationOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                             `json:"absent"`
+	User   GetOnCallTeamOKTeamRotationOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) GetRole() GetOnCallTeamOKTeamRotationOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) GetUser() GetOnCallTeamOKTeamRotationOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) SetRole(val GetOnCallTeamOKTeamRotationOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipant) SetUser(val GetOnCallTeamOKTeamRotationOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type GetOnCallTeamOKTeamRotationOnDutyParticipantRole string
+
+const (
+	GetOnCallTeamOKTeamRotationOnDutyParticipantRoleMember     GetOnCallTeamOKTeamRotationOnDutyParticipantRole = "member"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute GetOnCallTeamOKTeamRotationOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationOnDutyParticipantRole values.
+func (GetOnCallTeamOKTeamRotationOnDutyParticipantRole) AllValues() []GetOnCallTeamOKTeamRotationOnDutyParticipantRole {
+	return []GetOnCallTeamOKTeamRotationOnDutyParticipantRole{
+		GetOnCallTeamOKTeamRotationOnDutyParticipantRoleMember,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationOnDutyParticipantRole(data) {
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantRoleMember:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantRoleMember
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationOnDutyParticipantUser struct {
+	Sub       string                                                       `json:"sub"`
+	Nickname  string                                                       `json:"nickname"`
+	Picture   string                                                       `json:"picture"`
+	Status    GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetStatus() GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetSlackUser() NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetStatus(val GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetSlackUser(val NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus string
+
+const (
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive            GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "active"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive          GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "inactive"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited           GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invited"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invitation_pending"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed  GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invitation_failed"
+	GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated       GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus values.
+func (GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) AllValues() []GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus {
+	return []GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus{
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed,
+		GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatus(data) {
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated:
+		*s = GetOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role GetOnCallTeamOKTeamRotationParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                            `json:"absent"`
+	User   GetOnCallTeamOKTeamRotationParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) GetRole() GetOnCallTeamOKTeamRotationParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) GetUser() GetOnCallTeamOKTeamRotationParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) SetRole(val GetOnCallTeamOKTeamRotationParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItem) SetUser(val GetOnCallTeamOKTeamRotationParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type GetOnCallTeamOKTeamRotationParticipantsItemRole string
+
+const (
+	GetOnCallTeamOKTeamRotationParticipantsItemRoleMember     GetOnCallTeamOKTeamRotationParticipantsItemRole = "member"
+	GetOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute GetOnCallTeamOKTeamRotationParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationParticipantsItemRole values.
+func (GetOnCallTeamOKTeamRotationParticipantsItemRole) AllValues() []GetOnCallTeamOKTeamRotationParticipantsItemRole {
+	return []GetOnCallTeamOKTeamRotationParticipantsItemRole{
+		GetOnCallTeamOKTeamRotationParticipantsItemRoleMember,
+		GetOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationParticipantsItemRoleMember:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationParticipantsItemRole(data) {
+	case GetOnCallTeamOKTeamRotationParticipantsItemRoleMember:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemRoleMember
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationParticipantsItemUser struct {
+	Sub       string                                                      `json:"sub"`
+	Nickname  string                                                      `json:"nickname"`
+	Picture   string                                                      `json:"picture"`
+	Status    GetOnCallTeamOKTeamRotationParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetStatus() GetOnCallTeamOKTeamRotationParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetSlackUser() NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetStatus(val GetOnCallTeamOKTeamRotationParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetSlackUser(val NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallTeamOKTeamRotationParticipantsItemUserStatus string
+
+const (
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusActive            GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "active"
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive          GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "inactive"
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited           GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invited"
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invitation_pending"
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed  GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invitation_failed"
+	GetOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated       GetOnCallTeamOKTeamRotationParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationParticipantsItemUserStatus values.
+func (GetOnCallTeamOKTeamRotationParticipantsItemUserStatus) AllValues() []GetOnCallTeamOKTeamRotationParticipantsItemUserStatus {
+	return []GetOnCallTeamOKTeamRotationParticipantsItemUserStatus{
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusActive,
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive,
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited,
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending,
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed,
+		GetOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationParticipantsItemUserStatus(data) {
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusActive:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusActive
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed
+		return nil
+	case GetOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated:
+		*s = GetOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *GetOnCallTeamOKTeamRotationTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type GetOnCallTeamOKTeamRotationsItem struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []GetOnCallTeamOKTeamRotationsItemTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []GetOnCallTeamOKTeamRotationsItemParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetTimeSlots() []GetOnCallTeamOKTeamRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetParticipants() []GetOnCallTeamOKTeamRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeamRotationsItem) GetOnDutyParticipant() NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetTimeSlots(val []GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetParticipants(val []GetOnCallTeamOKTeamRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *GetOnCallTeamOKTeamRotationsItem) SetOnDutyParticipant(val NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type GetOnCallTeamOKTeamRotationsItemOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                  `json:"absent"`
+	User   GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetRole() GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetUser() GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetRole(val GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetUser(val GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole string
+
+const (
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember     GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole = "member"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole values.
+func (GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) AllValues() []GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole {
+	return []GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole{
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRole(data) {
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser struct {
+	Sub       string                                                            `json:"sub"`
+	Nickname  string                                                            `json:"nickname"`
+	Picture   string                                                            `json:"picture"`
+	Status    GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetStatus() GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetSlackUser() NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetStatus(val GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetSlackUser(val NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus string
+
+const (
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive            GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "active"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive          GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "inactive"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited           GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invited"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invitation_pending"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed  GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invitation_failed"
+	GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated       GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus values.
+func (GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) AllValues() []GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus {
+	return []GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus{
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed,
+		GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus(data) {
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		*s = GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationsItemParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role GetOnCallTeamOKTeamRotationsItemParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                 `json:"absent"`
+	User   GetOnCallTeamOKTeamRotationsItemParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) GetRole() GetOnCallTeamOKTeamRotationsItemParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) GetUser() GetOnCallTeamOKTeamRotationsItemParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) SetRole(val GetOnCallTeamOKTeamRotationsItemParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItem) SetUser(val GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type GetOnCallTeamOKTeamRotationsItemParticipantsItemRole string
+
+const (
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember     GetOnCallTeamOKTeamRotationsItemParticipantsItemRole = "member"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute GetOnCallTeamOKTeamRotationsItemParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationsItemParticipantsItemRole values.
+func (GetOnCallTeamOKTeamRotationsItemParticipantsItemRole) AllValues() []GetOnCallTeamOKTeamRotationsItemParticipantsItemRole {
+	return []GetOnCallTeamOKTeamRotationsItemParticipantsItemRole{
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationsItemParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationsItemParticipantsItemRole(data) {
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationsItemParticipantsItemUser struct {
+	Sub       string                                                           `json:"sub"`
+	Nickname  string                                                           `json:"nickname"`
+	Picture   string                                                           `json:"picture"`
+	Status    GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetStatus() GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetSlackUser() NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetStatus(val GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetSlackUser(val NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus string
+
+const (
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive            GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "active"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive          GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "inactive"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited           GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invited"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invitation_pending"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed  GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invitation_failed"
+	GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated       GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus values.
+func (GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) AllValues() []GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus {
+	return []GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus{
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed,
+		GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus(data) {
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed
+		return nil
+	case GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		*s = GetOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTeamOKTeamRotationsItemTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *GetOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type GetOnCallTeamPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallTeamPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallTeamPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallTeamPaymentRequired) getOnCallTeamRes() {}
+
+type GetOnCallTeamUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallTeamUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallTeamUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallTeamUnauthorized) getOnCallTeamRes() {}
+
+type GetOnCallTriggerNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallTriggerNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallTriggerNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallTriggerNotFound) getOnCallTriggerRes() {}
+
+type GetOnCallTriggerOK struct {
+	Trigger GetOnCallTriggerOKTrigger `json:"trigger"`
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *GetOnCallTriggerOK) GetTrigger() GetOnCallTriggerOKTrigger {
+	return s.Trigger
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *GetOnCallTriggerOK) SetTrigger(val GetOnCallTriggerOKTrigger) {
+	s.Trigger = val
+}
+
+func (*GetOnCallTriggerOK) getOnCallTriggerRes() {}
+
+type GetOnCallTriggerOKTrigger struct {
+	UUID    string `json:"uuid"`
+	Name    string `json:"name"`
+	Enabled bool   `json:"enabled"`
+	// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+	EventType GetOnCallTriggerOKTriggerEventType `json:"event_type"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []GetOnCallTriggerOKTriggerSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元.
+	SourceFilters []GetOnCallTriggerOKTriggerSourceFiltersItem `json:"source_filters"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数.
+	RetryCount int                              `json:"retry_count"`
+	Service    GetOnCallTriggerOKTriggerService `json:"service"`
+	// 呼び出すエスカレーションポリシー.
+	EscalationPolicies []GetOnCallTriggerOKTriggerEscalationPoliciesItem `json:"escalation_policies"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTriggerOKTrigger) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallTriggerOKTrigger) GetName() string {
+	return s.Name
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *GetOnCallTriggerOKTrigger) GetEnabled() bool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *GetOnCallTriggerOKTrigger) GetEventType() GetOnCallTriggerOKTriggerEventType {
+	return s.EventType
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *GetOnCallTriggerOKTrigger) GetSeverityFilters() []GetOnCallTriggerOKTriggerSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *GetOnCallTriggerOKTrigger) GetSourceFilters() []GetOnCallTriggerOKTriggerSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *GetOnCallTriggerOKTrigger) GetRetryCount() int {
+	return s.RetryCount
+}
+
+// GetService returns the value of Service.
+func (s *GetOnCallTriggerOKTrigger) GetService() GetOnCallTriggerOKTriggerService {
+	return s.Service
+}
+
+// GetEscalationPolicies returns the value of EscalationPolicies.
+func (s *GetOnCallTriggerOKTrigger) GetEscalationPolicies() []GetOnCallTriggerOKTriggerEscalationPoliciesItem {
+	return s.EscalationPolicies
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTriggerOKTrigger) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallTriggerOKTrigger) SetName(val string) {
+	s.Name = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *GetOnCallTriggerOKTrigger) SetEnabled(val bool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *GetOnCallTriggerOKTrigger) SetEventType(val GetOnCallTriggerOKTriggerEventType) {
+	s.EventType = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *GetOnCallTriggerOKTrigger) SetSeverityFilters(val []GetOnCallTriggerOKTriggerSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *GetOnCallTriggerOKTrigger) SetSourceFilters(val []GetOnCallTriggerOKTriggerSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *GetOnCallTriggerOKTrigger) SetRetryCount(val int) {
+	s.RetryCount = val
+}
+
+// SetService sets the value of Service.
+func (s *GetOnCallTriggerOKTrigger) SetService(val GetOnCallTriggerOKTriggerService) {
+	s.Service = val
+}
+
+// SetEscalationPolicies sets the value of EscalationPolicies.
+func (s *GetOnCallTriggerOKTrigger) SetEscalationPolicies(val []GetOnCallTriggerOKTriggerEscalationPoliciesItem) {
+	s.EscalationPolicies = val
+}
+
+type GetOnCallTriggerOKTriggerEscalationPoliciesItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallTriggerOKTriggerEscalationPoliciesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallTriggerOKTriggerEscalationPoliciesItem) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallTriggerOKTriggerEscalationPoliciesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallTriggerOKTriggerEscalationPoliciesItem) SetName(val string) {
+	s.Name = val
+}
+
+// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+type GetOnCallTriggerOKTriggerEventType string
+
+const (
+	GetOnCallTriggerOKTriggerEventTypeIncidentCreated GetOnCallTriggerOKTriggerEventType = "incident_created"
+)
+
+// AllValues returns all GetOnCallTriggerOKTriggerEventType values.
+func (GetOnCallTriggerOKTriggerEventType) AllValues() []GetOnCallTriggerOKTriggerEventType {
+	return []GetOnCallTriggerOKTriggerEventType{
+		GetOnCallTriggerOKTriggerEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTriggerOKTriggerEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTriggerOKTriggerEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTriggerOKTriggerEventType) UnmarshalText(data []byte) error {
+	switch GetOnCallTriggerOKTriggerEventType(data) {
+	case GetOnCallTriggerOKTriggerEventTypeIncidentCreated:
+		*s = GetOnCallTriggerOKTriggerEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTriggerOKTriggerService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *GetOnCallTriggerOKTriggerService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *GetOnCallTriggerOKTriggerService) SetName(val string) {
+	s.Name = val
+}
+
+type GetOnCallTriggerOKTriggerSeverityFiltersItem string
+
+const (
+	GetOnCallTriggerOKTriggerSeverityFiltersItemCritical GetOnCallTriggerOKTriggerSeverityFiltersItem = "critical"
+	GetOnCallTriggerOKTriggerSeverityFiltersItemHigh     GetOnCallTriggerOKTriggerSeverityFiltersItem = "high"
+	GetOnCallTriggerOKTriggerSeverityFiltersItemLow      GetOnCallTriggerOKTriggerSeverityFiltersItem = "low"
+	GetOnCallTriggerOKTriggerSeverityFiltersItemInfo     GetOnCallTriggerOKTriggerSeverityFiltersItem = "info"
+	GetOnCallTriggerOKTriggerSeverityFiltersItemUnknown  GetOnCallTriggerOKTriggerSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all GetOnCallTriggerOKTriggerSeverityFiltersItem values.
+func (GetOnCallTriggerOKTriggerSeverityFiltersItem) AllValues() []GetOnCallTriggerOKTriggerSeverityFiltersItem {
+	return []GetOnCallTriggerOKTriggerSeverityFiltersItem{
+		GetOnCallTriggerOKTriggerSeverityFiltersItemCritical,
+		GetOnCallTriggerOKTriggerSeverityFiltersItemHigh,
+		GetOnCallTriggerOKTriggerSeverityFiltersItemLow,
+		GetOnCallTriggerOKTriggerSeverityFiltersItemInfo,
+		GetOnCallTriggerOKTriggerSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTriggerOKTriggerSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemLow:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTriggerOKTriggerSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch GetOnCallTriggerOKTriggerSeverityFiltersItem(data) {
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemCritical:
+		*s = GetOnCallTriggerOKTriggerSeverityFiltersItemCritical
+		return nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemHigh:
+		*s = GetOnCallTriggerOKTriggerSeverityFiltersItemHigh
+		return nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemLow:
+		*s = GetOnCallTriggerOKTriggerSeverityFiltersItemLow
+		return nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemInfo:
+		*s = GetOnCallTriggerOKTriggerSeverityFiltersItemInfo
+		return nil
+	case GetOnCallTriggerOKTriggerSeverityFiltersItemUnknown:
+		*s = GetOnCallTriggerOKTriggerSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTriggerOKTriggerSourceFiltersItem string
+
+const (
+	GetOnCallTriggerOKTriggerSourceFiltersItemIntegration GetOnCallTriggerOKTriggerSourceFiltersItem = "integration"
+	GetOnCallTriggerOKTriggerSourceFiltersItemSlack       GetOnCallTriggerOKTriggerSourceFiltersItem = "slack"
+	GetOnCallTriggerOKTriggerSourceFiltersItemWeb         GetOnCallTriggerOKTriggerSourceFiltersItem = "web"
+)
+
+// AllValues returns all GetOnCallTriggerOKTriggerSourceFiltersItem values.
+func (GetOnCallTriggerOKTriggerSourceFiltersItem) AllValues() []GetOnCallTriggerOKTriggerSourceFiltersItem {
+	return []GetOnCallTriggerOKTriggerSourceFiltersItem{
+		GetOnCallTriggerOKTriggerSourceFiltersItemIntegration,
+		GetOnCallTriggerOKTriggerSourceFiltersItemSlack,
+		GetOnCallTriggerOKTriggerSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallTriggerOKTriggerSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallTriggerOKTriggerSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSourceFiltersItemSlack:
+		return []byte(s), nil
+	case GetOnCallTriggerOKTriggerSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallTriggerOKTriggerSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch GetOnCallTriggerOKTriggerSourceFiltersItem(data) {
+	case GetOnCallTriggerOKTriggerSourceFiltersItemIntegration:
+		*s = GetOnCallTriggerOKTriggerSourceFiltersItemIntegration
+		return nil
+	case GetOnCallTriggerOKTriggerSourceFiltersItemSlack:
+		*s = GetOnCallTriggerOKTriggerSourceFiltersItemSlack
+		return nil
+	case GetOnCallTriggerOKTriggerSourceFiltersItemWeb:
+		*s = GetOnCallTriggerOKTriggerSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallTriggerPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallTriggerPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallTriggerPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallTriggerPaymentRequired) getOnCallTriggerRes() {}
+
+type GetOnCallTriggerUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallTriggerUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallTriggerUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallTriggerUnauthorized) getOnCallTriggerRes() {}
+
+type GetOnCallUserAbsenceNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallUserAbsenceNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallUserAbsenceNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetOnCallUserAbsenceNotFound) getOnCallUserAbsenceRes() {}
+
+type GetOnCallUserAbsenceOK struct {
+	Absence GetOnCallUserAbsenceOKAbsence `json:"absence"`
+}
+
+// GetAbsence returns the value of Absence.
+func (s *GetOnCallUserAbsenceOK) GetAbsence() GetOnCallUserAbsenceOKAbsence {
+	return s.Absence
+}
+
+// SetAbsence sets the value of Absence.
+func (s *GetOnCallUserAbsenceOK) SetAbsence(val GetOnCallUserAbsenceOKAbsence) {
+	s.Absence = val
+}
+
+func (*GetOnCallUserAbsenceOK) getOnCallUserAbsenceRes() {}
+
+type GetOnCallUserAbsenceOKAbsence struct {
+	UUID    string    `json:"uuid"`
+	StartAt time.Time `json:"start_at"`
+	EndAt   time.Time `json:"end_at"`
+	// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+	// は日・時刻）を毎週・毎月くり返す.
+	RepeatType GetOnCallUserAbsenceOKAbsenceRepeatType `json:"repeat_type"`
+	Reason     NilString                               `json:"reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *GetOnCallUserAbsenceOKAbsence) GetUUID() string {
+	return s.UUID
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *GetOnCallUserAbsenceOKAbsence) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *GetOnCallUserAbsenceOKAbsence) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *GetOnCallUserAbsenceOKAbsence) GetRepeatType() GetOnCallUserAbsenceOKAbsenceRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *GetOnCallUserAbsenceOKAbsence) GetReason() NilString {
+	return s.Reason
+}
+
+// SetUUID sets the value of UUID.
+func (s *GetOnCallUserAbsenceOKAbsence) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *GetOnCallUserAbsenceOKAbsence) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *GetOnCallUserAbsenceOKAbsence) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *GetOnCallUserAbsenceOKAbsence) SetRepeatType(val GetOnCallUserAbsenceOKAbsenceRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *GetOnCallUserAbsenceOKAbsence) SetReason(val NilString) {
+	s.Reason = val
+}
+
+// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+// は日・時刻）を毎週・毎月くり返す.
+type GetOnCallUserAbsenceOKAbsenceRepeatType string
+
+const (
+	GetOnCallUserAbsenceOKAbsenceRepeatTypeNone    GetOnCallUserAbsenceOKAbsenceRepeatType = "none"
+	GetOnCallUserAbsenceOKAbsenceRepeatTypeWeekly  GetOnCallUserAbsenceOKAbsenceRepeatType = "weekly"
+	GetOnCallUserAbsenceOKAbsenceRepeatTypeMonthly GetOnCallUserAbsenceOKAbsenceRepeatType = "monthly"
+)
+
+// AllValues returns all GetOnCallUserAbsenceOKAbsenceRepeatType values.
+func (GetOnCallUserAbsenceOKAbsenceRepeatType) AllValues() []GetOnCallUserAbsenceOKAbsenceRepeatType {
+	return []GetOnCallUserAbsenceOKAbsenceRepeatType{
+		GetOnCallUserAbsenceOKAbsenceRepeatTypeNone,
+		GetOnCallUserAbsenceOKAbsenceRepeatTypeWeekly,
+		GetOnCallUserAbsenceOKAbsenceRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallUserAbsenceOKAbsenceRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeNone:
+		return []byte(s), nil
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeWeekly:
+		return []byte(s), nil
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallUserAbsenceOKAbsenceRepeatType) UnmarshalText(data []byte) error {
+	switch GetOnCallUserAbsenceOKAbsenceRepeatType(data) {
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeNone:
+		*s = GetOnCallUserAbsenceOKAbsenceRepeatTypeNone
+		return nil
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeWeekly:
+		*s = GetOnCallUserAbsenceOKAbsenceRepeatTypeWeekly
+		return nil
+	case GetOnCallUserAbsenceOKAbsenceRepeatTypeMonthly:
+		*s = GetOnCallUserAbsenceOKAbsenceRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallUserAbsencePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetOnCallUserAbsencePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetOnCallUserAbsencePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetOnCallUserAbsencePaymentRequired) getOnCallUserAbsenceRes() {}
+
+type GetOnCallUserAbsenceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetOnCallUserAbsenceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetOnCallUserAbsenceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetOnCallUserAbsenceUnauthorized) getOnCallUserAbsenceRes() {}
 
 type GetPostmortemNotFound struct {
 	Error OptString `json:"error"`
@@ -4611,6 +14267,528 @@ func (s *GetServiceWebhookConfigurationUnauthorized) SetErrors(val []string) {
 
 func (*GetServiceWebhookConfigurationUnauthorized) getServiceWebhookConfigurationRes() {}
 
+type GetUserNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetUserNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetUserNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*GetUserNotFound) getUserRes() {}
+
+type GetUserOK struct {
+	User GetUserOKUser `json:"user"`
+}
+
+// GetUser returns the value of User.
+func (s *GetUserOK) GetUser() GetUserOKUser {
+	return s.User
+}
+
+// SetUser sets the value of User.
+func (s *GetUserOK) SetUser(val GetUserOKUser) {
+	s.User = val
+}
+
+func (*GetUserOK) getUserRes() {}
+
+type GetUserOKUser struct {
+	Sub       string                    `json:"sub"`
+	Nickname  string                    `json:"nickname"`
+	Picture   string                    `json:"picture"`
+	Status    GetUserOKUserStatus       `json:"status"`
+	SlackUser NilGetUserOKUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetUserOKUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetUserOKUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetUserOKUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetUserOKUser) GetStatus() GetUserOKUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetUserOKUser) GetSlackUser() NilGetUserOKUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetUserOKUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetUserOKUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetUserOKUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetUserOKUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetUserOKUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetUserOKUser) SetStatus(val GetUserOKUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetUserOKUser) SetSlackUser(val NilGetUserOKUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetUserOKUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetUserOKUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetUserOKUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetUserOKUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetUserOKUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetUserOKUserStatus string
+
+const (
+	GetUserOKUserStatusActive            GetUserOKUserStatus = "active"
+	GetUserOKUserStatusInactive          GetUserOKUserStatus = "inactive"
+	GetUserOKUserStatusInvited           GetUserOKUserStatus = "invited"
+	GetUserOKUserStatusInvitationPending GetUserOKUserStatus = "invitation_pending"
+	GetUserOKUserStatusInvitationFailed  GetUserOKUserStatus = "invitation_failed"
+	GetUserOKUserStatusDeactivated       GetUserOKUserStatus = "deactivated"
+)
+
+// AllValues returns all GetUserOKUserStatus values.
+func (GetUserOKUserStatus) AllValues() []GetUserOKUserStatus {
+	return []GetUserOKUserStatus{
+		GetUserOKUserStatusActive,
+		GetUserOKUserStatusInactive,
+		GetUserOKUserStatusInvited,
+		GetUserOKUserStatusInvitationPending,
+		GetUserOKUserStatusInvitationFailed,
+		GetUserOKUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetUserOKUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetUserOKUserStatusActive:
+		return []byte(s), nil
+	case GetUserOKUserStatusInactive:
+		return []byte(s), nil
+	case GetUserOKUserStatusInvited:
+		return []byte(s), nil
+	case GetUserOKUserStatusInvitationPending:
+		return []byte(s), nil
+	case GetUserOKUserStatusInvitationFailed:
+		return []byte(s), nil
+	case GetUserOKUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetUserOKUserStatus) UnmarshalText(data []byte) error {
+	switch GetUserOKUserStatus(data) {
+	case GetUserOKUserStatusActive:
+		*s = GetUserOKUserStatusActive
+		return nil
+	case GetUserOKUserStatusInactive:
+		*s = GetUserOKUserStatusInactive
+		return nil
+	case GetUserOKUserStatusInvited:
+		*s = GetUserOKUserStatusInvited
+		return nil
+	case GetUserOKUserStatusInvitationPending:
+		*s = GetUserOKUserStatusInvitationPending
+		return nil
+	case GetUserOKUserStatusInvitationFailed:
+		*s = GetUserOKUserStatusInvitationFailed
+		return nil
+	case GetUserOKUserStatusDeactivated:
+		*s = GetUserOKUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetUserPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *GetUserPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *GetUserPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*GetUserPaymentRequired) getUserRes() {}
+
+type GetUserUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *GetUserUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *GetUserUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*GetUserUnauthorized) getUserRes() {}
+
+type InviteUsersAccepted struct {
+	Users []InviteUsersAcceptedUsersItem `json:"users"`
+}
+
+// GetUsers returns the value of Users.
+func (s *InviteUsersAccepted) GetUsers() []InviteUsersAcceptedUsersItem {
+	return s.Users
+}
+
+// SetUsers sets the value of Users.
+func (s *InviteUsersAccepted) SetUsers(val []InviteUsersAcceptedUsersItem) {
+	s.Users = val
+}
+
+func (*InviteUsersAccepted) inviteUsersRes() {}
+
+type InviteUsersAcceptedUsersItem struct {
+	Sub       string                                   `json:"sub"`
+	Nickname  string                                   `json:"nickname"`
+	Picture   string                                   `json:"picture"`
+	Status    InviteUsersAcceptedUsersItemStatus       `json:"status"`
+	SlackUser NilInviteUsersAcceptedUsersItemSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *InviteUsersAcceptedUsersItem) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *InviteUsersAcceptedUsersItem) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *InviteUsersAcceptedUsersItem) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *InviteUsersAcceptedUsersItem) GetStatus() InviteUsersAcceptedUsersItemStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *InviteUsersAcceptedUsersItem) GetSlackUser() NilInviteUsersAcceptedUsersItemSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *InviteUsersAcceptedUsersItem) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *InviteUsersAcceptedUsersItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *InviteUsersAcceptedUsersItem) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *InviteUsersAcceptedUsersItem) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *InviteUsersAcceptedUsersItem) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *InviteUsersAcceptedUsersItem) SetStatus(val InviteUsersAcceptedUsersItemStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *InviteUsersAcceptedUsersItem) SetSlackUser(val NilInviteUsersAcceptedUsersItemSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *InviteUsersAcceptedUsersItem) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *InviteUsersAcceptedUsersItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type InviteUsersAcceptedUsersItemSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *InviteUsersAcceptedUsersItemSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *InviteUsersAcceptedUsersItemSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type InviteUsersAcceptedUsersItemStatus string
+
+const (
+	InviteUsersAcceptedUsersItemStatusActive            InviteUsersAcceptedUsersItemStatus = "active"
+	InviteUsersAcceptedUsersItemStatusInactive          InviteUsersAcceptedUsersItemStatus = "inactive"
+	InviteUsersAcceptedUsersItemStatusInvited           InviteUsersAcceptedUsersItemStatus = "invited"
+	InviteUsersAcceptedUsersItemStatusInvitationPending InviteUsersAcceptedUsersItemStatus = "invitation_pending"
+	InviteUsersAcceptedUsersItemStatusInvitationFailed  InviteUsersAcceptedUsersItemStatus = "invitation_failed"
+	InviteUsersAcceptedUsersItemStatusDeactivated       InviteUsersAcceptedUsersItemStatus = "deactivated"
+)
+
+// AllValues returns all InviteUsersAcceptedUsersItemStatus values.
+func (InviteUsersAcceptedUsersItemStatus) AllValues() []InviteUsersAcceptedUsersItemStatus {
+	return []InviteUsersAcceptedUsersItemStatus{
+		InviteUsersAcceptedUsersItemStatusActive,
+		InviteUsersAcceptedUsersItemStatusInactive,
+		InviteUsersAcceptedUsersItemStatusInvited,
+		InviteUsersAcceptedUsersItemStatusInvitationPending,
+		InviteUsersAcceptedUsersItemStatusInvitationFailed,
+		InviteUsersAcceptedUsersItemStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s InviteUsersAcceptedUsersItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case InviteUsersAcceptedUsersItemStatusActive:
+		return []byte(s), nil
+	case InviteUsersAcceptedUsersItemStatusInactive:
+		return []byte(s), nil
+	case InviteUsersAcceptedUsersItemStatusInvited:
+		return []byte(s), nil
+	case InviteUsersAcceptedUsersItemStatusInvitationPending:
+		return []byte(s), nil
+	case InviteUsersAcceptedUsersItemStatusInvitationFailed:
+		return []byte(s), nil
+	case InviteUsersAcceptedUsersItemStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *InviteUsersAcceptedUsersItemStatus) UnmarshalText(data []byte) error {
+	switch InviteUsersAcceptedUsersItemStatus(data) {
+	case InviteUsersAcceptedUsersItemStatusActive:
+		*s = InviteUsersAcceptedUsersItemStatusActive
+		return nil
+	case InviteUsersAcceptedUsersItemStatusInactive:
+		*s = InviteUsersAcceptedUsersItemStatusInactive
+		return nil
+	case InviteUsersAcceptedUsersItemStatusInvited:
+		*s = InviteUsersAcceptedUsersItemStatusInvited
+		return nil
+	case InviteUsersAcceptedUsersItemStatusInvitationPending:
+		*s = InviteUsersAcceptedUsersItemStatusInvitationPending
+		return nil
+	case InviteUsersAcceptedUsersItemStatusInvitationFailed:
+		*s = InviteUsersAcceptedUsersItemStatusInvitationFailed
+		return nil
+	case InviteUsersAcceptedUsersItemStatusDeactivated:
+		*s = InviteUsersAcceptedUsersItemStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type InviteUsersBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *InviteUsersBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *InviteUsersBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*InviteUsersBadRequest) inviteUsersRes() {}
+
+type InviteUsersConflict struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *InviteUsersConflict) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *InviteUsersConflict) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*InviteUsersConflict) inviteUsersRes() {}
+
+type InviteUsersPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *InviteUsersPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *InviteUsersPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*InviteUsersPaymentRequired) inviteUsersRes() {}
+
+type InviteUsersReq struct {
+	Invitation InviteUsersReqInvitation `json:"invitation"`
+}
+
+// GetInvitation returns the value of Invitation.
+func (s *InviteUsersReq) GetInvitation() InviteUsersReqInvitation {
+	return s.Invitation
+}
+
+// SetInvitation sets the value of Invitation.
+func (s *InviteUsersReq) SetInvitation(val InviteUsersReqInvitation) {
+	s.Invitation = val
+}
+
+type InviteUsersReqInvitation struct {
+	// 招待するユーザーのメールアドレス.
+	Emails []string `json:"emails"`
+}
+
+// GetEmails returns the value of Emails.
+func (s *InviteUsersReqInvitation) GetEmails() []string {
+	return s.Emails
+}
+
+// SetEmails sets the value of Emails.
+func (s *InviteUsersReqInvitation) SetEmails(val []string) {
+	s.Emails = val
+}
+
+// InviteUsersTooManyRequests is response for InviteUsers operation.
+type InviteUsersTooManyRequests struct{}
+
+func (*InviteUsersTooManyRequests) inviteUsersRes() {}
+
+type InviteUsersUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *InviteUsersUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *InviteUsersUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*InviteUsersUnauthorized) inviteUsersRes() {}
+
+type InviteUsersUnprocessableEntity struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *InviteUsersUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *InviteUsersUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*InviteUsersUnprocessableEntity) inviteUsersRes() {}
+
 type ListIncidentActionItemsNotFound struct {
 	Error OptString `json:"error"`
 }
@@ -4655,12 +14833,13 @@ func (s *ListIncidentActionItemsOK) SetResponseMetadata(val ListIncidentActionIt
 func (*ListIncidentActionItemsOK) listIncidentActionItemsRes() {}
 
 type ListIncidentActionItemsOKActionItemsItem struct {
-	UUID      uuid.UUID                                      `json:"uuid"`
-	Title     string                                         `json:"title"`
-	Status    ListIncidentActionItemsOKActionItemsItemStatus `json:"status"`
-	Position  int                                            `json:"position"`
-	CreatedAt time.Time                                      `json:"created_at"`
-	UpdatedAt time.Time                                      `json:"updated_at"`
+	UUID      uuid.UUID                                           `json:"uuid"`
+	Title     string                                              `json:"title"`
+	Status    ListIncidentActionItemsOKActionItemsItemStatus      `json:"status"`
+	Position  int                                                 `json:"position"`
+	Assignee  NilListIncidentActionItemsOKActionItemsItemAssignee `json:"assignee"`
+	CreatedAt time.Time                                           `json:"created_at"`
+	UpdatedAt time.Time                                           `json:"updated_at"`
 }
 
 // GetUUID returns the value of UUID.
@@ -4681,6 +14860,11 @@ func (s *ListIncidentActionItemsOKActionItemsItem) GetStatus() ListIncidentActio
 // GetPosition returns the value of Position.
 func (s *ListIncidentActionItemsOKActionItemsItem) GetPosition() int {
 	return s.Position
+}
+
+// GetAssignee returns the value of Assignee.
+func (s *ListIncidentActionItemsOKActionItemsItem) GetAssignee() NilListIncidentActionItemsOKActionItemsItemAssignee {
+	return s.Assignee
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -4713,6 +14897,11 @@ func (s *ListIncidentActionItemsOKActionItemsItem) SetPosition(val int) {
 	s.Position = val
 }
 
+// SetAssignee sets the value of Assignee.
+func (s *ListIncidentActionItemsOKActionItemsItem) SetAssignee(val NilListIncidentActionItemsOKActionItemsItemAssignee) {
+	s.Assignee = val
+}
+
 // SetCreatedAt sets the value of CreatedAt.
 func (s *ListIncidentActionItemsOKActionItemsItem) SetCreatedAt(val time.Time) {
 	s.CreatedAt = val
@@ -4721,6 +14910,170 @@ func (s *ListIncidentActionItemsOKActionItemsItem) SetCreatedAt(val time.Time) {
 // SetUpdatedAt sets the value of UpdatedAt.
 func (s *ListIncidentActionItemsOKActionItemsItem) SetUpdatedAt(val time.Time) {
 	s.UpdatedAt = val
+}
+
+type ListIncidentActionItemsOKActionItemsItemAssignee struct {
+	Sub       string                                                       `json:"sub"`
+	Nickname  string                                                       `json:"nickname"`
+	Picture   string                                                       `json:"picture"`
+	Status    ListIncidentActionItemsOKActionItemsItemAssigneeStatus       `json:"status"`
+	SlackUser NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetStatus() ListIncidentActionItemsOKActionItemsItemAssigneeStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetSlackUser() NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetStatus(val ListIncidentActionItemsOKActionItemsItemAssigneeStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetSlackUser(val NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListIncidentActionItemsOKActionItemsItemAssignee) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListIncidentActionItemsOKActionItemsItemAssigneeStatus string
+
+const (
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusActive            ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "active"
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusInactive          ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "inactive"
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvited           ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "invited"
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationPending ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "invitation_pending"
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationFailed  ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "invitation_failed"
+	ListIncidentActionItemsOKActionItemsItemAssigneeStatusDeactivated       ListIncidentActionItemsOKActionItemsItemAssigneeStatus = "deactivated"
+)
+
+// AllValues returns all ListIncidentActionItemsOKActionItemsItemAssigneeStatus values.
+func (ListIncidentActionItemsOKActionItemsItemAssigneeStatus) AllValues() []ListIncidentActionItemsOKActionItemsItemAssigneeStatus {
+	return []ListIncidentActionItemsOKActionItemsItemAssigneeStatus{
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusActive,
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusInactive,
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvited,
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationPending,
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationFailed,
+		ListIncidentActionItemsOKActionItemsItemAssigneeStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListIncidentActionItemsOKActionItemsItemAssigneeStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusActive:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInactive:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvited:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationPending:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationFailed:
+		return []byte(s), nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListIncidentActionItemsOKActionItemsItemAssigneeStatus) UnmarshalText(data []byte) error {
+	switch ListIncidentActionItemsOKActionItemsItemAssigneeStatus(data) {
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusActive:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusActive
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInactive:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusInactive
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvited:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvited
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationPending:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationPending
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationFailed:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusInvitationFailed
+		return nil
+	case ListIncidentActionItemsOKActionItemsItemAssigneeStatusDeactivated:
+		*s = ListIncidentActionItemsOKActionItemsItemAssigneeStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type ListIncidentActionItemsOKActionItemsItemStatus string
@@ -5225,6 +15578,4034 @@ func (s *ListIncidentsUnauthorized) SetErrors(val []string) {
 }
 
 func (*ListIncidentsUnauthorized) listIncidentsRes() {}
+
+type ListOnCallEscalationPoliciesOK struct {
+	EscalationPolicies []ListOnCallEscalationPoliciesOKEscalationPoliciesItem `json:"escalation_policies"`
+	ResponseMetadata   ListOnCallEscalationPoliciesOKResponseMetadata         `json:"response_metadata"`
+}
+
+// GetEscalationPolicies returns the value of EscalationPolicies.
+func (s *ListOnCallEscalationPoliciesOK) GetEscalationPolicies() []ListOnCallEscalationPoliciesOKEscalationPoliciesItem {
+	return s.EscalationPolicies
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListOnCallEscalationPoliciesOK) GetResponseMetadata() ListOnCallEscalationPoliciesOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetEscalationPolicies sets the value of EscalationPolicies.
+func (s *ListOnCallEscalationPoliciesOK) SetEscalationPolicies(val []ListOnCallEscalationPoliciesOKEscalationPoliciesItem) {
+	s.EscalationPolicies = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListOnCallEscalationPoliciesOK) SetResponseMetadata(val ListOnCallEscalationPoliciesOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListOnCallEscalationPoliciesOK) listOnCallEscalationPoliciesRes() {}
+
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
+	Timezone string `json:"timezone"`
+	// 各ステップのチームで誰に架電するか。 all_members
+	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+	// on_duty_only
+	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+	TeamCallMode ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode `json:"team_call_mode"`
+	// エスカレーションの順番（position の昇順）.
+	Steps []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem `json:"steps"`
+	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
+	TimeSlots []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetTeamCallMode() ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetSteps() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetTimeSlots() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTeamCallMode(val ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetSteps(val []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTimeSlots(val []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem struct {
+	UUID string `json:"uuid"`
+	// エスカレーションの順番。0 から始まる.
+	Position int                                                                   `json:"position"`
+	StepType ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType `json:"step_type"`
+	// True
+	// のステップでは、チームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）.
+	SimultaneousCall bool                                                              `json:"simultaneous_call"`
+	Team             ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam `json:"team"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetStepType returns the value of StepType.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) GetStepType() ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) GetSimultaneousCall() bool {
+	return s.SimultaneousCall
+}
+
+// GetTeam returns the value of Team.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) GetTeam() ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam {
+	return s.Team
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) SetStepType(val ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) SetSimultaneousCall(val bool) {
+	s.SimultaneousCall = val
+}
+
+// SetTeam sets the value of Team.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) SetTeam(val ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) {
+	s.Team = val
+}
+
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType string
+
+const (
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypePrimary  ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType = "primary"
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypeFallback ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType = "fallback"
+)
+
+// AllValues returns all ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType values.
+func (ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType) AllValues() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType {
+	return []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType{
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypePrimary,
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType) UnmarshalText(data []byte) error {
+	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType(data) {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypePrimary:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypePrimary
+		return nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypeFallback:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) GetColor() string {
+	return s.Color
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// 各ステップのチームで誰に架電するか。 all_members
+// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+// on_duty_only
+// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode string
+
+const (
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode = "all_members"
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode values.
+func (ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) AllValues() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode {
+	return []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode{
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers,
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers:
+		return []byte(s), nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) UnmarshalText(data []byte) error {
+	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode(data) {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers
+		return nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。エスカレーションポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。エスカレーションポリシーの timezone における時刻。
+	// start_time より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。
+	// 23:59 は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type ListOnCallEscalationPoliciesOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListOnCallEscalationPoliciesOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListOnCallEscalationPoliciesPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallEscalationPoliciesPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallEscalationPoliciesPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListOnCallEscalationPoliciesPaymentRequired) listOnCallEscalationPoliciesRes() {}
+
+type ListOnCallEscalationPoliciesUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListOnCallEscalationPoliciesUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListOnCallEscalationPoliciesUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListOnCallEscalationPoliciesUnauthorized) listOnCallEscalationPoliciesRes() {}
+
+type ListOnCallSessionsBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallSessionsBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallSessionsBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListOnCallSessionsBadRequest) listOnCallSessionsRes() {}
+
+type ListOnCallSessionsOK struct {
+	Sessions         []ListOnCallSessionsOKSessionsItem   `json:"sessions"`
+	ResponseMetadata ListOnCallSessionsOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetSessions returns the value of Sessions.
+func (s *ListOnCallSessionsOK) GetSessions() []ListOnCallSessionsOKSessionsItem {
+	return s.Sessions
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListOnCallSessionsOK) GetResponseMetadata() ListOnCallSessionsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetSessions sets the value of Sessions.
+func (s *ListOnCallSessionsOK) SetSessions(val []ListOnCallSessionsOKSessionsItem) {
+	s.Sessions = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListOnCallSessionsOK) SetResponseMetadata(val ListOnCallSessionsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListOnCallSessionsOK) listOnCallSessionsRes() {}
+
+type ListOnCallSessionsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListOnCallSessionsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListOnCallSessionsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListOnCallSessionsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListOnCallSessionsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListOnCallSessionsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListOnCallSessionsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListOnCallSessionsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListOnCallSessionsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListOnCallSessionsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListOnCallSessionsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListOnCallSessionsOKSessionsItem struct {
+	UUID string `json:"uuid"`
+	// Running は架電中、repeating
+	// はエスカレーションを最初からやり直している途中、acked
+	// は誰かが応答した、 exhausted は誰も応答しないまま終わった、cancelled
+	// は取り消された.
+	Status ListOnCallSessionsOKSessionsItemStatus `json:"status"`
+	// オンコールを呼び出した起点.
+	Source ListOnCallSessionsOKSessionsItemSource `json:"source"`
+	// いま架電しているエスカレーションポリシーのステップの位置.
+	CurrentStepPosition int `json:"current_step_position"`
+	// エスカレーションを最初からやり直した回数.
+	CurrentRepeat int                                      `json:"current_repeat"`
+	Incident      ListOnCallSessionsOKSessionsItemIncident `json:"incident"`
+	// 呼び出したエスカレーションポリシー。1
+	// 人だけに架電したセッションでは null（代わりに target_user を持つ）.
+	EscalationPolicy NilListOnCallSessionsOKSessionsItemEscalationPolicy `json:"escalation_policy"`
+	// 1
+	// 人だけに架電したセッションで架電した相手。エスカレーションポリシーを辿ったセッションや、ユーザーが削除されたときは
+	// null.
+	TargetUser NilListOnCallSessionsOKSessionsItemTargetUser `json:"target_user"`
+	// 呼び出したトリガー。手動で呼び出したときや、トリガーが削除されたときは
+	// null.
+	Trigger NilListOnCallSessionsOKSessionsItemTrigger `json:"trigger"`
+	// 手動で呼び出したユーザー。トリガーから呼び出したときは null.
+	CreatedBy NilListOnCallSessionsOKSessionsItemCreatedBy `json:"created_by"`
+	// 応答したユーザー.
+	AckedBy   NilListOnCallSessionsOKSessionsItemAckedBy `json:"acked_by"`
+	AckedAt   NilDateTime                                `json:"acked_at"`
+	CreatedAt time.Time                                  `json:"created_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallSessionsOKSessionsItem) GetStatus() ListOnCallSessionsOKSessionsItemStatus {
+	return s.Status
+}
+
+// GetSource returns the value of Source.
+func (s *ListOnCallSessionsOKSessionsItem) GetSource() ListOnCallSessionsOKSessionsItemSource {
+	return s.Source
+}
+
+// GetCurrentStepPosition returns the value of CurrentStepPosition.
+func (s *ListOnCallSessionsOKSessionsItem) GetCurrentStepPosition() int {
+	return s.CurrentStepPosition
+}
+
+// GetCurrentRepeat returns the value of CurrentRepeat.
+func (s *ListOnCallSessionsOKSessionsItem) GetCurrentRepeat() int {
+	return s.CurrentRepeat
+}
+
+// GetIncident returns the value of Incident.
+func (s *ListOnCallSessionsOKSessionsItem) GetIncident() ListOnCallSessionsOKSessionsItemIncident {
+	return s.Incident
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *ListOnCallSessionsOKSessionsItem) GetEscalationPolicy() NilListOnCallSessionsOKSessionsItemEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// GetTargetUser returns the value of TargetUser.
+func (s *ListOnCallSessionsOKSessionsItem) GetTargetUser() NilListOnCallSessionsOKSessionsItemTargetUser {
+	return s.TargetUser
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *ListOnCallSessionsOKSessionsItem) GetTrigger() NilListOnCallSessionsOKSessionsItemTrigger {
+	return s.Trigger
+}
+
+// GetCreatedBy returns the value of CreatedBy.
+func (s *ListOnCallSessionsOKSessionsItem) GetCreatedBy() NilListOnCallSessionsOKSessionsItemCreatedBy {
+	return s.CreatedBy
+}
+
+// GetAckedBy returns the value of AckedBy.
+func (s *ListOnCallSessionsOKSessionsItem) GetAckedBy() NilListOnCallSessionsOKSessionsItemAckedBy {
+	return s.AckedBy
+}
+
+// GetAckedAt returns the value of AckedAt.
+func (s *ListOnCallSessionsOKSessionsItem) GetAckedAt() NilDateTime {
+	return s.AckedAt
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallSessionsOKSessionsItem) SetStatus(val ListOnCallSessionsOKSessionsItemStatus) {
+	s.Status = val
+}
+
+// SetSource sets the value of Source.
+func (s *ListOnCallSessionsOKSessionsItem) SetSource(val ListOnCallSessionsOKSessionsItemSource) {
+	s.Source = val
+}
+
+// SetCurrentStepPosition sets the value of CurrentStepPosition.
+func (s *ListOnCallSessionsOKSessionsItem) SetCurrentStepPosition(val int) {
+	s.CurrentStepPosition = val
+}
+
+// SetCurrentRepeat sets the value of CurrentRepeat.
+func (s *ListOnCallSessionsOKSessionsItem) SetCurrentRepeat(val int) {
+	s.CurrentRepeat = val
+}
+
+// SetIncident sets the value of Incident.
+func (s *ListOnCallSessionsOKSessionsItem) SetIncident(val ListOnCallSessionsOKSessionsItemIncident) {
+	s.Incident = val
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *ListOnCallSessionsOKSessionsItem) SetEscalationPolicy(val NilListOnCallSessionsOKSessionsItemEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+// SetTargetUser sets the value of TargetUser.
+func (s *ListOnCallSessionsOKSessionsItem) SetTargetUser(val NilListOnCallSessionsOKSessionsItemTargetUser) {
+	s.TargetUser = val
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *ListOnCallSessionsOKSessionsItem) SetTrigger(val NilListOnCallSessionsOKSessionsItemTrigger) {
+	s.Trigger = val
+}
+
+// SetCreatedBy sets the value of CreatedBy.
+func (s *ListOnCallSessionsOKSessionsItem) SetCreatedBy(val NilListOnCallSessionsOKSessionsItemCreatedBy) {
+	s.CreatedBy = val
+}
+
+// SetAckedBy sets the value of AckedBy.
+func (s *ListOnCallSessionsOKSessionsItem) SetAckedBy(val NilListOnCallSessionsOKSessionsItemAckedBy) {
+	s.AckedBy = val
+}
+
+// SetAckedAt sets the value of AckedAt.
+func (s *ListOnCallSessionsOKSessionsItem) SetAckedAt(val NilDateTime) {
+	s.AckedAt = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallSessionsOKSessionsItemAckedBy struct {
+	Sub       string                                              `json:"sub"`
+	Nickname  string                                              `json:"nickname"`
+	Picture   string                                              `json:"picture"`
+	Status    ListOnCallSessionsOKSessionsItemAckedByStatus       `json:"status"`
+	SlackUser NilListOnCallSessionsOKSessionsItemAckedBySlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetStatus() ListOnCallSessionsOKSessionsItemAckedByStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetSlackUser() NilListOnCallSessionsOKSessionsItemAckedBySlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetStatus(val ListOnCallSessionsOKSessionsItemAckedByStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetSlackUser(val NilListOnCallSessionsOKSessionsItemAckedBySlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemAckedBy) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallSessionsOKSessionsItemAckedBySlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemAckedBySlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemAckedBySlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallSessionsOKSessionsItemAckedByStatus string
+
+const (
+	ListOnCallSessionsOKSessionsItemAckedByStatusActive            ListOnCallSessionsOKSessionsItemAckedByStatus = "active"
+	ListOnCallSessionsOKSessionsItemAckedByStatusInactive          ListOnCallSessionsOKSessionsItemAckedByStatus = "inactive"
+	ListOnCallSessionsOKSessionsItemAckedByStatusInvited           ListOnCallSessionsOKSessionsItemAckedByStatus = "invited"
+	ListOnCallSessionsOKSessionsItemAckedByStatusInvitationPending ListOnCallSessionsOKSessionsItemAckedByStatus = "invitation_pending"
+	ListOnCallSessionsOKSessionsItemAckedByStatusInvitationFailed  ListOnCallSessionsOKSessionsItemAckedByStatus = "invitation_failed"
+	ListOnCallSessionsOKSessionsItemAckedByStatusDeactivated       ListOnCallSessionsOKSessionsItemAckedByStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallSessionsOKSessionsItemAckedByStatus values.
+func (ListOnCallSessionsOKSessionsItemAckedByStatus) AllValues() []ListOnCallSessionsOKSessionsItemAckedByStatus {
+	return []ListOnCallSessionsOKSessionsItemAckedByStatus{
+		ListOnCallSessionsOKSessionsItemAckedByStatusActive,
+		ListOnCallSessionsOKSessionsItemAckedByStatusInactive,
+		ListOnCallSessionsOKSessionsItemAckedByStatusInvited,
+		ListOnCallSessionsOKSessionsItemAckedByStatusInvitationPending,
+		ListOnCallSessionsOKSessionsItemAckedByStatusInvitationFailed,
+		ListOnCallSessionsOKSessionsItemAckedByStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsOKSessionsItemAckedByStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsOKSessionsItemAckedByStatusActive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInactive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvited:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsOKSessionsItemAckedByStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsOKSessionsItemAckedByStatus(data) {
+	case ListOnCallSessionsOKSessionsItemAckedByStatusActive:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusActive
+		return nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInactive:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusInactive
+		return nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvited:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusInvited
+		return nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvitationPending:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusInvitationPending
+		return nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusInvitationFailed:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusInvitationFailed
+		return nil
+	case ListOnCallSessionsOKSessionsItemAckedByStatusDeactivated:
+		*s = ListOnCallSessionsOKSessionsItemAckedByStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallSessionsOKSessionsItemCreatedBy struct {
+	Sub       string                                                `json:"sub"`
+	Nickname  string                                                `json:"nickname"`
+	Picture   string                                                `json:"picture"`
+	Status    ListOnCallSessionsOKSessionsItemCreatedByStatus       `json:"status"`
+	SlackUser NilListOnCallSessionsOKSessionsItemCreatedBySlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetStatus() ListOnCallSessionsOKSessionsItemCreatedByStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetSlackUser() NilListOnCallSessionsOKSessionsItemCreatedBySlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetStatus(val ListOnCallSessionsOKSessionsItemCreatedByStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetSlackUser(val NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBy) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallSessionsOKSessionsItemCreatedBySlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBySlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemCreatedBySlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallSessionsOKSessionsItemCreatedByStatus string
+
+const (
+	ListOnCallSessionsOKSessionsItemCreatedByStatusActive            ListOnCallSessionsOKSessionsItemCreatedByStatus = "active"
+	ListOnCallSessionsOKSessionsItemCreatedByStatusInactive          ListOnCallSessionsOKSessionsItemCreatedByStatus = "inactive"
+	ListOnCallSessionsOKSessionsItemCreatedByStatusInvited           ListOnCallSessionsOKSessionsItemCreatedByStatus = "invited"
+	ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationPending ListOnCallSessionsOKSessionsItemCreatedByStatus = "invitation_pending"
+	ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationFailed  ListOnCallSessionsOKSessionsItemCreatedByStatus = "invitation_failed"
+	ListOnCallSessionsOKSessionsItemCreatedByStatusDeactivated       ListOnCallSessionsOKSessionsItemCreatedByStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallSessionsOKSessionsItemCreatedByStatus values.
+func (ListOnCallSessionsOKSessionsItemCreatedByStatus) AllValues() []ListOnCallSessionsOKSessionsItemCreatedByStatus {
+	return []ListOnCallSessionsOKSessionsItemCreatedByStatus{
+		ListOnCallSessionsOKSessionsItemCreatedByStatusActive,
+		ListOnCallSessionsOKSessionsItemCreatedByStatusInactive,
+		ListOnCallSessionsOKSessionsItemCreatedByStatusInvited,
+		ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationPending,
+		ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationFailed,
+		ListOnCallSessionsOKSessionsItemCreatedByStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsOKSessionsItemCreatedByStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusActive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInactive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvited:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsOKSessionsItemCreatedByStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsOKSessionsItemCreatedByStatus(data) {
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusActive:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusActive
+		return nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInactive:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusInactive
+		return nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvited:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusInvited
+		return nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationPending:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationPending
+		return nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationFailed:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusInvitationFailed
+		return nil
+	case ListOnCallSessionsOKSessionsItemCreatedByStatusDeactivated:
+		*s = ListOnCallSessionsOKSessionsItemCreatedByStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallSessionsOKSessionsItemEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallSessionsOKSessionsItemEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallSessionsOKSessionsItemEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+type ListOnCallSessionsOKSessionsItemIncident struct {
+	UUID string `json:"uuid"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemIncident) GetUUID() string {
+	return s.UUID
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemIncident) SetUUID(val string) {
+	s.UUID = val
+}
+
+// オンコールを呼び出した起点.
+type ListOnCallSessionsOKSessionsItemSource string
+
+const (
+	ListOnCallSessionsOKSessionsItemSourceIntegration ListOnCallSessionsOKSessionsItemSource = "integration"
+	ListOnCallSessionsOKSessionsItemSourceSlack       ListOnCallSessionsOKSessionsItemSource = "slack"
+	ListOnCallSessionsOKSessionsItemSourceWeb         ListOnCallSessionsOKSessionsItemSource = "web"
+)
+
+// AllValues returns all ListOnCallSessionsOKSessionsItemSource values.
+func (ListOnCallSessionsOKSessionsItemSource) AllValues() []ListOnCallSessionsOKSessionsItemSource {
+	return []ListOnCallSessionsOKSessionsItemSource{
+		ListOnCallSessionsOKSessionsItemSourceIntegration,
+		ListOnCallSessionsOKSessionsItemSourceSlack,
+		ListOnCallSessionsOKSessionsItemSourceWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsOKSessionsItemSource) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsOKSessionsItemSourceIntegration:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemSourceSlack:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemSourceWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsOKSessionsItemSource) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsOKSessionsItemSource(data) {
+	case ListOnCallSessionsOKSessionsItemSourceIntegration:
+		*s = ListOnCallSessionsOKSessionsItemSourceIntegration
+		return nil
+	case ListOnCallSessionsOKSessionsItemSourceSlack:
+		*s = ListOnCallSessionsOKSessionsItemSourceSlack
+		return nil
+	case ListOnCallSessionsOKSessionsItemSourceWeb:
+		*s = ListOnCallSessionsOKSessionsItemSourceWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// Running は架電中、repeating
+// はエスカレーションを最初からやり直している途中、acked
+// は誰かが応答した、 exhausted は誰も応答しないまま終わった、cancelled
+// は取り消された.
+type ListOnCallSessionsOKSessionsItemStatus string
+
+const (
+	ListOnCallSessionsOKSessionsItemStatusRunning   ListOnCallSessionsOKSessionsItemStatus = "running"
+	ListOnCallSessionsOKSessionsItemStatusRepeating ListOnCallSessionsOKSessionsItemStatus = "repeating"
+	ListOnCallSessionsOKSessionsItemStatusAcked     ListOnCallSessionsOKSessionsItemStatus = "acked"
+	ListOnCallSessionsOKSessionsItemStatusExhausted ListOnCallSessionsOKSessionsItemStatus = "exhausted"
+	ListOnCallSessionsOKSessionsItemStatusCancelled ListOnCallSessionsOKSessionsItemStatus = "cancelled"
+)
+
+// AllValues returns all ListOnCallSessionsOKSessionsItemStatus values.
+func (ListOnCallSessionsOKSessionsItemStatus) AllValues() []ListOnCallSessionsOKSessionsItemStatus {
+	return []ListOnCallSessionsOKSessionsItemStatus{
+		ListOnCallSessionsOKSessionsItemStatusRunning,
+		ListOnCallSessionsOKSessionsItemStatusRepeating,
+		ListOnCallSessionsOKSessionsItemStatusAcked,
+		ListOnCallSessionsOKSessionsItemStatusExhausted,
+		ListOnCallSessionsOKSessionsItemStatusCancelled,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsOKSessionsItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsOKSessionsItemStatusRunning:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemStatusRepeating:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemStatusAcked:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemStatusExhausted:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemStatusCancelled:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsOKSessionsItemStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsOKSessionsItemStatus(data) {
+	case ListOnCallSessionsOKSessionsItemStatusRunning:
+		*s = ListOnCallSessionsOKSessionsItemStatusRunning
+		return nil
+	case ListOnCallSessionsOKSessionsItemStatusRepeating:
+		*s = ListOnCallSessionsOKSessionsItemStatusRepeating
+		return nil
+	case ListOnCallSessionsOKSessionsItemStatusAcked:
+		*s = ListOnCallSessionsOKSessionsItemStatusAcked
+		return nil
+	case ListOnCallSessionsOKSessionsItemStatusExhausted:
+		*s = ListOnCallSessionsOKSessionsItemStatusExhausted
+		return nil
+	case ListOnCallSessionsOKSessionsItemStatusCancelled:
+		*s = ListOnCallSessionsOKSessionsItemStatusCancelled
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallSessionsOKSessionsItemTargetUser struct {
+	Sub       string                                                 `json:"sub"`
+	Nickname  string                                                 `json:"nickname"`
+	Picture   string                                                 `json:"picture"`
+	Status    ListOnCallSessionsOKSessionsItemTargetUserStatus       `json:"status"`
+	SlackUser NilListOnCallSessionsOKSessionsItemTargetUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetStatus() ListOnCallSessionsOKSessionsItemTargetUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetSlackUser() NilListOnCallSessionsOKSessionsItemTargetUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetStatus(val ListOnCallSessionsOKSessionsItemTargetUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetSlackUser(val NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallSessionsOKSessionsItemTargetUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallSessionsOKSessionsItemTargetUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemTargetUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallSessionsOKSessionsItemTargetUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallSessionsOKSessionsItemTargetUserStatus string
+
+const (
+	ListOnCallSessionsOKSessionsItemTargetUserStatusActive            ListOnCallSessionsOKSessionsItemTargetUserStatus = "active"
+	ListOnCallSessionsOKSessionsItemTargetUserStatusInactive          ListOnCallSessionsOKSessionsItemTargetUserStatus = "inactive"
+	ListOnCallSessionsOKSessionsItemTargetUserStatusInvited           ListOnCallSessionsOKSessionsItemTargetUserStatus = "invited"
+	ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationPending ListOnCallSessionsOKSessionsItemTargetUserStatus = "invitation_pending"
+	ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationFailed  ListOnCallSessionsOKSessionsItemTargetUserStatus = "invitation_failed"
+	ListOnCallSessionsOKSessionsItemTargetUserStatusDeactivated       ListOnCallSessionsOKSessionsItemTargetUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallSessionsOKSessionsItemTargetUserStatus values.
+func (ListOnCallSessionsOKSessionsItemTargetUserStatus) AllValues() []ListOnCallSessionsOKSessionsItemTargetUserStatus {
+	return []ListOnCallSessionsOKSessionsItemTargetUserStatus{
+		ListOnCallSessionsOKSessionsItemTargetUserStatusActive,
+		ListOnCallSessionsOKSessionsItemTargetUserStatusInactive,
+		ListOnCallSessionsOKSessionsItemTargetUserStatusInvited,
+		ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationPending,
+		ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationFailed,
+		ListOnCallSessionsOKSessionsItemTargetUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsOKSessionsItemTargetUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsOKSessionsItemTargetUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsOKSessionsItemTargetUserStatus(data) {
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusActive:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusActive
+		return nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInactive:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusInactive
+		return nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvited:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusInvited
+		return nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationPending:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationPending
+		return nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationFailed:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusInvitationFailed
+		return nil
+	case ListOnCallSessionsOKSessionsItemTargetUserStatusDeactivated:
+		*s = ListOnCallSessionsOKSessionsItemTargetUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallSessionsOKSessionsItemTrigger struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemTrigger) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallSessionsOKSessionsItemTrigger) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallSessionsOKSessionsItemTrigger) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallSessionsOKSessionsItemTrigger) SetName(val string) {
+	s.Name = val
+}
+
+type ListOnCallSessionsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallSessionsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallSessionsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListOnCallSessionsPaymentRequired) listOnCallSessionsRes() {}
+
+type ListOnCallSessionsStatus string
+
+const (
+	ListOnCallSessionsStatusRunning   ListOnCallSessionsStatus = "running"
+	ListOnCallSessionsStatusRepeating ListOnCallSessionsStatus = "repeating"
+	ListOnCallSessionsStatusAcked     ListOnCallSessionsStatus = "acked"
+	ListOnCallSessionsStatusExhausted ListOnCallSessionsStatus = "exhausted"
+	ListOnCallSessionsStatusCancelled ListOnCallSessionsStatus = "cancelled"
+)
+
+// AllValues returns all ListOnCallSessionsStatus values.
+func (ListOnCallSessionsStatus) AllValues() []ListOnCallSessionsStatus {
+	return []ListOnCallSessionsStatus{
+		ListOnCallSessionsStatusRunning,
+		ListOnCallSessionsStatusRepeating,
+		ListOnCallSessionsStatusAcked,
+		ListOnCallSessionsStatusExhausted,
+		ListOnCallSessionsStatusCancelled,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallSessionsStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallSessionsStatusRunning:
+		return []byte(s), nil
+	case ListOnCallSessionsStatusRepeating:
+		return []byte(s), nil
+	case ListOnCallSessionsStatusAcked:
+		return []byte(s), nil
+	case ListOnCallSessionsStatusExhausted:
+		return []byte(s), nil
+	case ListOnCallSessionsStatusCancelled:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallSessionsStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallSessionsStatus(data) {
+	case ListOnCallSessionsStatusRunning:
+		*s = ListOnCallSessionsStatusRunning
+		return nil
+	case ListOnCallSessionsStatusRepeating:
+		*s = ListOnCallSessionsStatusRepeating
+		return nil
+	case ListOnCallSessionsStatusAcked:
+		*s = ListOnCallSessionsStatusAcked
+		return nil
+	case ListOnCallSessionsStatusExhausted:
+		*s = ListOnCallSessionsStatusExhausted
+		return nil
+	case ListOnCallSessionsStatusCancelled:
+		*s = ListOnCallSessionsStatusCancelled
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallSessionsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListOnCallSessionsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListOnCallSessionsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListOnCallSessionsUnauthorized) listOnCallSessionsRes() {}
+
+type ListOnCallTeamsOK struct {
+	Teams            []ListOnCallTeamsOKTeamsItem      `json:"teams"`
+	ResponseMetadata ListOnCallTeamsOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetTeams returns the value of Teams.
+func (s *ListOnCallTeamsOK) GetTeams() []ListOnCallTeamsOKTeamsItem {
+	return s.Teams
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListOnCallTeamsOK) GetResponseMetadata() ListOnCallTeamsOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetTeams sets the value of Teams.
+func (s *ListOnCallTeamsOK) SetTeams(val []ListOnCallTeamsOKTeamsItem) {
+	s.Teams = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListOnCallTeamsOK) SetResponseMetadata(val ListOnCallTeamsOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListOnCallTeamsOK) listOnCallTeamsRes() {}
+
+type ListOnCallTeamsOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListOnCallTeamsOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListOnCallTeamsOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListOnCallTeamsOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListOnCallTeamsOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListOnCallTeamsOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListOnCallTeamsOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListOnCallTeamsOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListOnCallTeamsOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListOnCallTeamsOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListOnCallTeamsOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListOnCallTeamsOKTeamsItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+	// 並び順（position）が最初のローテーション。ローテーションが設定されていないチームでは
+	// null になる。 1
+	// つのチームに複数のローテーション（平日・土日など）を持てるため、すべてを扱うときは
+	// rotations を使う.
+	Rotation NilListOnCallTeamsOKTeamsItemRotation `json:"rotation"`
+	// チームのローテーション。position の昇順.
+	Rotations []ListOnCallTeamsOKTeamsItemRotationsItem `json:"rotations"`
+	// このチームで今呼ばれる人。今有効なローテーションのうち、position
+	// が最も小さいものの当番。 そのローテーションの当番が null
+	// のとき（参加者が全員不在など）は、ほかのローテーションには回さず
+	// null になる。 どのローテーションも有効でないときも null になる.
+	OnDutyParticipant NilListOnCallTeamsOKTeamsItemOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallTeamsOKTeamsItem) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *ListOnCallTeamsOKTeamsItem) GetColor() string {
+	return s.Color
+}
+
+// GetRotation returns the value of Rotation.
+func (s *ListOnCallTeamsOKTeamsItem) GetRotation() NilListOnCallTeamsOKTeamsItemRotation {
+	return s.Rotation
+}
+
+// GetRotations returns the value of Rotations.
+func (s *ListOnCallTeamsOKTeamsItem) GetRotations() []ListOnCallTeamsOKTeamsItemRotationsItem {
+	return s.Rotations
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItem) GetOnDutyParticipant() NilListOnCallTeamsOKTeamsItemOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallTeamsOKTeamsItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *ListOnCallTeamsOKTeamsItem) SetColor(val string) {
+	s.Color = val
+}
+
+// SetRotation sets the value of Rotation.
+func (s *ListOnCallTeamsOKTeamsItem) SetRotation(val NilListOnCallTeamsOKTeamsItemRotation) {
+	s.Rotation = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *ListOnCallTeamsOKTeamsItem) SetRotations(val []ListOnCallTeamsOKTeamsItemRotationsItem) {
+	s.Rotations = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItem) SetOnDutyParticipant(val NilListOnCallTeamsOKTeamsItemOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type ListOnCallTeamsOKTeamsItemOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role ListOnCallTeamsOKTeamsItemOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                            `json:"absent"`
+	User   ListOnCallTeamsOKTeamsItemOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) GetRole() ListOnCallTeamsOKTeamsItemOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) GetUser() ListOnCallTeamsOKTeamsItemOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) SetRole(val ListOnCallTeamsOKTeamsItemOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipant) SetUser(val ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type ListOnCallTeamsOKTeamsItemOnDutyParticipantRole string
+
+const (
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleMember     ListOnCallTeamsOKTeamsItemOnDutyParticipantRole = "member"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleSubstitute ListOnCallTeamsOKTeamsItemOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemOnDutyParticipantRole values.
+func (ListOnCallTeamsOKTeamsItemOnDutyParticipantRole) AllValues() []ListOnCallTeamsOKTeamsItemOnDutyParticipantRole {
+	return []ListOnCallTeamsOKTeamsItemOnDutyParticipantRole{
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleMember,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemOnDutyParticipantRole(data) {
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleMember:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleMember
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleSubstitute:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemOnDutyParticipantUser struct {
+	Sub       string                                                      `json:"sub"`
+	Nickname  string                                                      `json:"nickname"`
+	Picture   string                                                      `json:"picture"`
+	Status    ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetStatus() ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetSlackUser() NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetStatus(val ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetSlackUser(val NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus string
+
+const (
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusActive            ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "active"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInactive          ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "inactive"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvited           ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "invited"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationPending ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "invitation_pending"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationFailed  ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "invitation_failed"
+	ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusDeactivated       ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus values.
+func (ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus) AllValues() []ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus {
+	return []ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus{
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusActive,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInactive,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvited,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationPending,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationFailed,
+		ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatus(data) {
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusActive:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusActive
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInactive:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInactive
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvited:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvited
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationPending:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationFailed:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusDeactivated:
+		*s = ListOnCallTeamsOKTeamsItemOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotation struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []ListOnCallTeamsOKTeamsItemRotationParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetTimeSlots() []ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetParticipants() []ListOnCallTeamsOKTeamsItemRotationParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItemRotation) GetOnDutyParticipant() NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetTimeSlots(val []ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetParticipants(val []ListOnCallTeamsOKTeamsItemRotationParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItemRotation) SetOnDutyParticipant(val NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                    `json:"absent"`
+	User   ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) GetRole() ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) GetUser() ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetRole(val ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetUser(val ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleMember     ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole = "member"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleSubstitute ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole values.
+func (ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole) AllValues() []ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole {
+	return []ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole{
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleMember,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRole(data) {
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleMember:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleMember
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleSubstitute:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser struct {
+	Sub       string                                                              `json:"sub"`
+	Nickname  string                                                              `json:"nickname"`
+	Picture   string                                                              `json:"picture"`
+	Status    ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetStatus() ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetSlackUser() NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetStatus(val ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetSlackUser(val NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusActive            ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "active"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInactive          ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "inactive"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvited           ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "invited"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationPending ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "invitation_pending"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationFailed  ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "invitation_failed"
+	ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusDeactivated       ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus values.
+func (ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus) AllValues() []ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus {
+	return []ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus{
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusActive,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInactive,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvited,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationPending,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationFailed,
+		ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatus(data) {
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusActive:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusActive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInactive:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInactive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvited:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvited
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationPending:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationFailed:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusDeactivated:
+		*s = ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                   `json:"absent"`
+	User   ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) GetRole() ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) GetUser() ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) SetRole(val ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItem) SetUser(val ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleMember     ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole = "member"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleSubstitute ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole values.
+func (ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole) AllValues() []ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole {
+	return []ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole{
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleMember,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleMember:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationParticipantsItemRole(data) {
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleMember:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleMember
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleSubstitute:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser struct {
+	Sub       string                                                             `json:"sub"`
+	Nickname  string                                                             `json:"nickname"`
+	Picture   string                                                             `json:"picture"`
+	Status    ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetStatus() ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetSlackUser() NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetStatus(val ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetSlackUser(val NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusActive            ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "active"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInactive          ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "inactive"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvited           ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "invited"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationPending ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "invitation_pending"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationFailed  ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "invitation_failed"
+	ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusDeactivated       ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus values.
+func (ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus) AllValues() []ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus {
+	return []ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus{
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusActive,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInactive,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvited,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationPending,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationFailed,
+		ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatus(data) {
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusActive:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusActive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInactive:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInactive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvited:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvited
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationPending:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationPending
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationFailed:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusInvitationFailed
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusDeactivated:
+		*s = ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItem struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetTimeSlots() []ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetParticipants() []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) GetOnDutyParticipant() NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetTimeSlots(val []ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetParticipants(val []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItem) SetOnDutyParticipant(val NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                         `json:"absent"`
+	User   ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) GetRole() ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) GetUser() ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetRole(val ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetUser(val ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleMember     ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole = "member"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleSubstitute ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole values.
+func (ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole) AllValues() []ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole {
+	return []ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole{
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleMember,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRole(data) {
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleMember:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleMember
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleSubstitute:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser struct {
+	Sub       string                                                                   `json:"sub"`
+	Nickname  string                                                                   `json:"nickname"`
+	Picture   string                                                                   `json:"picture"`
+	Status    ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetStatus() ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetSlackUser() NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetStatus(val ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetSlackUser(val NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusActive            ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "active"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInactive          ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "inactive"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvited           ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "invited"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationPending ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "invitation_pending"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationFailed  ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "invitation_failed"
+	ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusDeactivated       ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus values.
+func (ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus) AllValues() []ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus {
+	return []ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus{
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusActive,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInactive,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvited,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationPending,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationFailed,
+		ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatus(data) {
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusActive:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusActive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInactive:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInactive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvited:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvited
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusDeactivated:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                        `json:"absent"`
+	User   ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) GetRole() ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) GetUser() ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) SetRole(val ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItem) SetUser(val ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleMember     ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole = "member"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleSubstitute ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole values.
+func (ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole) AllValues() []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole {
+	return []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole{
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleMember,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleMember:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRole(data) {
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleMember:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleMember
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleSubstitute:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser struct {
+	Sub       string                                                                  `json:"sub"`
+	Nickname  string                                                                  `json:"nickname"`
+	Picture   string                                                                  `json:"picture"`
+	Status    ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetStatus() ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetSlackUser() NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetStatus(val ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetSlackUser(val NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus string
+
+const (
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusActive            ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "active"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInactive          ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "inactive"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvited           ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "invited"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationPending ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "invitation_pending"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationFailed  ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "invitation_failed"
+	ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusDeactivated       ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus values.
+func (ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus) AllValues() []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus {
+	return []ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus{
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusActive,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInactive,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvited,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationPending,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationFailed,
+		ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatus(data) {
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusActive:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusActive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInactive:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInactive
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvited:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvited
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationPending:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationPending
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationFailed:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusInvitationFailed
+		return nil
+	case ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusDeactivated:
+		*s = ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *ListOnCallTeamsOKTeamsItemRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type ListOnCallTeamsPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallTeamsPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallTeamsPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListOnCallTeamsPaymentRequired) listOnCallTeamsRes() {}
+
+type ListOnCallTeamsUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListOnCallTeamsUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListOnCallTeamsUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListOnCallTeamsUnauthorized) listOnCallTeamsRes() {}
+
+type ListOnCallTriggersOK struct {
+	Triggers         []ListOnCallTriggersOKTriggersItem   `json:"triggers"`
+	ResponseMetadata ListOnCallTriggersOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetTriggers returns the value of Triggers.
+func (s *ListOnCallTriggersOK) GetTriggers() []ListOnCallTriggersOKTriggersItem {
+	return s.Triggers
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListOnCallTriggersOK) GetResponseMetadata() ListOnCallTriggersOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetTriggers sets the value of Triggers.
+func (s *ListOnCallTriggersOK) SetTriggers(val []ListOnCallTriggersOKTriggersItem) {
+	s.Triggers = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListOnCallTriggersOK) SetResponseMetadata(val ListOnCallTriggersOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListOnCallTriggersOK) listOnCallTriggersRes() {}
+
+type ListOnCallTriggersOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListOnCallTriggersOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListOnCallTriggersOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListOnCallTriggersOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListOnCallTriggersOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListOnCallTriggersOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListOnCallTriggersOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListOnCallTriggersOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListOnCallTriggersOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListOnCallTriggersOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListOnCallTriggersOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListOnCallTriggersOKTriggersItem struct {
+	UUID    string `json:"uuid"`
+	Name    string `json:"name"`
+	Enabled bool   `json:"enabled"`
+	// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+	EventType ListOnCallTriggersOKTriggersItemEventType `json:"event_type"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []ListOnCallTriggersOKTriggersItemSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元.
+	SourceFilters []ListOnCallTriggersOKTriggersItemSourceFiltersItem `json:"source_filters"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数.
+	RetryCount int                                     `json:"retry_count"`
+	Service    ListOnCallTriggersOKTriggersItemService `json:"service"`
+	// 呼び出すエスカレーションポリシー.
+	EscalationPolicies []ListOnCallTriggersOKTriggersItemEscalationPoliciesItem `json:"escalation_policies"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTriggersOKTriggersItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallTriggersOKTriggersItem) GetName() string {
+	return s.Name
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *ListOnCallTriggersOKTriggersItem) GetEnabled() bool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *ListOnCallTriggersOKTriggersItem) GetEventType() ListOnCallTriggersOKTriggersItemEventType {
+	return s.EventType
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *ListOnCallTriggersOKTriggersItem) GetSeverityFilters() []ListOnCallTriggersOKTriggersItemSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *ListOnCallTriggersOKTriggersItem) GetSourceFilters() []ListOnCallTriggersOKTriggersItemSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *ListOnCallTriggersOKTriggersItem) GetRetryCount() int {
+	return s.RetryCount
+}
+
+// GetService returns the value of Service.
+func (s *ListOnCallTriggersOKTriggersItem) GetService() ListOnCallTriggersOKTriggersItemService {
+	return s.Service
+}
+
+// GetEscalationPolicies returns the value of EscalationPolicies.
+func (s *ListOnCallTriggersOKTriggersItem) GetEscalationPolicies() []ListOnCallTriggersOKTriggersItemEscalationPoliciesItem {
+	return s.EscalationPolicies
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTriggersOKTriggersItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallTriggersOKTriggersItem) SetName(val string) {
+	s.Name = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *ListOnCallTriggersOKTriggersItem) SetEnabled(val bool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *ListOnCallTriggersOKTriggersItem) SetEventType(val ListOnCallTriggersOKTriggersItemEventType) {
+	s.EventType = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *ListOnCallTriggersOKTriggersItem) SetSeverityFilters(val []ListOnCallTriggersOKTriggersItemSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *ListOnCallTriggersOKTriggersItem) SetSourceFilters(val []ListOnCallTriggersOKTriggersItemSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *ListOnCallTriggersOKTriggersItem) SetRetryCount(val int) {
+	s.RetryCount = val
+}
+
+// SetService sets the value of Service.
+func (s *ListOnCallTriggersOKTriggersItem) SetService(val ListOnCallTriggersOKTriggersItemService) {
+	s.Service = val
+}
+
+// SetEscalationPolicies sets the value of EscalationPolicies.
+func (s *ListOnCallTriggersOKTriggersItem) SetEscalationPolicies(val []ListOnCallTriggersOKTriggersItemEscalationPoliciesItem) {
+	s.EscalationPolicies = val
+}
+
+type ListOnCallTriggersOKTriggersItemEscalationPoliciesItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallTriggersOKTriggersItemEscalationPoliciesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallTriggersOKTriggersItemEscalationPoliciesItem) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallTriggersOKTriggersItemEscalationPoliciesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallTriggersOKTriggersItemEscalationPoliciesItem) SetName(val string) {
+	s.Name = val
+}
+
+// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+type ListOnCallTriggersOKTriggersItemEventType string
+
+const (
+	ListOnCallTriggersOKTriggersItemEventTypeIncidentCreated ListOnCallTriggersOKTriggersItemEventType = "incident_created"
+)
+
+// AllValues returns all ListOnCallTriggersOKTriggersItemEventType values.
+func (ListOnCallTriggersOKTriggersItemEventType) AllValues() []ListOnCallTriggersOKTriggersItemEventType {
+	return []ListOnCallTriggersOKTriggersItemEventType{
+		ListOnCallTriggersOKTriggersItemEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTriggersOKTriggersItemEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTriggersOKTriggersItemEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTriggersOKTriggersItemEventType) UnmarshalText(data []byte) error {
+	switch ListOnCallTriggersOKTriggersItemEventType(data) {
+	case ListOnCallTriggersOKTriggersItemEventTypeIncidentCreated:
+		*s = ListOnCallTriggersOKTriggersItemEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTriggersOKTriggersItemService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *ListOnCallTriggersOKTriggersItemService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *ListOnCallTriggersOKTriggersItemService) SetName(val string) {
+	s.Name = val
+}
+
+type ListOnCallTriggersOKTriggersItemSeverityFiltersItem string
+
+const (
+	ListOnCallTriggersOKTriggersItemSeverityFiltersItemCritical ListOnCallTriggersOKTriggersItemSeverityFiltersItem = "critical"
+	ListOnCallTriggersOKTriggersItemSeverityFiltersItemHigh     ListOnCallTriggersOKTriggersItemSeverityFiltersItem = "high"
+	ListOnCallTriggersOKTriggersItemSeverityFiltersItemLow      ListOnCallTriggersOKTriggersItemSeverityFiltersItem = "low"
+	ListOnCallTriggersOKTriggersItemSeverityFiltersItemInfo     ListOnCallTriggersOKTriggersItemSeverityFiltersItem = "info"
+	ListOnCallTriggersOKTriggersItemSeverityFiltersItemUnknown  ListOnCallTriggersOKTriggersItemSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all ListOnCallTriggersOKTriggersItemSeverityFiltersItem values.
+func (ListOnCallTriggersOKTriggersItemSeverityFiltersItem) AllValues() []ListOnCallTriggersOKTriggersItemSeverityFiltersItem {
+	return []ListOnCallTriggersOKTriggersItemSeverityFiltersItem{
+		ListOnCallTriggersOKTriggersItemSeverityFiltersItemCritical,
+		ListOnCallTriggersOKTriggersItemSeverityFiltersItemHigh,
+		ListOnCallTriggersOKTriggersItemSeverityFiltersItemLow,
+		ListOnCallTriggersOKTriggersItemSeverityFiltersItemInfo,
+		ListOnCallTriggersOKTriggersItemSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTriggersOKTriggersItemSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemLow:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTriggersOKTriggersItemSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch ListOnCallTriggersOKTriggersItemSeverityFiltersItem(data) {
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemCritical:
+		*s = ListOnCallTriggersOKTriggersItemSeverityFiltersItemCritical
+		return nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemHigh:
+		*s = ListOnCallTriggersOKTriggersItemSeverityFiltersItemHigh
+		return nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemLow:
+		*s = ListOnCallTriggersOKTriggersItemSeverityFiltersItemLow
+		return nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemInfo:
+		*s = ListOnCallTriggersOKTriggersItemSeverityFiltersItemInfo
+		return nil
+	case ListOnCallTriggersOKTriggersItemSeverityFiltersItemUnknown:
+		*s = ListOnCallTriggersOKTriggersItemSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTriggersOKTriggersItemSourceFiltersItem string
+
+const (
+	ListOnCallTriggersOKTriggersItemSourceFiltersItemIntegration ListOnCallTriggersOKTriggersItemSourceFiltersItem = "integration"
+	ListOnCallTriggersOKTriggersItemSourceFiltersItemSlack       ListOnCallTriggersOKTriggersItemSourceFiltersItem = "slack"
+	ListOnCallTriggersOKTriggersItemSourceFiltersItemWeb         ListOnCallTriggersOKTriggersItemSourceFiltersItem = "web"
+)
+
+// AllValues returns all ListOnCallTriggersOKTriggersItemSourceFiltersItem values.
+func (ListOnCallTriggersOKTriggersItemSourceFiltersItem) AllValues() []ListOnCallTriggersOKTriggersItemSourceFiltersItem {
+	return []ListOnCallTriggersOKTriggersItemSourceFiltersItem{
+		ListOnCallTriggersOKTriggersItemSourceFiltersItemIntegration,
+		ListOnCallTriggersOKTriggersItemSourceFiltersItemSlack,
+		ListOnCallTriggersOKTriggersItemSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallTriggersOKTriggersItemSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemSlack:
+		return []byte(s), nil
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallTriggersOKTriggersItemSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch ListOnCallTriggersOKTriggersItemSourceFiltersItem(data) {
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemIntegration:
+		*s = ListOnCallTriggersOKTriggersItemSourceFiltersItemIntegration
+		return nil
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemSlack:
+		*s = ListOnCallTriggersOKTriggersItemSourceFiltersItemSlack
+		return nil
+	case ListOnCallTriggersOKTriggersItemSourceFiltersItemWeb:
+		*s = ListOnCallTriggersOKTriggersItemSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallTriggersPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallTriggersPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallTriggersPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListOnCallTriggersPaymentRequired) listOnCallTriggersRes() {}
+
+type ListOnCallTriggersUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListOnCallTriggersUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListOnCallTriggersUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListOnCallTriggersUnauthorized) listOnCallTriggersRes() {}
+
+type ListOnCallUserAbsencesNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallUserAbsencesNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallUserAbsencesNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListOnCallUserAbsencesNotFound) listOnCallUserAbsencesRes() {}
+
+type ListOnCallUserAbsencesOK struct {
+	Absences         []ListOnCallUserAbsencesOKAbsencesItem   `json:"absences"`
+	ResponseMetadata ListOnCallUserAbsencesOKResponseMetadata `json:"response_metadata"`
+}
+
+// GetAbsences returns the value of Absences.
+func (s *ListOnCallUserAbsencesOK) GetAbsences() []ListOnCallUserAbsencesOKAbsencesItem {
+	return s.Absences
+}
+
+// GetResponseMetadata returns the value of ResponseMetadata.
+func (s *ListOnCallUserAbsencesOK) GetResponseMetadata() ListOnCallUserAbsencesOKResponseMetadata {
+	return s.ResponseMetadata
+}
+
+// SetAbsences sets the value of Absences.
+func (s *ListOnCallUserAbsencesOK) SetAbsences(val []ListOnCallUserAbsencesOKAbsencesItem) {
+	s.Absences = val
+}
+
+// SetResponseMetadata sets the value of ResponseMetadata.
+func (s *ListOnCallUserAbsencesOK) SetResponseMetadata(val ListOnCallUserAbsencesOKResponseMetadata) {
+	s.ResponseMetadata = val
+}
+
+func (*ListOnCallUserAbsencesOK) listOnCallUserAbsencesRes() {}
+
+type ListOnCallUserAbsencesOKAbsencesItem struct {
+	UUID    string    `json:"uuid"`
+	StartAt time.Time `json:"start_at"`
+	EndAt   time.Time `json:"end_at"`
+	// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+	// は日・時刻）を毎週・毎月くり返す.
+	RepeatType ListOnCallUserAbsencesOKAbsencesItemRepeatType `json:"repeat_type"`
+	Reason     NilString                                      `json:"reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) GetRepeatType() ListOnCallUserAbsencesOKAbsencesItemRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) GetReason() NilString {
+	return s.Reason
+}
+
+// SetUUID sets the value of UUID.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) SetRepeatType(val ListOnCallUserAbsencesOKAbsencesItemRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *ListOnCallUserAbsencesOKAbsencesItem) SetReason(val NilString) {
+	s.Reason = val
+}
+
+// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+// は日・時刻）を毎週・毎月くり返す.
+type ListOnCallUserAbsencesOKAbsencesItemRepeatType string
+
+const (
+	ListOnCallUserAbsencesOKAbsencesItemRepeatTypeNone    ListOnCallUserAbsencesOKAbsencesItemRepeatType = "none"
+	ListOnCallUserAbsencesOKAbsencesItemRepeatTypeWeekly  ListOnCallUserAbsencesOKAbsencesItemRepeatType = "weekly"
+	ListOnCallUserAbsencesOKAbsencesItemRepeatTypeMonthly ListOnCallUserAbsencesOKAbsencesItemRepeatType = "monthly"
+)
+
+// AllValues returns all ListOnCallUserAbsencesOKAbsencesItemRepeatType values.
+func (ListOnCallUserAbsencesOKAbsencesItemRepeatType) AllValues() []ListOnCallUserAbsencesOKAbsencesItemRepeatType {
+	return []ListOnCallUserAbsencesOKAbsencesItemRepeatType{
+		ListOnCallUserAbsencesOKAbsencesItemRepeatTypeNone,
+		ListOnCallUserAbsencesOKAbsencesItemRepeatTypeWeekly,
+		ListOnCallUserAbsencesOKAbsencesItemRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallUserAbsencesOKAbsencesItemRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeNone:
+		return []byte(s), nil
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeWeekly:
+		return []byte(s), nil
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallUserAbsencesOKAbsencesItemRepeatType) UnmarshalText(data []byte) error {
+	switch ListOnCallUserAbsencesOKAbsencesItemRepeatType(data) {
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeNone:
+		*s = ListOnCallUserAbsencesOKAbsencesItemRepeatTypeNone
+		return nil
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeWeekly:
+		*s = ListOnCallUserAbsencesOKAbsencesItemRepeatTypeWeekly
+		return nil
+	case ListOnCallUserAbsencesOKAbsencesItemRepeatTypeMonthly:
+		*s = ListOnCallUserAbsencesOKAbsencesItemRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type ListOnCallUserAbsencesOKResponseMetadata struct {
+	CurrentPage int    `json:"current_page"`
+	NextPage    NilInt `json:"next_page"`
+	PrevPage    NilInt `json:"prev_page"`
+	TotalPages  int    `json:"total_pages"`
+	TotalCount  int    `json:"total_count"`
+}
+
+// GetCurrentPage returns the value of CurrentPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) GetCurrentPage() int {
+	return s.CurrentPage
+}
+
+// GetNextPage returns the value of NextPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) GetNextPage() NilInt {
+	return s.NextPage
+}
+
+// GetPrevPage returns the value of PrevPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) GetPrevPage() NilInt {
+	return s.PrevPage
+}
+
+// GetTotalPages returns the value of TotalPages.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) GetTotalPages() int {
+	return s.TotalPages
+}
+
+// GetTotalCount returns the value of TotalCount.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) GetTotalCount() int {
+	return s.TotalCount
+}
+
+// SetCurrentPage sets the value of CurrentPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) SetCurrentPage(val int) {
+	s.CurrentPage = val
+}
+
+// SetNextPage sets the value of NextPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) SetNextPage(val NilInt) {
+	s.NextPage = val
+}
+
+// SetPrevPage sets the value of PrevPage.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) SetPrevPage(val NilInt) {
+	s.PrevPage = val
+}
+
+// SetTotalPages sets the value of TotalPages.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) SetTotalPages(val int) {
+	s.TotalPages = val
+}
+
+// SetTotalCount sets the value of TotalCount.
+func (s *ListOnCallUserAbsencesOKResponseMetadata) SetTotalCount(val int) {
+	s.TotalCount = val
+}
+
+type ListOnCallUserAbsencesPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListOnCallUserAbsencesPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListOnCallUserAbsencesPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*ListOnCallUserAbsencesPaymentRequired) listOnCallUserAbsencesRes() {}
+
+type ListOnCallUserAbsencesUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *ListOnCallUserAbsencesUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *ListOnCallUserAbsencesUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*ListOnCallUserAbsencesUnauthorized) listOnCallUserAbsencesRes() {}
 
 type ListPostmortemTemplatesOK struct {
 	PostmortemTemplates []ListPostmortemTemplatesOKPostmortemTemplatesItem `json:"postmortem_templates"`
@@ -6772,6 +21153,22 @@ func (s *ListServicesUnauthorized) SetErrors(val []string) {
 
 func (*ListServicesUnauthorized) listServicesRes() {}
 
+type ListUsersBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *ListUsersBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *ListUsersBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*ListUsersBadRequest) listUsersRes() {}
+
 type ListUsersOK struct {
 	Users            []ListUsersOKUsersItem      `json:"users"`
 	ResponseMetadata ListUsersOKResponseMetadata `json:"response_metadata"`
@@ -6863,7 +21260,9 @@ type ListUsersOKUsersItem struct {
 	Picture   string                           `json:"picture"`
 	Status    ListUsersOKUsersItemStatus       `json:"status"`
 	SlackUser NilListUsersOKUsersItemSlackUser `json:"slack_user"`
-	CreatedAt time.Time                        `json:"created_at"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
 }
 
 // GetSub returns the value of Sub.
@@ -6889,6 +21288,11 @@ func (s *ListUsersOKUsersItem) GetStatus() ListUsersOKUsersItemStatus {
 // GetSlackUser returns the value of SlackUser.
 func (s *ListUsersOKUsersItem) GetSlackUser() NilListUsersOKUsersItemSlackUser {
 	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *ListUsersOKUsersItem) GetPhoneVerified() bool {
+	return s.PhoneVerified
 }
 
 // GetCreatedAt returns the value of CreatedAt.
@@ -6919,6 +21323,11 @@ func (s *ListUsersOKUsersItem) SetStatus(val ListUsersOKUsersItemStatus) {
 // SetSlackUser sets the value of SlackUser.
 func (s *ListUsersOKUsersItem) SetSlackUser(val NilListUsersOKUsersItemSlackUser) {
 	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *ListUsersOKUsersItem) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
 }
 
 // SetCreatedAt sets the value of CreatedAt.
@@ -7025,6 +21434,75 @@ func (s *ListUsersPaymentRequired) SetError(val string) {
 
 func (*ListUsersPaymentRequired) listUsersRes() {}
 
+type ListUsersStatus string
+
+const (
+	ListUsersStatusActive            ListUsersStatus = "active"
+	ListUsersStatusInactive          ListUsersStatus = "inactive"
+	ListUsersStatusInvited           ListUsersStatus = "invited"
+	ListUsersStatusInvitationPending ListUsersStatus = "invitation_pending"
+	ListUsersStatusInvitationFailed  ListUsersStatus = "invitation_failed"
+	ListUsersStatusDeactivated       ListUsersStatus = "deactivated"
+)
+
+// AllValues returns all ListUsersStatus values.
+func (ListUsersStatus) AllValues() []ListUsersStatus {
+	return []ListUsersStatus{
+		ListUsersStatusActive,
+		ListUsersStatusInactive,
+		ListUsersStatusInvited,
+		ListUsersStatusInvitationPending,
+		ListUsersStatusInvitationFailed,
+		ListUsersStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListUsersStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case ListUsersStatusActive:
+		return []byte(s), nil
+	case ListUsersStatusInactive:
+		return []byte(s), nil
+	case ListUsersStatusInvited:
+		return []byte(s), nil
+	case ListUsersStatusInvitationPending:
+		return []byte(s), nil
+	case ListUsersStatusInvitationFailed:
+		return []byte(s), nil
+	case ListUsersStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListUsersStatus) UnmarshalText(data []byte) error {
+	switch ListUsersStatus(data) {
+	case ListUsersStatusActive:
+		*s = ListUsersStatusActive
+		return nil
+	case ListUsersStatusInactive:
+		*s = ListUsersStatusInactive
+		return nil
+	case ListUsersStatusInvited:
+		*s = ListUsersStatusInvited
+		return nil
+	case ListUsersStatusInvitationPending:
+		*s = ListUsersStatusInvitationPending
+		return nil
+	case ListUsersStatusInvitationFailed:
+		*s = ListUsersStatusInvitationFailed
+		return nil
+	case ListUsersStatusDeactivated:
+		*s = ListUsersStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
 type ListUsersUnauthorized struct {
 	Errors []string `json:"errors"`
 }
@@ -7040,6 +21518,1965 @@ func (s *ListUsersUnauthorized) SetErrors(val []string) {
 }
 
 func (*ListUsersUnauthorized) listUsersRes() {}
+
+// NewNilCreateIncidentActionItemCreatedActionItemAssignee returns new NilCreateIncidentActionItemCreatedActionItemAssignee with value set to v.
+func NewNilCreateIncidentActionItemCreatedActionItemAssignee(v CreateIncidentActionItemCreatedActionItemAssignee) NilCreateIncidentActionItemCreatedActionItemAssignee {
+	return NilCreateIncidentActionItemCreatedActionItemAssignee{
+		Value: v,
+	}
+}
+
+// NilCreateIncidentActionItemCreatedActionItemAssignee is nullable CreateIncidentActionItemCreatedActionItemAssignee.
+type NilCreateIncidentActionItemCreatedActionItemAssignee struct {
+	Value CreateIncidentActionItemCreatedActionItemAssignee
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateIncidentActionItemCreatedActionItemAssignee) SetTo(v CreateIncidentActionItemCreatedActionItemAssignee) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateIncidentActionItemCreatedActionItemAssignee) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateIncidentActionItemCreatedActionItemAssignee) SetToNull() {
+	o.Null = true
+	var v CreateIncidentActionItemCreatedActionItemAssignee
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateIncidentActionItemCreatedActionItemAssignee) Get() (v CreateIncidentActionItemCreatedActionItemAssignee, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateIncidentActionItemCreatedActionItemAssignee) Or(d CreateIncidentActionItemCreatedActionItemAssignee) CreateIncidentActionItemCreatedActionItemAssignee {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser returns new NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser with value set to v.
+func NewNilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser(v CreateIncidentActionItemCreatedActionItemAssigneeSlackUser) NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser {
+	return NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser is nullable CreateIncidentActionItemCreatedActionItemAssigneeSlackUser.
+type NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser struct {
+	Value CreateIncidentActionItemCreatedActionItemAssigneeSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) SetTo(v CreateIncidentActionItemCreatedActionItemAssigneeSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateIncidentActionItemCreatedActionItemAssigneeSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) Get() (v CreateIncidentActionItemCreatedActionItemAssigneeSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateIncidentActionItemCreatedActionItemAssigneeSlackUser) Or(d CreateIncidentActionItemCreatedActionItemAssigneeSlackUser) CreateIncidentActionItemCreatedActionItemAssigneeSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamOnDutyParticipant returns new NilCreateOnCallTeamCreatedTeamOnDutyParticipant with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamOnDutyParticipant(v CreateOnCallTeamCreatedTeamOnDutyParticipant) NilCreateOnCallTeamCreatedTeamOnDutyParticipant {
+	return NilCreateOnCallTeamCreatedTeamOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamOnDutyParticipant is nullable CreateOnCallTeamCreatedTeamOnDutyParticipant.
+type NilCreateOnCallTeamCreatedTeamOnDutyParticipant struct {
+	Value CreateOnCallTeamCreatedTeamOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamOnDutyParticipant) SetTo(v CreateOnCallTeamCreatedTeamOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipant) Get() (v CreateOnCallTeamCreatedTeamOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipant) Or(d CreateOnCallTeamCreatedTeamOnDutyParticipant) CreateOnCallTeamCreatedTeamOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser returns new NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser(v CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser {
+	return NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser is nullable CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser.
+type NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser struct {
+	Value CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) SetTo(v CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) Get() (v CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) Or(d CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser) CreateOnCallTeamCreatedTeamOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotation returns new NilCreateOnCallTeamCreatedTeamRotation with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotation(v CreateOnCallTeamCreatedTeamRotation) NilCreateOnCallTeamCreatedTeamRotation {
+	return NilCreateOnCallTeamCreatedTeamRotation{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotation is nullable CreateOnCallTeamCreatedTeamRotation.
+type NilCreateOnCallTeamCreatedTeamRotation struct {
+	Value CreateOnCallTeamCreatedTeamRotation
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotation) SetTo(v CreateOnCallTeamCreatedTeamRotation) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotation) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotation) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotation
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotation) Get() (v CreateOnCallTeamCreatedTeamRotation, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotation) Or(d CreateOnCallTeamCreatedTeamRotation) CreateOnCallTeamCreatedTeamRotation {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant returns new NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant(v CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant {
+	return NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant is nullable CreateOnCallTeamCreatedTeamRotationOnDutyParticipant.
+type NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant struct {
+	Value CreateOnCallTeamCreatedTeamRotationOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetTo(v CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) Get() (v CreateOnCallTeamCreatedTeamRotationOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipant) Or(d CreateOnCallTeamCreatedTeamRotationOnDutyParticipant) CreateOnCallTeamCreatedTeamRotationOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser returns new NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser(v CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser {
+	return NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser is nullable CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser.
+type NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser struct {
+	Value CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) SetTo(v CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) Get() (v CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) Or(d CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser) CreateOnCallTeamCreatedTeamRotationOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser returns new NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser(v CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser {
+	return NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser is nullable CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser.
+type NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser struct {
+	Value CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) SetTo(v CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) Get() (v CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) Or(d CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser) CreateOnCallTeamCreatedTeamRotationParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant returns new NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant(v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant {
+	return NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant is nullable CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant.
+type NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant struct {
+	Value CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetTo(v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) Get() (v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) Or(d CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant) CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser returns new NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser(v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser is nullable CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser.
+type NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Value CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) SetTo(v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) Get() (v CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) Or(d CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser) CreateOnCallTeamCreatedTeamRotationsItemOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser returns new NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser with value set to v.
+func NewNilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser(v CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser {
+	return NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser is nullable CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser.
+type NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Value CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) SetTo(v CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) Get() (v CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilCreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) Or(d CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser) CreateOnCallTeamCreatedTeamRotationsItemParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilDateTime returns new NilDateTime with value set to v.
+func NewNilDateTime(v time.Time) NilDateTime {
+	return NilDateTime{
+		Value: v,
+	}
+}
+
+// NilDateTime is nullable time.Time.
+type NilDateTime struct {
+	Value time.Time
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilDateTime) SetTo(v time.Time) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilDateTime) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilDateTime) SetToNull() {
+	o.Null = true
+	var v time.Time
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilDateTime) Get() (v time.Time, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilDateTime) Or(d time.Time) time.Time {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetIncidentActionItemOKActionItemAssignee returns new NilGetIncidentActionItemOKActionItemAssignee with value set to v.
+func NewNilGetIncidentActionItemOKActionItemAssignee(v GetIncidentActionItemOKActionItemAssignee) NilGetIncidentActionItemOKActionItemAssignee {
+	return NilGetIncidentActionItemOKActionItemAssignee{
+		Value: v,
+	}
+}
+
+// NilGetIncidentActionItemOKActionItemAssignee is nullable GetIncidentActionItemOKActionItemAssignee.
+type NilGetIncidentActionItemOKActionItemAssignee struct {
+	Value GetIncidentActionItemOKActionItemAssignee
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetIncidentActionItemOKActionItemAssignee) SetTo(v GetIncidentActionItemOKActionItemAssignee) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetIncidentActionItemOKActionItemAssignee) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetIncidentActionItemOKActionItemAssignee) SetToNull() {
+	o.Null = true
+	var v GetIncidentActionItemOKActionItemAssignee
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetIncidentActionItemOKActionItemAssignee) Get() (v GetIncidentActionItemOKActionItemAssignee, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetIncidentActionItemOKActionItemAssignee) Or(d GetIncidentActionItemOKActionItemAssignee) GetIncidentActionItemOKActionItemAssignee {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetIncidentActionItemOKActionItemAssigneeSlackUser returns new NilGetIncidentActionItemOKActionItemAssigneeSlackUser with value set to v.
+func NewNilGetIncidentActionItemOKActionItemAssigneeSlackUser(v GetIncidentActionItemOKActionItemAssigneeSlackUser) NilGetIncidentActionItemOKActionItemAssigneeSlackUser {
+	return NilGetIncidentActionItemOKActionItemAssigneeSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetIncidentActionItemOKActionItemAssigneeSlackUser is nullable GetIncidentActionItemOKActionItemAssigneeSlackUser.
+type NilGetIncidentActionItemOKActionItemAssigneeSlackUser struct {
+	Value GetIncidentActionItemOKActionItemAssigneeSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetIncidentActionItemOKActionItemAssigneeSlackUser) SetTo(v GetIncidentActionItemOKActionItemAssigneeSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetIncidentActionItemOKActionItemAssigneeSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetIncidentActionItemOKActionItemAssigneeSlackUser) SetToNull() {
+	o.Null = true
+	var v GetIncidentActionItemOKActionItemAssigneeSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetIncidentActionItemOKActionItemAssigneeSlackUser) Get() (v GetIncidentActionItemOKActionItemAssigneeSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetIncidentActionItemOKActionItemAssigneeSlackUser) Or(d GetIncidentActionItemOKActionItemAssigneeSlackUser) GetIncidentActionItemOKActionItemAssigneeSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOnDutyUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideReplacedUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionAckedBy returns new NilGetOnCallSessionOKSessionAckedBy with value set to v.
+func NewNilGetOnCallSessionOKSessionAckedBy(v GetOnCallSessionOKSessionAckedBy) NilGetOnCallSessionOKSessionAckedBy {
+	return NilGetOnCallSessionOKSessionAckedBy{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionAckedBy is nullable GetOnCallSessionOKSessionAckedBy.
+type NilGetOnCallSessionOKSessionAckedBy struct {
+	Value GetOnCallSessionOKSessionAckedBy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionAckedBy) SetTo(v GetOnCallSessionOKSessionAckedBy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionAckedBy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionAckedBy) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionAckedBy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionAckedBy) Get() (v GetOnCallSessionOKSessionAckedBy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionAckedBy) Or(d GetOnCallSessionOKSessionAckedBy) GetOnCallSessionOKSessionAckedBy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionAckedBySlackUser returns new NilGetOnCallSessionOKSessionAckedBySlackUser with value set to v.
+func NewNilGetOnCallSessionOKSessionAckedBySlackUser(v GetOnCallSessionOKSessionAckedBySlackUser) NilGetOnCallSessionOKSessionAckedBySlackUser {
+	return NilGetOnCallSessionOKSessionAckedBySlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionAckedBySlackUser is nullable GetOnCallSessionOKSessionAckedBySlackUser.
+type NilGetOnCallSessionOKSessionAckedBySlackUser struct {
+	Value GetOnCallSessionOKSessionAckedBySlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionAckedBySlackUser) SetTo(v GetOnCallSessionOKSessionAckedBySlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionAckedBySlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionAckedBySlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionAckedBySlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionAckedBySlackUser) Get() (v GetOnCallSessionOKSessionAckedBySlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionAckedBySlackUser) Or(d GetOnCallSessionOKSessionAckedBySlackUser) GetOnCallSessionOKSessionAckedBySlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionActivitiesItemDtmfAction returns new NilGetOnCallSessionOKSessionActivitiesItemDtmfAction with value set to v.
+func NewNilGetOnCallSessionOKSessionActivitiesItemDtmfAction(v GetOnCallSessionOKSessionActivitiesItemDtmfAction) NilGetOnCallSessionOKSessionActivitiesItemDtmfAction {
+	return NilGetOnCallSessionOKSessionActivitiesItemDtmfAction{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionActivitiesItemDtmfAction is nullable GetOnCallSessionOKSessionActivitiesItemDtmfAction.
+type NilGetOnCallSessionOKSessionActivitiesItemDtmfAction struct {
+	Value GetOnCallSessionOKSessionActivitiesItemDtmfAction
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) SetTo(v GetOnCallSessionOKSessionActivitiesItemDtmfAction) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionActivitiesItemDtmfAction
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) Get() (v GetOnCallSessionOKSessionActivitiesItemDtmfAction, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionActivitiesItemDtmfAction) Or(d GetOnCallSessionOKSessionActivitiesItemDtmfAction) GetOnCallSessionOKSessionActivitiesItemDtmfAction {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionActivitiesItemSkipReason returns new NilGetOnCallSessionOKSessionActivitiesItemSkipReason with value set to v.
+func NewNilGetOnCallSessionOKSessionActivitiesItemSkipReason(v GetOnCallSessionOKSessionActivitiesItemSkipReason) NilGetOnCallSessionOKSessionActivitiesItemSkipReason {
+	return NilGetOnCallSessionOKSessionActivitiesItemSkipReason{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionActivitiesItemSkipReason is nullable GetOnCallSessionOKSessionActivitiesItemSkipReason.
+type NilGetOnCallSessionOKSessionActivitiesItemSkipReason struct {
+	Value GetOnCallSessionOKSessionActivitiesItemSkipReason
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemSkipReason) SetTo(v GetOnCallSessionOKSessionActivitiesItemSkipReason) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionActivitiesItemSkipReason) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemSkipReason) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionActivitiesItemSkipReason
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionActivitiesItemSkipReason) Get() (v GetOnCallSessionOKSessionActivitiesItemSkipReason, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionActivitiesItemSkipReason) Or(d GetOnCallSessionOKSessionActivitiesItemSkipReason) GetOnCallSessionOKSessionActivitiesItemSkipReason {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionActivitiesItemTeam returns new NilGetOnCallSessionOKSessionActivitiesItemTeam with value set to v.
+func NewNilGetOnCallSessionOKSessionActivitiesItemTeam(v GetOnCallSessionOKSessionActivitiesItemTeam) NilGetOnCallSessionOKSessionActivitiesItemTeam {
+	return NilGetOnCallSessionOKSessionActivitiesItemTeam{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionActivitiesItemTeam is nullable GetOnCallSessionOKSessionActivitiesItemTeam.
+type NilGetOnCallSessionOKSessionActivitiesItemTeam struct {
+	Value GetOnCallSessionOKSessionActivitiesItemTeam
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemTeam) SetTo(v GetOnCallSessionOKSessionActivitiesItemTeam) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionActivitiesItemTeam) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemTeam) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionActivitiesItemTeam
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionActivitiesItemTeam) Get() (v GetOnCallSessionOKSessionActivitiesItemTeam, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionActivitiesItemTeam) Or(d GetOnCallSessionOKSessionActivitiesItemTeam) GetOnCallSessionOKSessionActivitiesItemTeam {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionActivitiesItemUser returns new NilGetOnCallSessionOKSessionActivitiesItemUser with value set to v.
+func NewNilGetOnCallSessionOKSessionActivitiesItemUser(v GetOnCallSessionOKSessionActivitiesItemUser) NilGetOnCallSessionOKSessionActivitiesItemUser {
+	return NilGetOnCallSessionOKSessionActivitiesItemUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionActivitiesItemUser is nullable GetOnCallSessionOKSessionActivitiesItemUser.
+type NilGetOnCallSessionOKSessionActivitiesItemUser struct {
+	Value GetOnCallSessionOKSessionActivitiesItemUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemUser) SetTo(v GetOnCallSessionOKSessionActivitiesItemUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionActivitiesItemUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUser) Get() (v GetOnCallSessionOKSessionActivitiesItemUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUser) Or(d GetOnCallSessionOKSessionActivitiesItemUser) GetOnCallSessionOKSessionActivitiesItemUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionActivitiesItemUserSlackUser returns new NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser with value set to v.
+func NewNilGetOnCallSessionOKSessionActivitiesItemUserSlackUser(v GetOnCallSessionOKSessionActivitiesItemUserSlackUser) NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser {
+	return NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser is nullable GetOnCallSessionOKSessionActivitiesItemUserSlackUser.
+type NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser struct {
+	Value GetOnCallSessionOKSessionActivitiesItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) SetTo(v GetOnCallSessionOKSessionActivitiesItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionActivitiesItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) Get() (v GetOnCallSessionOKSessionActivitiesItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionActivitiesItemUserSlackUser) Or(d GetOnCallSessionOKSessionActivitiesItemUserSlackUser) GetOnCallSessionOKSessionActivitiesItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionCreatedBy returns new NilGetOnCallSessionOKSessionCreatedBy with value set to v.
+func NewNilGetOnCallSessionOKSessionCreatedBy(v GetOnCallSessionOKSessionCreatedBy) NilGetOnCallSessionOKSessionCreatedBy {
+	return NilGetOnCallSessionOKSessionCreatedBy{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionCreatedBy is nullable GetOnCallSessionOKSessionCreatedBy.
+type NilGetOnCallSessionOKSessionCreatedBy struct {
+	Value GetOnCallSessionOKSessionCreatedBy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionCreatedBy) SetTo(v GetOnCallSessionOKSessionCreatedBy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionCreatedBy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionCreatedBy) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionCreatedBy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionCreatedBy) Get() (v GetOnCallSessionOKSessionCreatedBy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionCreatedBy) Or(d GetOnCallSessionOKSessionCreatedBy) GetOnCallSessionOKSessionCreatedBy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionCreatedBySlackUser returns new NilGetOnCallSessionOKSessionCreatedBySlackUser with value set to v.
+func NewNilGetOnCallSessionOKSessionCreatedBySlackUser(v GetOnCallSessionOKSessionCreatedBySlackUser) NilGetOnCallSessionOKSessionCreatedBySlackUser {
+	return NilGetOnCallSessionOKSessionCreatedBySlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionCreatedBySlackUser is nullable GetOnCallSessionOKSessionCreatedBySlackUser.
+type NilGetOnCallSessionOKSessionCreatedBySlackUser struct {
+	Value GetOnCallSessionOKSessionCreatedBySlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionCreatedBySlackUser) SetTo(v GetOnCallSessionOKSessionCreatedBySlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionCreatedBySlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionCreatedBySlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionCreatedBySlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionCreatedBySlackUser) Get() (v GetOnCallSessionOKSessionCreatedBySlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionCreatedBySlackUser) Or(d GetOnCallSessionOKSessionCreatedBySlackUser) GetOnCallSessionOKSessionCreatedBySlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionEscalationPolicy returns new NilGetOnCallSessionOKSessionEscalationPolicy with value set to v.
+func NewNilGetOnCallSessionOKSessionEscalationPolicy(v GetOnCallSessionOKSessionEscalationPolicy) NilGetOnCallSessionOKSessionEscalationPolicy {
+	return NilGetOnCallSessionOKSessionEscalationPolicy{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionEscalationPolicy is nullable GetOnCallSessionOKSessionEscalationPolicy.
+type NilGetOnCallSessionOKSessionEscalationPolicy struct {
+	Value GetOnCallSessionOKSessionEscalationPolicy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionEscalationPolicy) SetTo(v GetOnCallSessionOKSessionEscalationPolicy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionEscalationPolicy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionEscalationPolicy) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionEscalationPolicy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionEscalationPolicy) Get() (v GetOnCallSessionOKSessionEscalationPolicy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionEscalationPolicy) Or(d GetOnCallSessionOKSessionEscalationPolicy) GetOnCallSessionOKSessionEscalationPolicy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionTargetUser returns new NilGetOnCallSessionOKSessionTargetUser with value set to v.
+func NewNilGetOnCallSessionOKSessionTargetUser(v GetOnCallSessionOKSessionTargetUser) NilGetOnCallSessionOKSessionTargetUser {
+	return NilGetOnCallSessionOKSessionTargetUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionTargetUser is nullable GetOnCallSessionOKSessionTargetUser.
+type NilGetOnCallSessionOKSessionTargetUser struct {
+	Value GetOnCallSessionOKSessionTargetUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionTargetUser) SetTo(v GetOnCallSessionOKSessionTargetUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionTargetUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionTargetUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionTargetUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionTargetUser) Get() (v GetOnCallSessionOKSessionTargetUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionTargetUser) Or(d GetOnCallSessionOKSessionTargetUser) GetOnCallSessionOKSessionTargetUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionTargetUserSlackUser returns new NilGetOnCallSessionOKSessionTargetUserSlackUser with value set to v.
+func NewNilGetOnCallSessionOKSessionTargetUserSlackUser(v GetOnCallSessionOKSessionTargetUserSlackUser) NilGetOnCallSessionOKSessionTargetUserSlackUser {
+	return NilGetOnCallSessionOKSessionTargetUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionTargetUserSlackUser is nullable GetOnCallSessionOKSessionTargetUserSlackUser.
+type NilGetOnCallSessionOKSessionTargetUserSlackUser struct {
+	Value GetOnCallSessionOKSessionTargetUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionTargetUserSlackUser) SetTo(v GetOnCallSessionOKSessionTargetUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionTargetUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionTargetUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionTargetUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionTargetUserSlackUser) Get() (v GetOnCallSessionOKSessionTargetUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionTargetUserSlackUser) Or(d GetOnCallSessionOKSessionTargetUserSlackUser) GetOnCallSessionOKSessionTargetUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallSessionOKSessionTrigger returns new NilGetOnCallSessionOKSessionTrigger with value set to v.
+func NewNilGetOnCallSessionOKSessionTrigger(v GetOnCallSessionOKSessionTrigger) NilGetOnCallSessionOKSessionTrigger {
+	return NilGetOnCallSessionOKSessionTrigger{
+		Value: v,
+	}
+}
+
+// NilGetOnCallSessionOKSessionTrigger is nullable GetOnCallSessionOKSessionTrigger.
+type NilGetOnCallSessionOKSessionTrigger struct {
+	Value GetOnCallSessionOKSessionTrigger
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallSessionOKSessionTrigger) SetTo(v GetOnCallSessionOKSessionTrigger) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallSessionOKSessionTrigger) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallSessionOKSessionTrigger) SetToNull() {
+	o.Null = true
+	var v GetOnCallSessionOKSessionTrigger
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallSessionOKSessionTrigger) Get() (v GetOnCallSessionOKSessionTrigger, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallSessionOKSessionTrigger) Or(d GetOnCallSessionOKSessionTrigger) GetOnCallSessionOKSessionTrigger {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamOnDutyParticipant returns new NilGetOnCallTeamOKTeamOnDutyParticipant with value set to v.
+func NewNilGetOnCallTeamOKTeamOnDutyParticipant(v GetOnCallTeamOKTeamOnDutyParticipant) NilGetOnCallTeamOKTeamOnDutyParticipant {
+	return NilGetOnCallTeamOKTeamOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamOnDutyParticipant is nullable GetOnCallTeamOKTeamOnDutyParticipant.
+type NilGetOnCallTeamOKTeamOnDutyParticipant struct {
+	Value GetOnCallTeamOKTeamOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamOnDutyParticipant) SetTo(v GetOnCallTeamOKTeamOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipant) Get() (v GetOnCallTeamOKTeamOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipant) Or(d GetOnCallTeamOKTeamOnDutyParticipant) GetOnCallTeamOKTeamOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser returns new NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser with value set to v.
+func NewNilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser(v GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	return NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser is nullable GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser.
+type NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser struct {
+	Value GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetTo(v GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) Get() (v GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) Or(d GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser) GetOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotation returns new NilGetOnCallTeamOKTeamRotation with value set to v.
+func NewNilGetOnCallTeamOKTeamRotation(v GetOnCallTeamOKTeamRotation) NilGetOnCallTeamOKTeamRotation {
+	return NilGetOnCallTeamOKTeamRotation{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotation is nullable GetOnCallTeamOKTeamRotation.
+type NilGetOnCallTeamOKTeamRotation struct {
+	Value GetOnCallTeamOKTeamRotation
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotation) SetTo(v GetOnCallTeamOKTeamRotation) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotation) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotation) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotation
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotation) Get() (v GetOnCallTeamOKTeamRotation, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotation) Or(d GetOnCallTeamOKTeamRotation) GetOnCallTeamOKTeamRotation {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationOnDutyParticipant returns new NilGetOnCallTeamOKTeamRotationOnDutyParticipant with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationOnDutyParticipant(v GetOnCallTeamOKTeamRotationOnDutyParticipant) NilGetOnCallTeamOKTeamRotationOnDutyParticipant {
+	return NilGetOnCallTeamOKTeamRotationOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationOnDutyParticipant is nullable GetOnCallTeamOKTeamRotationOnDutyParticipant.
+type NilGetOnCallTeamOKTeamRotationOnDutyParticipant struct {
+	Value GetOnCallTeamOKTeamRotationOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationOnDutyParticipant) SetTo(v GetOnCallTeamOKTeamRotationOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipant) Get() (v GetOnCallTeamOKTeamRotationOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipant) Or(d GetOnCallTeamOKTeamRotationOnDutyParticipant) GetOnCallTeamOKTeamRotationOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser returns new NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser(v GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	return NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser is nullable GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser.
+type NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser struct {
+	Value GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetTo(v GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) Get() (v GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) Or(d GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) GetOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser returns new NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser(v GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	return NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser is nullable GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser.
+type NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser struct {
+	Value GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetTo(v GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) Get() (v GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) Or(d GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) GetOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant returns new NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant(v GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	return NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant is nullable GetOnCallTeamOKTeamRotationsItemOnDutyParticipant.
+type NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant struct {
+	Value GetOnCallTeamOKTeamRotationsItemOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetTo(v GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationsItemOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) Get() (v GetOnCallTeamOKTeamRotationsItemOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipant) Or(d GetOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser returns new NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser(v GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser is nullable GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser.
+type NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Value GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetTo(v GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) Get() (v GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) Or(d GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) GetOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser returns new NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser with value set to v.
+func NewNilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser(v GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
+	return NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser is nullable GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser.
+type NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Value GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetTo(v GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) Get() (v GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) Or(d GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) GetOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilGetUserOKUserSlackUser returns new NilGetUserOKUserSlackUser with value set to v.
+func NewNilGetUserOKUserSlackUser(v GetUserOKUserSlackUser) NilGetUserOKUserSlackUser {
+	return NilGetUserOKUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetUserOKUserSlackUser is nullable GetUserOKUserSlackUser.
+type NilGetUserOKUserSlackUser struct {
+	Value GetUserOKUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetUserOKUserSlackUser) SetTo(v GetUserOKUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetUserOKUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilGetUserOKUserSlackUser) SetToNull() {
+	o.Null = true
+	var v GetUserOKUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetUserOKUserSlackUser) Get() (v GetUserOKUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetUserOKUserSlackUser) Or(d GetUserOKUserSlackUser) GetUserOKUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
 
 // NewNilInt returns new NilInt with value set to v.
 func NewNilInt(v int) NilInt {
@@ -7080,6 +23517,914 @@ func (o NilInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o NilInt) Or(d int) int {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilInviteUsersAcceptedUsersItemSlackUser returns new NilInviteUsersAcceptedUsersItemSlackUser with value set to v.
+func NewNilInviteUsersAcceptedUsersItemSlackUser(v InviteUsersAcceptedUsersItemSlackUser) NilInviteUsersAcceptedUsersItemSlackUser {
+	return NilInviteUsersAcceptedUsersItemSlackUser{
+		Value: v,
+	}
+}
+
+// NilInviteUsersAcceptedUsersItemSlackUser is nullable InviteUsersAcceptedUsersItemSlackUser.
+type NilInviteUsersAcceptedUsersItemSlackUser struct {
+	Value InviteUsersAcceptedUsersItemSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilInviteUsersAcceptedUsersItemSlackUser) SetTo(v InviteUsersAcceptedUsersItemSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilInviteUsersAcceptedUsersItemSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilInviteUsersAcceptedUsersItemSlackUser) SetToNull() {
+	o.Null = true
+	var v InviteUsersAcceptedUsersItemSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilInviteUsersAcceptedUsersItemSlackUser) Get() (v InviteUsersAcceptedUsersItemSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilInviteUsersAcceptedUsersItemSlackUser) Or(d InviteUsersAcceptedUsersItemSlackUser) InviteUsersAcceptedUsersItemSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListIncidentActionItemsOKActionItemsItemAssignee returns new NilListIncidentActionItemsOKActionItemsItemAssignee with value set to v.
+func NewNilListIncidentActionItemsOKActionItemsItemAssignee(v ListIncidentActionItemsOKActionItemsItemAssignee) NilListIncidentActionItemsOKActionItemsItemAssignee {
+	return NilListIncidentActionItemsOKActionItemsItemAssignee{
+		Value: v,
+	}
+}
+
+// NilListIncidentActionItemsOKActionItemsItemAssignee is nullable ListIncidentActionItemsOKActionItemsItemAssignee.
+type NilListIncidentActionItemsOKActionItemsItemAssignee struct {
+	Value ListIncidentActionItemsOKActionItemsItemAssignee
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListIncidentActionItemsOKActionItemsItemAssignee) SetTo(v ListIncidentActionItemsOKActionItemsItemAssignee) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListIncidentActionItemsOKActionItemsItemAssignee) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListIncidentActionItemsOKActionItemsItemAssignee) SetToNull() {
+	o.Null = true
+	var v ListIncidentActionItemsOKActionItemsItemAssignee
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListIncidentActionItemsOKActionItemsItemAssignee) Get() (v ListIncidentActionItemsOKActionItemsItemAssignee, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListIncidentActionItemsOKActionItemsItemAssignee) Or(d ListIncidentActionItemsOKActionItemsItemAssignee) ListIncidentActionItemsOKActionItemsItemAssignee {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser returns new NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser with value set to v.
+func NewNilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser(v ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser {
+	return NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser{
+		Value: v,
+	}
+}
+
+// NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser is nullable ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser.
+type NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser struct {
+	Value ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) SetTo(v ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) SetToNull() {
+	o.Null = true
+	var v ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) Get() (v ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) Or(d ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser) ListIncidentActionItemsOKActionItemsItemAssigneeSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemAckedBy returns new NilListOnCallSessionsOKSessionsItemAckedBy with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemAckedBy(v ListOnCallSessionsOKSessionsItemAckedBy) NilListOnCallSessionsOKSessionsItemAckedBy {
+	return NilListOnCallSessionsOKSessionsItemAckedBy{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemAckedBy is nullable ListOnCallSessionsOKSessionsItemAckedBy.
+type NilListOnCallSessionsOKSessionsItemAckedBy struct {
+	Value ListOnCallSessionsOKSessionsItemAckedBy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemAckedBy) SetTo(v ListOnCallSessionsOKSessionsItemAckedBy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemAckedBy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemAckedBy) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemAckedBy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemAckedBy) Get() (v ListOnCallSessionsOKSessionsItemAckedBy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemAckedBy) Or(d ListOnCallSessionsOKSessionsItemAckedBy) ListOnCallSessionsOKSessionsItemAckedBy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemAckedBySlackUser returns new NilListOnCallSessionsOKSessionsItemAckedBySlackUser with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemAckedBySlackUser(v ListOnCallSessionsOKSessionsItemAckedBySlackUser) NilListOnCallSessionsOKSessionsItemAckedBySlackUser {
+	return NilListOnCallSessionsOKSessionsItemAckedBySlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemAckedBySlackUser is nullable ListOnCallSessionsOKSessionsItemAckedBySlackUser.
+type NilListOnCallSessionsOKSessionsItemAckedBySlackUser struct {
+	Value ListOnCallSessionsOKSessionsItemAckedBySlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemAckedBySlackUser) SetTo(v ListOnCallSessionsOKSessionsItemAckedBySlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemAckedBySlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemAckedBySlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemAckedBySlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemAckedBySlackUser) Get() (v ListOnCallSessionsOKSessionsItemAckedBySlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemAckedBySlackUser) Or(d ListOnCallSessionsOKSessionsItemAckedBySlackUser) ListOnCallSessionsOKSessionsItemAckedBySlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemCreatedBy returns new NilListOnCallSessionsOKSessionsItemCreatedBy with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemCreatedBy(v ListOnCallSessionsOKSessionsItemCreatedBy) NilListOnCallSessionsOKSessionsItemCreatedBy {
+	return NilListOnCallSessionsOKSessionsItemCreatedBy{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemCreatedBy is nullable ListOnCallSessionsOKSessionsItemCreatedBy.
+type NilListOnCallSessionsOKSessionsItemCreatedBy struct {
+	Value ListOnCallSessionsOKSessionsItemCreatedBy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemCreatedBy) SetTo(v ListOnCallSessionsOKSessionsItemCreatedBy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemCreatedBy) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemCreatedBy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBy) Get() (v ListOnCallSessionsOKSessionsItemCreatedBy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBy) Or(d ListOnCallSessionsOKSessionsItemCreatedBy) ListOnCallSessionsOKSessionsItemCreatedBy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemCreatedBySlackUser returns new NilListOnCallSessionsOKSessionsItemCreatedBySlackUser with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemCreatedBySlackUser(v ListOnCallSessionsOKSessionsItemCreatedBySlackUser) NilListOnCallSessionsOKSessionsItemCreatedBySlackUser {
+	return NilListOnCallSessionsOKSessionsItemCreatedBySlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemCreatedBySlackUser is nullable ListOnCallSessionsOKSessionsItemCreatedBySlackUser.
+type NilListOnCallSessionsOKSessionsItemCreatedBySlackUser struct {
+	Value ListOnCallSessionsOKSessionsItemCreatedBySlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) SetTo(v ListOnCallSessionsOKSessionsItemCreatedBySlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemCreatedBySlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) Get() (v ListOnCallSessionsOKSessionsItemCreatedBySlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemCreatedBySlackUser) Or(d ListOnCallSessionsOKSessionsItemCreatedBySlackUser) ListOnCallSessionsOKSessionsItemCreatedBySlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemEscalationPolicy returns new NilListOnCallSessionsOKSessionsItemEscalationPolicy with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemEscalationPolicy(v ListOnCallSessionsOKSessionsItemEscalationPolicy) NilListOnCallSessionsOKSessionsItemEscalationPolicy {
+	return NilListOnCallSessionsOKSessionsItemEscalationPolicy{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemEscalationPolicy is nullable ListOnCallSessionsOKSessionsItemEscalationPolicy.
+type NilListOnCallSessionsOKSessionsItemEscalationPolicy struct {
+	Value ListOnCallSessionsOKSessionsItemEscalationPolicy
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemEscalationPolicy) SetTo(v ListOnCallSessionsOKSessionsItemEscalationPolicy) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemEscalationPolicy) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemEscalationPolicy) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemEscalationPolicy
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemEscalationPolicy) Get() (v ListOnCallSessionsOKSessionsItemEscalationPolicy, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemEscalationPolicy) Or(d ListOnCallSessionsOKSessionsItemEscalationPolicy) ListOnCallSessionsOKSessionsItemEscalationPolicy {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemTargetUser returns new NilListOnCallSessionsOKSessionsItemTargetUser with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemTargetUser(v ListOnCallSessionsOKSessionsItemTargetUser) NilListOnCallSessionsOKSessionsItemTargetUser {
+	return NilListOnCallSessionsOKSessionsItemTargetUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemTargetUser is nullable ListOnCallSessionsOKSessionsItemTargetUser.
+type NilListOnCallSessionsOKSessionsItemTargetUser struct {
+	Value ListOnCallSessionsOKSessionsItemTargetUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemTargetUser) SetTo(v ListOnCallSessionsOKSessionsItemTargetUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemTargetUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemTargetUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemTargetUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemTargetUser) Get() (v ListOnCallSessionsOKSessionsItemTargetUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemTargetUser) Or(d ListOnCallSessionsOKSessionsItemTargetUser) ListOnCallSessionsOKSessionsItemTargetUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemTargetUserSlackUser returns new NilListOnCallSessionsOKSessionsItemTargetUserSlackUser with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemTargetUserSlackUser(v ListOnCallSessionsOKSessionsItemTargetUserSlackUser) NilListOnCallSessionsOKSessionsItemTargetUserSlackUser {
+	return NilListOnCallSessionsOKSessionsItemTargetUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemTargetUserSlackUser is nullable ListOnCallSessionsOKSessionsItemTargetUserSlackUser.
+type NilListOnCallSessionsOKSessionsItemTargetUserSlackUser struct {
+	Value ListOnCallSessionsOKSessionsItemTargetUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) SetTo(v ListOnCallSessionsOKSessionsItemTargetUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemTargetUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) Get() (v ListOnCallSessionsOKSessionsItemTargetUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemTargetUserSlackUser) Or(d ListOnCallSessionsOKSessionsItemTargetUserSlackUser) ListOnCallSessionsOKSessionsItemTargetUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallSessionsOKSessionsItemTrigger returns new NilListOnCallSessionsOKSessionsItemTrigger with value set to v.
+func NewNilListOnCallSessionsOKSessionsItemTrigger(v ListOnCallSessionsOKSessionsItemTrigger) NilListOnCallSessionsOKSessionsItemTrigger {
+	return NilListOnCallSessionsOKSessionsItemTrigger{
+		Value: v,
+	}
+}
+
+// NilListOnCallSessionsOKSessionsItemTrigger is nullable ListOnCallSessionsOKSessionsItemTrigger.
+type NilListOnCallSessionsOKSessionsItemTrigger struct {
+	Value ListOnCallSessionsOKSessionsItemTrigger
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallSessionsOKSessionsItemTrigger) SetTo(v ListOnCallSessionsOKSessionsItemTrigger) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallSessionsOKSessionsItemTrigger) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallSessionsOKSessionsItemTrigger) SetToNull() {
+	o.Null = true
+	var v ListOnCallSessionsOKSessionsItemTrigger
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallSessionsOKSessionsItemTrigger) Get() (v ListOnCallSessionsOKSessionsItemTrigger, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallSessionsOKSessionsItemTrigger) Or(d ListOnCallSessionsOKSessionsItemTrigger) ListOnCallSessionsOKSessionsItemTrigger {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemOnDutyParticipant returns new NilListOnCallTeamsOKTeamsItemOnDutyParticipant with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemOnDutyParticipant(v ListOnCallTeamsOKTeamsItemOnDutyParticipant) NilListOnCallTeamsOKTeamsItemOnDutyParticipant {
+	return NilListOnCallTeamsOKTeamsItemOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemOnDutyParticipant is nullable ListOnCallTeamsOKTeamsItemOnDutyParticipant.
+type NilListOnCallTeamsOKTeamsItemOnDutyParticipant struct {
+	Value ListOnCallTeamsOKTeamsItemOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemOnDutyParticipant) SetTo(v ListOnCallTeamsOKTeamsItemOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipant) Get() (v ListOnCallTeamsOKTeamsItemOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipant) Or(d ListOnCallTeamsOKTeamsItemOnDutyParticipant) ListOnCallTeamsOKTeamsItemOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser returns new NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser(v ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser {
+	return NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser is nullable ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser.
+type NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser struct {
+	Value ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) SetTo(v ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) Get() (v ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) Or(d ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser) ListOnCallTeamsOKTeamsItemOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotation returns new NilListOnCallTeamsOKTeamsItemRotation with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotation(v ListOnCallTeamsOKTeamsItemRotation) NilListOnCallTeamsOKTeamsItemRotation {
+	return NilListOnCallTeamsOKTeamsItemRotation{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotation is nullable ListOnCallTeamsOKTeamsItemRotation.
+type NilListOnCallTeamsOKTeamsItemRotation struct {
+	Value ListOnCallTeamsOKTeamsItemRotation
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotation) SetTo(v ListOnCallTeamsOKTeamsItemRotation) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotation) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotation) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotation
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotation) Get() (v ListOnCallTeamsOKTeamsItemRotation, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotation) Or(d ListOnCallTeamsOKTeamsItemRotation) ListOnCallTeamsOKTeamsItemRotation {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant returns new NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant(v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant {
+	return NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant is nullable ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant.
+type NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant struct {
+	Value ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetTo(v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) Get() (v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) Or(d ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant) ListOnCallTeamsOKTeamsItemRotationOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser returns new NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser(v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser {
+	return NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser is nullable ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser.
+type NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser struct {
+	Value ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) SetTo(v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) Get() (v ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) Or(d ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser) ListOnCallTeamsOKTeamsItemRotationOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser returns new NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser(v ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser {
+	return NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser is nullable ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser.
+type NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser struct {
+	Value ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) SetTo(v ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) Get() (v ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) Or(d ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser) ListOnCallTeamsOKTeamsItemRotationParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant returns new NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant(v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant {
+	return NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant is nullable ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant.
+type NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant struct {
+	Value ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetTo(v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) Get() (v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) Or(d ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant) ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser returns new NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser(v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser {
+	return NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser is nullable ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser.
+type NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser struct {
+	Value ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) SetTo(v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) Get() (v ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) Or(d ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser) ListOnCallTeamsOKTeamsItemRotationsItemOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser returns new NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser with value set to v.
+func NewNilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser(v ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser {
+	return NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser is nullable ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser.
+type NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser struct {
+	Value ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) SetTo(v ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) Get() (v ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) Or(d ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser) ListOnCallTeamsOKTeamsItemRotationsItemParticipantsItemUserSlackUser {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7176,6 +24521,96 @@ func (o NilString) Or(d string) string {
 	return d
 }
 
+// NewNilUpdateIncidentActionItemOKActionItemAssignee returns new NilUpdateIncidentActionItemOKActionItemAssignee with value set to v.
+func NewNilUpdateIncidentActionItemOKActionItemAssignee(v UpdateIncidentActionItemOKActionItemAssignee) NilUpdateIncidentActionItemOKActionItemAssignee {
+	return NilUpdateIncidentActionItemOKActionItemAssignee{
+		Value: v,
+	}
+}
+
+// NilUpdateIncidentActionItemOKActionItemAssignee is nullable UpdateIncidentActionItemOKActionItemAssignee.
+type NilUpdateIncidentActionItemOKActionItemAssignee struct {
+	Value UpdateIncidentActionItemOKActionItemAssignee
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateIncidentActionItemOKActionItemAssignee) SetTo(v UpdateIncidentActionItemOKActionItemAssignee) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateIncidentActionItemOKActionItemAssignee) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateIncidentActionItemOKActionItemAssignee) SetToNull() {
+	o.Null = true
+	var v UpdateIncidentActionItemOKActionItemAssignee
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateIncidentActionItemOKActionItemAssignee) Get() (v UpdateIncidentActionItemOKActionItemAssignee, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateIncidentActionItemOKActionItemAssignee) Or(d UpdateIncidentActionItemOKActionItemAssignee) UpdateIncidentActionItemOKActionItemAssignee {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateIncidentActionItemOKActionItemAssigneeSlackUser returns new NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser with value set to v.
+func NewNilUpdateIncidentActionItemOKActionItemAssigneeSlackUser(v UpdateIncidentActionItemOKActionItemAssigneeSlackUser) NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser {
+	return NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser is nullable UpdateIncidentActionItemOKActionItemAssigneeSlackUser.
+type NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser struct {
+	Value UpdateIncidentActionItemOKActionItemAssigneeSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) SetTo(v UpdateIncidentActionItemOKActionItemAssigneeSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateIncidentActionItemOKActionItemAssigneeSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) Get() (v UpdateIncidentActionItemOKActionItemAssigneeSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) Or(d UpdateIncidentActionItemOKActionItemAssigneeSlackUser) UpdateIncidentActionItemOKActionItemAssigneeSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewNilUpdateIncidentCommanderOKCommander returns new NilUpdateIncidentCommanderOKCommander with value set to v.
 func NewNilUpdateIncidentCommanderOKCommander(v UpdateIncidentCommanderOKCommander) NilUpdateIncidentCommanderOKCommander {
 	return NilUpdateIncidentCommanderOKCommander{
@@ -7215,6 +24650,415 @@ func (o NilUpdateIncidentCommanderOKCommander) Get() (v UpdateIncidentCommanderO
 
 // Or returns value if set, or given parameter if does not.
 func (o NilUpdateIncidentCommanderOKCommander) Or(d UpdateIncidentCommanderOKCommander) UpdateIncidentCommanderOKCommander {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamOnDutyParticipant returns new NilUpdateOnCallTeamOKTeamOnDutyParticipant with value set to v.
+func NewNilUpdateOnCallTeamOKTeamOnDutyParticipant(v UpdateOnCallTeamOKTeamOnDutyParticipant) NilUpdateOnCallTeamOKTeamOnDutyParticipant {
+	return NilUpdateOnCallTeamOKTeamOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamOnDutyParticipant is nullable UpdateOnCallTeamOKTeamOnDutyParticipant.
+type NilUpdateOnCallTeamOKTeamOnDutyParticipant struct {
+	Value UpdateOnCallTeamOKTeamOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamOnDutyParticipant) SetTo(v UpdateOnCallTeamOKTeamOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipant) Get() (v UpdateOnCallTeamOKTeamOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipant) Or(d UpdateOnCallTeamOKTeamOnDutyParticipant) UpdateOnCallTeamOKTeamOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser returns new NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser with value set to v.
+func NewNilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser(v UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	return NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser is nullable UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser.
+type NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser struct {
+	Value UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetTo(v UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) Get() (v UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) Or(d UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotation returns new NilUpdateOnCallTeamOKTeamRotation with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotation(v UpdateOnCallTeamOKTeamRotation) NilUpdateOnCallTeamOKTeamRotation {
+	return NilUpdateOnCallTeamOKTeamRotation{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotation is nullable UpdateOnCallTeamOKTeamRotation.
+type NilUpdateOnCallTeamOKTeamRotation struct {
+	Value UpdateOnCallTeamOKTeamRotation
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotation) SetTo(v UpdateOnCallTeamOKTeamRotation) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotation) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotation) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotation
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotation) Get() (v UpdateOnCallTeamOKTeamRotation, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotation) Or(d UpdateOnCallTeamOKTeamRotation) UpdateOnCallTeamOKTeamRotation {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationOnDutyParticipant returns new NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationOnDutyParticipant(v UpdateOnCallTeamOKTeamRotationOnDutyParticipant) NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant {
+	return NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant is nullable UpdateOnCallTeamOKTeamRotationOnDutyParticipant.
+type NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant struct {
+	Value UpdateOnCallTeamOKTeamRotationOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetTo(v UpdateOnCallTeamOKTeamRotationOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) Get() (v UpdateOnCallTeamOKTeamRotationOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) Or(d UpdateOnCallTeamOKTeamRotationOnDutyParticipant) UpdateOnCallTeamOKTeamRotationOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser returns new NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser(v UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	return NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser is nullable UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser.
+type NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser struct {
+	Value UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetTo(v UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) Get() (v UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) Or(d UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser returns new NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser(v UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	return NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser is nullable UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser.
+type NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser struct {
+	Value UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetTo(v UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) Get() (v UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) Or(d UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant returns new NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant(v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	return NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant is nullable UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant.
+type NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant struct {
+	Value UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetTo(v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) Get() (v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) Or(d UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser returns new NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser(v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser is nullable UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser.
+type NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Value UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetTo(v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) Get() (v UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) Or(d UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewNilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser returns new NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser with value set to v.
+func NewNilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser(v UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
+	return NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser{
+		Value: v,
+	}
+}
+
+// NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser is nullable UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser.
+type NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Value UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetTo(v UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetToNull() {
+	o.Null = true
+	var v UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) Get() (v UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) Or(d UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7313,6 +25157,192 @@ func (o OptCreateIncidentActionItemReqActionItemStatus) Or(d CreateIncidentActio
 	return d
 }
 
+// NewOptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType returns new OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType with value set to v.
+func NewOptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(v CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType is optional CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType.
+type OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType struct {
+	Value CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType
+	Set   bool
+}
+
+// IsSet returns true if OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) IsSet() bool {
+	return o.Set
+}
+
+// Reset unsets value.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Reset() {
+	var v CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) SetTo(v CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Get() (v CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Or(d CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode returns new OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode with value set to v.
+func NewOptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode is optional CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode.
+type OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode struct {
+	Value CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
+	Set   bool
+}
+
+// IsSet returns true if OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Reset() {
+	var v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) SetTo(v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Get() (v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Or(d CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptCreateOnCallTriggerReqTriggerEventType returns new OptCreateOnCallTriggerReqTriggerEventType with value set to v.
+func NewOptCreateOnCallTriggerReqTriggerEventType(v CreateOnCallTriggerReqTriggerEventType) OptCreateOnCallTriggerReqTriggerEventType {
+	return OptCreateOnCallTriggerReqTriggerEventType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateOnCallTriggerReqTriggerEventType is optional CreateOnCallTriggerReqTriggerEventType.
+type OptCreateOnCallTriggerReqTriggerEventType struct {
+	Value CreateOnCallTriggerReqTriggerEventType
+	Set   bool
+}
+
+// IsSet returns true if OptCreateOnCallTriggerReqTriggerEventType was set.
+func (o OptCreateOnCallTriggerReqTriggerEventType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreateOnCallTriggerReqTriggerEventType) Reset() {
+	var v CreateOnCallTriggerReqTriggerEventType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateOnCallTriggerReqTriggerEventType) SetTo(v CreateOnCallTriggerReqTriggerEventType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateOnCallTriggerReqTriggerEventType) Get() (v CreateOnCallTriggerReqTriggerEventType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateOnCallTriggerReqTriggerEventType) Or(d CreateOnCallTriggerReqTriggerEventType) CreateOnCallTriggerReqTriggerEventType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptCreateOnCallUserAbsenceReqAbsenceRepeatType returns new OptCreateOnCallUserAbsenceReqAbsenceRepeatType with value set to v.
+func NewOptCreateOnCallUserAbsenceReqAbsenceRepeatType(v CreateOnCallUserAbsenceReqAbsenceRepeatType) OptCreateOnCallUserAbsenceReqAbsenceRepeatType {
+	return OptCreateOnCallUserAbsenceReqAbsenceRepeatType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateOnCallUserAbsenceReqAbsenceRepeatType is optional CreateOnCallUserAbsenceReqAbsenceRepeatType.
+type OptCreateOnCallUserAbsenceReqAbsenceRepeatType struct {
+	Value CreateOnCallUserAbsenceReqAbsenceRepeatType
+	Set   bool
+}
+
+// IsSet returns true if OptCreateOnCallUserAbsenceReqAbsenceRepeatType was set.
+func (o OptCreateOnCallUserAbsenceReqAbsenceRepeatType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreateOnCallUserAbsenceReqAbsenceRepeatType) Reset() {
+	var v CreateOnCallUserAbsenceReqAbsenceRepeatType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateOnCallUserAbsenceReqAbsenceRepeatType) SetTo(v CreateOnCallUserAbsenceReqAbsenceRepeatType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateOnCallUserAbsenceReqAbsenceRepeatType) Get() (v CreateOnCallUserAbsenceReqAbsenceRepeatType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateOnCallUserAbsenceReqAbsenceRepeatType) Or(d CreateOnCallUserAbsenceReqAbsenceRepeatType) CreateOnCallUserAbsenceReqAbsenceRepeatType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptCreatePostmortemReqStatus returns new OptCreatePostmortemReqStatus with value set to v.
 func NewOptCreatePostmortemReqStatus(v CreatePostmortemReqStatus) OptCreatePostmortemReqStatus {
 	return OptCreatePostmortemReqStatus{
@@ -7353,6 +25383,52 @@ func (o OptCreatePostmortemReqStatus) Get() (v CreatePostmortemReqStatus, ok boo
 
 // Or returns value if set, or given parameter if does not.
 func (o OptCreatePostmortemReqStatus) Or(d CreatePostmortemReqStatus) CreatePostmortemReqStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptDate returns new OptDate with value set to v.
+func NewOptDate(v time.Time) OptDate {
+	return OptDate{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptDate is optional time.Time.
+type OptDate struct {
+	Value time.Time
+	Set   bool
+}
+
+// IsSet returns true if OptDate was set.
+func (o OptDate) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptDate) Reset() {
+	var v time.Time
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptDate) SetTo(v time.Time) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptDate) Get() (v time.Time, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptDate) Or(d time.Time) time.Time {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7491,6 +25567,98 @@ func (o OptListIncidentsSortOrder) Get() (v ListIncidentsSortOrder, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptListIncidentsSortOrder) Or(d ListIncidentsSortOrder) ListIncidentsSortOrder {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptListOnCallSessionsStatus returns new OptListOnCallSessionsStatus with value set to v.
+func NewOptListOnCallSessionsStatus(v ListOnCallSessionsStatus) OptListOnCallSessionsStatus {
+	return OptListOnCallSessionsStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptListOnCallSessionsStatus is optional ListOnCallSessionsStatus.
+type OptListOnCallSessionsStatus struct {
+	Value ListOnCallSessionsStatus
+	Set   bool
+}
+
+// IsSet returns true if OptListOnCallSessionsStatus was set.
+func (o OptListOnCallSessionsStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptListOnCallSessionsStatus) Reset() {
+	var v ListOnCallSessionsStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptListOnCallSessionsStatus) SetTo(v ListOnCallSessionsStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptListOnCallSessionsStatus) Get() (v ListOnCallSessionsStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptListOnCallSessionsStatus) Or(d ListOnCallSessionsStatus) ListOnCallSessionsStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptListUsersStatus returns new OptListUsersStatus with value set to v.
+func NewOptListUsersStatus(v ListUsersStatus) OptListUsersStatus {
+	return OptListUsersStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptListUsersStatus is optional ListUsersStatus.
+type OptListUsersStatus struct {
+	Value ListUsersStatus
+	Set   bool
+}
+
+// IsSet returns true if OptListUsersStatus was set.
+func (o OptListUsersStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptListUsersStatus) Reset() {
+	var v ListUsersStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptListUsersStatus) SetTo(v ListUsersStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptListUsersStatus) Get() (v ListUsersStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptListUsersStatus) Or(d ListUsersStatus) ListUsersStatus {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -7883,6 +26051,238 @@ func (o OptString) Or(d string) string {
 	return d
 }
 
+// NewOptUpdateIncidentActionItemReqActionItemStatus returns new OptUpdateIncidentActionItemReqActionItemStatus with value set to v.
+func NewOptUpdateIncidentActionItemReqActionItemStatus(v UpdateIncidentActionItemReqActionItemStatus) OptUpdateIncidentActionItemReqActionItemStatus {
+	return OptUpdateIncidentActionItemReqActionItemStatus{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateIncidentActionItemReqActionItemStatus is optional UpdateIncidentActionItemReqActionItemStatus.
+type OptUpdateIncidentActionItemReqActionItemStatus struct {
+	Value UpdateIncidentActionItemReqActionItemStatus
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateIncidentActionItemReqActionItemStatus was set.
+func (o OptUpdateIncidentActionItemReqActionItemStatus) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateIncidentActionItemReqActionItemStatus) Reset() {
+	var v UpdateIncidentActionItemReqActionItemStatus
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateIncidentActionItemReqActionItemStatus) SetTo(v UpdateIncidentActionItemReqActionItemStatus) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateIncidentActionItemReqActionItemStatus) Get() (v UpdateIncidentActionItemReqActionItemStatus, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateIncidentActionItemReqActionItemStatus) Or(d UpdateIncidentActionItemReqActionItemStatus) UpdateIncidentActionItemReqActionItemStatus {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType returns new OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType with value set to v.
+func NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(v UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType is optional UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType.
+type OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType struct {
+	Value UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) IsSet() bool {
+	return o.Set
+}
+
+// Reset unsets value.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Reset() {
+	var v UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) SetTo(v UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Get() (v UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Or(d UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode returns new OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode with value set to v.
+func NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode is optional UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode.
+type OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode struct {
+	Value UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Reset() {
+	var v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) SetTo(v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Get() (v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Or(d UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUpdateOnCallTriggerReqTriggerEventType returns new OptUpdateOnCallTriggerReqTriggerEventType with value set to v.
+func NewOptUpdateOnCallTriggerReqTriggerEventType(v UpdateOnCallTriggerReqTriggerEventType) OptUpdateOnCallTriggerReqTriggerEventType {
+	return OptUpdateOnCallTriggerReqTriggerEventType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateOnCallTriggerReqTriggerEventType is optional UpdateOnCallTriggerReqTriggerEventType.
+type OptUpdateOnCallTriggerReqTriggerEventType struct {
+	Value UpdateOnCallTriggerReqTriggerEventType
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateOnCallTriggerReqTriggerEventType was set.
+func (o OptUpdateOnCallTriggerReqTriggerEventType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateOnCallTriggerReqTriggerEventType) Reset() {
+	var v UpdateOnCallTriggerReqTriggerEventType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateOnCallTriggerReqTriggerEventType) SetTo(v UpdateOnCallTriggerReqTriggerEventType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateOnCallTriggerReqTriggerEventType) Get() (v UpdateOnCallTriggerReqTriggerEventType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateOnCallTriggerReqTriggerEventType) Or(d UpdateOnCallTriggerReqTriggerEventType) UpdateOnCallTriggerReqTriggerEventType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptUpdateOnCallUserAbsenceReqAbsenceRepeatType returns new OptUpdateOnCallUserAbsenceReqAbsenceRepeatType with value set to v.
+func NewOptUpdateOnCallUserAbsenceReqAbsenceRepeatType(v UpdateOnCallUserAbsenceReqAbsenceRepeatType) OptUpdateOnCallUserAbsenceReqAbsenceRepeatType {
+	return OptUpdateOnCallUserAbsenceReqAbsenceRepeatType{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateOnCallUserAbsenceReqAbsenceRepeatType is optional UpdateOnCallUserAbsenceReqAbsenceRepeatType.
+type OptUpdateOnCallUserAbsenceReqAbsenceRepeatType struct {
+	Value UpdateOnCallUserAbsenceReqAbsenceRepeatType
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateOnCallUserAbsenceReqAbsenceRepeatType was set.
+func (o OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) Reset() {
+	var v UpdateOnCallUserAbsenceReqAbsenceRepeatType
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) SetTo(v UpdateOnCallUserAbsenceReqAbsenceRepeatType) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) Get() (v UpdateOnCallUserAbsenceReqAbsenceRepeatType, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) Or(d UpdateOnCallUserAbsenceReqAbsenceRepeatType) UpdateOnCallUserAbsenceReqAbsenceRepeatType {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptUpdatePostmortemReqStatus returns new OptUpdatePostmortemReqStatus with value set to v.
 func NewOptUpdatePostmortemReqStatus(v UpdatePostmortemReqStatus) OptUpdatePostmortemReqStatus {
 	return OptUpdatePostmortemReqStatus{
@@ -8109,6 +26509,477 @@ func (s *PutServiceNotificationSlackChannelUnprocessableEntity) SetError(val Opt
 
 func (*PutServiceNotificationSlackChannelUnprocessableEntity) putServiceNotificationSlackChannelRes() {
 }
+
+type UpdateIncidentActionItemNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentActionItemNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentActionItemNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentActionItemNotFound) updateIncidentActionItemRes() {}
+
+type UpdateIncidentActionItemOK struct {
+	ActionItem UpdateIncidentActionItemOKActionItem `json:"action_item"`
+}
+
+// GetActionItem returns the value of ActionItem.
+func (s *UpdateIncidentActionItemOK) GetActionItem() UpdateIncidentActionItemOKActionItem {
+	return s.ActionItem
+}
+
+// SetActionItem sets the value of ActionItem.
+func (s *UpdateIncidentActionItemOK) SetActionItem(val UpdateIncidentActionItemOKActionItem) {
+	s.ActionItem = val
+}
+
+func (*UpdateIncidentActionItemOK) updateIncidentActionItemRes() {}
+
+type UpdateIncidentActionItemOKActionItem struct {
+	UUID      uuid.UUID                                       `json:"uuid"`
+	Title     string                                          `json:"title"`
+	Status    UpdateIncidentActionItemOKActionItemStatus      `json:"status"`
+	Position  int                                             `json:"position"`
+	Assignee  NilUpdateIncidentActionItemOKActionItemAssignee `json:"assignee"`
+	CreatedAt time.Time                                       `json:"created_at"`
+	UpdatedAt time.Time                                       `json:"updated_at"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateIncidentActionItemOKActionItem) GetUUID() uuid.UUID {
+	return s.UUID
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdateIncidentActionItemOKActionItem) GetTitle() string {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentActionItemOKActionItem) GetStatus() UpdateIncidentActionItemOKActionItemStatus {
+	return s.Status
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateIncidentActionItemOKActionItem) GetPosition() int {
+	return s.Position
+}
+
+// GetAssignee returns the value of Assignee.
+func (s *UpdateIncidentActionItemOKActionItem) GetAssignee() NilUpdateIncidentActionItemOKActionItemAssignee {
+	return s.Assignee
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateIncidentActionItemOKActionItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// GetUpdatedAt returns the value of UpdatedAt.
+func (s *UpdateIncidentActionItemOKActionItem) GetUpdatedAt() time.Time {
+	return s.UpdatedAt
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateIncidentActionItemOKActionItem) SetUUID(val uuid.UUID) {
+	s.UUID = val
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdateIncidentActionItemOKActionItem) SetTitle(val string) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentActionItemOKActionItem) SetStatus(val UpdateIncidentActionItemOKActionItemStatus) {
+	s.Status = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateIncidentActionItemOKActionItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetAssignee sets the value of Assignee.
+func (s *UpdateIncidentActionItemOKActionItem) SetAssignee(val NilUpdateIncidentActionItemOKActionItemAssignee) {
+	s.Assignee = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateIncidentActionItemOKActionItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+// SetUpdatedAt sets the value of UpdatedAt.
+func (s *UpdateIncidentActionItemOKActionItem) SetUpdatedAt(val time.Time) {
+	s.UpdatedAt = val
+}
+
+type UpdateIncidentActionItemOKActionItemAssignee struct {
+	Sub       string                                                   `json:"sub"`
+	Nickname  string                                                   `json:"nickname"`
+	Picture   string                                                   `json:"picture"`
+	Status    UpdateIncidentActionItemOKActionItemAssigneeStatus       `json:"status"`
+	SlackUser NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetStatus() UpdateIncidentActionItemOKActionItemAssigneeStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetSlackUser() NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetStatus(val UpdateIncidentActionItemOKActionItemAssigneeStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetSlackUser(val NilUpdateIncidentActionItemOKActionItemAssigneeSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateIncidentActionItemOKActionItemAssignee) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateIncidentActionItemOKActionItemAssigneeSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateIncidentActionItemOKActionItemAssigneeSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateIncidentActionItemOKActionItemAssigneeSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateIncidentActionItemOKActionItemAssigneeStatus string
+
+const (
+	UpdateIncidentActionItemOKActionItemAssigneeStatusActive            UpdateIncidentActionItemOKActionItemAssigneeStatus = "active"
+	UpdateIncidentActionItemOKActionItemAssigneeStatusInactive          UpdateIncidentActionItemOKActionItemAssigneeStatus = "inactive"
+	UpdateIncidentActionItemOKActionItemAssigneeStatusInvited           UpdateIncidentActionItemOKActionItemAssigneeStatus = "invited"
+	UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationPending UpdateIncidentActionItemOKActionItemAssigneeStatus = "invitation_pending"
+	UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationFailed  UpdateIncidentActionItemOKActionItemAssigneeStatus = "invitation_failed"
+	UpdateIncidentActionItemOKActionItemAssigneeStatusDeactivated       UpdateIncidentActionItemOKActionItemAssigneeStatus = "deactivated"
+)
+
+// AllValues returns all UpdateIncidentActionItemOKActionItemAssigneeStatus values.
+func (UpdateIncidentActionItemOKActionItemAssigneeStatus) AllValues() []UpdateIncidentActionItemOKActionItemAssigneeStatus {
+	return []UpdateIncidentActionItemOKActionItemAssigneeStatus{
+		UpdateIncidentActionItemOKActionItemAssigneeStatusActive,
+		UpdateIncidentActionItemOKActionItemAssigneeStatusInactive,
+		UpdateIncidentActionItemOKActionItemAssigneeStatusInvited,
+		UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationPending,
+		UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationFailed,
+		UpdateIncidentActionItemOKActionItemAssigneeStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateIncidentActionItemOKActionItemAssigneeStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusActive:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInactive:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvited:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateIncidentActionItemOKActionItemAssigneeStatus) UnmarshalText(data []byte) error {
+	switch UpdateIncidentActionItemOKActionItemAssigneeStatus(data) {
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusActive:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusActive
+		return nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInactive:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusInactive
+		return nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvited:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusInvited
+		return nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationPending:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationPending
+		return nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationFailed:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusInvitationFailed
+		return nil
+	case UpdateIncidentActionItemOKActionItemAssigneeStatusDeactivated:
+		*s = UpdateIncidentActionItemOKActionItemAssigneeStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateIncidentActionItemOKActionItemStatus string
+
+const (
+	UpdateIncidentActionItemOKActionItemStatusOpen    UpdateIncidentActionItemOKActionItemStatus = "open"
+	UpdateIncidentActionItemOKActionItemStatusClosed  UpdateIncidentActionItemOKActionItemStatus = "closed"
+	UpdateIncidentActionItemOKActionItemStatusSkipped UpdateIncidentActionItemOKActionItemStatus = "skipped"
+)
+
+// AllValues returns all UpdateIncidentActionItemOKActionItemStatus values.
+func (UpdateIncidentActionItemOKActionItemStatus) AllValues() []UpdateIncidentActionItemOKActionItemStatus {
+	return []UpdateIncidentActionItemOKActionItemStatus{
+		UpdateIncidentActionItemOKActionItemStatusOpen,
+		UpdateIncidentActionItemOKActionItemStatusClosed,
+		UpdateIncidentActionItemOKActionItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateIncidentActionItemOKActionItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateIncidentActionItemOKActionItemStatusOpen:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemStatusClosed:
+		return []byte(s), nil
+	case UpdateIncidentActionItemOKActionItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateIncidentActionItemOKActionItemStatus) UnmarshalText(data []byte) error {
+	switch UpdateIncidentActionItemOKActionItemStatus(data) {
+	case UpdateIncidentActionItemOKActionItemStatusOpen:
+		*s = UpdateIncidentActionItemOKActionItemStatusOpen
+		return nil
+	case UpdateIncidentActionItemOKActionItemStatusClosed:
+		*s = UpdateIncidentActionItemOKActionItemStatusClosed
+		return nil
+	case UpdateIncidentActionItemOKActionItemStatusSkipped:
+		*s = UpdateIncidentActionItemOKActionItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateIncidentActionItemPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentActionItemPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentActionItemPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateIncidentActionItemPaymentRequired) updateIncidentActionItemRes() {}
+
+type UpdateIncidentActionItemReq struct {
+	ActionItem UpdateIncidentActionItemReqActionItem `json:"action_item"`
+}
+
+// GetActionItem returns the value of ActionItem.
+func (s *UpdateIncidentActionItemReq) GetActionItem() UpdateIncidentActionItemReqActionItem {
+	return s.ActionItem
+}
+
+// SetActionItem sets the value of ActionItem.
+func (s *UpdateIncidentActionItemReq) SetActionItem(val UpdateIncidentActionItemReqActionItem) {
+	s.ActionItem = val
+}
+
+type UpdateIncidentActionItemReqActionItem struct {
+	Title  OptString                                      `json:"title"`
+	Status OptUpdateIncidentActionItemReqActionItemStatus `json:"status"`
+	// Nickname of the user to assign. Set to null to unassign.
+	AssigneeNickname OptNilString `json:"assignee_nickname"`
+}
+
+// GetTitle returns the value of Title.
+func (s *UpdateIncidentActionItemReqActionItem) GetTitle() OptString {
+	return s.Title
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateIncidentActionItemReqActionItem) GetStatus() OptUpdateIncidentActionItemReqActionItemStatus {
+	return s.Status
+}
+
+// GetAssigneeNickname returns the value of AssigneeNickname.
+func (s *UpdateIncidentActionItemReqActionItem) GetAssigneeNickname() OptNilString {
+	return s.AssigneeNickname
+}
+
+// SetTitle sets the value of Title.
+func (s *UpdateIncidentActionItemReqActionItem) SetTitle(val OptString) {
+	s.Title = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateIncidentActionItemReqActionItem) SetStatus(val OptUpdateIncidentActionItemReqActionItemStatus) {
+	s.Status = val
+}
+
+// SetAssigneeNickname sets the value of AssigneeNickname.
+func (s *UpdateIncidentActionItemReqActionItem) SetAssigneeNickname(val OptNilString) {
+	s.AssigneeNickname = val
+}
+
+type UpdateIncidentActionItemReqActionItemStatus string
+
+const (
+	UpdateIncidentActionItemReqActionItemStatusOpen    UpdateIncidentActionItemReqActionItemStatus = "open"
+	UpdateIncidentActionItemReqActionItemStatusClosed  UpdateIncidentActionItemReqActionItemStatus = "closed"
+	UpdateIncidentActionItemReqActionItemStatusSkipped UpdateIncidentActionItemReqActionItemStatus = "skipped"
+)
+
+// AllValues returns all UpdateIncidentActionItemReqActionItemStatus values.
+func (UpdateIncidentActionItemReqActionItemStatus) AllValues() []UpdateIncidentActionItemReqActionItemStatus {
+	return []UpdateIncidentActionItemReqActionItemStatus{
+		UpdateIncidentActionItemReqActionItemStatusOpen,
+		UpdateIncidentActionItemReqActionItemStatusClosed,
+		UpdateIncidentActionItemReqActionItemStatusSkipped,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateIncidentActionItemReqActionItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateIncidentActionItemReqActionItemStatusOpen:
+		return []byte(s), nil
+	case UpdateIncidentActionItemReqActionItemStatusClosed:
+		return []byte(s), nil
+	case UpdateIncidentActionItemReqActionItemStatusSkipped:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateIncidentActionItemReqActionItemStatus) UnmarshalText(data []byte) error {
+	switch UpdateIncidentActionItemReqActionItemStatus(data) {
+	case UpdateIncidentActionItemReqActionItemStatusOpen:
+		*s = UpdateIncidentActionItemReqActionItemStatusOpen
+		return nil
+	case UpdateIncidentActionItemReqActionItemStatusClosed:
+		*s = UpdateIncidentActionItemReqActionItemStatusClosed
+		return nil
+	case UpdateIncidentActionItemReqActionItemStatusSkipped:
+		*s = UpdateIncidentActionItemReqActionItemStatusSkipped
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateIncidentActionItemUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateIncidentActionItemUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateIncidentActionItemUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateIncidentActionItemUnauthorized) updateIncidentActionItemRes() {}
+
+type UpdateIncidentActionItemUnprocessableEntity struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateIncidentActionItemUnprocessableEntity) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateIncidentActionItemUnprocessableEntity) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateIncidentActionItemUnprocessableEntity) updateIncidentActionItemRes() {}
 
 type UpdateIncidentCommanderBadRequest struct {
 	Error OptString `json:"error"`
@@ -9561,6 +28432,3795 @@ func (s *UpdateIncidentUnprocessableEntity) SetError(val OptString) {
 }
 
 func (*UpdateIncidentUnprocessableEntity) updateIncidentRes() {}
+
+type UpdateOnCallEscalationPolicyBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallEscalationPolicyBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallEscalationPolicyBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallEscalationPolicyBadRequest) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallEscalationPolicyNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallEscalationPolicyNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallEscalationPolicyNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallEscalationPolicyNotFound) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallEscalationPolicyOK struct {
+	EscalationPolicy UpdateOnCallEscalationPolicyOKEscalationPolicy `json:"escalation_policy"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *UpdateOnCallEscalationPolicyOK) GetEscalationPolicy() UpdateOnCallEscalationPolicyOKEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *UpdateOnCallEscalationPolicyOK) SetEscalationPolicy(val UpdateOnCallEscalationPolicyOKEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+func (*UpdateOnCallEscalationPolicyOK) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallEscalationPolicyOKEscalationPolicy struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
+	Timezone string `json:"timezone"`
+	// 各ステップのチームで誰に架電するか。 all_members
+	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+	// on_duty_only
+	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+	TeamCallMode UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// エスカレーションの順番（position の昇順）.
+	Steps []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem `json:"steps"`
+	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
+	TimeSlots []UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetName() string {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetTeamCallMode() UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetSteps() []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetTimeSlots() []UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetName(val string) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTeamCallMode(val UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetSteps(val []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTimeSlots(val []UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem struct {
+	UUID string `json:"uuid"`
+	// エスカレーションの順番。0 から始まる.
+	Position int                                                             `json:"position"`
+	StepType UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType `json:"step_type"`
+	// True
+	// のステップでは、チームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）.
+	SimultaneousCall bool                                                        `json:"simultaneous_call"`
+	Team             UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam `json:"team"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetStepType returns the value of StepType.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetStepType() UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetSimultaneousCall() bool {
+	return s.SimultaneousCall
+}
+
+// GetTeam returns the value of Team.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) GetTeam() UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam {
+	return s.Team
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetStepType(val UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetSimultaneousCall(val bool) {
+	s.SimultaneousCall = val
+}
+
+// SetTeam sets the value of Team.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) SetTeam(val UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) {
+	s.Team = val
+}
+
+type UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType string
+
+const (
+	UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary  UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType = "primary"
+	UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType = "fallback"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType values.
+func (UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) AllValues() []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType {
+	return []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType{
+		UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary,
+		UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType(data) {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypePrimary
+		return nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) GetColor() string {
+	return s.Color
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// 各ステップのチームで誰に架電するか。 all_members
+// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
+// on_duty_only
+// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
+// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
+type UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode string
+
+const (
+	UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "all_members"
+	UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode values.
+func (UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) AllValues() []UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
+	return []UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode{
+		UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers,
+		UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(data) {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
+		return nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。エスカレーションポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。エスカレーションポリシーの timezone における時刻。
+	// start_time より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。
+	// 23:59 は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type UpdateOnCallEscalationPolicyPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallEscalationPolicyPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallEscalationPolicyPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateOnCallEscalationPolicyPaymentRequired) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallEscalationPolicyReq struct {
+	EscalationPolicy UpdateOnCallEscalationPolicyReqEscalationPolicy `json:"escalation_policy"`
+}
+
+// GetEscalationPolicy returns the value of EscalationPolicy.
+func (s *UpdateOnCallEscalationPolicyReq) GetEscalationPolicy() UpdateOnCallEscalationPolicyReqEscalationPolicy {
+	return s.EscalationPolicy
+}
+
+// SetEscalationPolicy sets the value of EscalationPolicy.
+func (s *UpdateOnCallEscalationPolicyReq) SetEscalationPolicy(val UpdateOnCallEscalationPolicyReqEscalationPolicy) {
+	s.EscalationPolicy = val
+}
+
+type UpdateOnCallEscalationPolicyReqEscalationPolicy struct {
+	Name OptString `json:"name"`
+	// 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo.
+	Timezone OptString `json:"timezone"`
+	// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
+	// を参照）。省略すると変更しない.
+	TeamCallMode OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// ステップ。送ると丸ごと置き換える。配列の順がエスカレーションの順（position）になる.
+	Steps []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem `json:"steps"`
+	// 呼び出しの対象になる曜日・時間。送ると丸ごと置き換える。1
+	// つ以上必要.
+	TimeSlots []UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem `json:"time_slots"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetName() OptString {
+	return s.Name
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetTimezone() OptString {
+	return s.Timezone
+}
+
+// GetTeamCallMode returns the value of TeamCallMode.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetTeamCallMode() OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return s.TeamCallMode
+}
+
+// GetSteps returns the value of Steps.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetSteps() []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem {
+	return s.Steps
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetTimeSlots() []UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTimezone(val OptString) {
+	s.Timezone = val
+}
+
+// SetTeamCallMode sets the value of TeamCallMode.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTeamCallMode(val OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
+	s.TeamCallMode = val
+}
+
+// SetSteps sets the value of Steps.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetSteps(val []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) {
+	s.Steps = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTimeSlots(val []UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem struct {
+	// 呼び出すオンコールのチームの UUID.
+	TeamUUID string `json:"team_uuid"`
+	// 省略すると primary.
+	StepType OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType `json:"step_type"`
+	// True
+	// にすると、このステップではチームの今有効なローテの参加者全員に同時に架電する（画面の「全員に同時」）。省略すると
+	// false.
+	SimultaneousCall OptBool `json:"simultaneous_call"`
+}
+
+// GetTeamUUID returns the value of TeamUUID.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetTeamUUID() string {
+	return s.TeamUUID
+}
+
+// GetStepType returns the value of StepType.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetStepType() OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return s.StepType
+}
+
+// GetSimultaneousCall returns the value of SimultaneousCall.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) GetSimultaneousCall() OptBool {
+	return s.SimultaneousCall
+}
+
+// SetTeamUUID sets the value of TeamUUID.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetTeamUUID(val string) {
+	s.TeamUUID = val
+}
+
+// SetStepType sets the value of StepType.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetStepType(val OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) {
+	s.StepType = val
+}
+
+// SetSimultaneousCall sets the value of SimultaneousCall.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) SetSimultaneousCall(val OptBool) {
+	s.SimultaneousCall = val
+}
+
+// 省略すると primary.
+type UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType string
+
+const (
+	UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary  UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType = "primary"
+	UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType = "fallback"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType values.
+func (UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) AllValues() []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
+	return []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
+		UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary,
+		UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(data) {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypePrimary
+		return nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
+// を参照）。省略すると変更しない.
+type UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode string
+
+const (
+	UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "all_members"
+	UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "on_duty_only"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode values.
+func (UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) AllValues() []UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
+	return []UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
+		UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers,
+		UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(data) {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
+		return nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem struct {
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ポリシーの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。start_time より前なら翌日まで続く。23:59
+	// は日末までを含む.
+	EndTime string `json:"end_time"`
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type UpdateOnCallEscalationPolicyUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallEscalationPolicyUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallEscalationPolicyUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateOnCallEscalationPolicyUnauthorized) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallEscalationPolicyUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallEscalationPolicyUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *UpdateOnCallEscalationPolicyUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallEscalationPolicyUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *UpdateOnCallEscalationPolicyUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*UpdateOnCallEscalationPolicyUnprocessableEntity) updateOnCallEscalationPolicyRes() {}
+
+type UpdateOnCallTeamBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTeamBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTeamBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTeamBadRequest) updateOnCallTeamRes() {}
+
+type UpdateOnCallTeamNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTeamNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTeamNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTeamNotFound) updateOnCallTeamRes() {}
+
+type UpdateOnCallTeamOK struct {
+	Team UpdateOnCallTeamOKTeam `json:"team"`
+}
+
+// GetTeam returns the value of Team.
+func (s *UpdateOnCallTeamOK) GetTeam() UpdateOnCallTeamOKTeam {
+	return s.Team
+}
+
+// SetTeam sets the value of Team.
+func (s *UpdateOnCallTeamOK) SetTeam(val UpdateOnCallTeamOKTeam) {
+	s.Team = val
+}
+
+func (*UpdateOnCallTeamOK) updateOnCallTeamRes() {}
+
+type UpdateOnCallTeamOKTeam struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+	// 6 桁の 16 進数（# なし）.
+	Color string `json:"color"`
+	// 並び順（position）が最初のローテーション。ローテーションが設定されていないチームでは
+	// null になる。 1
+	// つのチームに複数のローテーション（平日・土日など）を持てるため、すべてを扱うときは
+	// rotations を使う.
+	Rotation NilUpdateOnCallTeamOKTeamRotation `json:"rotation"`
+	// チームのローテーション。position の昇順.
+	Rotations []UpdateOnCallTeamOKTeamRotationsItem `json:"rotations"`
+	// このチームで今呼ばれる人。今有効なローテーションのうち、position
+	// が最も小さいものの当番。 そのローテーションの当番が null
+	// のとき（参加者が全員不在など）は、ほかのローテーションには回さず
+	// null になる。 どのローテーションも有効でないときも null になる.
+	OnDutyParticipant NilUpdateOnCallTeamOKTeamOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeam) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTeamOKTeam) GetName() string {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateOnCallTeamOKTeam) GetColor() string {
+	return s.Color
+}
+
+// GetRotation returns the value of Rotation.
+func (s *UpdateOnCallTeamOKTeam) GetRotation() NilUpdateOnCallTeamOKTeamRotation {
+	return s.Rotation
+}
+
+// GetRotations returns the value of Rotations.
+func (s *UpdateOnCallTeamOKTeam) GetRotations() []UpdateOnCallTeamOKTeamRotationsItem {
+	return s.Rotations
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeam) GetOnDutyParticipant() NilUpdateOnCallTeamOKTeamOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeam) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTeamOKTeam) SetName(val string) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateOnCallTeamOKTeam) SetColor(val string) {
+	s.Color = val
+}
+
+// SetRotation sets the value of Rotation.
+func (s *UpdateOnCallTeamOKTeam) SetRotation(val NilUpdateOnCallTeamOKTeamRotation) {
+	s.Rotation = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *UpdateOnCallTeamOKTeam) SetRotations(val []UpdateOnCallTeamOKTeamRotationsItem) {
+	s.Rotations = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeam) SetOnDutyParticipant(val NilUpdateOnCallTeamOKTeamOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type UpdateOnCallTeamOKTeamOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role UpdateOnCallTeamOKTeamOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                        `json:"absent"`
+	User   UpdateOnCallTeamOKTeamOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) GetRole() UpdateOnCallTeamOKTeamOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) GetUser() UpdateOnCallTeamOKTeamOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) SetRole(val UpdateOnCallTeamOKTeamOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipant) SetUser(val UpdateOnCallTeamOKTeamOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type UpdateOnCallTeamOKTeamOnDutyParticipantRole string
+
+const (
+	UpdateOnCallTeamOKTeamOnDutyParticipantRoleMember     UpdateOnCallTeamOKTeamOnDutyParticipantRole = "member"
+	UpdateOnCallTeamOKTeamOnDutyParticipantRoleSubstitute UpdateOnCallTeamOKTeamOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamOnDutyParticipantRole values.
+func (UpdateOnCallTeamOKTeamOnDutyParticipantRole) AllValues() []UpdateOnCallTeamOKTeamOnDutyParticipantRole {
+	return []UpdateOnCallTeamOKTeamOnDutyParticipantRole{
+		UpdateOnCallTeamOKTeamOnDutyParticipantRoleMember,
+		UpdateOnCallTeamOKTeamOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamOnDutyParticipantRole(data) {
+	case UpdateOnCallTeamOKTeamOnDutyParticipantRoleMember:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantRoleMember
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantRoleSubstitute:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamOnDutyParticipantUser struct {
+	Sub       string                                                  `json:"sub"`
+	Nickname  string                                                  `json:"nickname"`
+	Picture   string                                                  `json:"picture"`
+	Status    UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetStatus() UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetSlackUser() NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetStatus(val UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetSlackUser(val NilUpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus string
+
+const (
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusActive            UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "active"
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInactive          UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "inactive"
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvited           UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "invited"
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "invitation_pending"
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed  UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "invitation_failed"
+	UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated       UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus values.
+func (UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus) AllValues() []UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus {
+	return []UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus{
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusActive,
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInactive,
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvited,
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending,
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed,
+		UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamOnDutyParticipantUserStatus(data) {
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusActive:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusActive
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInactive:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInactive
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvited:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvited
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated:
+		*s = UpdateOnCallTeamOKTeamOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotation struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []UpdateOnCallTeamOKTeamRotationTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []UpdateOnCallTeamOKTeamRotationParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotation) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotation) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *UpdateOnCallTeamOKTeamRotation) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *UpdateOnCallTeamOKTeamRotation) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *UpdateOnCallTeamOKTeamRotation) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamOKTeamRotation) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamOKTeamRotation) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *UpdateOnCallTeamOKTeamRotation) GetTimeSlots() []UpdateOnCallTeamOKTeamRotationTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *UpdateOnCallTeamOKTeamRotation) GetParticipants() []UpdateOnCallTeamOKTeamRotationParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeamRotation) GetOnDutyParticipant() NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotation) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotation) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *UpdateOnCallTeamOKTeamRotation) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *UpdateOnCallTeamOKTeamRotation) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *UpdateOnCallTeamOKTeamRotation) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamOKTeamRotation) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamOKTeamRotation) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *UpdateOnCallTeamOKTeamRotation) SetTimeSlots(val []UpdateOnCallTeamOKTeamRotationTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *UpdateOnCallTeamOKTeamRotation) SetParticipants(val []UpdateOnCallTeamOKTeamRotationParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeamRotation) SetOnDutyParticipant(val NilUpdateOnCallTeamOKTeamRotationOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type UpdateOnCallTeamOKTeamRotationOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                `json:"absent"`
+	User   UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) GetRole() UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) GetUser() UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetRole(val UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipant) SetUser(val UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole string
+
+const (
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleMember     UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole = "member"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole values.
+func (UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole) AllValues() []UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole {
+	return []UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole{
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleMember,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationOnDutyParticipantRole(data) {
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleMember:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleMember
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser struct {
+	Sub       string                                                          `json:"sub"`
+	Nickname  string                                                          `json:"nickname"`
+	Picture   string                                                          `json:"picture"`
+	Status    UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetStatus() UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetSlackUser() NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetStatus(val UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetSlackUser(val NilUpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus string
+
+const (
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive            UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "active"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive          UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "inactive"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited           UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invited"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invitation_pending"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed  UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "invitation_failed"
+	UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated       UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus values.
+func (UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) AllValues() []UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus {
+	return []UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus{
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed,
+		UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatus(data) {
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusActive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInactive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvited
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated:
+		*s = UpdateOnCallTeamOKTeamRotationOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role UpdateOnCallTeamOKTeamRotationParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                               `json:"absent"`
+	User   UpdateOnCallTeamOKTeamRotationParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) GetRole() UpdateOnCallTeamOKTeamRotationParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) GetUser() UpdateOnCallTeamOKTeamRotationParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) SetRole(val UpdateOnCallTeamOKTeamRotationParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItem) SetUser(val UpdateOnCallTeamOKTeamRotationParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type UpdateOnCallTeamOKTeamRotationParticipantsItemRole string
+
+const (
+	UpdateOnCallTeamOKTeamRotationParticipantsItemRoleMember     UpdateOnCallTeamOKTeamRotationParticipantsItemRole = "member"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute UpdateOnCallTeamOKTeamRotationParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationParticipantsItemRole values.
+func (UpdateOnCallTeamOKTeamRotationParticipantsItemRole) AllValues() []UpdateOnCallTeamOKTeamRotationParticipantsItemRole {
+	return []UpdateOnCallTeamOKTeamRotationParticipantsItemRole{
+		UpdateOnCallTeamOKTeamRotationParticipantsItemRoleMember,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemRoleMember:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationParticipantsItemRole(data) {
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemRoleMember:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemRoleMember
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationParticipantsItemUser struct {
+	Sub       string                                                         `json:"sub"`
+	Nickname  string                                                         `json:"nickname"`
+	Picture   string                                                         `json:"picture"`
+	Status    UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetStatus() UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetSlackUser() NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetStatus(val UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetSlackUser(val NilUpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus string
+
+const (
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusActive            UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "active"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive          UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "inactive"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited           UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invited"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invitation_pending"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed  UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "invitation_failed"
+	UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated       UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus values.
+func (UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus) AllValues() []UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus {
+	return []UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus{
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusActive,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed,
+		UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatus(data) {
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusActive:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusActive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInactive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvited
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationPending
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusInvitationFailed
+		return nil
+	case UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated:
+		*s = UpdateOnCallTeamOKTeamRotationParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *UpdateOnCallTeamOKTeamRotationTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItem struct {
+	UUID string `json:"uuid"`
+	// 同じチームの中の並び順。有効な時間が重なったときは小さい方のローテーションの当番が呼ばれる.
+	Position int `json:"position"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式）。started_at
+	// のオフセットもこれに従う.
+	Timezone string `json:"timezone"`
+	// 最初のシフトが始まった日時。ここから引き継ぎの曜日と時刻が決まる.
+	StartedAt time.Time `json:"started_at"`
+	// 交代の間隔（日数）。started_at から interval_days
+	// 日ごとに次の参加者へ引き継ぐ。7 なら毎週.
+	IntervalDays int `json:"interval_days"`
+	// 引き継ぎの曜日。0 が日曜、6 が土曜。 interval_days が 7
+	// の倍数でないときは、引き継ぎの曜日が毎回変わるため null になる.
+	ShiftHandoffWday NilInt `json:"shift_handoff_wday"`
+	// 引き継ぎの時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// このローテーションが有効な曜日・時間。day_of_week、start_time の昇順。
+	// 空のときはいつでも有効.
+	TimeSlots []UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem `json:"time_slots"`
+	// Position の昇順.
+	Participants []UpdateOnCallTeamOKTeamRotationsItemParticipantsItem `json:"participants"`
+	// 現在の当番。次の場合は null になる。 参加者が全員不在のとき /
+	// ローテーションがまだ始まっていないとき / 参加者が 1 人もいないとき /
+	// 今がこのローテーションの有効な曜日・時間（time_slots）の外のとき。
+	// participants のいずれかと同じ要素が入るため、absent は常に false になる。.
+	OnDutyParticipant NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant `json:"on_duty_participant"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetPosition() int {
+	return s.Position
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetStartedAt() time.Time {
+	return s.StartedAt
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetIntervalDays() int {
+	return s.IntervalDays
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetShiftHandoffWday() NilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetTimeSlots() []UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// GetParticipants returns the value of Participants.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetParticipants() []UpdateOnCallTeamOKTeamRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetOnDutyParticipant returns the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) GetOnDutyParticipant() NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant {
+	return s.OnDutyParticipant
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetStartedAt(val time.Time) {
+	s.StartedAt = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetIntervalDays(val int) {
+	s.IntervalDays = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetShiftHandoffWday(val NilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetTimeSlots(val []UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetParticipants(val []UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetOnDutyParticipant sets the value of OnDutyParticipant.
+func (s *UpdateOnCallTeamOKTeamRotationsItem) SetOnDutyParticipant(val NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) {
+	s.OnDutyParticipant = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                     `json:"absent"`
+	User   UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetRole() UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) GetUser() UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetRole(val UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipant) SetUser(val UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole string
+
+const (
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember     UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole = "member"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole = "substitute"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole values.
+func (UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) AllValues() []UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole {
+	return []UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole{
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRole(data) {
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleMember
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser struct {
+	Sub       string                                                               `json:"sub"`
+	Nickname  string                                                               `json:"nickname"`
+	Picture   string                                                               `json:"picture"`
+	Status    UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus       `json:"status"`
+	SlackUser NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetStatus() UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetSlackUser() NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetStatus(val UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetSlackUser(val NilUpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus string
+
+const (
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive            UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "active"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive          UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "inactive"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited           UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invited"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invitation_pending"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed  UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "invitation_failed"
+	UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated       UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus = "deactivated"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus values.
+func (UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) AllValues() []UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus {
+	return []UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus{
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed,
+		UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatus(data) {
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusActive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInactive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvited
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationPending
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusInvitationFailed
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated:
+		*s = UpdateOnCallTeamOKTeamRotationsItemOnDutyParticipantUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemParticipantsItem struct {
+	UUID string `json:"uuid"`
+	// ローテーションの順番。0 から始まる。代役（role が
+	// substitute）は順番を持たないので null.
+	Position NilInt `json:"position"`
+	// Member: ローテーションの順番に入るメンバー。 substitute:
+	// 代役として登録された期間だけ当番になる人。on_duty_participant
+	// にだけ現れ、participants には含まれない.
+	Role UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole `json:"role"`
+	// 現在、不在として登録されているかどうか.
+	Absent bool                                                    `json:"absent"`
+	User   UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser `json:"user"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) GetPosition() NilInt {
+	return s.Position
+}
+
+// GetRole returns the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) GetRole() UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole {
+	return s.Role
+}
+
+// GetAbsent returns the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) GetAbsent() bool {
+	return s.Absent
+}
+
+// GetUser returns the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) GetUser() UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser {
+	return s.User
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) SetPosition(val NilInt) {
+	s.Position = val
+}
+
+// SetRole sets the value of Role.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) SetRole(val UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole) {
+	s.Role = val
+}
+
+// SetAbsent sets the value of Absent.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) SetAbsent(val bool) {
+	s.Absent = val
+}
+
+// SetUser sets the value of User.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItem) SetUser(val UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) {
+	s.User = val
+}
+
+// Member: ローテーションの順番に入るメンバー。 substitute:
+// 代役として登録された期間だけ当番になる人。on_duty_participant
+// にだけ現れ、participants には含まれない.
+type UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole string
+
+const (
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember     UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole = "member"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole = "substitute"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole values.
+func (UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole) AllValues() []UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole {
+	return []UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole{
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRole(data) {
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleMember
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemRoleSubstitute
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser struct {
+	Sub       string                                                              `json:"sub"`
+	Nickname  string                                                              `json:"nickname"`
+	Picture   string                                                              `json:"picture"`
+	Status    UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus       `json:"status"`
+	SlackUser NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetStatus() UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetSlackUser() NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetStatus(val UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetSlackUser(val NilUpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUser) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus string
+
+const (
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive            UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "active"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive          UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "inactive"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited           UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invited"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invitation_pending"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed  UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "invitation_failed"
+	UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated       UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus = "deactivated"
+)
+
+// AllValues returns all UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus values.
+func (UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) AllValues() []UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus {
+	return []UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus{
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed,
+		UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		return []byte(s), nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatus(data) {
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusActive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInactive
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvited
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationPending
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusInvitationFailed
+		return nil
+	case UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated:
+		*s = UpdateOnCallTeamOKTeamRotationsItemParticipantsItemUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem struct {
+	UUID string `json:"uuid"`
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）。ローテーションの timezone における時刻.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。ローテーションの timezone における時刻。 start_time
+	// より前の値のときは翌日まで続く時間帯を表す（例 22:00-02:00）。 23:59
+	// は日末（翌日 00:00 の直前）までを含む。.
+	EndTime string `json:"end_time"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *UpdateOnCallTeamOKTeamRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type UpdateOnCallTeamPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTeamPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTeamPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTeamPaymentRequired) updateOnCallTeamRes() {}
+
+type UpdateOnCallTeamReq struct {
+	Team UpdateOnCallTeamReqTeam `json:"team"`
+}
+
+// GetTeam returns the value of Team.
+func (s *UpdateOnCallTeamReq) GetTeam() UpdateOnCallTeamReqTeam {
+	return s.Team
+}
+
+// SetTeam sets the value of Team.
+func (s *UpdateOnCallTeamReq) SetTeam(val UpdateOnCallTeamReqTeam) {
+	s.Team = val
+}
+
+type UpdateOnCallTeamReqTeam struct {
+	Name OptString `json:"name"`
+	// 色（6 桁の 16 進数、# なし）.
+	Color OptString `json:"color"`
+	// ローテーション。送ると丸ごと置き換える。1
+	// つ以上必要で、配列の順が並び順になる.
+	Rotations []UpdateOnCallTeamReqTeamRotationsItem `json:"rotations"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTeamReqTeam) GetName() OptString {
+	return s.Name
+}
+
+// GetColor returns the value of Color.
+func (s *UpdateOnCallTeamReqTeam) GetColor() OptString {
+	return s.Color
+}
+
+// GetRotations returns the value of Rotations.
+func (s *UpdateOnCallTeamReqTeam) GetRotations() []UpdateOnCallTeamReqTeamRotationsItem {
+	return s.Rotations
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTeamReqTeam) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetColor sets the value of Color.
+func (s *UpdateOnCallTeamReqTeam) SetColor(val OptString) {
+	s.Color = val
+}
+
+// SetRotations sets the value of Rotations.
+func (s *UpdateOnCallTeamReqTeam) SetRotations(val []UpdateOnCallTeamReqTeamRotationsItem) {
+	s.Rotations = val
+}
+
+// チームのローテーション 1
+// つ分の入力。配列の順がローテーションの並び順（position）になる。.
+type UpdateOnCallTeamReqTeamRotationsItem struct {
+	// 今あるローテーションを残して更新するときに指定する。省略すると新しいローテーションを作る.
+	UUID OptString `json:"uuid"`
+	// ローテーションの基準になるタイムゾーン（IANA 形式。例 Asia/Tokyo）.
+	Timezone string `json:"timezone"`
+	// 最初のシフトの基準日時（ISO 8601）。shift_handoff_wday / shift_handoff_time
+	// に合わせて補正して保存する。 interval_days が 7
+	// の倍数のときは、この日時以前で直近の交代の曜日・時刻に、それ以外は同じ日の交代の時刻にする.
+	StartedAt string `json:"started_at"`
+	// 交代の時刻（HH:MM）。timezone における時刻.
+	ShiftHandoffTime string `json:"shift_handoff_time"`
+	// 交代の曜日（0 が日曜、6 が土曜）。interval_days が 7 の倍数のときは必須.
+	ShiftHandoffWday OptNilInt `json:"shift_handoff_wday"`
+	// 交代の間隔（日数、1〜14）。省略すると、今あるローテーションは今の値、新しいローテーションは
+	// 7.
+	IntervalDays OptInt `json:"interval_days"`
+	// 参加者。送ると丸ごと置き換える（空の配列なら参加者なし）。
+	// 省略すると、uuid
+	// を指定した今あるローテーションは今の参加者のまま、新しいローテーションは参加者なし。
+	// 電話番号の確認が済んでいるユーザーだけを指定できる.
+	Participants []UpdateOnCallTeamReqTeamRotationsItemParticipantsItem `json:"participants"`
+	// 有効な曜日・時間。送ると丸ごと置き換える（空の配列なら、いつでも有効）。
+	// 省略すると、uuid
+	// を指定した今あるローテーションは今のまま、新しいローテーションはいつでも有効.
+	TimeSlots []UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem `json:"time_slots"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetUUID() OptString {
+	return s.UUID
+}
+
+// GetTimezone returns the value of Timezone.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetTimezone() string {
+	return s.Timezone
+}
+
+// GetStartedAt returns the value of StartedAt.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetStartedAt() string {
+	return s.StartedAt
+}
+
+// GetShiftHandoffTime returns the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetShiftHandoffTime() string {
+	return s.ShiftHandoffTime
+}
+
+// GetShiftHandoffWday returns the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetShiftHandoffWday() OptNilInt {
+	return s.ShiftHandoffWday
+}
+
+// GetIntervalDays returns the value of IntervalDays.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetIntervalDays() OptInt {
+	return s.IntervalDays
+}
+
+// GetParticipants returns the value of Participants.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetParticipants() []UpdateOnCallTeamReqTeamRotationsItemParticipantsItem {
+	return s.Participants
+}
+
+// GetTimeSlots returns the value of TimeSlots.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) GetTimeSlots() []UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem {
+	return s.TimeSlots
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetUUID(val OptString) {
+	s.UUID = val
+}
+
+// SetTimezone sets the value of Timezone.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetTimezone(val string) {
+	s.Timezone = val
+}
+
+// SetStartedAt sets the value of StartedAt.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetStartedAt(val string) {
+	s.StartedAt = val
+}
+
+// SetShiftHandoffTime sets the value of ShiftHandoffTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetShiftHandoffTime(val string) {
+	s.ShiftHandoffTime = val
+}
+
+// SetShiftHandoffWday sets the value of ShiftHandoffWday.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetShiftHandoffWday(val OptNilInt) {
+	s.ShiftHandoffWday = val
+}
+
+// SetIntervalDays sets the value of IntervalDays.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetIntervalDays(val OptInt) {
+	s.IntervalDays = val
+}
+
+// SetParticipants sets the value of Participants.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetParticipants(val []UpdateOnCallTeamReqTeamRotationsItemParticipantsItem) {
+	s.Participants = val
+}
+
+// SetTimeSlots sets the value of TimeSlots.
+func (s *UpdateOnCallTeamReqTeamRotationsItem) SetTimeSlots(val []UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) {
+	s.TimeSlots = val
+}
+
+type UpdateOnCallTeamReqTeamRotationsItemParticipantsItem struct {
+	// ユーザーの sub（GET /api/v0/users で調べられる）.
+	UserSub string `json:"user_sub"`
+	// 当番の順番（0 から）.
+	Position int `json:"position"`
+}
+
+// GetUserSub returns the value of UserSub.
+func (s *UpdateOnCallTeamReqTeamRotationsItemParticipantsItem) GetUserSub() string {
+	return s.UserSub
+}
+
+// GetPosition returns the value of Position.
+func (s *UpdateOnCallTeamReqTeamRotationsItemParticipantsItem) GetPosition() int {
+	return s.Position
+}
+
+// SetUserSub sets the value of UserSub.
+func (s *UpdateOnCallTeamReqTeamRotationsItemParticipantsItem) SetUserSub(val string) {
+	s.UserSub = val
+}
+
+// SetPosition sets the value of Position.
+func (s *UpdateOnCallTeamReqTeamRotationsItemParticipantsItem) SetPosition(val int) {
+	s.Position = val
+}
+
+type UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem struct {
+	// 0 が日曜、6 が土曜.
+	DayOfWeek int `json:"day_of_week"`
+	// 開始時刻（HH:MM）.
+	StartTime string `json:"start_time"`
+	// 終了時刻（HH:MM）。start_time より前なら翌日まで続く。23:59
+	// は日末までを含む.
+	EndTime string `json:"end_time"`
+}
+
+// GetDayOfWeek returns the value of DayOfWeek.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetDayOfWeek() int {
+	return s.DayOfWeek
+}
+
+// GetStartTime returns the value of StartTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetStartTime() string {
+	return s.StartTime
+}
+
+// GetEndTime returns the value of EndTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) GetEndTime() string {
+	return s.EndTime
+}
+
+// SetDayOfWeek sets the value of DayOfWeek.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetDayOfWeek(val int) {
+	s.DayOfWeek = val
+}
+
+// SetStartTime sets the value of StartTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetStartTime(val string) {
+	s.StartTime = val
+}
+
+// SetEndTime sets the value of EndTime.
+func (s *UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem) SetEndTime(val string) {
+	s.EndTime = val
+}
+
+type UpdateOnCallTeamUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallTeamUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallTeamUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateOnCallTeamUnauthorized) updateOnCallTeamRes() {}
+
+type UpdateOnCallTeamUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallTeamUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *UpdateOnCallTeamUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallTeamUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *UpdateOnCallTeamUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*UpdateOnCallTeamUnprocessableEntity) updateOnCallTeamRes() {}
+
+type UpdateOnCallTriggerBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTriggerBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTriggerBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTriggerBadRequest) updateOnCallTriggerRes() {}
+
+type UpdateOnCallTriggerNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTriggerNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTriggerNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTriggerNotFound) updateOnCallTriggerRes() {}
+
+type UpdateOnCallTriggerOK struct {
+	Trigger UpdateOnCallTriggerOKTrigger `json:"trigger"`
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *UpdateOnCallTriggerOK) GetTrigger() UpdateOnCallTriggerOKTrigger {
+	return s.Trigger
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *UpdateOnCallTriggerOK) SetTrigger(val UpdateOnCallTriggerOKTrigger) {
+	s.Trigger = val
+}
+
+func (*UpdateOnCallTriggerOK) updateOnCallTriggerRes() {}
+
+type UpdateOnCallTriggerOKTrigger struct {
+	UUID    string `json:"uuid"`
+	Name    string `json:"name"`
+	Enabled bool   `json:"enabled"`
+	// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+	EventType UpdateOnCallTriggerOKTriggerEventType `json:"event_type"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []UpdateOnCallTriggerOKTriggerSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元.
+	SourceFilters []UpdateOnCallTriggerOKTriggerSourceFiltersItem `json:"source_filters"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数.
+	RetryCount int                                 `json:"retry_count"`
+	Service    UpdateOnCallTriggerOKTriggerService `json:"service"`
+	// 呼び出すエスカレーションポリシー.
+	EscalationPolicies []UpdateOnCallTriggerOKTriggerEscalationPoliciesItem `json:"escalation_policies"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTriggerOKTrigger) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTriggerOKTrigger) GetName() string {
+	return s.Name
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *UpdateOnCallTriggerOKTrigger) GetEnabled() bool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *UpdateOnCallTriggerOKTrigger) GetEventType() UpdateOnCallTriggerOKTriggerEventType {
+	return s.EventType
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *UpdateOnCallTriggerOKTrigger) GetSeverityFilters() []UpdateOnCallTriggerOKTriggerSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *UpdateOnCallTriggerOKTrigger) GetSourceFilters() []UpdateOnCallTriggerOKTriggerSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *UpdateOnCallTriggerOKTrigger) GetRetryCount() int {
+	return s.RetryCount
+}
+
+// GetService returns the value of Service.
+func (s *UpdateOnCallTriggerOKTrigger) GetService() UpdateOnCallTriggerOKTriggerService {
+	return s.Service
+}
+
+// GetEscalationPolicies returns the value of EscalationPolicies.
+func (s *UpdateOnCallTriggerOKTrigger) GetEscalationPolicies() []UpdateOnCallTriggerOKTriggerEscalationPoliciesItem {
+	return s.EscalationPolicies
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTriggerOKTrigger) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTriggerOKTrigger) SetName(val string) {
+	s.Name = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *UpdateOnCallTriggerOKTrigger) SetEnabled(val bool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *UpdateOnCallTriggerOKTrigger) SetEventType(val UpdateOnCallTriggerOKTriggerEventType) {
+	s.EventType = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *UpdateOnCallTriggerOKTrigger) SetSeverityFilters(val []UpdateOnCallTriggerOKTriggerSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *UpdateOnCallTriggerOKTrigger) SetSourceFilters(val []UpdateOnCallTriggerOKTriggerSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *UpdateOnCallTriggerOKTrigger) SetRetryCount(val int) {
+	s.RetryCount = val
+}
+
+// SetService sets the value of Service.
+func (s *UpdateOnCallTriggerOKTrigger) SetService(val UpdateOnCallTriggerOKTriggerService) {
+	s.Service = val
+}
+
+// SetEscalationPolicies sets the value of EscalationPolicies.
+func (s *UpdateOnCallTriggerOKTrigger) SetEscalationPolicies(val []UpdateOnCallTriggerOKTriggerEscalationPoliciesItem) {
+	s.EscalationPolicies = val
+}
+
+type UpdateOnCallTriggerOKTriggerEscalationPoliciesItem struct {
+	UUID string `json:"uuid"`
+	Name string `json:"name"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallTriggerOKTriggerEscalationPoliciesItem) GetUUID() string {
+	return s.UUID
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTriggerOKTriggerEscalationPoliciesItem) GetName() string {
+	return s.Name
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallTriggerOKTriggerEscalationPoliciesItem) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTriggerOKTriggerEscalationPoliciesItem) SetName(val string) {
+	s.Name = val
+}
+
+// 呼び出しのきっかけ。今は incident_created（インシデントの作成）だけ.
+type UpdateOnCallTriggerOKTriggerEventType string
+
+const (
+	UpdateOnCallTriggerOKTriggerEventTypeIncidentCreated UpdateOnCallTriggerOKTriggerEventType = "incident_created"
+)
+
+// AllValues returns all UpdateOnCallTriggerOKTriggerEventType values.
+func (UpdateOnCallTriggerOKTriggerEventType) AllValues() []UpdateOnCallTriggerOKTriggerEventType {
+	return []UpdateOnCallTriggerOKTriggerEventType{
+		UpdateOnCallTriggerOKTriggerEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerOKTriggerEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerOKTriggerEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerOKTriggerEventType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerOKTriggerEventType(data) {
+	case UpdateOnCallTriggerOKTriggerEventTypeIncidentCreated:
+		*s = UpdateOnCallTriggerOKTriggerEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerOKTriggerService struct {
+	Name string `json:"name"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTriggerOKTriggerService) GetName() string {
+	return s.Name
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTriggerOKTriggerService) SetName(val string) {
+	s.Name = val
+}
+
+type UpdateOnCallTriggerOKTriggerSeverityFiltersItem string
+
+const (
+	UpdateOnCallTriggerOKTriggerSeverityFiltersItemCritical UpdateOnCallTriggerOKTriggerSeverityFiltersItem = "critical"
+	UpdateOnCallTriggerOKTriggerSeverityFiltersItemHigh     UpdateOnCallTriggerOKTriggerSeverityFiltersItem = "high"
+	UpdateOnCallTriggerOKTriggerSeverityFiltersItemLow      UpdateOnCallTriggerOKTriggerSeverityFiltersItem = "low"
+	UpdateOnCallTriggerOKTriggerSeverityFiltersItemInfo     UpdateOnCallTriggerOKTriggerSeverityFiltersItem = "info"
+	UpdateOnCallTriggerOKTriggerSeverityFiltersItemUnknown  UpdateOnCallTriggerOKTriggerSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all UpdateOnCallTriggerOKTriggerSeverityFiltersItem values.
+func (UpdateOnCallTriggerOKTriggerSeverityFiltersItem) AllValues() []UpdateOnCallTriggerOKTriggerSeverityFiltersItem {
+	return []UpdateOnCallTriggerOKTriggerSeverityFiltersItem{
+		UpdateOnCallTriggerOKTriggerSeverityFiltersItemCritical,
+		UpdateOnCallTriggerOKTriggerSeverityFiltersItemHigh,
+		UpdateOnCallTriggerOKTriggerSeverityFiltersItemLow,
+		UpdateOnCallTriggerOKTriggerSeverityFiltersItemInfo,
+		UpdateOnCallTriggerOKTriggerSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerOKTriggerSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemLow:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerOKTriggerSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerOKTriggerSeverityFiltersItem(data) {
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemCritical:
+		*s = UpdateOnCallTriggerOKTriggerSeverityFiltersItemCritical
+		return nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemHigh:
+		*s = UpdateOnCallTriggerOKTriggerSeverityFiltersItemHigh
+		return nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemLow:
+		*s = UpdateOnCallTriggerOKTriggerSeverityFiltersItemLow
+		return nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemInfo:
+		*s = UpdateOnCallTriggerOKTriggerSeverityFiltersItemInfo
+		return nil
+	case UpdateOnCallTriggerOKTriggerSeverityFiltersItemUnknown:
+		*s = UpdateOnCallTriggerOKTriggerSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerOKTriggerSourceFiltersItem string
+
+const (
+	UpdateOnCallTriggerOKTriggerSourceFiltersItemIntegration UpdateOnCallTriggerOKTriggerSourceFiltersItem = "integration"
+	UpdateOnCallTriggerOKTriggerSourceFiltersItemSlack       UpdateOnCallTriggerOKTriggerSourceFiltersItem = "slack"
+	UpdateOnCallTriggerOKTriggerSourceFiltersItemWeb         UpdateOnCallTriggerOKTriggerSourceFiltersItem = "web"
+)
+
+// AllValues returns all UpdateOnCallTriggerOKTriggerSourceFiltersItem values.
+func (UpdateOnCallTriggerOKTriggerSourceFiltersItem) AllValues() []UpdateOnCallTriggerOKTriggerSourceFiltersItem {
+	return []UpdateOnCallTriggerOKTriggerSourceFiltersItem{
+		UpdateOnCallTriggerOKTriggerSourceFiltersItemIntegration,
+		UpdateOnCallTriggerOKTriggerSourceFiltersItemSlack,
+		UpdateOnCallTriggerOKTriggerSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerOKTriggerSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemSlack:
+		return []byte(s), nil
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerOKTriggerSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerOKTriggerSourceFiltersItem(data) {
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemIntegration:
+		*s = UpdateOnCallTriggerOKTriggerSourceFiltersItemIntegration
+		return nil
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemSlack:
+		*s = UpdateOnCallTriggerOKTriggerSourceFiltersItemSlack
+		return nil
+	case UpdateOnCallTriggerOKTriggerSourceFiltersItemWeb:
+		*s = UpdateOnCallTriggerOKTriggerSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerPaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallTriggerPaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallTriggerPaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateOnCallTriggerPaymentRequired) updateOnCallTriggerRes() {}
+
+type UpdateOnCallTriggerReq struct {
+	Trigger UpdateOnCallTriggerReqTrigger `json:"trigger"`
+}
+
+// GetTrigger returns the value of Trigger.
+func (s *UpdateOnCallTriggerReq) GetTrigger() UpdateOnCallTriggerReqTrigger {
+	return s.Trigger
+}
+
+// SetTrigger sets the value of Trigger.
+func (s *UpdateOnCallTriggerReq) SetTrigger(val UpdateOnCallTriggerReqTrigger) {
+	s.Trigger = val
+}
+
+type UpdateOnCallTriggerReqTrigger struct {
+	Name OptString `json:"name"`
+	// トリガーを付けるサービスの名前.
+	ServiceName OptString `json:"service_name"`
+	// 呼び出すエスカレーションポリシーの UUID。1 つ以上必要.
+	EscalationPolicyUuids []string `json:"escalation_policy_uuids"`
+	// 呼び出しの対象にするインシデントの重要度.
+	SeverityFilters []UpdateOnCallTriggerReqTriggerSeverityFiltersItem `json:"severity_filters"`
+	// 呼び出しの対象にするインシデントの作成元。POST で省略すると integration
+	// だけ.
+	SourceFilters []UpdateOnCallTriggerReqTriggerSourceFiltersItem `json:"source_filters"`
+	// POST で省略すると true.
+	Enabled OptBool `json:"enabled"`
+	// POST で省略すると incident_created.
+	EventType OptUpdateOnCallTriggerReqTriggerEventType `json:"event_type"`
+	// 誰も応答しなかったとき、エスカレーションを最初からやり直す回数（0〜10）。POST
+	// で省略すると 0.
+	RetryCount OptInt `json:"retry_count"`
+}
+
+// GetName returns the value of Name.
+func (s *UpdateOnCallTriggerReqTrigger) GetName() OptString {
+	return s.Name
+}
+
+// GetServiceName returns the value of ServiceName.
+func (s *UpdateOnCallTriggerReqTrigger) GetServiceName() OptString {
+	return s.ServiceName
+}
+
+// GetEscalationPolicyUuids returns the value of EscalationPolicyUuids.
+func (s *UpdateOnCallTriggerReqTrigger) GetEscalationPolicyUuids() []string {
+	return s.EscalationPolicyUuids
+}
+
+// GetSeverityFilters returns the value of SeverityFilters.
+func (s *UpdateOnCallTriggerReqTrigger) GetSeverityFilters() []UpdateOnCallTriggerReqTriggerSeverityFiltersItem {
+	return s.SeverityFilters
+}
+
+// GetSourceFilters returns the value of SourceFilters.
+func (s *UpdateOnCallTriggerReqTrigger) GetSourceFilters() []UpdateOnCallTriggerReqTriggerSourceFiltersItem {
+	return s.SourceFilters
+}
+
+// GetEnabled returns the value of Enabled.
+func (s *UpdateOnCallTriggerReqTrigger) GetEnabled() OptBool {
+	return s.Enabled
+}
+
+// GetEventType returns the value of EventType.
+func (s *UpdateOnCallTriggerReqTrigger) GetEventType() OptUpdateOnCallTriggerReqTriggerEventType {
+	return s.EventType
+}
+
+// GetRetryCount returns the value of RetryCount.
+func (s *UpdateOnCallTriggerReqTrigger) GetRetryCount() OptInt {
+	return s.RetryCount
+}
+
+// SetName sets the value of Name.
+func (s *UpdateOnCallTriggerReqTrigger) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetServiceName sets the value of ServiceName.
+func (s *UpdateOnCallTriggerReqTrigger) SetServiceName(val OptString) {
+	s.ServiceName = val
+}
+
+// SetEscalationPolicyUuids sets the value of EscalationPolicyUuids.
+func (s *UpdateOnCallTriggerReqTrigger) SetEscalationPolicyUuids(val []string) {
+	s.EscalationPolicyUuids = val
+}
+
+// SetSeverityFilters sets the value of SeverityFilters.
+func (s *UpdateOnCallTriggerReqTrigger) SetSeverityFilters(val []UpdateOnCallTriggerReqTriggerSeverityFiltersItem) {
+	s.SeverityFilters = val
+}
+
+// SetSourceFilters sets the value of SourceFilters.
+func (s *UpdateOnCallTriggerReqTrigger) SetSourceFilters(val []UpdateOnCallTriggerReqTriggerSourceFiltersItem) {
+	s.SourceFilters = val
+}
+
+// SetEnabled sets the value of Enabled.
+func (s *UpdateOnCallTriggerReqTrigger) SetEnabled(val OptBool) {
+	s.Enabled = val
+}
+
+// SetEventType sets the value of EventType.
+func (s *UpdateOnCallTriggerReqTrigger) SetEventType(val OptUpdateOnCallTriggerReqTriggerEventType) {
+	s.EventType = val
+}
+
+// SetRetryCount sets the value of RetryCount.
+func (s *UpdateOnCallTriggerReqTrigger) SetRetryCount(val OptInt) {
+	s.RetryCount = val
+}
+
+// POST で省略すると incident_created.
+type UpdateOnCallTriggerReqTriggerEventType string
+
+const (
+	UpdateOnCallTriggerReqTriggerEventTypeIncidentCreated UpdateOnCallTriggerReqTriggerEventType = "incident_created"
+)
+
+// AllValues returns all UpdateOnCallTriggerReqTriggerEventType values.
+func (UpdateOnCallTriggerReqTriggerEventType) AllValues() []UpdateOnCallTriggerReqTriggerEventType {
+	return []UpdateOnCallTriggerReqTriggerEventType{
+		UpdateOnCallTriggerReqTriggerEventTypeIncidentCreated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerReqTriggerEventType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerReqTriggerEventTypeIncidentCreated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerReqTriggerEventType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerReqTriggerEventType(data) {
+	case UpdateOnCallTriggerReqTriggerEventTypeIncidentCreated:
+		*s = UpdateOnCallTriggerReqTriggerEventTypeIncidentCreated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerReqTriggerSeverityFiltersItem string
+
+const (
+	UpdateOnCallTriggerReqTriggerSeverityFiltersItemCritical UpdateOnCallTriggerReqTriggerSeverityFiltersItem = "critical"
+	UpdateOnCallTriggerReqTriggerSeverityFiltersItemHigh     UpdateOnCallTriggerReqTriggerSeverityFiltersItem = "high"
+	UpdateOnCallTriggerReqTriggerSeverityFiltersItemLow      UpdateOnCallTriggerReqTriggerSeverityFiltersItem = "low"
+	UpdateOnCallTriggerReqTriggerSeverityFiltersItemInfo     UpdateOnCallTriggerReqTriggerSeverityFiltersItem = "info"
+	UpdateOnCallTriggerReqTriggerSeverityFiltersItemUnknown  UpdateOnCallTriggerReqTriggerSeverityFiltersItem = "unknown"
+)
+
+// AllValues returns all UpdateOnCallTriggerReqTriggerSeverityFiltersItem values.
+func (UpdateOnCallTriggerReqTriggerSeverityFiltersItem) AllValues() []UpdateOnCallTriggerReqTriggerSeverityFiltersItem {
+	return []UpdateOnCallTriggerReqTriggerSeverityFiltersItem{
+		UpdateOnCallTriggerReqTriggerSeverityFiltersItemCritical,
+		UpdateOnCallTriggerReqTriggerSeverityFiltersItemHigh,
+		UpdateOnCallTriggerReqTriggerSeverityFiltersItemLow,
+		UpdateOnCallTriggerReqTriggerSeverityFiltersItemInfo,
+		UpdateOnCallTriggerReqTriggerSeverityFiltersItemUnknown,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerReqTriggerSeverityFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemCritical:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemHigh:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemLow:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemInfo:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemUnknown:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerReqTriggerSeverityFiltersItem) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerReqTriggerSeverityFiltersItem(data) {
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemCritical:
+		*s = UpdateOnCallTriggerReqTriggerSeverityFiltersItemCritical
+		return nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemHigh:
+		*s = UpdateOnCallTriggerReqTriggerSeverityFiltersItemHigh
+		return nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemLow:
+		*s = UpdateOnCallTriggerReqTriggerSeverityFiltersItemLow
+		return nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemInfo:
+		*s = UpdateOnCallTriggerReqTriggerSeverityFiltersItemInfo
+		return nil
+	case UpdateOnCallTriggerReqTriggerSeverityFiltersItemUnknown:
+		*s = UpdateOnCallTriggerReqTriggerSeverityFiltersItemUnknown
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerReqTriggerSourceFiltersItem string
+
+const (
+	UpdateOnCallTriggerReqTriggerSourceFiltersItemIntegration UpdateOnCallTriggerReqTriggerSourceFiltersItem = "integration"
+	UpdateOnCallTriggerReqTriggerSourceFiltersItemSlack       UpdateOnCallTriggerReqTriggerSourceFiltersItem = "slack"
+	UpdateOnCallTriggerReqTriggerSourceFiltersItemWeb         UpdateOnCallTriggerReqTriggerSourceFiltersItem = "web"
+)
+
+// AllValues returns all UpdateOnCallTriggerReqTriggerSourceFiltersItem values.
+func (UpdateOnCallTriggerReqTriggerSourceFiltersItem) AllValues() []UpdateOnCallTriggerReqTriggerSourceFiltersItem {
+	return []UpdateOnCallTriggerReqTriggerSourceFiltersItem{
+		UpdateOnCallTriggerReqTriggerSourceFiltersItemIntegration,
+		UpdateOnCallTriggerReqTriggerSourceFiltersItemSlack,
+		UpdateOnCallTriggerReqTriggerSourceFiltersItemWeb,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallTriggerReqTriggerSourceFiltersItem) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemIntegration:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemSlack:
+		return []byte(s), nil
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemWeb:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallTriggerReqTriggerSourceFiltersItem) UnmarshalText(data []byte) error {
+	switch UpdateOnCallTriggerReqTriggerSourceFiltersItem(data) {
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemIntegration:
+		*s = UpdateOnCallTriggerReqTriggerSourceFiltersItemIntegration
+		return nil
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemSlack:
+		*s = UpdateOnCallTriggerReqTriggerSourceFiltersItemSlack
+		return nil
+	case UpdateOnCallTriggerReqTriggerSourceFiltersItemWeb:
+		*s = UpdateOnCallTriggerReqTriggerSourceFiltersItemWeb
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallTriggerUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallTriggerUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallTriggerUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateOnCallTriggerUnauthorized) updateOnCallTriggerRes() {}
+
+type UpdateOnCallTriggerUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallTriggerUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *UpdateOnCallTriggerUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallTriggerUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *UpdateOnCallTriggerUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*UpdateOnCallTriggerUnprocessableEntity) updateOnCallTriggerRes() {}
+
+type UpdateOnCallUserAbsenceBadRequest struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallUserAbsenceBadRequest) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallUserAbsenceBadRequest) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallUserAbsenceBadRequest) updateOnCallUserAbsenceRes() {}
+
+type UpdateOnCallUserAbsenceNotFound struct {
+	Error OptString `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallUserAbsenceNotFound) GetError() OptString {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallUserAbsenceNotFound) SetError(val OptString) {
+	s.Error = val
+}
+
+func (*UpdateOnCallUserAbsenceNotFound) updateOnCallUserAbsenceRes() {}
+
+type UpdateOnCallUserAbsenceOK struct {
+	Absence UpdateOnCallUserAbsenceOKAbsence `json:"absence"`
+}
+
+// GetAbsence returns the value of Absence.
+func (s *UpdateOnCallUserAbsenceOK) GetAbsence() UpdateOnCallUserAbsenceOKAbsence {
+	return s.Absence
+}
+
+// SetAbsence sets the value of Absence.
+func (s *UpdateOnCallUserAbsenceOK) SetAbsence(val UpdateOnCallUserAbsenceOKAbsence) {
+	s.Absence = val
+}
+
+func (*UpdateOnCallUserAbsenceOK) updateOnCallUserAbsenceRes() {}
+
+type UpdateOnCallUserAbsenceOKAbsence struct {
+	UUID    string    `json:"uuid"`
+	StartAt time.Time `json:"start_at"`
+	EndAt   time.Time `json:"end_at"`
+	// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+	// は日・時刻）を毎週・毎月くり返す.
+	RepeatType UpdateOnCallUserAbsenceOKAbsenceRepeatType `json:"repeat_type"`
+	Reason     NilString                                  `json:"reason"`
+}
+
+// GetUUID returns the value of UUID.
+func (s *UpdateOnCallUserAbsenceOKAbsence) GetUUID() string {
+	return s.UUID
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *UpdateOnCallUserAbsenceOKAbsence) GetStartAt() time.Time {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *UpdateOnCallUserAbsenceOKAbsence) GetEndAt() time.Time {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *UpdateOnCallUserAbsenceOKAbsence) GetRepeatType() UpdateOnCallUserAbsenceOKAbsenceRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *UpdateOnCallUserAbsenceOKAbsence) GetReason() NilString {
+	return s.Reason
+}
+
+// SetUUID sets the value of UUID.
+func (s *UpdateOnCallUserAbsenceOKAbsence) SetUUID(val string) {
+	s.UUID = val
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *UpdateOnCallUserAbsenceOKAbsence) SetStartAt(val time.Time) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *UpdateOnCallUserAbsenceOKAbsence) SetEndAt(val time.Time) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *UpdateOnCallUserAbsenceOKAbsence) SetRepeatType(val UpdateOnCallUserAbsenceOKAbsenceRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *UpdateOnCallUserAbsenceOKAbsence) SetReason(val NilString) {
+	s.Reason = val
+}
+
+// None は単発。weekly / monthly は、start_at〜end_at の曜日・時刻（monthly
+// は日・時刻）を毎週・毎月くり返す.
+type UpdateOnCallUserAbsenceOKAbsenceRepeatType string
+
+const (
+	UpdateOnCallUserAbsenceOKAbsenceRepeatTypeNone    UpdateOnCallUserAbsenceOKAbsenceRepeatType = "none"
+	UpdateOnCallUserAbsenceOKAbsenceRepeatTypeWeekly  UpdateOnCallUserAbsenceOKAbsenceRepeatType = "weekly"
+	UpdateOnCallUserAbsenceOKAbsenceRepeatTypeMonthly UpdateOnCallUserAbsenceOKAbsenceRepeatType = "monthly"
+)
+
+// AllValues returns all UpdateOnCallUserAbsenceOKAbsenceRepeatType values.
+func (UpdateOnCallUserAbsenceOKAbsenceRepeatType) AllValues() []UpdateOnCallUserAbsenceOKAbsenceRepeatType {
+	return []UpdateOnCallUserAbsenceOKAbsenceRepeatType{
+		UpdateOnCallUserAbsenceOKAbsenceRepeatTypeNone,
+		UpdateOnCallUserAbsenceOKAbsenceRepeatTypeWeekly,
+		UpdateOnCallUserAbsenceOKAbsenceRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallUserAbsenceOKAbsenceRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeNone:
+		return []byte(s), nil
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeWeekly:
+		return []byte(s), nil
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallUserAbsenceOKAbsenceRepeatType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallUserAbsenceOKAbsenceRepeatType(data) {
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeNone:
+		*s = UpdateOnCallUserAbsenceOKAbsenceRepeatTypeNone
+		return nil
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeWeekly:
+		*s = UpdateOnCallUserAbsenceOKAbsenceRepeatTypeWeekly
+		return nil
+	case UpdateOnCallUserAbsenceOKAbsenceRepeatTypeMonthly:
+		*s = UpdateOnCallUserAbsenceOKAbsenceRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallUserAbsencePaymentRequired struct {
+	Error string `json:"error"`
+}
+
+// GetError returns the value of Error.
+func (s *UpdateOnCallUserAbsencePaymentRequired) GetError() string {
+	return s.Error
+}
+
+// SetError sets the value of Error.
+func (s *UpdateOnCallUserAbsencePaymentRequired) SetError(val string) {
+	s.Error = val
+}
+
+func (*UpdateOnCallUserAbsencePaymentRequired) updateOnCallUserAbsenceRes() {}
+
+type UpdateOnCallUserAbsenceReq struct {
+	Absence UpdateOnCallUserAbsenceReqAbsence `json:"absence"`
+}
+
+// GetAbsence returns the value of Absence.
+func (s *UpdateOnCallUserAbsenceReq) GetAbsence() UpdateOnCallUserAbsenceReqAbsence {
+	return s.Absence
+}
+
+// SetAbsence sets the value of Absence.
+func (s *UpdateOnCallUserAbsenceReq) SetAbsence(val UpdateOnCallUserAbsenceReqAbsence) {
+	s.Absence = val
+}
+
+type UpdateOnCallUserAbsenceReqAbsence struct {
+	// 開始日時（ISO 8601）.
+	StartAt OptString `json:"start_at"`
+	// 終了日時（ISO 8601）。start_at より後.
+	EndAt OptString `json:"end_at"`
+	// POST で省略すると none（単発）.
+	RepeatType OptUpdateOnCallUserAbsenceReqAbsenceRepeatType `json:"repeat_type"`
+	Reason     OptNilString                                   `json:"reason"`
+}
+
+// GetStartAt returns the value of StartAt.
+func (s *UpdateOnCallUserAbsenceReqAbsence) GetStartAt() OptString {
+	return s.StartAt
+}
+
+// GetEndAt returns the value of EndAt.
+func (s *UpdateOnCallUserAbsenceReqAbsence) GetEndAt() OptString {
+	return s.EndAt
+}
+
+// GetRepeatType returns the value of RepeatType.
+func (s *UpdateOnCallUserAbsenceReqAbsence) GetRepeatType() OptUpdateOnCallUserAbsenceReqAbsenceRepeatType {
+	return s.RepeatType
+}
+
+// GetReason returns the value of Reason.
+func (s *UpdateOnCallUserAbsenceReqAbsence) GetReason() OptNilString {
+	return s.Reason
+}
+
+// SetStartAt sets the value of StartAt.
+func (s *UpdateOnCallUserAbsenceReqAbsence) SetStartAt(val OptString) {
+	s.StartAt = val
+}
+
+// SetEndAt sets the value of EndAt.
+func (s *UpdateOnCallUserAbsenceReqAbsence) SetEndAt(val OptString) {
+	s.EndAt = val
+}
+
+// SetRepeatType sets the value of RepeatType.
+func (s *UpdateOnCallUserAbsenceReqAbsence) SetRepeatType(val OptUpdateOnCallUserAbsenceReqAbsenceRepeatType) {
+	s.RepeatType = val
+}
+
+// SetReason sets the value of Reason.
+func (s *UpdateOnCallUserAbsenceReqAbsence) SetReason(val OptNilString) {
+	s.Reason = val
+}
+
+// POST で省略すると none（単発）.
+type UpdateOnCallUserAbsenceReqAbsenceRepeatType string
+
+const (
+	UpdateOnCallUserAbsenceReqAbsenceRepeatTypeNone    UpdateOnCallUserAbsenceReqAbsenceRepeatType = "none"
+	UpdateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly  UpdateOnCallUserAbsenceReqAbsenceRepeatType = "weekly"
+	UpdateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly UpdateOnCallUserAbsenceReqAbsenceRepeatType = "monthly"
+)
+
+// AllValues returns all UpdateOnCallUserAbsenceReqAbsenceRepeatType values.
+func (UpdateOnCallUserAbsenceReqAbsenceRepeatType) AllValues() []UpdateOnCallUserAbsenceReqAbsenceRepeatType {
+	return []UpdateOnCallUserAbsenceReqAbsenceRepeatType{
+		UpdateOnCallUserAbsenceReqAbsenceRepeatTypeNone,
+		UpdateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly,
+		UpdateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallUserAbsenceReqAbsenceRepeatType) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeNone:
+		return []byte(s), nil
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly:
+		return []byte(s), nil
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallUserAbsenceReqAbsenceRepeatType) UnmarshalText(data []byte) error {
+	switch UpdateOnCallUserAbsenceReqAbsenceRepeatType(data) {
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeNone:
+		*s = UpdateOnCallUserAbsenceReqAbsenceRepeatTypeNone
+		return nil
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly:
+		*s = UpdateOnCallUserAbsenceReqAbsenceRepeatTypeWeekly
+		return nil
+	case UpdateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly:
+		*s = UpdateOnCallUserAbsenceReqAbsenceRepeatTypeMonthly
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type UpdateOnCallUserAbsenceUnauthorized struct {
+	Errors []string `json:"errors"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallUserAbsenceUnauthorized) GetErrors() []string {
+	return s.Errors
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallUserAbsenceUnauthorized) SetErrors(val []string) {
+	s.Errors = val
+}
+
+func (*UpdateOnCallUserAbsenceUnauthorized) updateOnCallUserAbsenceRes() {}
+
+type UpdateOnCallUserAbsenceUnprocessableEntity struct {
+	Errors        []string `json:"errors"`
+	RotationIndex OptInt   `json:"rotation_index"`
+}
+
+// GetErrors returns the value of Errors.
+func (s *UpdateOnCallUserAbsenceUnprocessableEntity) GetErrors() []string {
+	return s.Errors
+}
+
+// GetRotationIndex returns the value of RotationIndex.
+func (s *UpdateOnCallUserAbsenceUnprocessableEntity) GetRotationIndex() OptInt {
+	return s.RotationIndex
+}
+
+// SetErrors sets the value of Errors.
+func (s *UpdateOnCallUserAbsenceUnprocessableEntity) SetErrors(val []string) {
+	s.Errors = val
+}
+
+// SetRotationIndex sets the value of RotationIndex.
+func (s *UpdateOnCallUserAbsenceUnprocessableEntity) SetRotationIndex(val OptInt) {
+	s.RotationIndex = val
+}
+
+func (*UpdateOnCallUserAbsenceUnprocessableEntity) updateOnCallUserAbsenceRes() {}
 
 type UpdatePostmortemNotFound struct {
 	Error OptString `json:"error"`
