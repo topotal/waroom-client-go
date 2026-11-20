@@ -52,6 +52,62 @@ func encodeCreateIncidentMetricsRequest(
 	return nil
 }
 
+func encodeCreateOnCallEscalationPolicyRequest(
+	req *CreateOnCallEscalationPolicyReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCreateOnCallTeamRequest(
+	req *CreateOnCallTeamReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCreateOnCallTriggerRequest(
+	req *CreateOnCallTriggerReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeCreateOnCallUserAbsenceRequest(
+	req *CreateOnCallUserAbsenceReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeCreatePostmortemRequest(
 	req *CreatePostmortemReq,
 	r *http.Request,
@@ -94,6 +150,20 @@ func encodeCreateRunbookRequest(
 	return nil
 }
 
+func encodeCreateServiceRequest(
+	req *CreateServiceReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodeCreateServiceLabelRequest(
 	req *CreateServiceLabelReq,
 	r *http.Request,
@@ -122,6 +192,20 @@ func encodeCreateServiceRunbookRuleRequest(
 	return nil
 }
 
+func encodeInviteUsersRequest(
+	req *InviteUsersReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
 func encodePutServiceNotificationSlackChannelRequest(
 	req *PutServiceNotificationSlackChannelReq,
 	r *http.Request,
@@ -138,6 +222,20 @@ func encodePutServiceNotificationSlackChannelRequest(
 
 func encodeUpdateIncidentRequest(
 	req *UpdateIncidentReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateIncidentActionItemRequest(
+	req *UpdateIncidentActionItemReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"
@@ -250,6 +348,62 @@ func encodeUpdateIncidentSeverityRequest(
 
 func encodeUpdateIncidentStatusRequest(
 	req *UpdateIncidentStatusReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateOnCallEscalationPolicyRequest(
+	req *UpdateOnCallEscalationPolicyReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateOnCallTeamRequest(
+	req *UpdateOnCallTeamReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateOnCallTriggerRequest(
+	req *UpdateOnCallTriggerReq,
+	r *http.Request,
+) error {
+	const contentType = "application/json"
+	e := new(jx.Encoder)
+	{
+		req.Encode(e)
+	}
+	encoded := e.Bytes()
+	ht.SetBody(r, bytes.NewReader(encoded), contentType)
+	return nil
+}
+
+func encodeUpdateOnCallUserAbsenceRequest(
+	req *UpdateOnCallUserAbsenceReq,
 	r *http.Request,
 ) error {
 	const contentType = "application/json"

@@ -40,6 +40,31 @@ type Invoker interface {
 	//
 	// POST /api/v0/incidents/{uuid}/metrics
 	CreateIncidentMetrics(ctx context.Context, request *CreateIncidentMetricsReq, params CreateIncidentMetricsParams) (CreateIncidentMetricsRes, error)
+	// CreateOnCallEscalationPolicy invokes createOnCallEscalationPolicy operation.
+	//
+	// エスカレーションポリシーを、ステップと時間帯つきで作る。.
+	//
+	// POST /api/v0/on_call/escalation_policies
+	CreateOnCallEscalationPolicy(ctx context.Context, request *CreateOnCallEscalationPolicyReq) (CreateOnCallEscalationPolicyRes, error)
+	// CreateOnCallTeam invokes createOnCallTeam operation.
+	//
+	// オンコールのチームを、ローテーションつきで作る。.
+	//
+	// POST /api/v0/on_call/teams
+	CreateOnCallTeam(ctx context.Context, request *CreateOnCallTeamReq) (CreateOnCallTeamRes, error)
+	// CreateOnCallTrigger invokes createOnCallTrigger operation.
+	//
+	// オンコールのトリガーを作る。存在しないサービスやエスカレーションポリシーを指定したときは
+	// 422 になる。.
+	//
+	// POST /api/v0/on_call/triggers
+	CreateOnCallTrigger(ctx context.Context, request *CreateOnCallTriggerReq) (CreateOnCallTriggerRes, error)
+	// CreateOnCallUserAbsence invokes createOnCallUserAbsence operation.
+	//
+	// ユーザーのオンコールの不在を登録する。不在の間は、そのユーザーが入っているすべてのローテーションで当番が次の人に回る。.
+	//
+	// POST /api/v0/on_call/users/{sub}/absences
+	CreateOnCallUserAbsence(ctx context.Context, request *CreateOnCallUserAbsenceReq, params CreateOnCallUserAbsenceParams) (CreateOnCallUserAbsenceRes, error)
 	// CreatePostmortem invokes createPostmortem operation.
 	//
 	// Create a new postmortem.
@@ -58,6 +83,13 @@ type Invoker interface {
 	//
 	// POST /api/v0/runbooks
 	CreateRunbook(ctx context.Context, request *CreateRunbookReq) (CreateRunbookRes, error)
+	// CreateService invokes createService operation.
+	//
+	// Creates a service in the organization. Returns 422 when the name is invalid or already taken, or
+	// when the organization has reached the service limit of its plan.
+	//
+	// POST /api/v0/services
+	CreateService(ctx context.Context, request *CreateServiceReq) (CreateServiceRes, error)
 	// CreateServiceLabel invokes createServiceLabel operation.
 	//
 	// Create a new label for a service.
@@ -95,6 +127,33 @@ type Invoker interface {
 	//
 	// DELETE /api/v0/services/{name}/incident_document_template
 	DeleteIncidentDocumentTemplate(ctx context.Context, params DeleteIncidentDocumentTemplateParams) (DeleteIncidentDocumentTemplateRes, error)
+	// DeleteOnCallEscalationPolicy invokes deleteOnCallEscalationPolicy operation.
+	//
+	// エスカレーションポリシーを削除する。このポリシーだけにつながるトリガーも消える。
+	// 架電の履歴があるポリシーは削除できず、422 になる。.
+	//
+	// DELETE /api/v0/on_call/escalation_policies/{uuid}
+	DeleteOnCallEscalationPolicy(ctx context.Context, params DeleteOnCallEscalationPolicyParams) (DeleteOnCallEscalationPolicyRes, error)
+	// DeleteOnCallTeam invokes deleteOnCallTeam operation.
+	//
+	// オンコールのチームを、ローテーションごと削除する。
+	// エスカレーションポリシーのステップに使われているチームは削除できず、422
+	// になる（先にポリシーから外す）。.
+	//
+	// DELETE /api/v0/on_call/teams/{uuid}
+	DeleteOnCallTeam(ctx context.Context, params DeleteOnCallTeamParams) (DeleteOnCallTeamRes, error)
+	// DeleteOnCallTrigger invokes deleteOnCallTrigger operation.
+	//
+	// オンコールのトリガーを削除する。.
+	//
+	// DELETE /api/v0/on_call/triggers/{uuid}
+	DeleteOnCallTrigger(ctx context.Context, params DeleteOnCallTriggerParams) (DeleteOnCallTriggerRes, error)
+	// DeleteOnCallUserAbsence invokes deleteOnCallUserAbsence operation.
+	//
+	// ユーザーのオンコールの不在を削除する。.
+	//
+	// DELETE /api/v0/on_call/users/{sub}/absences/{uuid}
+	DeleteOnCallUserAbsence(ctx context.Context, params DeleteOnCallUserAbsenceParams) (DeleteOnCallUserAbsenceRes, error)
 	// DeletePostmortem invokes deletePostmortem operation.
 	//
 	// Delete a postmortem.
@@ -157,6 +216,49 @@ type Invoker interface {
 	//
 	// GET /api/v0/services/{name}/incident_document_template
 	GetIncidentDocumentTemplate(ctx context.Context, params GetIncidentDocumentTemplateParams) (GetIncidentDocumentTemplateRes, error)
+	// GetOnCallEscalationPolicy invokes getOnCallEscalationPolicy operation.
+	//
+	// エスカレーションポリシーを、エスカレーションの順番と有効な時間帯つきで返す。
+	// 当番表そのものは /api/v0/on_call/escalation_policies/{uuid}/schedule で取得する。.
+	//
+	// GET /api/v0/on_call/escalation_policies/{uuid}
+	GetOnCallEscalationPolicy(ctx context.Context, params GetOnCallEscalationPolicyParams) (GetOnCallEscalationPolicyRes, error)
+	// GetOnCallEscalationPolicySchedule invokes getOnCallEscalationPolicySchedule operation.
+	//
+	// エスカレーションポリシーの当番表を日ごとに返す。
+	//
+	// start_date / end_date はどちらも省略できる。省略された側は 7
+	// 日分になるように補い、
+	// 両方とも省略された場合はエスカレーションポリシーの timezone
+	// における今日から 7 日分を返す。 両方を指定する場合の期間は最大 42
+	// 日。.
+	//
+	// GET /api/v0/on_call/escalation_policies/{uuid}/schedule
+	GetOnCallEscalationPolicySchedule(ctx context.Context, params GetOnCallEscalationPolicyScheduleParams) (GetOnCallEscalationPolicyScheduleRes, error)
+	// GetOnCallSession invokes getOnCallSession operation.
+	//
+	// オンコールのセッションと、その中で起きたこと（activities）を起きた順に返す。.
+	//
+	// GET /api/v0/on_call/sessions/{uuid}
+	GetOnCallSession(ctx context.Context, params GetOnCallSessionParams) (GetOnCallSessionRes, error)
+	// GetOnCallTeam invokes getOnCallTeam operation.
+	//
+	// オンコールのチームを、ローテーションの設定と現在の当番つきで返す。.
+	//
+	// GET /api/v0/on_call/teams/{uuid}
+	GetOnCallTeam(ctx context.Context, params GetOnCallTeamParams) (GetOnCallTeamRes, error)
+	// GetOnCallTrigger invokes getOnCallTrigger operation.
+	//
+	// オンコールのトリガーを返す。.
+	//
+	// GET /api/v0/on_call/triggers/{uuid}
+	GetOnCallTrigger(ctx context.Context, params GetOnCallTriggerParams) (GetOnCallTriggerRes, error)
+	// GetOnCallUserAbsence invokes getOnCallUserAbsence operation.
+	//
+	// ユーザーのオンコールの不在を返す。.
+	//
+	// GET /api/v0/on_call/users/{sub}/absences/{uuid}
+	GetOnCallUserAbsence(ctx context.Context, params GetOnCallUserAbsenceParams) (GetOnCallUserAbsenceRes, error)
 	// GetPostmortem invokes getPostmortem operation.
 	//
 	// Get a postmortem.
@@ -201,6 +303,36 @@ type Invoker interface {
 	//
 	// GET /api/v0/services/{name}/webhook_configurations/{uuid}
 	GetServiceWebhookConfiguration(ctx context.Context, params GetServiceWebhookConfigurationParams) (GetServiceWebhookConfigurationRes, error)
+	// GetUser invokes getUser operation.
+	//
+	// Sub でユーザーを 1 件返す。sub に含まれる `|` などは URL
+	// エンコードして渡す。 Team / Pro
+	// プランに加えて、オンコールを契約している組織でも使える。.
+	//
+	// GET /api/v0/users/{sub}
+	GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error)
+	// InviteUsers invokes inviteUsers operation.
+	//
+	// メールアドレスを指定して、ユーザーを組織にまとめて招待する。招待されたユーザーのロールは
+	// admin になる。
+	//
+	// 招待は非同期で進む。レスポンスで返るユーザーの `status` は
+	// `invitation_pending` で、招待メールを送り終えると `invited`、 失敗すると
+	// `invitation_failed` になる。進み具合は `GET /api/v0/users/{sub}`
+	// か、`GET /api/v0/users?status=invitation_pending` で確かめる。
+	// 招待するユーザーごとに数秒ずつずらして処理するため、人数が多いと全員が
+	// `invited` になるまで数分かかる。
+	//
+	//  - 1 回のリクエストで招待できるのは 50
+	//    人まで。重複するメールアドレスは 1 人として数える
+	//  - 同じ組織からは 1 分に 1 回まで呼べる（組織の API
+	//    キーが複数あっても合わせて数える）。超えると 429 を返す
+	//  - ユーザーの nickname はメールアドレスの @ より前から作る。同じ nickname
+	//    のユーザーが組織にいる、またはリクエストの中で重なるときは 409
+	//    を返し、誰も招待しない
+	//
+	// POST /api/v0/users/invitations
+	InviteUsers(ctx context.Context, request *InviteUsersReq) (InviteUsersRes, error)
 	// ListIncidentActionItems invokes listIncidentActionItems operation.
 	//
 	// List action items for an incident.
@@ -213,6 +345,40 @@ type Invoker interface {
 	//
 	// GET /api/v0/incidents
 	ListIncidents(ctx context.Context, params ListIncidentsParams) (ListIncidentsRes, error)
+	// ListOnCallEscalationPolicies invokes listOnCallEscalationPolicies operation.
+	//
+	// エスカレーションポリシーを、エスカレーションの順番と有効な時間帯つきで返す。
+	// 当番表そのものは /api/v0/on_call/escalation_policies/{uuid}/schedule で取得する。.
+	//
+	// GET /api/v0/on_call/escalation_policies
+	ListOnCallEscalationPolicies(ctx context.Context, params ListOnCallEscalationPoliciesParams) (ListOnCallEscalationPoliciesRes, error)
+	// ListOnCallSessions invokes listOnCallSessions operation.
+	//
+	// オンコールのセッション（1
+	// 回の呼び出しで、誰に架電し誰が応答したかの流れ）を、新しい順に返す。
+	// インシデント一覧と同じく、非公開のインシデントのセッションは返さない。
+	// セッションの中で起きたこと（activities）は、セッションの取得で返す。.
+	//
+	// GET /api/v0/on_call/sessions
+	ListOnCallSessions(ctx context.Context, params ListOnCallSessionsParams) (ListOnCallSessionsRes, error)
+	// ListOnCallTeams invokes listOnCallTeams operation.
+	//
+	// オンコールのチームを、ローテーションの設定と現在の当番つきで返す。.
+	//
+	// GET /api/v0/on_call/teams
+	ListOnCallTeams(ctx context.Context, params ListOnCallTeamsParams) (ListOnCallTeamsRes, error)
+	// ListOnCallTriggers invokes listOnCallTriggers operation.
+	//
+	// オンコールのトリガー（インシデントからエスカレーションポリシーを呼び出す条件）を返す。.
+	//
+	// GET /api/v0/on_call/triggers
+	ListOnCallTriggers(ctx context.Context, params ListOnCallTriggersParams) (ListOnCallTriggersRes, error)
+	// ListOnCallUserAbsences invokes listOnCallUserAbsences operation.
+	//
+	// ユーザーのオンコールの不在を、開始日時の順に返す。既定では有効な不在（繰り返し、または終わっていない単発）だけを返す。.
+	//
+	// GET /api/v0/on_call/users/{sub}/absences
+	ListOnCallUserAbsences(ctx context.Context, params ListOnCallUserAbsencesParams) (ListOnCallUserAbsencesRes, error)
 	// ListPostmortemTemplates invokes listPostmortemTemplates operation.
 	//
 	// Returns postmortem templates for the organization.
@@ -257,7 +423,9 @@ type Invoker interface {
 	ListServices(ctx context.Context) (ListServicesRes, error)
 	// ListUsers invokes listUsers operation.
 	//
-	// List users.
+	// 組織のユーザーを返す。オンコールの API
+	// でユーザーを指定するときは、ここで返る sub を使う。 Team / Pro
+	// プランに加えて、オンコールを契約している組織でも使える。.
 	//
 	// GET /api/v0/users
 	ListUsers(ctx context.Context, params ListUsersParams) (ListUsersRes, error)
@@ -275,6 +443,12 @@ type Invoker interface {
 	//
 	// PATCH /api/v0/incidents/{uuid}
 	UpdateIncident(ctx context.Context, request *UpdateIncidentReq, params UpdateIncidentParams) (UpdateIncidentRes, error)
+	// UpdateIncidentActionItem invokes updateIncidentActionItem operation.
+	//
+	// Update an action item.
+	//
+	// PATCH /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+	UpdateIncidentActionItem(ctx context.Context, request *UpdateIncidentActionItemReq, params UpdateIncidentActionItemParams) (UpdateIncidentActionItemRes, error)
 	// UpdateIncidentCommander invokes updateIncidentCommander operation.
 	//
 	// Update incident commander.
@@ -324,6 +498,35 @@ type Invoker interface {
 	//
 	// PATCH /api/v0/incidents/{uuid}/status
 	UpdateIncidentStatus(ctx context.Context, request *UpdateIncidentStatusReq, params UpdateIncidentStatusParams) (UpdateIncidentStatusRes, error)
+	// UpdateOnCallEscalationPolicy invokes updateOnCallEscalationPolicy operation.
+	//
+	// 送った項目だけを更新する。steps / time_slots
+	// を送ったときは丸ごと置き換える。 このポリシーの架電が対応中のときは
+	// 422 になる。.
+	//
+	// PATCH /api/v0/on_call/escalation_policies/{uuid}
+	UpdateOnCallEscalationPolicy(ctx context.Context, request *UpdateOnCallEscalationPolicyReq, params UpdateOnCallEscalationPolicyParams) (UpdateOnCallEscalationPolicyRes, error)
+	// UpdateOnCallTeam invokes updateOnCallTeam operation.
+	//
+	// 送った項目だけを更新する。rotations
+	// を送ったときは、チームのローテーションを丸ごと置き換える （uuid
+	// があれば更新、無ければ追加、配列に無いローテーションは削除）。.
+	//
+	// PATCH /api/v0/on_call/teams/{uuid}
+	UpdateOnCallTeam(ctx context.Context, request *UpdateOnCallTeamReq, params UpdateOnCallTeamParams) (UpdateOnCallTeamRes, error)
+	// UpdateOnCallTrigger invokes updateOnCallTrigger operation.
+	//
+	// 送った項目だけを更新する。配列（escalation_policy_uuids / severity_filters /
+	// source_filters）は送ると丸ごと置き換える。.
+	//
+	// PATCH /api/v0/on_call/triggers/{uuid}
+	UpdateOnCallTrigger(ctx context.Context, request *UpdateOnCallTriggerReq, params UpdateOnCallTriggerParams) (UpdateOnCallTriggerRes, error)
+	// UpdateOnCallUserAbsence invokes updateOnCallUserAbsence operation.
+	//
+	// 送った項目だけを更新する。.
+	//
+	// PATCH /api/v0/on_call/users/{sub}/absences/{uuid}
+	UpdateOnCallUserAbsence(ctx context.Context, request *UpdateOnCallUserAbsenceReq, params UpdateOnCallUserAbsenceParams) (UpdateOnCallUserAbsenceRes, error)
 	// UpdatePostmortem invokes updatePostmortem operation.
 	//
 	// Update a postmortem.
@@ -711,6 +914,378 @@ func (c *Client) sendCreateIncidentMetrics(ctx context.Context, request *CreateI
 	return result, nil
 }
 
+// CreateOnCallEscalationPolicy invokes createOnCallEscalationPolicy operation.
+//
+// エスカレーションポリシーを、ステップと時間帯つきで作る。.
+//
+// POST /api/v0/on_call/escalation_policies
+func (c *Client) CreateOnCallEscalationPolicy(ctx context.Context, request *CreateOnCallEscalationPolicyReq) (CreateOnCallEscalationPolicyRes, error) {
+	res, err := c.sendCreateOnCallEscalationPolicy(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateOnCallEscalationPolicy(ctx context.Context, request *CreateOnCallEscalationPolicyReq) (res CreateOnCallEscalationPolicyRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateOnCallEscalationPolicyRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateOnCallEscalationPolicyOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateOnCallEscalationPolicyResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateOnCallTeam invokes createOnCallTeam operation.
+//
+// オンコールのチームを、ローテーションつきで作る。.
+//
+// POST /api/v0/on_call/teams
+func (c *Client) CreateOnCallTeam(ctx context.Context, request *CreateOnCallTeamReq) (CreateOnCallTeamRes, error) {
+	res, err := c.sendCreateOnCallTeam(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateOnCallTeam(ctx context.Context, request *CreateOnCallTeamReq) (res CreateOnCallTeamRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/teams"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateOnCallTeamRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateOnCallTeamOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateOnCallTeamResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateOnCallTrigger invokes createOnCallTrigger operation.
+//
+// オンコールのトリガーを作る。存在しないサービスやエスカレーションポリシーを指定したときは
+// 422 になる。.
+//
+// POST /api/v0/on_call/triggers
+func (c *Client) CreateOnCallTrigger(ctx context.Context, request *CreateOnCallTriggerReq) (CreateOnCallTriggerRes, error) {
+	res, err := c.sendCreateOnCallTrigger(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateOnCallTrigger(ctx context.Context, request *CreateOnCallTriggerReq) (res CreateOnCallTriggerRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/triggers"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateOnCallTriggerRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateOnCallTriggerOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateOnCallTriggerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateOnCallUserAbsence invokes createOnCallUserAbsence operation.
+//
+// ユーザーのオンコールの不在を登録する。不在の間は、そのユーザーが入っているすべてのローテーションで当番が次の人に回る。.
+//
+// POST /api/v0/on_call/users/{sub}/absences
+func (c *Client) CreateOnCallUserAbsence(ctx context.Context, request *CreateOnCallUserAbsenceReq, params CreateOnCallUserAbsenceParams) (CreateOnCallUserAbsenceRes, error) {
+	res, err := c.sendCreateOnCallUserAbsence(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendCreateOnCallUserAbsence(ctx context.Context, request *CreateOnCallUserAbsenceReq, params CreateOnCallUserAbsenceParams) (res CreateOnCallUserAbsenceRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/on_call/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/absences"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateOnCallUserAbsenceRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateOnCallUserAbsenceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateOnCallUserAbsenceResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // CreatePostmortem invokes createPostmortem operation.
 //
 // Create a new postmortem.
@@ -959,6 +1534,95 @@ func (c *Client) sendCreateRunbook(ctx context.Context, request *CreateRunbookRe
 	}()
 
 	result, err := decodeCreateRunbookResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// CreateService invokes createService operation.
+//
+// Creates a service in the organization. Returns 422 when the name is invalid or already taken, or
+// when the organization has reached the service limit of its plan.
+//
+// POST /api/v0/services
+func (c *Client) CreateService(ctx context.Context, request *CreateServiceReq) (CreateServiceRes, error) {
+	res, err := c.sendCreateService(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendCreateService(ctx context.Context, request *CreateServiceReq) (res CreateServiceRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/services"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeCreateServiceRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, CreateServiceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeCreateServiceResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -1552,6 +2216,404 @@ func (c *Client) sendDeleteIncidentDocumentTemplate(ctx context.Context, params 
 	}()
 
 	result, err := decodeDeleteIncidentDocumentTemplateResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteOnCallEscalationPolicy invokes deleteOnCallEscalationPolicy operation.
+//
+// エスカレーションポリシーを削除する。このポリシーだけにつながるトリガーも消える。
+// 架電の履歴があるポリシーは削除できず、422 になる。.
+//
+// DELETE /api/v0/on_call/escalation_policies/{uuid}
+func (c *Client) DeleteOnCallEscalationPolicy(ctx context.Context, params DeleteOnCallEscalationPolicyParams) (DeleteOnCallEscalationPolicyRes, error) {
+	res, err := c.sendDeleteOnCallEscalationPolicy(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteOnCallEscalationPolicy(ctx context.Context, params DeleteOnCallEscalationPolicyParams) (res DeleteOnCallEscalationPolicyRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteOnCallEscalationPolicyOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteOnCallEscalationPolicyResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteOnCallTeam invokes deleteOnCallTeam operation.
+//
+// オンコールのチームを、ローテーションごと削除する。
+// エスカレーションポリシーのステップに使われているチームは削除できず、422
+// になる（先にポリシーから外す）。.
+//
+// DELETE /api/v0/on_call/teams/{uuid}
+func (c *Client) DeleteOnCallTeam(ctx context.Context, params DeleteOnCallTeamParams) (DeleteOnCallTeamRes, error) {
+	res, err := c.sendDeleteOnCallTeam(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteOnCallTeam(ctx context.Context, params DeleteOnCallTeamParams) (res DeleteOnCallTeamRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/teams/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteOnCallTeamOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteOnCallTeamResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteOnCallTrigger invokes deleteOnCallTrigger operation.
+//
+// オンコールのトリガーを削除する。.
+//
+// DELETE /api/v0/on_call/triggers/{uuid}
+func (c *Client) DeleteOnCallTrigger(ctx context.Context, params DeleteOnCallTriggerParams) (DeleteOnCallTriggerRes, error) {
+	res, err := c.sendDeleteOnCallTrigger(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteOnCallTrigger(ctx context.Context, params DeleteOnCallTriggerParams) (res DeleteOnCallTriggerRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/triggers/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteOnCallTriggerOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteOnCallTriggerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// DeleteOnCallUserAbsence invokes deleteOnCallUserAbsence operation.
+//
+// ユーザーのオンコールの不在を削除する。.
+//
+// DELETE /api/v0/on_call/users/{sub}/absences/{uuid}
+func (c *Client) DeleteOnCallUserAbsence(ctx context.Context, params DeleteOnCallUserAbsenceParams) (DeleteOnCallUserAbsenceRes, error) {
+	res, err := c.sendDeleteOnCallUserAbsence(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendDeleteOnCallUserAbsence(ctx context.Context, params DeleteOnCallUserAbsenceParams) (res DeleteOnCallUserAbsenceRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/on_call/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/absences/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "DELETE", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, DeleteOnCallUserAbsenceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeDeleteOnCallUserAbsenceResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -2542,6 +3604,634 @@ func (c *Client) sendGetIncidentDocumentTemplate(ctx context.Context, params Get
 	return result, nil
 }
 
+// GetOnCallEscalationPolicy invokes getOnCallEscalationPolicy operation.
+//
+// エスカレーションポリシーを、エスカレーションの順番と有効な時間帯つきで返す。
+// 当番表そのものは /api/v0/on_call/escalation_policies/{uuid}/schedule で取得する。.
+//
+// GET /api/v0/on_call/escalation_policies/{uuid}
+func (c *Client) GetOnCallEscalationPolicy(ctx context.Context, params GetOnCallEscalationPolicyParams) (GetOnCallEscalationPolicyRes, error) {
+	res, err := c.sendGetOnCallEscalationPolicy(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallEscalationPolicy(ctx context.Context, params GetOnCallEscalationPolicyParams) (res GetOnCallEscalationPolicyRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallEscalationPolicyOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallEscalationPolicyResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetOnCallEscalationPolicySchedule invokes getOnCallEscalationPolicySchedule operation.
+//
+// エスカレーションポリシーの当番表を日ごとに返す。
+//
+// start_date / end_date はどちらも省略できる。省略された側は 7
+// 日分になるように補い、
+// 両方とも省略された場合はエスカレーションポリシーの timezone
+// における今日から 7 日分を返す。 両方を指定する場合の期間は最大 42
+// 日。.
+//
+// GET /api/v0/on_call/escalation_policies/{uuid}/schedule
+func (c *Client) GetOnCallEscalationPolicySchedule(ctx context.Context, params GetOnCallEscalationPolicyScheduleParams) (GetOnCallEscalationPolicyScheduleRes, error) {
+	res, err := c.sendGetOnCallEscalationPolicySchedule(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallEscalationPolicySchedule(ctx context.Context, params GetOnCallEscalationPolicyScheduleParams) (res GetOnCallEscalationPolicyScheduleRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/schedule"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "start_date" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "start_date",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.StartDate.Get(); ok {
+				return e.EncodeValue(conv.DateToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "end_date" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "end_date",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.EndDate.Get(); ok {
+				return e.EncodeValue(conv.DateToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallEscalationPolicyScheduleOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallEscalationPolicyScheduleResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetOnCallSession invokes getOnCallSession operation.
+//
+// オンコールのセッションと、その中で起きたこと（activities）を起きた順に返す。.
+//
+// GET /api/v0/on_call/sessions/{uuid}
+func (c *Client) GetOnCallSession(ctx context.Context, params GetOnCallSessionParams) (GetOnCallSessionRes, error) {
+	res, err := c.sendGetOnCallSession(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallSession(ctx context.Context, params GetOnCallSessionParams) (res GetOnCallSessionRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/sessions/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallSessionOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallSessionResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetOnCallTeam invokes getOnCallTeam operation.
+//
+// オンコールのチームを、ローテーションの設定と現在の当番つきで返す。.
+//
+// GET /api/v0/on_call/teams/{uuid}
+func (c *Client) GetOnCallTeam(ctx context.Context, params GetOnCallTeamParams) (GetOnCallTeamRes, error) {
+	res, err := c.sendGetOnCallTeam(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallTeam(ctx context.Context, params GetOnCallTeamParams) (res GetOnCallTeamRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/teams/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallTeamOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallTeamResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetOnCallTrigger invokes getOnCallTrigger operation.
+//
+// オンコールのトリガーを返す。.
+//
+// GET /api/v0/on_call/triggers/{uuid}
+func (c *Client) GetOnCallTrigger(ctx context.Context, params GetOnCallTriggerParams) (GetOnCallTriggerRes, error) {
+	res, err := c.sendGetOnCallTrigger(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallTrigger(ctx context.Context, params GetOnCallTriggerParams) (res GetOnCallTriggerRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/triggers/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallTriggerOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallTriggerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// GetOnCallUserAbsence invokes getOnCallUserAbsence operation.
+//
+// ユーザーのオンコールの不在を返す。.
+//
+// GET /api/v0/on_call/users/{sub}/absences/{uuid}
+func (c *Client) GetOnCallUserAbsence(ctx context.Context, params GetOnCallUserAbsenceParams) (GetOnCallUserAbsenceRes, error) {
+	res, err := c.sendGetOnCallUserAbsence(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetOnCallUserAbsence(ctx context.Context, params GetOnCallUserAbsenceParams) (res GetOnCallUserAbsenceRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/on_call/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/absences/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetOnCallUserAbsenceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetOnCallUserAbsenceResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // GetPostmortem invokes getPostmortem operation.
 //
 // Get a postmortem.
@@ -3205,6 +4895,206 @@ func (c *Client) sendGetServiceWebhookConfiguration(ctx context.Context, params 
 	return result, nil
 }
 
+// GetUser invokes getUser operation.
+//
+// Sub でユーザーを 1 件返す。sub に含まれる `|` などは URL
+// エンコードして渡す。 Team / Pro
+// プランに加えて、オンコールを契約している組織でも使える。.
+//
+// GET /api/v0/users/{sub}
+func (c *Client) GetUser(ctx context.Context, params GetUserParams) (GetUserRes, error) {
+	res, err := c.sendGetUser(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendGetUser(ctx context.Context, params GetUserParams) (res GetUserRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, GetUserOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeGetUserResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// InviteUsers invokes inviteUsers operation.
+//
+// メールアドレスを指定して、ユーザーを組織にまとめて招待する。招待されたユーザーのロールは
+// admin になる。
+//
+// 招待は非同期で進む。レスポンスで返るユーザーの `status` は
+// `invitation_pending` で、招待メールを送り終えると `invited`、 失敗すると
+// `invitation_failed` になる。進み具合は `GET /api/v0/users/{sub}`
+// か、`GET /api/v0/users?status=invitation_pending` で確かめる。
+// 招待するユーザーごとに数秒ずつずらして処理するため、人数が多いと全員が
+// `invited` になるまで数分かかる。
+//
+//   - 1 回のリクエストで招待できるのは 50
+//     人まで。重複するメールアドレスは 1 人として数える
+//   - 同じ組織からは 1 分に 1 回まで呼べる（組織の API
+//     キーが複数あっても合わせて数える）。超えると 429 を返す
+//   - ユーザーの nickname はメールアドレスの @ より前から作る。同じ nickname
+//     のユーザーが組織にいる、またはリクエストの中で重なるときは 409
+//     を返し、誰も招待しない
+//
+// POST /api/v0/users/invitations
+func (c *Client) InviteUsers(ctx context.Context, request *InviteUsersReq) (InviteUsersRes, error) {
+	res, err := c.sendInviteUsers(ctx, request)
+	return res, err
+}
+
+func (c *Client) sendInviteUsers(ctx context.Context, request *InviteUsersReq) (res InviteUsersRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/users/invitations"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "POST", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeInviteUsersRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, InviteUsersOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeInviteUsersResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
 // ListIncidentActionItems invokes listIncidentActionItems operation.
 //
 // List action items for an incident.
@@ -3460,6 +5350,662 @@ func (c *Client) sendListIncidents(ctx context.Context, params ListIncidentsPara
 	}()
 
 	result, err := decodeListIncidentsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListOnCallEscalationPolicies invokes listOnCallEscalationPolicies operation.
+//
+// エスカレーションポリシーを、エスカレーションの順番と有効な時間帯つきで返す。
+// 当番表そのものは /api/v0/on_call/escalation_policies/{uuid}/schedule で取得する。.
+//
+// GET /api/v0/on_call/escalation_policies
+func (c *Client) ListOnCallEscalationPolicies(ctx context.Context, params ListOnCallEscalationPoliciesParams) (ListOnCallEscalationPoliciesRes, error) {
+	res, err := c.sendListOnCallEscalationPolicies(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListOnCallEscalationPolicies(ctx context.Context, params ListOnCallEscalationPoliciesParams) (res ListOnCallEscalationPoliciesRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListOnCallEscalationPoliciesOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListOnCallEscalationPoliciesResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListOnCallSessions invokes listOnCallSessions operation.
+//
+// オンコールのセッション（1
+// 回の呼び出しで、誰に架電し誰が応答したかの流れ）を、新しい順に返す。
+// インシデント一覧と同じく、非公開のインシデントのセッションは返さない。
+// セッションの中で起きたこと（activities）は、セッションの取得で返す。.
+//
+// GET /api/v0/on_call/sessions
+func (c *Client) ListOnCallSessions(ctx context.Context, params ListOnCallSessionsParams) (ListOnCallSessionsRes, error) {
+	res, err := c.sendListOnCallSessions(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListOnCallSessions(ctx context.Context, params ListOnCallSessionsParams) (res ListOnCallSessionsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/sessions"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "status" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "status",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Status.Get(); ok {
+				return e.EncodeValue(conv.StringToString(string(val)))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "incident_uuid" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "incident_uuid",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.IncidentUUID.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListOnCallSessionsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListOnCallSessionsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListOnCallTeams invokes listOnCallTeams operation.
+//
+// オンコールのチームを、ローテーションの設定と現在の当番つきで返す。.
+//
+// GET /api/v0/on_call/teams
+func (c *Client) ListOnCallTeams(ctx context.Context, params ListOnCallTeamsParams) (ListOnCallTeamsRes, error) {
+	res, err := c.sendListOnCallTeams(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListOnCallTeams(ctx context.Context, params ListOnCallTeamsParams) (res ListOnCallTeamsRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/teams"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListOnCallTeamsOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListOnCallTeamsResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListOnCallTriggers invokes listOnCallTriggers operation.
+//
+// オンコールのトリガー（インシデントからエスカレーションポリシーを呼び出す条件）を返す。.
+//
+// GET /api/v0/on_call/triggers
+func (c *Client) ListOnCallTriggers(ctx context.Context, params ListOnCallTriggersParams) (ListOnCallTriggersRes, error) {
+	res, err := c.sendListOnCallTriggers(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListOnCallTriggers(ctx context.Context, params ListOnCallTriggersParams) (res ListOnCallTriggersRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [1]string
+	pathParts[0] = "/api/v0/on_call/triggers"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "service_name" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "service_name",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.ServiceName.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListOnCallTriggersOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListOnCallTriggersResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// ListOnCallUserAbsences invokes listOnCallUserAbsences operation.
+//
+// ユーザーのオンコールの不在を、開始日時の順に返す。既定では有効な不在（繰り返し、または終わっていない単発）だけを返す。.
+//
+// GET /api/v0/on_call/users/{sub}/absences
+func (c *Client) ListOnCallUserAbsences(ctx context.Context, params ListOnCallUserAbsencesParams) (ListOnCallUserAbsencesRes, error) {
+	res, err := c.sendListOnCallUserAbsences(ctx, params)
+	return res, err
+}
+
+func (c *Client) sendListOnCallUserAbsences(ctx context.Context, params ListOnCallUserAbsencesParams) (res ListOnCallUserAbsencesRes, err error) {
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [3]string
+	pathParts[0] = "/api/v0/on_call/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/absences"
+	uri.AddPathParts(u, pathParts[:]...)
+
+	q := uri.NewQueryEncoder()
+	{
+		// Encode "include_expired" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "include_expired",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.IncludeExpired.Get(); ok {
+				return e.EncodeValue(conv.BoolToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Page.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "per_page" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "per_page",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.PerPage.Get(); ok {
+				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	u.RawQuery = q.Values().Encode()
+
+	r, err := ht.NewRequest(ctx, "GET", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, ListOnCallUserAbsencesOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeListOnCallUserAbsencesResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -4280,7 +6826,9 @@ func (c *Client) sendListServices(ctx context.Context) (res ListServicesRes, err
 
 // ListUsers invokes listUsers operation.
 //
-// List users.
+// 組織のユーザーを返す。オンコールの API
+// でユーザーを指定するときは、ここで返る sub を使う。 Team / Pro
+// プランに加えて、オンコールを契約している組織でも使える。.
 //
 // GET /api/v0/users
 func (c *Client) ListUsers(ctx context.Context, params ListUsersParams) (ListUsersRes, error) {
@@ -4324,6 +6872,57 @@ func (c *Client) sendListUsers(ctx context.Context, params ListUsersParams) (res
 		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
 			if val, ok := params.PerPage.Get(); ok {
 				return e.EncodeValue(conv.IntToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "nickname" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "nickname",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Nickname.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "slack_user_key" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "slack_user_key",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.SlackUserKey.Get(); ok {
+				return e.EncodeValue(conv.StringToString(val))
+			}
+			return nil
+		}); err != nil {
+			return res, errors.Wrap(err, "encode query")
+		}
+	}
+	{
+		// Encode "status" parameter.
+		cfg := uri.QueryParameterEncodingConfig{
+			Name:    "status",
+			Style:   uri.QueryStyleForm,
+			Explode: true,
+		}
+
+		if err := q.EncodeParam(cfg, func(e uri.Encoder) error {
+			if val, ok := params.Status.Get(); ok {
+				return e.EncodeValue(conv.StringToString(string(val)))
 			}
 			return nil
 		}); err != nil {
@@ -4581,6 +7180,131 @@ func (c *Client) sendUpdateIncident(ctx context.Context, request *UpdateIncident
 	}()
 
 	result, err := decodeUpdateIncidentResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateIncidentActionItem invokes updateIncidentActionItem operation.
+//
+// Update an action item.
+//
+// PATCH /api/v0/incidents/{uuid}/action_items/{action_item_uuid}
+func (c *Client) UpdateIncidentActionItem(ctx context.Context, request *UpdateIncidentActionItemReq, params UpdateIncidentActionItemParams) (UpdateIncidentActionItemRes, error) {
+	res, err := c.sendUpdateIncidentActionItem(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateIncidentActionItem(ctx context.Context, request *UpdateIncidentActionItemReq, params UpdateIncidentActionItemParams) (res UpdateIncidentActionItemRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/incidents/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/action_items/"
+	{
+		// Encode "action_item_uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "action_item_uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.UUIDToString(params.ActionItemUUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateIncidentActionItemRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateIncidentActionItemOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateIncidentActionItemResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}
@@ -5374,6 +8098,454 @@ func (c *Client) sendUpdateIncidentStatus(ctx context.Context, request *UpdateIn
 	}()
 
 	result, err := decodeUpdateIncidentStatusResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateOnCallEscalationPolicy invokes updateOnCallEscalationPolicy operation.
+//
+// 送った項目だけを更新する。steps / time_slots
+// を送ったときは丸ごと置き換える。 このポリシーの架電が対応中のときは
+// 422 になる。.
+//
+// PATCH /api/v0/on_call/escalation_policies/{uuid}
+func (c *Client) UpdateOnCallEscalationPolicy(ctx context.Context, request *UpdateOnCallEscalationPolicyReq, params UpdateOnCallEscalationPolicyParams) (UpdateOnCallEscalationPolicyRes, error) {
+	res, err := c.sendUpdateOnCallEscalationPolicy(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateOnCallEscalationPolicy(ctx context.Context, request *UpdateOnCallEscalationPolicyReq, params UpdateOnCallEscalationPolicyParams) (res UpdateOnCallEscalationPolicyRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/escalation_policies/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateOnCallEscalationPolicyRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateOnCallEscalationPolicyOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateOnCallEscalationPolicyResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateOnCallTeam invokes updateOnCallTeam operation.
+//
+// 送った項目だけを更新する。rotations
+// を送ったときは、チームのローテーションを丸ごと置き換える （uuid
+// があれば更新、無ければ追加、配列に無いローテーションは削除）。.
+//
+// PATCH /api/v0/on_call/teams/{uuid}
+func (c *Client) UpdateOnCallTeam(ctx context.Context, request *UpdateOnCallTeamReq, params UpdateOnCallTeamParams) (UpdateOnCallTeamRes, error) {
+	res, err := c.sendUpdateOnCallTeam(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateOnCallTeam(ctx context.Context, request *UpdateOnCallTeamReq, params UpdateOnCallTeamParams) (res UpdateOnCallTeamRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/teams/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateOnCallTeamRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateOnCallTeamOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateOnCallTeamResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateOnCallTrigger invokes updateOnCallTrigger operation.
+//
+// 送った項目だけを更新する。配列（escalation_policy_uuids / severity_filters /
+// source_filters）は送ると丸ごと置き換える。.
+//
+// PATCH /api/v0/on_call/triggers/{uuid}
+func (c *Client) UpdateOnCallTrigger(ctx context.Context, request *UpdateOnCallTriggerReq, params UpdateOnCallTriggerParams) (UpdateOnCallTriggerRes, error) {
+	res, err := c.sendUpdateOnCallTrigger(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateOnCallTrigger(ctx context.Context, request *UpdateOnCallTriggerReq, params UpdateOnCallTriggerParams) (res UpdateOnCallTriggerRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [2]string
+	pathParts[0] = "/api/v0/on_call/triggers/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateOnCallTriggerRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateOnCallTriggerOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateOnCallTriggerResponse(resp)
+	if err != nil {
+		return res, errors.Wrap(err, "decode response")
+	}
+
+	return result, nil
+}
+
+// UpdateOnCallUserAbsence invokes updateOnCallUserAbsence operation.
+//
+// 送った項目だけを更新する。.
+//
+// PATCH /api/v0/on_call/users/{sub}/absences/{uuid}
+func (c *Client) UpdateOnCallUserAbsence(ctx context.Context, request *UpdateOnCallUserAbsenceReq, params UpdateOnCallUserAbsenceParams) (UpdateOnCallUserAbsenceRes, error) {
+	res, err := c.sendUpdateOnCallUserAbsence(ctx, request, params)
+	return res, err
+}
+
+func (c *Client) sendUpdateOnCallUserAbsence(ctx context.Context, request *UpdateOnCallUserAbsenceReq, params UpdateOnCallUserAbsenceParams) (res UpdateOnCallUserAbsenceRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
+
+	u := uri.Clone(c.requestURL(ctx))
+	var pathParts [4]string
+	pathParts[0] = "/api/v0/on_call/users/"
+	{
+		// Encode "sub" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "sub",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.Sub))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[1] = encoded
+	}
+	pathParts[2] = "/absences/"
+	{
+		// Encode "uuid" parameter.
+		e := uri.NewPathEncoder(uri.PathEncoderConfig{
+			Param:   "uuid",
+			Style:   uri.PathStyleSimple,
+			Explode: false,
+		})
+		if err := func() error {
+			return e.EncodeValue(conv.StringToString(params.UUID))
+		}(); err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		encoded, err := e.Result()
+		if err != nil {
+			return res, errors.Wrap(err, "encode path")
+		}
+		pathParts[3] = encoded
+	}
+	uri.AddPathParts(u, pathParts[:]...)
+
+	r, err := ht.NewRequest(ctx, "PATCH", u)
+	if err != nil {
+		return res, errors.Wrap(err, "create request")
+	}
+	if err := encodeUpdateOnCallUserAbsenceRequest(request, r); err != nil {
+		return res, errors.Wrap(err, "encode request")
+	}
+
+	{
+		type bitset = [1]uint8
+		var satisfied bitset
+		{
+
+			switch err := c.securityBearerAuth(ctx, UpdateOnCallUserAbsenceOperation, r); {
+			case err == nil: // if NO error
+				satisfied[0] |= 1 << 0
+			case errors.Is(err, ogenerrors.ErrSkipClientSecurity):
+				// Skip this security.
+			default:
+				return res, errors.Wrap(err, "security \"BearerAuth\"")
+			}
+		}
+
+		if ok := func() bool {
+		nextRequirement:
+			for _, requirement := range []bitset{
+				{0b00000001},
+			} {
+				for i, mask := range requirement {
+					if satisfied[i]&mask != mask {
+						continue nextRequirement
+					}
+				}
+				return true
+			}
+			return false
+		}(); !ok {
+			return res, ogenerrors.ErrSecurityRequirementIsNotSatisfied
+		}
+	}
+
+	resp, err := c.cfg.Client.Do(r)
+	if err != nil {
+		return res, errors.Wrap(err, "do request")
+	}
+	body := resp.Body
+	defer func() {
+		// Drain the body to EOF before closing, so the underlying
+		// connection can be reused by the Transport regardless of the
+		// response status code. See https://github.com/ogen-go/ogen/issues/1670.
+		_, _ = io.Copy(io.Discard, body)
+		_ = body.Close()
+	}()
+
+	result, err := decodeUpdateOnCallUserAbsenceResponse(resp)
 	if err != nil {
 		return res, errors.Wrap(err, "decode response")
 	}

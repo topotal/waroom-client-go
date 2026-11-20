@@ -13,6 +13,22 @@ type CreateIncidentRes interface {
 	createIncidentRes()
 }
 
+type CreateOnCallEscalationPolicyRes interface {
+	createOnCallEscalationPolicyRes()
+}
+
+type CreateOnCallTeamRes interface {
+	createOnCallTeamRes()
+}
+
+type CreateOnCallTriggerRes interface {
+	createOnCallTriggerRes()
+}
+
+type CreateOnCallUserAbsenceRes interface {
+	createOnCallUserAbsenceRes()
+}
+
 type CreatePostmortemRes interface {
 	createPostmortemRes()
 }
@@ -27,6 +43,10 @@ type CreateRunbookRes interface {
 
 type CreateServiceLabelRes interface {
 	createServiceLabelRes()
+}
+
+type CreateServiceRes interface {
+	createServiceRes()
 }
 
 type CreateServiceRunbookRuleRes interface {
@@ -47,6 +67,22 @@ type DeleteIncidentDocumentTemplateRes interface {
 
 type DeleteIncidentRes interface {
 	deleteIncidentRes()
+}
+
+type DeleteOnCallEscalationPolicyRes interface {
+	deleteOnCallEscalationPolicyRes()
+}
+
+type DeleteOnCallTeamRes interface {
+	deleteOnCallTeamRes()
+}
+
+type DeleteOnCallTriggerRes interface {
+	deleteOnCallTriggerRes()
+}
+
+type DeleteOnCallUserAbsenceRes interface {
+	deleteOnCallUserAbsenceRes()
 }
 
 type DeletePostmortemRes interface {
@@ -89,6 +125,30 @@ type GetIncidentRes interface {
 	getIncidentRes()
 }
 
+type GetOnCallEscalationPolicyRes interface {
+	getOnCallEscalationPolicyRes()
+}
+
+type GetOnCallEscalationPolicyScheduleRes interface {
+	getOnCallEscalationPolicyScheduleRes()
+}
+
+type GetOnCallSessionRes interface {
+	getOnCallSessionRes()
+}
+
+type GetOnCallTeamRes interface {
+	getOnCallTeamRes()
+}
+
+type GetOnCallTriggerRes interface {
+	getOnCallTriggerRes()
+}
+
+type GetOnCallUserAbsenceRes interface {
+	getOnCallUserAbsenceRes()
+}
+
 type GetPostmortemRes interface {
 	getPostmortemRes()
 }
@@ -117,12 +177,40 @@ type GetServiceWebhookConfigurationRes interface {
 	getServiceWebhookConfigurationRes()
 }
 
+type GetUserRes interface {
+	getUserRes()
+}
+
+type InviteUsersRes interface {
+	inviteUsersRes()
+}
+
 type ListIncidentActionItemsRes interface {
 	listIncidentActionItemsRes()
 }
 
 type ListIncidentsRes interface {
 	listIncidentsRes()
+}
+
+type ListOnCallEscalationPoliciesRes interface {
+	listOnCallEscalationPoliciesRes()
+}
+
+type ListOnCallSessionsRes interface {
+	listOnCallSessionsRes()
+}
+
+type ListOnCallTeamsRes interface {
+	listOnCallTeamsRes()
+}
+
+type ListOnCallTriggersRes interface {
+	listOnCallTriggersRes()
+}
+
+type ListOnCallUserAbsencesRes interface {
+	listOnCallUserAbsencesRes()
 }
 
 type ListPostmortemTemplatesRes interface {
@@ -161,6 +249,10 @@ type PutServiceNotificationSlackChannelRes interface {
 	putServiceNotificationSlackChannelRes()
 }
 
+type UpdateIncidentActionItemRes interface {
+	updateIncidentActionItemRes()
+}
+
 type UpdateIncidentCommanderRes interface {
 	updateIncidentCommanderRes()
 }
@@ -195,6 +287,22 @@ type UpdateIncidentSeverityRes interface {
 
 type UpdateIncidentStatusRes interface {
 	updateIncidentStatusRes()
+}
+
+type UpdateOnCallEscalationPolicyRes interface {
+	updateOnCallEscalationPolicyRes()
+}
+
+type UpdateOnCallTeamRes interface {
+	updateOnCallTeamRes()
+}
+
+type UpdateOnCallTriggerRes interface {
+	updateOnCallTriggerRes()
+}
+
+type UpdateOnCallUserAbsenceRes interface {
+	updateOnCallUserAbsenceRes()
 }
 
 type UpdatePostmortemRes interface {
