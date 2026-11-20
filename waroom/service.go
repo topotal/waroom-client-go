@@ -37,6 +37,28 @@ func (s *ServiceService) List(ctx context.Context, params ListServicesParams) ([
 	}
 }
 
+func (s *ServiceService) Create(ctx context.Context, req CreateServiceReq) (*CreatedService, error) {
+	res, err := s.client.raw.CreateService(ctx, &gen.CreateServiceReq{Service: req})
+	if err != nil {
+		return nil, fmt.Errorf("waroom: create service: %w", err)
+	}
+
+	switch res := res.(type) {
+	case *gen.CreateServiceCreated:
+		return &res.Service, nil
+	case *gen.CreateServiceBadRequest:
+		return nil, fmt.Errorf("waroom: create service: %w", &APIError{StatusCode: http.StatusBadRequest, Messages: optMessages(res.Error)})
+	case *gen.CreateServiceUnauthorized:
+		return nil, fmt.Errorf("waroom: create service: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+	case *gen.CreateServiceUnprocessableEntity:
+		return nil, fmt.Errorf("waroom: create service: %w", &APIError{StatusCode: http.StatusUnprocessableEntity, Messages: optMessages(res.Error)})
+	case *gen.CreateServicePaymentRequired:
+		return nil, fmt.Errorf("waroom: create service: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+	default:
+		return nil, fmt.Errorf("waroom: create service: unhandled response %T", res)
+	}
+}
+
 func (s *ServiceService) UpdateIncidentService(ctx context.Context, req UpdateIncidentServiceReq, params UpdateIncidentServiceParams) (*IncidentServiceAssignment, error) {
 	res, err := s.client.raw.UpdateIncidentService(ctx, &gen.UpdateIncidentServiceReq{Incident: req}, params)
 	if err != nil {

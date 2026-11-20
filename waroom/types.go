@@ -32,6 +32,8 @@ type Label = gen.ListServiceLabelsOKLabelsItem
 type CreatedLabel = gen.CreateServiceLabelCreatedLabel
 type UpdatedLabel = gen.UpdateServiceLabelOKLabel
 type Service = gen.ListServicesOKServicesItem
+type CreatedService = gen.CreateServiceCreatedService
+type CreateServiceReq = gen.CreateServiceReqService
 
 // ListServicesParams は新specでクエリパラメータが無くなったため空
 type ListServicesParams struct{}
