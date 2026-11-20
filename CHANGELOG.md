@@ -6,16 +6,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [v0.0.2-alpha] - 2026-11-20
+
+### Added
+
+- `Services.Create` to create a service (`POST /api/v0/services`).
+- `Users.Get` to get a user by sub (`GetUserParams`, `UserDetail`) and `Users.Invite` to invite users by email (`InviteUsersReq`, `InvitedUser`). Invitations are processed asynchronously, so the returned users are `invitation_pending`.
+
+### Changed
+
+- Synced the bundled API spec with the published spec (version 0.1.0).
+
+## [v0.0.1-alpha] - 2026-11-18
+
 First release of the Go client library for the Waroom API.
 
 ### Features
 
 - Client built on the published Waroom public API spec (OpenAPI 3.1), with each resource exposed as a service field (e.g. `client.Incidents.List(ctx, ...)`).
 - Supported services: `Incidents`, `Services`, `Labels`, `ActionItems`, `Runbooks`, `RunbookRules`, `Postmortems`, `PostmortemTemplates`, `IncidentDescriptionTemplate`, `WebhookConfigurations`, `Users`.
-- `Services.Create` to create a service (`POST /api/v0/services`).
 - API key authentication via the `WithAPIKey` option or the `WAROOM_API_KEY` environment variable.
 - `APIError` type for server-side API errors, carrying the status code and error messages.
 - Client options: `WithBaseURL`, `WithHTTPClient`, `WithUserAgent`, `WithRequestDump`, `WithResponseDump`.
-- `Users.Get` to get a user by sub (`GetUserParams`, `UserDetail`) and `Users.Invite` to invite users by email (`InviteUsersReq`, `InvitedUser`). Invitations are processed asynchronously, so the returned users are `invitation_pending`.
 
-[Unreleased]: https://github.com/topotal/waroom-client-go/compare/v0.0.0-alpha...HEAD
+[Unreleased]: https://github.com/topotal/waroom-client-go/compare/v0.0.2-alpha...HEAD
+[v0.0.2-alpha]: https://github.com/topotal/waroom-client-go/compare/v0.0.1-alpha...v0.0.2-alpha
+[v0.0.1-alpha]: https://github.com/topotal/waroom-client-go/compare/v0.0.0-alpha...v0.0.1-alpha
