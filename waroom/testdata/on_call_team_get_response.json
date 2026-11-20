@@ -1,0 +1,162 @@
+{
+  "team": {
+    "uuid": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "SRE",
+    "color": "FF0000",
+    "rotation": {
+      "uuid": "660e8400-e29b-41d4-a716-446655440001",
+      "position": 0,
+      "timezone": "Asia/Tokyo",
+      "started_at": "2026-11-02T10:00:00+09:00",
+      "interval_days": 7,
+      "shift_handoff_wday": 1,
+      "shift_handoff_time": "10:00",
+      "time_slots": [
+        {
+          "uuid": "770e8400-e29b-41d4-a716-446655440001",
+          "day_of_week": 1,
+          "start_time": "09:00",
+          "end_time": "18:00"
+        }
+      ],
+      "participants": [
+        {
+          "uuid": "880e8400-e29b-41d4-a716-446655440001",
+          "position": 0,
+          "role": "member",
+          "absent": false,
+          "user": {
+            "sub": "auth0|alice",
+            "nickname": "alice",
+            "picture": "https://example.com/alice.png",
+            "status": "active",
+            "slack_user": {
+              "key": "U00000001"
+            },
+            "phone_verified": true,
+            "created_at": "2026-01-01T00:00:00Z"
+          }
+        },
+        {
+          "uuid": "880e8400-e29b-41d4-a716-446655440002",
+          "position": 1,
+          "role": "member",
+          "absent": true,
+          "user": {
+            "sub": "auth0|bob",
+            "nickname": "bob",
+            "picture": "https://example.com/bob.png",
+            "status": "active",
+            "slack_user": null,
+            "phone_verified": true,
+            "created_at": "2026-01-02T00:00:00Z"
+          }
+        }
+      ],
+      "on_duty_participant": {
+        "uuid": "880e8400-e29b-41d4-a716-446655440001",
+        "position": 0,
+        "role": "member",
+        "absent": false,
+        "user": {
+          "sub": "auth0|alice",
+          "nickname": "alice",
+          "picture": "https://example.com/alice.png",
+          "status": "active",
+          "slack_user": {
+            "key": "U00000001"
+          },
+          "phone_verified": true,
+          "created_at": "2026-01-01T00:00:00Z"
+        }
+      }
+    },
+    "rotations": [
+      {
+        "uuid": "660e8400-e29b-41d4-a716-446655440001",
+        "position": 0,
+        "timezone": "Asia/Tokyo",
+        "started_at": "2026-11-02T10:00:00+09:00",
+        "interval_days": 7,
+        "shift_handoff_wday": 1,
+        "shift_handoff_time": "10:00",
+        "time_slots": [
+          {
+            "uuid": "770e8400-e29b-41d4-a716-446655440001",
+            "day_of_week": 1,
+            "start_time": "09:00",
+            "end_time": "18:00"
+          }
+        ],
+        "participants": [
+          {
+            "uuid": "880e8400-e29b-41d4-a716-446655440001",
+            "position": 0,
+            "role": "member",
+            "absent": false,
+            "user": {
+              "sub": "auth0|alice",
+              "nickname": "alice",
+              "picture": "https://example.com/alice.png",
+              "status": "active",
+              "slack_user": {
+                "key": "U00000001"
+              },
+              "phone_verified": true,
+              "created_at": "2026-01-01T00:00:00Z"
+            }
+          },
+          {
+            "uuid": "880e8400-e29b-41d4-a716-446655440002",
+            "position": 1,
+            "role": "member",
+            "absent": true,
+            "user": {
+              "sub": "auth0|bob",
+              "nickname": "bob",
+              "picture": "https://example.com/bob.png",
+              "status": "active",
+              "slack_user": null,
+              "phone_verified": true,
+              "created_at": "2026-01-02T00:00:00Z"
+            }
+          }
+        ],
+        "on_duty_participant": {
+          "uuid": "880e8400-e29b-41d4-a716-446655440001",
+          "position": 0,
+          "role": "member",
+          "absent": false,
+          "user": {
+            "sub": "auth0|alice",
+            "nickname": "alice",
+            "picture": "https://example.com/alice.png",
+            "status": "active",
+            "slack_user": {
+              "key": "U00000001"
+            },
+            "phone_verified": true,
+            "created_at": "2026-01-01T00:00:00Z"
+          }
+        }
+      }
+    ],
+    "on_duty_participant": {
+      "uuid": "880e8400-e29b-41d4-a716-446655440001",
+      "position": 0,
+      "role": "member",
+      "absent": false,
+      "user": {
+        "sub": "auth0|alice",
+        "nickname": "alice",
+        "picture": "https://example.com/alice.png",
+        "status": "active",
+        "slack_user": {
+          "key": "U00000001"
+        },
+        "phone_verified": true,
+        "created_at": "2026-01-01T00:00:00Z"
+      }
+    }
+  }
+}

@@ -182,4 +182,21 @@ func NewOptOnCallSessionStatusFilter(v OnCallSessionStatusFilter) OptOnCallSessi
 	return gen.NewOptListOnCallSessionsStatus(v)
 }
 
+type OnCallTeam = gen.GetOnCallTeamOKTeam
+type OnCallTeamListItem = gen.ListOnCallTeamsOKTeamsItem
+type CreatedOnCallTeam = gen.CreateOnCallTeamCreatedTeam
+type UpdatedOnCallTeam = gen.UpdateOnCallTeamOKTeam
+type CreateOnCallTeamReq = gen.CreateOnCallTeamReqTeam
+type CreateOnCallTeamRotationReq = gen.CreateOnCallTeamReqTeamRotationsItem
+type CreateOnCallTeamParticipantReq = gen.CreateOnCallTeamReqTeamRotationsItemParticipantsItem
+type CreateOnCallTeamTimeSlotReq = gen.CreateOnCallTeamReqTeamRotationsItemTimeSlotsItem
+type UpdateOnCallTeamReq = gen.UpdateOnCallTeamReqTeam
+type UpdateOnCallTeamRotationReq = gen.UpdateOnCallTeamReqTeamRotationsItem
+type UpdateOnCallTeamParticipantReq = gen.UpdateOnCallTeamReqTeamRotationsItemParticipantsItem
+type UpdateOnCallTeamTimeSlotReq = gen.UpdateOnCallTeamReqTeamRotationsItemTimeSlotsItem
+type ListOnCallTeamsParams = gen.ListOnCallTeamsParams
+type GetOnCallTeamParams = gen.GetOnCallTeamParams
+type UpdateOnCallTeamParams = gen.UpdateOnCallTeamParams
+type DeleteOnCallTeamParams = gen.DeleteOnCallTeamParams
+
 // TODO: 追加
