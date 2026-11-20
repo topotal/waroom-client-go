@@ -1,0 +1,88 @@
+{
+  "session": {
+    "uuid": "6f1c2b3a-0000-4000-8000-000000000001",
+    "status": "acked",
+    "source": "integration",
+    "current_step_position": 1,
+    "current_repeat": 0,
+    "incident": {
+      "uuid": "6f1c2b3a-0000-4000-8000-0000000000a1"
+    },
+    "escalation_policy": {
+      "uuid": "6f1c2b3a-0000-4000-8000-0000000000b1",
+      "name": "Primary escalation"
+    },
+    "target_user": null,
+    "trigger": {
+      "uuid": "6f1c2b3a-0000-4000-8000-0000000000c1",
+      "name": "Datadog trigger"
+    },
+    "created_by": null,
+    "acked_by": {
+      "sub": "auth0|user-1",
+      "nickname": "alice",
+      "picture": "https://example.com/alice.png",
+      "status": "active",
+      "slack_user": {
+        "key": "U0000001"
+      },
+      "phone_verified": true,
+      "created_at": "2026-01-01T00:00:00Z"
+    },
+    "acked_at": "2026-11-20T10:05:00Z",
+    "created_at": "2026-11-20T10:00:00Z",
+    "activities": [
+      {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000d1",
+        "activity_type": "session_created",
+        "occurred_at": "2026-11-20T10:00:00Z",
+        "user": null,
+        "team": null,
+        "dtmf_action": null,
+        "skip_reason": null
+      },
+      {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000d2",
+        "activity_type": "user_skipped",
+        "occurred_at": "2026-11-20T10:01:00Z",
+        "user": {
+          "sub": "auth0|user-2",
+          "nickname": "bob",
+          "picture": "https://example.com/bob.png",
+          "status": "active",
+          "slack_user": null,
+          "phone_verified": false,
+          "created_at": "2026-01-02T00:00:00Z"
+        },
+        "team": {
+          "uuid": "6f1c2b3a-0000-4000-8000-0000000000e1",
+          "name": "SRE"
+        },
+        "dtmf_action": null,
+        "skip_reason": "phone_number_unverified"
+      },
+      {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000d3",
+        "activity_type": "dtmf_received",
+        "occurred_at": "2026-11-20T10:05:00Z",
+        "user": {
+          "sub": "auth0|user-1",
+          "nickname": "alice",
+          "picture": "https://example.com/alice.png",
+          "status": "active",
+          "slack_user": {
+            "key": "U0000001"
+          },
+          "phone_verified": true,
+          "created_at": "2026-01-01T00:00:00Z"
+        },
+        "team": {
+          "uuid": "6f1c2b3a-0000-4000-8000-0000000000e1",
+          "name": "SRE"
+        },
+        "dtmf_action": "acknowledged",
+        "skip_reason": null
+      }
+    ]
+  }
+}

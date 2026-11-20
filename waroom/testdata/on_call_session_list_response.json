@@ -1,0 +1,77 @@
+{
+  "sessions": [
+    {
+      "uuid": "6f1c2b3a-0000-4000-8000-000000000001",
+      "status": "acked",
+      "source": "integration",
+      "current_step_position": 1,
+      "current_repeat": 0,
+      "incident": {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000a1"
+      },
+      "escalation_policy": {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000b1",
+        "name": "Primary escalation"
+      },
+      "target_user": null,
+      "trigger": {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000c1",
+        "name": "Datadog trigger"
+      },
+      "created_by": null,
+      "acked_by": {
+        "sub": "auth0|user-1",
+        "nickname": "alice",
+        "picture": "https://example.com/alice.png",
+        "status": "active",
+        "slack_user": {
+          "key": "U0000001"
+        },
+        "phone_verified": true,
+        "created_at": "2026-01-01T00:00:00Z"
+      },
+      "acked_at": "2026-11-20T10:05:00Z",
+      "created_at": "2026-11-20T10:00:00Z"
+    },
+    {
+      "uuid": "6f1c2b3a-0000-4000-8000-000000000002",
+      "status": "running",
+      "source": "web",
+      "current_step_position": 0,
+      "current_repeat": 0,
+      "incident": {
+        "uuid": "6f1c2b3a-0000-4000-8000-0000000000a2"
+      },
+      "escalation_policy": null,
+      "target_user": {
+        "sub": "auth0|user-2",
+        "nickname": "bob",
+        "picture": "https://example.com/bob.png",
+        "status": "active",
+        "slack_user": null,
+        "phone_verified": true,
+        "created_at": "2026-01-02T00:00:00Z"
+      },
+      "trigger": null,
+      "created_by": {
+        "sub": "auth0|user-1",
+        "nickname": "alice",
+        "picture": "https://example.com/alice.png",
+        "status": "active",
+        "slack_user": null,
+        "phone_verified": true,
+        "created_at": "2026-01-01T00:00:00Z"
+      },
+      "acked_by": null,
+      "acked_at": null,
+      "created_at": "2026-11-21T09:00:00Z"
+    }
+  ],
+  "response_metadata": {
+    "current_page": 1,
+    "next_page": null,
+    "prev_page": null,
+    "total_pages": 1,
+    "total_count": 2
+  }
+}
