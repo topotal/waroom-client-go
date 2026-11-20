@@ -1,0 +1,25 @@
+{
+  "absences": [
+    {
+      "uuid": "770e8400-e29b-41d4-a716-446655440001",
+      "start_at": "2026-12-01T00:00:00Z",
+      "end_at": "2026-12-03T00:00:00Z",
+      "repeat_type": "none",
+      "reason": "Vacation"
+    },
+    {
+      "uuid": "770e8400-e29b-41d4-a716-446655440002",
+      "start_at": "2026-12-05T09:00:00Z",
+      "end_at": "2026-12-05T18:00:00Z",
+      "repeat_type": "weekly",
+      "reason": null
+    }
+  ],
+  "response_metadata": {
+    "current_page": 1,
+    "next_page": null,
+    "prev_page": null,
+    "total_pages": 1,
+    "total_count": 2
+  }
+}
