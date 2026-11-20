@@ -1,0 +1,13 @@
+{
+  "user": {
+    "sub": "auth0|abc123",
+    "nickname": "alice",
+    "picture": "https://example.com/alice.png",
+    "status": "active",
+    "slack_user": {
+      "key": "U0123456789"
+    },
+    "phone_verified": true,
+    "created_at": "2025-01-01T00:00:00Z"
+  }
+}
