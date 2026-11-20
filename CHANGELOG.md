@@ -12,6 +12,7 @@ First release of the Go client library for the Waroom API.
 
 - Client built on the published Waroom public API spec (OpenAPI 3.1), with each resource exposed as a service field (e.g. `client.Incidents.List(ctx, ...)`).
 - Supported services: `Incidents`, `Services`, `Labels`, `ActionItems`, `Runbooks`, `RunbookRules`, `Postmortems`, `PostmortemTemplates`, `IncidentDescriptionTemplate`, `WebhookConfigurations`, `Users`.
+- `Services.Create` to create a service (`POST /api/v0/services`).
 - API key authentication via the `WithAPIKey` option or the `WAROOM_API_KEY` environment variable.
 - `APIError` type for server-side API errors, carrying the status code and error messages.
 - Client options: `WithBaseURL`, `WithHTTPClient`, `WithUserAgent`, `WithRequestDump`, `WithResponseDump`.
