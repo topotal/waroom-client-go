@@ -13,11 +13,13 @@ type OptString = gen.OptString
 type OptDateTime = gen.OptDateTime
 type OptInt = gen.OptInt
 type OptNilInt = gen.OptNilInt
+type OptNilString = gen.OptNilString
 
 func NewOptString(v string) OptString        { return gen.NewOptString(v) }
 func NewOptDateTime(v time.Time) OptDateTime { return gen.NewOptDateTime(v) }
 func NewOptInt(v int) OptInt                 { return gen.NewOptInt(v) }
 func NewOptNillInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
+func NewOptNilString(v string) OptNilString  { return gen.NewOptNilString(v) }
 
 // 新specはcomponents/schemasを持たずレスポンススキーマが全てインライン定義のため、
 // 一覧と単体取得で別の生成型になる
@@ -102,9 +104,12 @@ type ActionItemListItem = gen.ListIncidentActionItemsOKActionItemsItem
 type ActionItem = gen.GetIncidentActionItemOKActionItem
 type CreatedActionItem = gen.CreateIncidentActionItemCreatedActionItem
 type CreateActionItemReq = gen.CreateIncidentActionItemReqActionItem
+type UpdatedActionItem = gen.UpdateIncidentActionItemOKActionItem
+type UpdateActionItemReq = gen.UpdateIncidentActionItemReqActionItem
 type ListIncidentActionItemsParams = gen.ListIncidentActionItemsParams
 type CreateIncidentActionItemParams = gen.CreateIncidentActionItemParams
 type GetIncidentActionItemParams = gen.GetIncidentActionItemParams
+type UpdateIncidentActionItemParams = gen.UpdateIncidentActionItemParams
 type DeleteIncidentActionItemParams = gen.DeleteIncidentActionItemParams
 
 type IncidentDescriptionTemplate = gen.GetIncidentDescriptionTemplateOK

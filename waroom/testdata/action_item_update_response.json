@@ -1,0 +1,21 @@
+{
+  "action_item": {
+    "uuid": "660e8400-e29b-41d4-a716-446655440002",
+    "title": "Rotate the leaked credentials",
+    "status": "closed",
+    "position": 1,
+    "assignee": {
+      "sub": "auth0|1234567890",
+      "nickname": "alice",
+      "picture": "https://example.com/alice.png",
+      "status": "active",
+      "slack_user": {
+        "key": "U01234567"
+      },
+      "phone_verified": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    },
+    "created_at": "2024-01-02T00:00:00Z",
+    "updated_at": "2024-01-03T00:00:00Z"
+  }
+}

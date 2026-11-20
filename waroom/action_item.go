@@ -81,6 +81,28 @@ func (s *ActionItemService) Get(ctx context.Context, params GetIncidentActionIte
 	}
 }
 
+func (s *ActionItemService) Update(ctx context.Context, req UpdateActionItemReq, params UpdateIncidentActionItemParams) (*UpdatedActionItem, error) {
+	res, err := s.client.raw.UpdateIncidentActionItem(ctx, &gen.UpdateIncidentActionItemReq{ActionItem: req}, params)
+	if err != nil {
+		return nil, fmt.Errorf("waroom: update incident action item: %w", err)
+	}
+
+	switch res := res.(type) {
+	case *gen.UpdateIncidentActionItemOK:
+		return &res.ActionItem, nil
+	case *gen.UpdateIncidentActionItemNotFound:
+		return nil, fmt.Errorf("waroom: update incident action item: %w", &APIError{StatusCode: http.StatusNotFound, Messages: optMessages(res.Error)})
+	case *gen.UpdateIncidentActionItemUnauthorized:
+		return nil, fmt.Errorf("waroom: update incident action item: %w", &APIError{StatusCode: http.StatusUnauthorized, Messages: res.Errors})
+	case *gen.UpdateIncidentActionItemPaymentRequired:
+		return nil, fmt.Errorf("waroom: update incident action item: %w", &APIError{StatusCode: http.StatusPaymentRequired, Messages: []string{res.Error}})
+	case *gen.UpdateIncidentActionItemUnprocessableEntity:
+		return nil, fmt.Errorf("waroom: update incident action item: %w", &APIError{StatusCode: http.StatusUnprocessableEntity, Messages: optMessages(res.Error)})
+	default:
+		return nil, fmt.Errorf("waroom: update incident action item: unhandled response %T", res)
+	}
+}
+
 func (s *ActionItemService) Delete(ctx context.Context, params DeleteIncidentActionItemParams) error {
 	res, err := s.client.raw.DeleteIncidentActionItem(ctx, params)
 	if err != nil {
