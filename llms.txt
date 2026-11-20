@@ -12,7 +12,7 @@ The [Waroom](https://waroom.com/) Client SDK is the official Go client library f
 This SDK provides a Go interface to the Waroom API, automatically generated from the OpenAPI specification using Ogen.
 The implementation follows OpenAPI Specification standards and provides type-safe access to all Waroom API endpoints.
 
-- [GitHub Repository](https://github.com/waroom/waroom-client-go)
+- [GitHub Repository](https://github.com/topotal/waroom-client-go)
 - [Waroom Backend Repository](https://github.com/topotal/waroom-backend)
 - [Waroom API Documentation](https://docs.waroom.com/11871aebe5dd80898ffbe32cbf38d74e)
 - [Waroom API Implementation](https://github.com/topotal/waroom-backend/tree/master/app/controllers/api/v0)
@@ -22,7 +22,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 
 ## Examples
 
-- [Examples](https://github.com/waroom/waroom-client-go/tree/main/example): List of example files demonstrating SDK usage.
+- [Examples](https://github.com/topotal/waroom-client-go/tree/main/example): List of example files demonstrating SDK usage.
 	- `example/services/main.go`: Service API usage
 	- `example/incidents/main.go`: Incident API usage
 	- `example/labels/main.go`: Label API usage
