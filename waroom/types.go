@@ -14,12 +14,14 @@ type OptDateTime = gen.OptDateTime
 type OptInt = gen.OptInt
 type OptNilInt = gen.OptNilInt
 type OptNilString = gen.OptNilString
+type OptBool = gen.OptBool
 
 func NewOptString(v string) OptString        { return gen.NewOptString(v) }
 func NewOptDateTime(v time.Time) OptDateTime { return gen.NewOptDateTime(v) }
 func NewOptInt(v int) OptInt                 { return gen.NewOptInt(v) }
 func NewOptNillInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
 func NewOptNilString(v string) OptNilString  { return gen.NewOptNilString(v) }
+func NewOptBool(v bool) OptBool              { return gen.NewOptBool(v) }
 
 // 新specはcomponents/schemasを持たずレスポンススキーマが全てインライン定義のため、
 // 一覧と単体取得で別の生成型になる
@@ -218,5 +220,31 @@ type GetOnCallEscalationPolicyParams = gen.GetOnCallEscalationPolicyParams
 type UpdateOnCallEscalationPolicyParams = gen.UpdateOnCallEscalationPolicyParams
 type DeleteOnCallEscalationPolicyParams = gen.DeleteOnCallEscalationPolicyParams
 type GetOnCallEscalationPolicyScheduleParams = gen.GetOnCallEscalationPolicyScheduleParams
+type OnCallTrigger = gen.GetOnCallTriggerOKTrigger
+type OnCallTriggerListItem = gen.ListOnCallTriggersOKTriggersItem
+type CreatedOnCallTrigger = gen.CreateOnCallTriggerCreatedTrigger
+type UpdatedOnCallTrigger = gen.UpdateOnCallTriggerOKTrigger
+type CreateOnCallTriggerReq = gen.CreateOnCallTriggerReqTrigger
+type UpdateOnCallTriggerReq = gen.UpdateOnCallTriggerReqTrigger
+type CreateOnCallTriggerSeverityFilter = gen.CreateOnCallTriggerReqTriggerSeverityFiltersItem
+type CreateOnCallTriggerSourceFilter = gen.CreateOnCallTriggerReqTriggerSourceFiltersItem
+type CreateOnCallTriggerEventType = gen.CreateOnCallTriggerReqTriggerEventType
+type OptCreateOnCallTriggerEventType = gen.OptCreateOnCallTriggerReqTriggerEventType
+type UpdateOnCallTriggerSeverityFilter = gen.UpdateOnCallTriggerReqTriggerSeverityFiltersItem
+type UpdateOnCallTriggerSourceFilter = gen.UpdateOnCallTriggerReqTriggerSourceFiltersItem
+type UpdateOnCallTriggerEventType = gen.UpdateOnCallTriggerReqTriggerEventType
+type OptUpdateOnCallTriggerEventType = gen.OptUpdateOnCallTriggerReqTriggerEventType
+type ListOnCallTriggersParams = gen.ListOnCallTriggersParams
+type GetOnCallTriggerParams = gen.GetOnCallTriggerParams
+type UpdateOnCallTriggerParams = gen.UpdateOnCallTriggerParams
+type DeleteOnCallTriggerParams = gen.DeleteOnCallTriggerParams
+
+func NewOptCreateOnCallTriggerEventType(v CreateOnCallTriggerEventType) OptCreateOnCallTriggerEventType {
+	return gen.NewOptCreateOnCallTriggerReqTriggerEventType(v)
+}
+
+func NewOptUpdateOnCallTriggerEventType(v UpdateOnCallTriggerEventType) OptUpdateOnCallTriggerEventType {
+	return gen.NewOptUpdateOnCallTriggerReqTriggerEventType(v)
+}
 
 // TODO: 追加

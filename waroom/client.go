@@ -47,6 +47,7 @@ type Client struct {
 	OnCallSessions              *OnCallSessionService
 	OnCallTeams                 *OnCallTeamService
 	OnCallEscalationPolicies    *OnCallEscalationPolicyService
+	OnCallTriggers              *OnCallTriggerService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -129,5 +130,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.OnCallSessions = (*OnCallSessionService)(&c.common)
 	c.OnCallTeams = (*OnCallTeamService)(&c.common)
 	c.OnCallEscalationPolicies = (*OnCallEscalationPolicyService)(&c.common)
+	c.OnCallTriggers = (*OnCallTriggerService)(&c.common)
 	return c, nil
 }

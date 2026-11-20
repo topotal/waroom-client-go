@@ -1,0 +1,20 @@
+{
+  "trigger": {
+    "uuid": "770e8400-e29b-41d4-a716-446655440001",
+    "name": "critical incidents",
+    "enabled": true,
+    "event_type": "incident_created",
+    "severity_filters": ["critical", "high"],
+    "source_filters": ["integration", "slack"],
+    "retry_count": 1,
+    "service": {
+      "name": "test-service"
+    },
+    "escalation_policies": [
+      {
+        "uuid": "880e8400-e29b-41d4-a716-446655440001",
+        "name": "primary"
+      }
+    ]
+  }
+}
