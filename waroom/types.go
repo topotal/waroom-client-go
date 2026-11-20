@@ -253,6 +253,11 @@ type CreatedOnCallUserAbsence = gen.CreateOnCallUserAbsenceCreatedAbsence
 type UpdatedOnCallUserAbsence = gen.UpdateOnCallUserAbsenceOKAbsence
 type CreateOnCallUserAbsenceReq = gen.CreateOnCallUserAbsenceReqAbsence
 type UpdateOnCallUserAbsenceReq = gen.UpdateOnCallUserAbsenceReqAbsence
+
+// The repeat_type enums let callers convert a runtime string, e.g.
+// req.RepeatType.SetTo(CreateOnCallUserAbsenceRepeatType(s)).
+type CreateOnCallUserAbsenceRepeatType = gen.CreateOnCallUserAbsenceReqAbsenceRepeatType
+type UpdateOnCallUserAbsenceRepeatType = gen.UpdateOnCallUserAbsenceReqAbsenceRepeatType
 type ListOnCallUserAbsencesParams = gen.ListOnCallUserAbsencesParams
 type GetOnCallUserAbsenceParams = gen.GetOnCallUserAbsenceParams
 type CreateOnCallUserAbsenceParams = gen.CreateOnCallUserAbsenceParams

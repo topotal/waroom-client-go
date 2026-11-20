@@ -143,7 +143,7 @@ func TestOnCallUserAbsenceService_List_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, absences)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: list absences of a user:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: list on-call user absences:")
 		})
 	}
 }
@@ -182,7 +182,7 @@ func TestOnCallUserAbsenceService_Get_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, absence)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: get an absence of a user:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: get on-call user absence:")
 		})
 	}
 }
@@ -239,7 +239,7 @@ func TestOnCallUserAbsenceService_Create_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, absence)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: create an absence of a user:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: create on-call user absence:")
 		})
 	}
 }
@@ -294,7 +294,7 @@ func TestOnCallUserAbsenceService_Update_Errors(t *testing.T) {
 
 			require.Error(t, err)
 			assert.Nil(t, absence)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: update an absence of a user:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: update on-call user absence:")
 		})
 	}
 }
@@ -325,7 +325,7 @@ func TestOnCallUserAbsenceService_Delete_Errors(t *testing.T) {
 			err := client.OnCallUserAbsences.Delete(context.Background(), DeleteOnCallUserAbsenceParams{Sub: testAbsenceSub, UUID: testAbsenceUUID})
 
 			require.Error(t, err)
-			assertAPIError(t, err, tt.wantAPIErr, "waroom: delete an absence of a user:")
+			assertAPIError(t, err, tt.wantAPIErr, "waroom: delete on-call user absence:")
 		})
 	}
 }
