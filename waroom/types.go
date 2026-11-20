@@ -167,4 +167,19 @@ type GetIncidentDocumentTemplateParams = gen.GetIncidentDocumentTemplateParams
 type UpdateIncidentDocumentTemplateParams = gen.UpdateIncidentDocumentTemplateParams
 type DeleteIncidentDocumentTemplateParams = gen.DeleteIncidentDocumentTemplateParams
 
+type OnCallSessionListItem = gen.ListOnCallSessionsOKSessionsItem
+type OnCallSession = gen.GetOnCallSessionOKSession
+type OnCallSessionActivity = gen.GetOnCallSessionOKSessionActivitiesItem
+type ListOnCallSessionsParams = gen.ListOnCallSessionsParams
+type GetOnCallSessionParams = gen.GetOnCallSessionParams
+
+// OnCallSessionStatusFilter is the value of ListOnCallSessionsParams.Status:
+// "running", "repeating", "acked", "exhausted" or "cancelled".
+type OnCallSessionStatusFilter = gen.ListOnCallSessionsStatus
+type OptOnCallSessionStatusFilter = gen.OptListOnCallSessionsStatus
+
+func NewOptOnCallSessionStatusFilter(v OnCallSessionStatusFilter) OptOnCallSessionStatusFilter {
+	return gen.NewOptListOnCallSessionsStatus(v)
+}
+
 // TODO: 追加

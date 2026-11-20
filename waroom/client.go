@@ -44,6 +44,7 @@ type Client struct {
 	PostmortemTemplates         *PostmortemTemplateService
 	ActionItems                 *ActionItemService
 	IncidentDescriptionTemplate *IncidentDescriptionTemplateService
+	OnCallSessions              *OnCallSessionService
 }
 
 // service holds the state shared by all resource services. Each service
@@ -123,5 +124,6 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 	c.PostmortemTemplates = (*PostmortemTemplateService)(&c.common)
 	c.ActionItems = (*ActionItemService)(&c.common)
 	c.IncidentDescriptionTemplate = (*IncidentDescriptionTemplateService)(&c.common)
+	c.OnCallSessions = (*OnCallSessionService)(&c.common)
 	return c, nil
 }

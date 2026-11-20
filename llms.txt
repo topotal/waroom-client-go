@@ -26,6 +26,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 	- `example/services/main.go`: Service API usage
 	- `example/incidents/main.go`: Incident API usage
 	- `example/labels/main.go`: Label API usage
+	- `example/on_call_sessions/main.go`: On-call session API usage
 
 ## Project Structure
 
@@ -37,6 +38,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 	- `service.go`: Service API wrapper
 	- `incident.go`: Incident API wrapper
 	- `label.go`: Label API wrapper
+	- `on_call_session.go`: On-call session API wrapper
 	- `types.go`: Common types and utilities
 
 - `internal/ogen/`: Auto-generated code from OpenAPI specification
