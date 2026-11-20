@@ -1,8 +1,7 @@
 version: "3"
 
 vars:
-  # TODO: schemaの配置位置がまだ決まってない
-  OPENAPI_URL: "{{.OPENAPI_URL | default `https://api.waroom.com/.well-knowns/openapi.yaml`}}"
+  OPENAPI_URL: "{{.OPENAPI_URL | default `https://static.waroom.com/openapi/v0.yaml`}}"
   SCHEMA_PATH: "api/openapi.yaml"
   BUILD_DIR: "dist"
   E2E_TARGET: "staging"
@@ -12,28 +11,24 @@ env:
 
 tasks:
   fetch:openapi:
-    desc: "Fetch OpenAPI schema"
-    sources: []
-    generates:
-      - "{{.SCHEMA_PATH}}"
+    desc: "Fetch the published OpenAPI schema."
     cmds:
-      - echo "__IMPLEMENT_ME__ fetch schema"
-      # TODO:
-      # - curl "{{.OPENAPI_URL}}" -o "{{.SCHEMA_PATH}}"
+      - |
+        tmp=$(mktemp -d)
+        trap 'rm -rf "$tmp"' EXIT
+        curl -sfS --proto '=https' --max-redirs 0 --max-time 30 --max-filesize 10M \
+          -D "$tmp/headers" -o "$tmp/openapi.yaml" {{shellQuote .OPENAPI_URL}}
+        if ! grep -qE '^openapi: *3\.' "$tmp/openapi.yaml" || ! grep -q '^paths:' "$tmp/openapi.yaml"; then
+          echo "fetched file is not an OpenAPI 3 document: {{.OPENAPI_URL}}" >&2
+          exit 1
+        fi
+        {{if .HEADERS_OUT}}cp "$tmp/headers" {{shellQuote .HEADERS_OUT}}{{end}}
+        mv "$tmp/openapi.yaml" {{shellQuote .SCHEMA_PATH}}
 
   gen:
     desc: "go generate ./..."
-    deps: [fetch:openapi]
     cmds:
       - go generate ./...
-
-  # sdk releaseだけなので今のとこいらない
-  # build:
-  #   desc: "Build app"
-  #   deps: [gen]
-  #   cmds:
-  #     - mkdir -p {{.BUILD_DIR}}
-  #     - go build -o {{.BUILD_DIR}}/app
 
   test:
     desc: "Run test"
