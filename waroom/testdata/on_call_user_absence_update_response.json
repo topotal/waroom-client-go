@@ -1,0 +1,9 @@
+{
+  "absence": {
+    "uuid": "770e8400-e29b-41d4-a716-446655440001",
+    "start_at": "2026-12-01T00:00:00Z",
+    "end_at": "2026-12-04T00:00:00Z",
+    "repeat_type": "none",
+    "reason": null
+  }
+}

@@ -30,6 +30,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 	- `example/on_call_teams/main.go`: On-call team API usage
 	- `example/on_call_escalation_policies/main.go`: On-call escalation policy API usage
 	- `example/on_call_triggers/main.go`: On-call trigger API usage
+	- `example/on_call_user_absences/main.go`: On-call user absence API usage
 
 ## Project Structure
 
@@ -45,6 +46,7 @@ The implementation follows OpenAPI Specification standards and provides type-saf
 	- `on_call_team.go`: On-call team API wrapper
 	- `on_call_escalation_policy.go`: On-call escalation policy API wrapper
 	- `on_call_trigger.go`: On-call trigger API wrapper
+	- `on_call_user_absence.go`: On-call user absence API wrapper
 	- `types.go`: Common types and utilities
 
 - `internal/ogen/`: Auto-generated code from OpenAPI specification

@@ -247,4 +247,21 @@ func NewOptUpdateOnCallTriggerEventType(v UpdateOnCallTriggerEventType) OptUpdat
 	return gen.NewOptUpdateOnCallTriggerReqTriggerEventType(v)
 }
 
+type OnCallUserAbsence = gen.GetOnCallUserAbsenceOKAbsence
+type OnCallUserAbsenceListItem = gen.ListOnCallUserAbsencesOKAbsencesItem
+type CreatedOnCallUserAbsence = gen.CreateOnCallUserAbsenceCreatedAbsence
+type UpdatedOnCallUserAbsence = gen.UpdateOnCallUserAbsenceOKAbsence
+type CreateOnCallUserAbsenceReq = gen.CreateOnCallUserAbsenceReqAbsence
+type UpdateOnCallUserAbsenceReq = gen.UpdateOnCallUserAbsenceReqAbsence
+
+// The repeat_type enums let callers convert a runtime string, e.g.
+// req.RepeatType.SetTo(CreateOnCallUserAbsenceRepeatType(s)).
+type CreateOnCallUserAbsenceRepeatType = gen.CreateOnCallUserAbsenceReqAbsenceRepeatType
+type UpdateOnCallUserAbsenceRepeatType = gen.UpdateOnCallUserAbsenceReqAbsenceRepeatType
+type ListOnCallUserAbsencesParams = gen.ListOnCallUserAbsencesParams
+type GetOnCallUserAbsenceParams = gen.GetOnCallUserAbsenceParams
+type CreateOnCallUserAbsenceParams = gen.CreateOnCallUserAbsenceParams
+type UpdateOnCallUserAbsenceParams = gen.UpdateOnCallUserAbsenceParams
+type DeleteOnCallUserAbsenceParams = gen.DeleteOnCallUserAbsenceParams
+
 // TODO: 追加
