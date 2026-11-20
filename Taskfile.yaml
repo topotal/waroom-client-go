@@ -12,18 +12,10 @@ env:
 tasks:
   fetch:openapi:
     desc: "Fetch the published OpenAPI schema."
+    vars:
+      HEADERS_OUT: '{{.HEADERS_OUT | default "/dev/null"}}'
     cmds:
-      - |
-        tmp=$(mktemp -d)
-        trap 'rm -rf "$tmp"' EXIT
-        curl -sfS --proto '=https' --max-redirs 0 --max-time 30 --max-filesize 10M \
-          -D "$tmp/headers" -o "$tmp/openapi.yaml" {{shellQuote .OPENAPI_URL}}
-        if ! grep -qE '^openapi: *3\.' "$tmp/openapi.yaml" || ! grep -q '^paths:' "$tmp/openapi.yaml"; then
-          echo "fetched file is not an OpenAPI 3 document: {{.OPENAPI_URL}}" >&2
-          exit 1
-        fi
-        {{if .HEADERS_OUT}}cp "$tmp/headers" {{shellQuote .HEADERS_OUT}}{{end}}
-        mv "$tmp/openapi.yaml" {{shellQuote .SCHEMA_PATH}}
+      - curl -sfS --proto '=https' --max-redirs 0 --max-time 30 --max-filesize 10M -D {{shellQuote .HEADERS_OUT}} -o {{shellQuote .SCHEMA_PATH}} {{shellQuote .OPENAPI_URL}}
 
   gen:
     desc: "go generate ./..."
