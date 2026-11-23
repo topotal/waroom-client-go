@@ -1244,12 +1244,19 @@ type CreateOnCallEscalationPolicyCreatedEscalationPolicy struct {
 	Name string `json:"name"`
 	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
 	Timezone string `json:"timezone"`
-	// 各ステップのチームで誰に架電するか。 all_members
-	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-	// on_duty_only
-	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-	TeamCallMode CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか。null
+	// は無制限（チームの全員）。
+	// 何人目かはローテーションの順番で数え、不在の人は数えない。
+	// 電話番号が無いなどで架電できない人も 1
+	// 人と数え、その下の人には架電しない.
+	CallDepth NilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番。
+	// depth_first（深さ優先）はステップごとに call_depth
+	// 人目まで架電してから、次のステップへ進む。
+	// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+	// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+	// 回だけチームの全員に同時に架電する.
+	CallTraversal CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal `json:"call_traversal"`
 	// エスカレーションの順番（position の昇順）.
 	Steps []CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem `json:"steps"`
 	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
@@ -1271,9 +1278,14 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetTimezone() stri
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetTeamCallMode() CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetCallDepth() NilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) GetCallTraversal() CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -1301,9 +1313,14 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTimezone(val st
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTeamCallMode(val CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetCallDepth(val NilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetCallTraversal(val CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -1314,6 +1331,53 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetSteps(val []Cre
 // SetTimeSlots sets the value of TimeSlots.
 func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) SetTimeSlots(val []CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番。
+// depth_first（深さ優先）はステップごとに call_depth
+// 人目まで架電してから、次のステップへ進む。
+// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+// 回だけチームの全員に同時に架電する.
+type CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal string
+
+const (
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst   CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal = "depth_first"
+	CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal = "breadth_first"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal values.
+func (CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) AllValues() []CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal {
+	return []CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal{
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst,
+		CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal(data) {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst
+		return nil
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem struct {
@@ -1455,52 +1519,6 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) SetCo
 	s.Color = val
 }
 
-// 各ステップのチームで誰に架電するか。 all_members
-// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-// on_duty_only
-// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-type CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode string
-
-const (
-	CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode = "all_members"
-	CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode values.
-func (CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) AllValues() []CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode {
-	return []CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode{
-		CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers,
-		CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers:
-		return []byte(s), nil
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
-	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode(data) {
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers:
-		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers
-		return nil
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
 type CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem struct {
 	UUID string `json:"uuid"`
 	// 0 が日曜、6 が土曜.
@@ -1587,9 +1605,12 @@ type CreateOnCallEscalationPolicyReqEscalationPolicy struct {
 	Name string `json:"name"`
 	// 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo.
 	Timezone OptString `json:"timezone"`
-	// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-	// を参照）。省略すると all_members.
-	TeamCallMode OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか（on_call_escalation_policy
+	// の call_depth を参照）。省略・null で無制限.
+	CallDepth OptNilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy の
+	// call_traversal を参照）。省略すると depth_first.
+	CallTraversal OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal `json:"call_traversal"`
 	// ステップ。配列の順がエスカレーションの順（position）になる。省略するとステップなし.
 	Steps []CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem `json:"steps"`
 	// 呼び出しの対象になる曜日・時間。1 つ以上必要.
@@ -1606,9 +1627,14 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetTimezone() OptStrin
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetTeamCallMode() OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetCallDepth() OptNilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) GetCallTraversal() OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -1631,9 +1657,14 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTimezone(val OptStr
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTeamCallMode(val OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetCallDepth(val OptNilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetCallTraversal(val OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -1644,6 +1675,49 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetSteps(val []CreateO
 // SetTimeSlots sets the value of TimeSlots.
 func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) SetTimeSlots(val []CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy の
+// call_traversal を参照）。省略すると depth_first.
+type CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal string
+
+const (
+	CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst   CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal = "depth_first"
+	CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal = "breadth_first"
+)
+
+// AllValues returns all CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal values.
+func (CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) AllValues() []CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return []CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal{
+		CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst,
+		CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		return []byte(s), nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalText(data []byte) error {
+	switch CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(data) {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst
+		return nil
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem struct {
@@ -1723,49 +1797,6 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Unmar
 		return nil
 	case CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
 		*s = CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-// を参照）。省略すると all_members.
-type CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode string
-
-const (
-	CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "all_members"
-	CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode values.
-func (CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) AllValues() []CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return []CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
-		CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers,
-		CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		return []byte(s), nil
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
-	switch CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(data) {
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
-		return nil
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
@@ -7991,12 +8022,19 @@ type GetOnCallEscalationPolicyOKEscalationPolicy struct {
 	Name string `json:"name"`
 	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
 	Timezone string `json:"timezone"`
-	// 各ステップのチームで誰に架電するか。 all_members
-	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-	// on_duty_only
-	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-	TeamCallMode GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか。null
+	// は無制限（チームの全員）。
+	// 何人目かはローテーションの順番で数え、不在の人は数えない。
+	// 電話番号が無いなどで架電できない人も 1
+	// 人と数え、その下の人には架電しない.
+	CallDepth NilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番。
+	// depth_first（深さ優先）はステップごとに call_depth
+	// 人目まで架電してから、次のステップへ進む。
+	// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+	// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+	// 回だけチームの全員に同時に架電する.
+	CallTraversal GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal `json:"call_traversal"`
 	// エスカレーションの順番（position の昇順）.
 	Steps []GetOnCallEscalationPolicyOKEscalationPolicyStepsItem `json:"steps"`
 	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
@@ -8018,9 +8056,14 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetTimezone() string {
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetTeamCallMode() GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetCallDepth() NilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) GetCallTraversal() GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -8048,9 +8091,14 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTimezone(val string) {
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTeamCallMode(val GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetCallDepth(val NilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetCallTraversal(val GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -8061,6 +8109,53 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetSteps(val []GetOnCallEs
 // SetTimeSlots sets the value of TimeSlots.
 func (s *GetOnCallEscalationPolicyOKEscalationPolicy) SetTimeSlots(val []GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番。
+// depth_first（深さ優先）はステップごとに call_depth
+// 人目まで架電してから、次のステップへ進む。
+// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+// 回だけチームの全員に同時に架電する.
+type GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal string
+
+const (
+	GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst   GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal = "depth_first"
+	GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal = "breadth_first"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal values.
+func (GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) AllValues() []GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal {
+	return []GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal{
+		GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst,
+		GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal(data) {
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst
+		return nil
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type GetOnCallEscalationPolicyOKEscalationPolicyStepsItem struct {
@@ -8200,52 +8295,6 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetName(val s
 // SetColor sets the value of Color.
 func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetColor(val string) {
 	s.Color = val
-}
-
-// 各ステップのチームで誰に架電するか。 all_members
-// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-// on_duty_only
-// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-type GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode string
-
-const (
-	GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "all_members"
-	GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode values.
-func (GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) AllValues() []GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
-	return []GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode{
-		GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers,
-		GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		return []byte(s), nil
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
-	switch GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(data) {
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
-		return nil
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
 }
 
 type GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem struct {
@@ -8463,6 +8512,11 @@ type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem struct {
 	// 代役が不在などで本来の当番の次の人が当番になっている時間帯や、代役の登録が無い時間帯では
 	// null になる。.
 	Override NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride `json:"override"`
+	// 全員に同時に架電するステップ（escalation_policy_step.simultaneous_call が
+	// true）で、この時間帯に電話がかかる人。
+	// ローテーションの順に並び、不在の人は含まない。代役がいるときは、本来の当番の代わりに代役が入る。
+	// 全員に同時でないステップでは空配列になる。.
+	SimultaneousCallUsers []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem `json:"simultaneous_call_users"`
 }
 
 // GetEscalationPolicyStep returns the value of EscalationPolicyStep.
@@ -8490,6 +8544,11 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetOver
 	return s.Override
 }
 
+// GetSimultaneousCallUsers returns the value of SimultaneousCallUsers.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) GetSimultaneousCallUsers() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem {
+	return s.SimultaneousCallUsers
+}
+
 // SetEscalationPolicyStep sets the value of EscalationPolicyStep.
 func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetEscalationPolicyStep(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep) {
 	s.EscalationPolicyStep = val
@@ -8513,6 +8572,11 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetEndA
 // SetOverride sets the value of Override.
 func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetOverride(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverride) {
 	s.Override = val
+}
+
+// SetSimultaneousCallUsers sets the value of SimultaneousCallUsers.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) SetSimultaneousCallUsers(val []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) {
+	s.SimultaneousCallUsers = val
 }
 
 type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemEscalationPolicyStep struct {
@@ -9216,6 +9280,170 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideU
 		return nil
 	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated:
 		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatusDeactivated
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem struct {
+	Sub       string                                                                                              `json:"sub"`
+	Nickname  string                                                                                              `json:"nickname"`
+	Picture   string                                                                                              `json:"picture"`
+	Status    GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus       `json:"status"`
+	SlackUser NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser `json:"slack_user"`
+	// 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。.
+	PhoneVerified bool      `json:"phone_verified"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// GetSub returns the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetSub() string {
+	return s.Sub
+}
+
+// GetNickname returns the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetNickname() string {
+	return s.Nickname
+}
+
+// GetPicture returns the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetPicture() string {
+	return s.Picture
+}
+
+// GetStatus returns the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetStatus() GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus {
+	return s.Status
+}
+
+// GetSlackUser returns the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetSlackUser() NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser {
+	return s.SlackUser
+}
+
+// GetPhoneVerified returns the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetPhoneVerified() bool {
+	return s.PhoneVerified
+}
+
+// GetCreatedAt returns the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) GetCreatedAt() time.Time {
+	return s.CreatedAt
+}
+
+// SetSub sets the value of Sub.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetSub(val string) {
+	s.Sub = val
+}
+
+// SetNickname sets the value of Nickname.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetNickname(val string) {
+	s.Nickname = val
+}
+
+// SetPicture sets the value of Picture.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetPicture(val string) {
+	s.Picture = val
+}
+
+// SetStatus sets the value of Status.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetStatus(val GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) {
+	s.Status = val
+}
+
+// SetSlackUser sets the value of SlackUser.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetSlackUser(val NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) {
+	s.SlackUser = val
+}
+
+// SetPhoneVerified sets the value of PhoneVerified.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetPhoneVerified(val bool) {
+	s.PhoneVerified = val
+}
+
+// SetCreatedAt sets the value of CreatedAt.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) SetCreatedAt(val time.Time) {
+	s.CreatedAt = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser struct {
+	Key string `json:"key"`
+}
+
+// GetKey returns the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) GetKey() string {
+	return s.Key
+}
+
+// SetKey sets the value of Key.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) SetKey(val string) {
+	s.Key = val
+}
+
+type GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus string
+
+const (
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive            GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "active"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive          GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "inactive"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited           GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "invited"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "invitation_pending"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed  GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "invitation_failed"
+	GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated       GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus = "deactivated"
+)
+
+// AllValues returns all GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus values.
+func (GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) AllValues() []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus {
+	return []GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus{
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed,
+		GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) MarshalText() ([]byte, error) {
+	switch s {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed:
+		return []byte(s), nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) UnmarshalText(data []byte) error {
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus(data) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed
+		return nil
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)
@@ -15611,12 +15839,19 @@ type ListOnCallEscalationPoliciesOKEscalationPoliciesItem struct {
 	Name string `json:"name"`
 	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
 	Timezone string `json:"timezone"`
-	// 各ステップのチームで誰に架電するか。 all_members
-	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-	// on_duty_only
-	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-	TeamCallMode ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか。null
+	// は無制限（チームの全員）。
+	// 何人目かはローテーションの順番で数え、不在の人は数えない。
+	// 電話番号が無いなどで架電できない人も 1
+	// 人と数え、その下の人には架電しない.
+	CallDepth NilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番。
+	// depth_first（深さ優先）はステップごとに call_depth
+	// 人目まで架電してから、次のステップへ進む。
+	// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+	// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+	// 回だけチームの全員に同時に架電する.
+	CallTraversal ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal `json:"call_traversal"`
 	// エスカレーションの順番（position の昇順）.
 	Steps []ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem `json:"steps"`
 	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
@@ -15638,9 +15873,14 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetTimezone() str
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetTeamCallMode() ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetCallDepth() NilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) GetCallTraversal() ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -15668,9 +15908,14 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTimezone(val s
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTeamCallMode(val ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetCallDepth(val NilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetCallTraversal(val ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -15681,6 +15926,53 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetSteps(val []Li
 // SetTimeSlots sets the value of TimeSlots.
 func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) SetTimeSlots(val []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番。
+// depth_first（深さ優先）はステップごとに call_depth
+// 人目まで架電してから、次のステップへ進む。
+// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+// 回だけチームの全員に同時に架電する.
+type ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal string
+
+const (
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst   ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal = "depth_first"
+	ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal = "breadth_first"
+)
+
+// AllValues returns all ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal values.
+func (ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) AllValues() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal {
+	return []ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal{
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst,
+		ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst:
+		return []byte(s), nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) UnmarshalText(data []byte) error {
+	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal(data) {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst
+		return nil
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem struct {
@@ -15820,52 +16112,6 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) SetN
 // SetColor sets the value of Color.
 func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) SetColor(val string) {
 	s.Color = val
-}
-
-// 各ステップのチームで誰に架電するか。 all_members
-// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-// on_duty_only
-// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-type ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode string
-
-const (
-	ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode = "all_members"
-	ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode values.
-func (ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) AllValues() []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode {
-	return []ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode{
-		ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers,
-		ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers:
-		return []byte(s), nil
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) UnmarshalText(data []byte) error {
-	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode(data) {
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers:
-		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers
-		return nil
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly:
-		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
 }
 
 type ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem struct {
@@ -22439,6 +22685,53 @@ func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrid
 	return d
 }
 
+// NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser returns new NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser with value set to v.
+func NewNilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser {
+	return NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser{
+		Value: v,
+	}
+}
+
+// NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser is nullable GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser.
+type NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser struct {
+	Value GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser
+	Null  bool
+}
+
+// SetTo sets value to v.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) SetTo(v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) {
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) IsNull() bool {
+	return o.Null
+}
+
+// SetToNull sets value to null.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) SetToNull() {
+	o.Null = true
+	var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Get() (v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Or(d GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewNilGetOnCallSessionOKSessionAckedBy returns new NilGetOnCallSessionOKSessionAckedBy with value set to v.
 func NewNilGetOnCallSessionOKSessionAckedBy(v GetOnCallSessionOKSessionAckedBy) NilGetOnCallSessionOKSessionAckedBy {
 	return NilGetOnCallSessionOKSessionAckedBy{
@@ -25157,6 +25450,52 @@ func (o OptCreateIncidentActionItemReqActionItemStatus) Or(d CreateIncidentActio
 	return d
 }
 
+// NewOptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal returns new OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal with value set to v.
+func NewOptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal is optional CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal.
+type OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal struct {
+	Value CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal
+	Set   bool
+}
+
+// IsSet returns true if OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Reset() {
+	var v CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) SetTo(v CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Get() (v CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Or(d CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType returns new OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType with value set to v.
 func NewOptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(v CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
 	return OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
@@ -25199,52 +25538,6 @@ func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Get
 
 // Or returns value if set, or given parameter if does not.
 func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Or(d CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode returns new OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode with value set to v.
-func NewOptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode is optional CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode.
-type OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode struct {
-	Value CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
-	Set   bool
-}
-
-// IsSet returns true if OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode was set.
-func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Reset() {
-	var v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) SetTo(v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Get() (v CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Or(d CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -26097,6 +26390,52 @@ func (o OptUpdateIncidentActionItemReqActionItemStatus) Or(d UpdateIncidentActio
 	return d
 }
 
+// NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal returns new OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal with value set to v.
+func NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal is optional UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal.
+type OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal struct {
+	Value UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal
+	Set   bool
+}
+
+// IsSet returns true if OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Reset() {
+	var v UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal
+	o.Value = v
+	o.Set = false
+}
+
+// SetTo sets value to v.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) SetTo(v UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) {
+	o.Set = true
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Get() (v UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal, ok bool) {
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Or(d UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
 // NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType returns new OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType with value set to v.
 func NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType(v UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
 	return OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType{
@@ -26139,52 +26478,6 @@ func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Get
 
 // Or returns value if set, or given parameter if does not.
 func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Or(d UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode returns new OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode with value set to v.
-func NewOptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode is optional UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode.
-type OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode struct {
-	Value UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
-	Set   bool
-}
-
-// IsSet returns true if OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode was set.
-func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Reset() {
-	var v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) SetTo(v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Get() (v UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Or(d UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -28486,12 +28779,19 @@ type UpdateOnCallEscalationPolicyOKEscalationPolicy struct {
 	Name string `json:"name"`
 	// 当番表を組む基準になるタイムゾーン（IANA 形式）.
 	Timezone string `json:"timezone"`
-	// 各ステップのチームで誰に架電するか。 all_members
-	// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-	// on_duty_only
-	// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-	// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-	TeamCallMode UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか。null
+	// は無制限（チームの全員）。
+	// 何人目かはローテーションの順番で数え、不在の人は数えない。
+	// 電話番号が無いなどで架電できない人も 1
+	// 人と数え、その下の人には架電しない.
+	CallDepth NilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番。
+	// depth_first（深さ優先）はステップごとに call_depth
+	// 人目まで架電してから、次のステップへ進む。
+	// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+	// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+	// 回だけチームの全員に同時に架電する.
+	CallTraversal UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal `json:"call_traversal"`
 	// エスカレーションの順番（position の昇順）.
 	Steps []UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem `json:"steps"`
 	// オンコールが有効な曜日と時間帯。day_of_week、start_time の順に並ぶ.
@@ -28513,9 +28813,14 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetTimezone() string {
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetTeamCallMode() UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetCallDepth() NilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) GetCallTraversal() UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -28543,9 +28848,14 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTimezone(val string)
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTeamCallMode(val UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetCallDepth(val NilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetCallTraversal(val UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -28556,6 +28866,53 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetSteps(val []UpdateOn
 // SetTimeSlots sets the value of TimeSlots.
 func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) SetTimeSlots(val []UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番。
+// depth_first（深さ優先）はステップごとに call_depth
+// 人目まで架電してから、次のステップへ進む。
+// breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2
+// 人目に架電する。 どちらでも、simultaneous_call のステップでは 1
+// 回だけチームの全員に同時に架電する.
+type UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal string
+
+const (
+	UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst   UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal = "depth_first"
+	UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal = "breadth_first"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal values.
+func (UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) AllValues() []UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal {
+	return []UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal{
+		UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst,
+		UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal(data) {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst
+		return nil
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem struct {
@@ -28697,52 +29054,6 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) SetColor(v
 	s.Color = val
 }
 
-// 各ステップのチームで誰に架電するか。 all_members
-// は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-// on_duty_only
-// は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-// どちらでも、simultaneous_call のステップではチームの全員に同時に架電する.
-type UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode string
-
-const (
-	UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "all_members"
-	UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode values.
-func (UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) AllValues() []UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode {
-	return []UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode{
-		UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers,
-		UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		return []byte(s), nil
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
-	switch UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(data) {
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
-		return nil
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
 type UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem struct {
 	UUID string `json:"uuid"`
 	// 0 が日曜、6 が土曜.
@@ -28829,9 +29140,12 @@ type UpdateOnCallEscalationPolicyReqEscalationPolicy struct {
 	Name OptString `json:"name"`
 	// 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo.
 	Timezone OptString `json:"timezone"`
-	// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-	// を参照）。省略すると変更しない.
-	TeamCallMode OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode `json:"team_call_mode"`
+	// 各ステップのチームで、当番から何人目まで架電するか（on_call_escalation_policy
+	// の call_depth を参照）。null で無制限。省略すると変更しない.
+	CallDepth OptNilInt `json:"call_depth"`
+	// ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy の
+	// call_traversal を参照）。省略すると変更しない.
+	CallTraversal OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal `json:"call_traversal"`
 	// ステップ。送ると丸ごと置き換える。配列の順がエスカレーションの順（position）になる.
 	Steps []UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem `json:"steps"`
 	// 呼び出しの対象になる曜日・時間。送ると丸ごと置き換える。1
@@ -28849,9 +29163,14 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetTimezone() OptStrin
 	return s.Timezone
 }
 
-// GetTeamCallMode returns the value of TeamCallMode.
-func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetTeamCallMode() OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return s.TeamCallMode
+// GetCallDepth returns the value of CallDepth.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetCallDepth() OptNilInt {
+	return s.CallDepth
+}
+
+// GetCallTraversal returns the value of CallTraversal.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) GetCallTraversal() OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return s.CallTraversal
 }
 
 // GetSteps returns the value of Steps.
@@ -28874,9 +29193,14 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTimezone(val OptStr
 	s.Timezone = val
 }
 
-// SetTeamCallMode sets the value of TeamCallMode.
-func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTeamCallMode(val OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) {
-	s.TeamCallMode = val
+// SetCallDepth sets the value of CallDepth.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetCallDepth(val OptNilInt) {
+	s.CallDepth = val
+}
+
+// SetCallTraversal sets the value of CallTraversal.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetCallTraversal(val OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) {
+	s.CallTraversal = val
 }
 
 // SetSteps sets the value of Steps.
@@ -28887,6 +29211,49 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetSteps(val []UpdateO
 // SetTimeSlots sets the value of TimeSlots.
 func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) SetTimeSlots(val []UpdateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem) {
 	s.TimeSlots = val
+}
+
+// ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy の
+// call_traversal を参照）。省略すると変更しない.
+type UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal string
+
+const (
+	UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst   UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal = "depth_first"
+	UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal = "breadth_first"
+)
+
+// AllValues returns all UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal values.
+func (UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) AllValues() []UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal {
+	return []UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal{
+		UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst,
+		UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst,
+	}
+}
+
+// MarshalText implements encoding.TextMarshaler.
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalText() ([]byte, error) {
+	switch s {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		return []byte(s), nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		return []byte(s), nil
+	default:
+		return nil, errors.Errorf("invalid value: %q", s)
+	}
+}
+
+// UnmarshalText implements encoding.TextUnmarshaler.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalText(data []byte) error {
+	switch UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(data) {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst
+		return nil
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst
+		return nil
+	default:
+		return errors.Errorf("invalid value: %q", data)
+	}
 }
 
 type UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem struct {
@@ -28966,49 +29333,6 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Unmar
 		return nil
 	case UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback:
 		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepTypeFallback
-		return nil
-	default:
-		return errors.Errorf("invalid value: %q", data)
-	}
-}
-
-// 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-// を参照）。省略すると変更しない.
-type UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode string
-
-const (
-	UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "all_members"
-	UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode = "on_duty_only"
-)
-
-// AllValues returns all UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode values.
-func (UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) AllValues() []UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode {
-	return []UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode{
-		UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers,
-		UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly,
-	}
-}
-
-// MarshalText implements encoding.TextMarshaler.
-func (s UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalText() ([]byte, error) {
-	switch s {
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		return []byte(s), nil
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		return []byte(s), nil
-	default:
-		return nil, errors.Errorf("invalid value: %q", s)
-	}
-}
-
-// UnmarshalText implements encoding.TextUnmarshaler.
-func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalText(data []byte) error {
-	switch UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(data) {
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
-		return nil
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
 		return nil
 	default:
 		return errors.Errorf("invalid value: %q", data)

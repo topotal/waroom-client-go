@@ -465,13 +465,41 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.TeamCallMode.Validate(); err != nil {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.CallTraversal.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -537,6 +565,17 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) Validate() error {
 	return nil
 }
 
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -565,17 +604,6 @@ func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemStepType) Va
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -645,7 +673,35 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if value, ok := s.TeamCallMode.Get(); ok {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.CallTraversal.Get(); ok {
 			if err := func() error {
 				if err := value.Validate(); err != nil {
 					return err
@@ -658,7 +714,7 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -712,6 +768,17 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 	return nil
 }
 
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -747,17 +814,6 @@ func (s CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Valida
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -3862,13 +3918,41 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.TeamCallMode.Validate(); err != nil {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.CallTraversal.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -3934,6 +4018,17 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) Validate() error {
 	return nil
 }
 
+func (s GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -3962,17 +4057,6 @@ func (s GetOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) Validate()
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -4189,6 +4273,34 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) Validat
 			Error: err,
 		})
 	}
+	if err := func() error {
+		if s.SimultaneousCallUsers == nil {
+			return errors.New("nil is invalid value")
+		}
+		var failures []validate.FieldError
+		for i, elem := range s.SimultaneousCallUsers {
+			if err := func() error {
+				if err := elem.Validate(); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				failures = append(failures, validate.FieldError{
+					Name:  fmt.Sprintf("[%d]", i),
+					Error: err,
+				})
+			}
+		}
+		if len(failures) > 0 {
+			return &validate.Error{Fields: failures}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "simultaneous_call_users",
+			Error: err,
+		})
+	}
 	if len(failures) > 0 {
 		return &validate.Error{Fields: failures}
 	}
@@ -4378,6 +4490,48 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideU
 }
 
 func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) Validate() error {
+	switch s {
+	case "active":
+		return nil
+	case "inactive":
+		return nil
+	case "invited":
+		return nil
+	case "invitation_pending":
+		return nil
+	case "invitation_failed":
+		return nil
+	case "deactivated":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Status.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "status",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) Validate() error {
 	switch s {
 	case "active":
 		return nil
@@ -7281,13 +7435,41 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) Validate() error 
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.TeamCallMode.Validate(); err != nil {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.CallTraversal.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -7353,6 +7535,17 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) Validate() error 
 	return nil
 }
 
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -7381,17 +7574,6 @@ func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemStepType) V
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -10466,13 +10648,41 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := s.TeamCallMode.Validate(); err != nil {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := s.CallTraversal.Validate(); err != nil {
 			return err
 		}
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -10538,6 +10748,17 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) Validate() error {
 	return nil
 }
 
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -10566,17 +10787,6 @@ func (s UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemStepType) Validat
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
@@ -10646,7 +10856,35 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if value, ok := s.TeamCallMode.Get(); ok {
+		if value, ok := s.CallDepth.Get(); ok {
+			if err := func() error {
+				if err := (validate.Int{
+					MinSet:        true,
+					Min:           1,
+					MaxSet:        true,
+					Max:           10,
+					MinExclusive:  false,
+					MaxExclusive:  false,
+					MultipleOfSet: false,
+					MultipleOf:    0,
+					Pattern:       nil,
+				}).Validate(int64(value)); err != nil {
+					return errors.Wrap(err, "int")
+				}
+				return nil
+			}(); err != nil {
+				return err
+			}
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "call_depth",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if value, ok := s.CallTraversal.Get(); ok {
 			if err := func() error {
 				if err := value.Validate(); err != nil {
 					return err
@@ -10659,7 +10897,7 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 		return nil
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
-			Name:  "team_call_mode",
+			Name:  "call_traversal",
 			Error: err,
 		})
 	}
@@ -10713,6 +10951,17 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) Validate() error {
 	return nil
 }
 
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Validate() error {
+	switch s {
+	case "depth_first":
+		return nil
+	case "breadth_first":
+		return nil
+	default:
+		return errors.Errorf("invalid value: %v", s)
+	}
+}
+
 func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItem) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -10748,17 +10997,6 @@ func (s UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Valida
 	case "primary":
 		return nil
 	case "fallback":
-		return nil
-	default:
-		return errors.Errorf("invalid value: %v", s)
-	}
-}
-
-func (s UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Validate() error {
-	switch s {
-	case "all_members":
-		return nil
-	case "on_duty_only":
 		return nil
 	default:
 		return errors.Errorf("invalid value: %v", s)
