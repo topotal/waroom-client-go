@@ -3515,8 +3515,12 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) encodeFields(e *jx
 		e.Str(s.Timezone)
 	}
 	{
-		e.FieldStart("team_call_mode")
-		s.TeamCallMode.Encode(e)
+		e.FieldStart("call_depth")
+		s.CallDepth.Encode(e)
+	}
+	{
+		e.FieldStart("call_traversal")
+		s.CallTraversal.Encode(e)
 	}
 	{
 		e.FieldStart("steps")
@@ -3536,13 +3540,14 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) encodeFields(e *jx
 	}
 }
 
-var jsonFieldsNameOfCreateOnCallEscalationPolicyCreatedEscalationPolicy = [6]string{
+var jsonFieldsNameOfCreateOnCallEscalationPolicyCreatedEscalationPolicy = [7]string{
 	0: "uuid",
 	1: "name",
 	2: "timezone",
-	3: "team_call_mode",
-	4: "steps",
-	5: "time_slots",
+	3: "call_depth",
+	4: "call_traversal",
+	5: "steps",
+	6: "time_slots",
 }
 
 // Decode decodes CreateOnCallEscalationPolicyCreatedEscalationPolicy from json.
@@ -3590,18 +3595,28 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) Decode(d *jx.Decod
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				s.Steps = make([]CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -3619,7 +3634,7 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) Decode(d *jx.Decod
 				return errors.Wrap(err, "decode field \"steps\"")
 			}
 		case "time_slots":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				s.TimeSlots = make([]CreateOnCallEscalationPolicyCreatedEscalationPolicyTimeSlotsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -3646,7 +3661,7 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) Decode(d *jx.Decod
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b01111111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -3688,6 +3703,46 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) MarshalJSON() ([]b
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicy) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal as json.
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal from json.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal(v) {
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalDepthFirst
+	case CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversalBreadthFirst
+	default:
+		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -4018,46 +4073,6 @@ func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) Marsh
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyStepsItemTeam) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode as json.
-func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode from json.
-func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode(v) {
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers:
-		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeAllMembers
-	case CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallModeOnDutyOnly
-	default:
-		*s = CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreateOnCallEscalationPolicyCreatedEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -4419,9 +4434,15 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) encodeFields(e *jx.Enc
 		}
 	}
 	{
-		if s.TeamCallMode.Set {
-			e.FieldStart("team_call_mode")
-			s.TeamCallMode.Encode(e)
+		if s.CallDepth.Set {
+			e.FieldStart("call_depth")
+			s.CallDepth.Encode(e)
+		}
+	}
+	{
+		if s.CallTraversal.Set {
+			e.FieldStart("call_traversal")
+			s.CallTraversal.Encode(e)
 		}
 	}
 	{
@@ -4444,12 +4465,13 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) encodeFields(e *jx.Enc
 	}
 }
 
-var jsonFieldsNameOfCreateOnCallEscalationPolicyReqEscalationPolicy = [5]string{
+var jsonFieldsNameOfCreateOnCallEscalationPolicyReqEscalationPolicy = [6]string{
 	0: "name",
 	1: "timezone",
-	2: "team_call_mode",
-	3: "steps",
-	4: "time_slots",
+	2: "call_depth",
+	3: "call_traversal",
+	4: "steps",
+	5: "time_slots",
 }
 
 // Decode decodes CreateOnCallEscalationPolicyReqEscalationPolicy from json.
@@ -4483,15 +4505,25 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Decode(d *jx.Decoder) 
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			if err := func() error {
-				s.TeamCallMode.Reset()
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				s.CallDepth.Reset()
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			if err := func() error {
+				s.CallTraversal.Reset()
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
 			if err := func() error {
@@ -4511,7 +4543,7 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Decode(d *jx.Decoder) 
 				return errors.Wrap(err, "decode field \"steps\"")
 			}
 		case "time_slots":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				s.TimeSlots = make([]CreateOnCallEscalationPolicyReqEscalationPolicyTimeSlotsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -4538,7 +4570,7 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) Decode(d *jx.Decoder) 
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00010001,
+		0b00100001,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -4580,6 +4612,46 @@ func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) MarshalJSON() ([]byte,
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CreateOnCallEscalationPolicyReqEscalationPolicy) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal as json.
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal from json.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v) {
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst
+	case CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst
+	default:
+		*s = CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -4750,46 +4822,6 @@ func (s CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Marsha
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode as json.
-func (s CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode from json.
-func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v) {
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
-	case CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
-	default:
-		*s = CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -24457,8 +24489,12 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) encodeFields(e *jx.Encoder
 		e.Str(s.Timezone)
 	}
 	{
-		e.FieldStart("team_call_mode")
-		s.TeamCallMode.Encode(e)
+		e.FieldStart("call_depth")
+		s.CallDepth.Encode(e)
+	}
+	{
+		e.FieldStart("call_traversal")
+		s.CallTraversal.Encode(e)
 	}
 	{
 		e.FieldStart("steps")
@@ -24478,13 +24514,14 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) encodeFields(e *jx.Encoder
 	}
 }
 
-var jsonFieldsNameOfGetOnCallEscalationPolicyOKEscalationPolicy = [6]string{
+var jsonFieldsNameOfGetOnCallEscalationPolicyOKEscalationPolicy = [7]string{
 	0: "uuid",
 	1: "name",
 	2: "timezone",
-	3: "team_call_mode",
-	4: "steps",
-	5: "time_slots",
+	3: "call_depth",
+	4: "call_traversal",
+	5: "steps",
+	6: "time_slots",
 }
 
 // Decode decodes GetOnCallEscalationPolicyOKEscalationPolicy from json.
@@ -24532,18 +24569,28 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) erro
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				s.Steps = make([]GetOnCallEscalationPolicyOKEscalationPolicyStepsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -24561,7 +24608,7 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) erro
 				return errors.Wrap(err, "decode field \"steps\"")
 			}
 		case "time_slots":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				s.TimeSlots = make([]GetOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -24588,7 +24635,7 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) erro
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b01111111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -24630,6 +24677,46 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicy) MarshalJSON() ([]byte, err
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *GetOnCallEscalationPolicyOKEscalationPolicy) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal as json.
+func (s GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal from json.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal(v) {
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst
+	case GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst
+	default:
+		*s = GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *GetOnCallEscalationPolicyOKEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -24960,46 +25047,6 @@ func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) MarshalJSON()
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *GetOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode as json.
-func (s GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode from json.
-func (s *GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(v) {
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
-	case GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
-	default:
-		*s = GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *GetOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -25774,14 +25821,23 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) encodeF
 		e.FieldStart("override")
 		s.Override.Encode(e)
 	}
+	{
+		e.FieldStart("simultaneous_call_users")
+		e.ArrStart()
+		for _, elem := range s.SimultaneousCallUsers {
+			elem.Encode(e)
+		}
+		e.ArrEnd()
+	}
 }
 
-var jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem = [5]string{
+var jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem = [6]string{
 	0: "escalation_policy_step",
 	1: "on_duty_user",
 	2: "start_at",
 	3: "end_at",
 	4: "override",
+	5: "simultaneous_call_users",
 }
 
 // Decode decodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem from json.
@@ -25847,6 +25903,24 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) Decode(
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"override\"")
 			}
+		case "simultaneous_call_users":
+			requiredBitSet[0] |= 1 << 5
+			if err := func() error {
+				s.SimultaneousCallUsers = make([]GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem
+					if err := elem.Decode(d); err != nil {
+						return err
+					}
+					s.SimultaneousCallUsers = append(s.SimultaneousCallUsers, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"simultaneous_call_users\"")
+			}
 		default:
 			return d.Skip()
 		}
@@ -25857,7 +25931,7 @@ func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItem) Decode(
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00011111,
+		0b00111111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -27418,6 +27492,344 @@ func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUs
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverrideUserStatus) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("sub")
+		e.Str(s.Sub)
+	}
+	{
+		e.FieldStart("nickname")
+		e.Str(s.Nickname)
+	}
+	{
+		e.FieldStart("picture")
+		e.Str(s.Picture)
+	}
+	{
+		e.FieldStart("status")
+		s.Status.Encode(e)
+	}
+	{
+		e.FieldStart("slack_user")
+		s.SlackUser.Encode(e)
+	}
+	{
+		e.FieldStart("phone_verified")
+		e.Bool(s.PhoneVerified)
+	}
+	{
+		e.FieldStart("created_at")
+		json.EncodeDateTime(e, s.CreatedAt)
+	}
+}
+
+var jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem = [7]string{
+	0: "sub",
+	1: "nickname",
+	2: "picture",
+	3: "status",
+	4: "slack_user",
+	5: "phone_verified",
+	6: "created_at",
+}
+
+// Decode decodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem from json.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "sub":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Sub = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"sub\"")
+			}
+		case "nickname":
+			requiredBitSet[0] |= 1 << 1
+			if err := func() error {
+				v, err := d.Str()
+				s.Nickname = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"nickname\"")
+			}
+		case "picture":
+			requiredBitSet[0] |= 1 << 2
+			if err := func() error {
+				v, err := d.Str()
+				s.Picture = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"picture\"")
+			}
+		case "status":
+			requiredBitSet[0] |= 1 << 3
+			if err := func() error {
+				if err := s.Status.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"status\"")
+			}
+		case "slack_user":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.SlackUser.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"slack_user\"")
+			}
+		case "phone_verified":
+			requiredBitSet[0] |= 1 << 5
+			if err := func() error {
+				v, err := d.Bool()
+				s.PhoneVerified = bool(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"phone_verified\"")
+			}
+		case "created_at":
+			requiredBitSet[0] |= 1 << 6
+			if err := func() error {
+				v, err := json.DecodeDateTime(d)
+				s.CreatedAt = v
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"created_at\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b01111111,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) {
+					name = jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) encodeFields(e *jx.Encoder) {
+	{
+		e.FieldStart("key")
+		e.Str(s.Key)
+	}
+}
+
+var jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser = [1]string{
+	0: "key",
+}
+
+// Decode decodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser from json.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser to nil")
+	}
+	var requiredBitSet [1]uint8
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "key":
+			requiredBitSet[0] |= 1 << 0
+			if err := func() error {
+				v, err := d.Str()
+				s.Key = string(v)
+				if err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"key\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) {
+					name = jsonFieldsNameOfGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus as json.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus from json.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus(v) {
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusActive
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInactive
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvited
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationPending
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusInvitationFailed
+	case GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatusDeactivated
+	default:
+		*s = GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemStatus) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -44494,8 +44906,12 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) encodeFields(e *j
 		e.Str(s.Timezone)
 	}
 	{
-		e.FieldStart("team_call_mode")
-		s.TeamCallMode.Encode(e)
+		e.FieldStart("call_depth")
+		s.CallDepth.Encode(e)
+	}
+	{
+		e.FieldStart("call_traversal")
+		s.CallTraversal.Encode(e)
 	}
 	{
 		e.FieldStart("steps")
@@ -44515,13 +44931,14 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) encodeFields(e *j
 	}
 }
 
-var jsonFieldsNameOfListOnCallEscalationPoliciesOKEscalationPoliciesItem = [6]string{
+var jsonFieldsNameOfListOnCallEscalationPoliciesOKEscalationPoliciesItem = [7]string{
 	0: "uuid",
 	1: "name",
 	2: "timezone",
-	3: "team_call_mode",
-	4: "steps",
-	5: "time_slots",
+	3: "call_depth",
+	4: "call_traversal",
+	5: "steps",
+	6: "time_slots",
 }
 
 // Decode decodes ListOnCallEscalationPoliciesOKEscalationPoliciesItem from json.
@@ -44569,18 +44986,28 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) Decode(d *jx.Deco
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				s.Steps = make([]ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -44598,7 +45025,7 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) Decode(d *jx.Deco
 				return errors.Wrap(err, "decode field \"steps\"")
 			}
 		case "time_slots":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				s.TimeSlots = make([]ListOnCallEscalationPoliciesOKEscalationPoliciesItemTimeSlotsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -44625,7 +45052,7 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) Decode(d *jx.Deco
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b01111111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -44667,6 +45094,46 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) MarshalJSON() ([]
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal as json.
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal from json.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal(v) {
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalDepthFirst
+	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversalBreadthFirst
+	default:
+		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -44997,46 +45464,6 @@ func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) Mars
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemStepsItemTeam) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode as json.
-func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode from json.
-func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode(v) {
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers:
-		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeAllMembers
-	case ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly:
-		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallModeOnDutyOnly
-	default:
-		*s = ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *ListOnCallEscalationPoliciesOKEscalationPoliciesItemTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -60770,6 +61197,50 @@ func (s *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemOverri
 	return s.Decode(d)
 }
 
+// Encode encodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser as json.
+func (o NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Encode(e *jx.Encoder) {
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser from json.
+func (o *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v GetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser
+		o.Value = v
+		o.Null = true
+		return nil
+	}
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *NilGetOnCallEscalationPolicyScheduleOKScheduleDaysItemEntriesItemSimultaneousCallUsersItemSlackUser) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes GetOnCallSessionOKSessionAckedBy as json.
 func (o NilGetOnCallSessionOKSessionAckedBy) Encode(e *jx.Encoder) {
 	if o.Null {
@@ -63394,6 +63865,39 @@ func (s *OptCreateIncidentActionItemReqActionItemStatus) UnmarshalJSON(data []by
 	return s.Decode(d)
 }
 
+// Encode encodes CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal as json.
+func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes CreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal from json.
+func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptCreateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes CreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType as json.
 func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -63423,39 +63927,6 @@ func (s OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Mar
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptCreateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode as json.
-func (o OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes CreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode from json.
-func (o *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCreateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -63948,6 +64419,39 @@ func (s *OptUpdateIncidentActionItemReqActionItemStatus) UnmarshalJSON(data []by
 	return s.Decode(d)
 }
 
+// Encode encodes UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal as json.
+func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal from json.
+func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal to nil")
+	}
+	o.Set = true
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptUpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType as json.
 func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -63977,39 +64481,6 @@ func (s OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Mar
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptUpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode as json.
-func (o OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode from json.
-func (o *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptUpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -72651,8 +73122,12 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) encodeFields(e *jx.Enco
 		e.Str(s.Timezone)
 	}
 	{
-		e.FieldStart("team_call_mode")
-		s.TeamCallMode.Encode(e)
+		e.FieldStart("call_depth")
+		s.CallDepth.Encode(e)
+	}
+	{
+		e.FieldStart("call_traversal")
+		s.CallTraversal.Encode(e)
 	}
 	{
 		e.FieldStart("steps")
@@ -72672,13 +73147,14 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) encodeFields(e *jx.Enco
 	}
 }
 
-var jsonFieldsNameOfUpdateOnCallEscalationPolicyOKEscalationPolicy = [6]string{
+var jsonFieldsNameOfUpdateOnCallEscalationPolicyOKEscalationPolicy = [7]string{
 	0: "uuid",
 	1: "name",
 	2: "timezone",
-	3: "team_call_mode",
-	4: "steps",
-	5: "time_slots",
+	3: "call_depth",
+	4: "call_traversal",
+	5: "steps",
+	6: "time_slots",
 }
 
 // Decode decodes UpdateOnCallEscalationPolicyOKEscalationPolicy from json.
@@ -72726,18 +73202,28 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) e
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			requiredBitSet[0] |= 1 << 3
 			if err := func() error {
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			requiredBitSet[0] |= 1 << 4
+			if err := func() error {
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
-			requiredBitSet[0] |= 1 << 4
+			requiredBitSet[0] |= 1 << 5
 			if err := func() error {
 				s.Steps = make([]UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -72755,7 +73241,7 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) e
 				return errors.Wrap(err, "decode field \"steps\"")
 			}
 		case "time_slots":
-			requiredBitSet[0] |= 1 << 5
+			requiredBitSet[0] |= 1 << 6
 			if err := func() error {
 				s.TimeSlots = make([]UpdateOnCallEscalationPolicyOKEscalationPolicyTimeSlotsItem, 0)
 				if err := d.Arr(func(d *jx.Decoder) error {
@@ -72782,7 +73268,7 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) Decode(d *jx.Decoder) e
 	// Validate required fields.
 	var failures []validate.FieldError
 	for i, mask := range [1]uint8{
-		0b00111111,
+		0b01111111,
 	} {
 		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
 			// Mask only required fields and check equality to mask using XOR.
@@ -72824,6 +73310,46 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) MarshalJSON() ([]byte, 
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UpdateOnCallEscalationPolicyOKEscalationPolicy) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal as json.
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal from json.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal(v) {
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalDepthFirst
+	case UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversalBreadthFirst
+	default:
+		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -73154,46 +73680,6 @@ func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) MarshalJSO
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyStepsItemTeam) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode as json.
-func (s UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode from json.
-func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(v) {
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers:
-		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeAllMembers
-	case UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallModeOnDutyOnly
-	default:
-		*s = UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UpdateOnCallEscalationPolicyOKEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -73557,9 +74043,15 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) encodeFields(e *jx.Enc
 		}
 	}
 	{
-		if s.TeamCallMode.Set {
-			e.FieldStart("team_call_mode")
-			s.TeamCallMode.Encode(e)
+		if s.CallDepth.Set {
+			e.FieldStart("call_depth")
+			s.CallDepth.Encode(e)
+		}
+	}
+	{
+		if s.CallTraversal.Set {
+			e.FieldStart("call_traversal")
+			s.CallTraversal.Encode(e)
 		}
 	}
 	{
@@ -73584,12 +74076,13 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) encodeFields(e *jx.Enc
 	}
 }
 
-var jsonFieldsNameOfUpdateOnCallEscalationPolicyReqEscalationPolicy = [5]string{
+var jsonFieldsNameOfUpdateOnCallEscalationPolicyReqEscalationPolicy = [6]string{
 	0: "name",
 	1: "timezone",
-	2: "team_call_mode",
-	3: "steps",
-	4: "time_slots",
+	2: "call_depth",
+	3: "call_traversal",
+	4: "steps",
+	5: "time_slots",
 }
 
 // Decode decodes UpdateOnCallEscalationPolicyReqEscalationPolicy from json.
@@ -73620,15 +74113,25 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) Decode(d *jx.Decoder) 
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"timezone\"")
 			}
-		case "team_call_mode":
+		case "call_depth":
 			if err := func() error {
-				s.TeamCallMode.Reset()
-				if err := s.TeamCallMode.Decode(d); err != nil {
+				s.CallDepth.Reset()
+				if err := s.CallDepth.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"team_call_mode\"")
+				return errors.Wrap(err, "decode field \"call_depth\"")
+			}
+		case "call_traversal":
+			if err := func() error {
+				s.CallTraversal.Reset()
+				if err := s.CallTraversal.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"call_traversal\"")
 			}
 		case "steps":
 			if err := func() error {
@@ -73684,6 +74187,46 @@ func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) MarshalJSON() ([]byte,
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UpdateOnCallEscalationPolicyReqEscalationPolicy) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal as json.
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Encode(e *jx.Encoder) {
+	e.Str(string(s))
+}
+
+// Decode decodes UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal from json.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal to nil")
+	}
+	v, err := d.StrBytes()
+	if err != nil {
+		return err
+	}
+	// Try to use constant string.
+	switch UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v) {
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalDepthFirst
+	case UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversalBreadthFirst
+	default:
+		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal(v)
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyCallTraversal) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -73854,46 +74397,6 @@ func (s UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) Marsha
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyStepsItemStepType) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode as json.
-func (s UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Encode(e *jx.Encoder) {
-	e.Str(string(s))
-}
-
-// Decode decodes UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode from json.
-func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode to nil")
-	}
-	v, err := d.StrBytes()
-	if err != nil {
-		return err
-	}
-	// Try to use constant string.
-	switch UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v) {
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers:
-		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeAllMembers
-	case UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly:
-		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallModeOnDutyOnly
-	default:
-		*s = UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode(v)
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *UpdateOnCallEscalationPolicyReqEscalationPolicyTeamCallMode) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

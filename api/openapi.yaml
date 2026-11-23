@@ -2,7 +2,7 @@
 openapi: 3.1.0
 info:
   title: Waroom V0 Public API
-  version: 0.1.0
+  version: 0.2.0
   description: Public API for Waroom incident management
 servers:
 - url: https://api.app.waroom.com
@@ -6444,7 +6444,8 @@ paths:
                       - uuid
                       - name
                       - timezone
-                      - team_call_mode
+                      - call_depth
+                      - call_traversal
                       - steps
                       - time_slots
                       properties:
@@ -6455,16 +6456,26 @@ paths:
                         timezone:
                           type: string
                           description: 当番表を組む基準になるタイムゾーン（IANA 形式）
-                        team_call_mode:
+                        call_depth:
+                          type:
+                          - integer
+                          - 'null'
+                          minimum: 1
+                          maximum: 10
+                          description: |
+                            各ステップのチームで、当番から何人目まで架電するか。null は無制限（チームの全員）。
+                            何人目かはローテーションの順番で数え、不在の人は数えない。
+                            電話番号が無いなどで架電できない人も 1 人と数え、その下の人には架電しない
+                        call_traversal:
                           type: string
                           enum:
-                          - all_members
-                          - on_duty_only
+                          - depth_first
+                          - breadth_first
                           description: |
-                            各ステップのチームで誰に架電するか。
-                            all_members は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-                            on_duty_only は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-                            どちらでも、simultaneous_call のステップではチームの全員に同時に架電する
+                            ステップと「当番から何人目か」をたどる順番。
+                            depth_first（深さ優先）はステップごとに call_depth 人目まで架電してから、次のステップへ進む。
+                            breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2 人目に架電する。
+                            どちらでも、simultaneous_call のステップでは 1 回だけチームの全員に同時に架電する
                         steps:
                           type: array
                           description: エスカレーションの順番（position の昇順）
@@ -6609,13 +6620,21 @@ paths:
                     timezone:
                       type: string
                       description: 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo
-                    team_call_mode:
+                    call_depth:
+                      type:
+                      - integer
+                      - 'null'
+                      minimum: 1
+                      maximum: 10
+                      description: 各ステップのチームで、当番から何人目まで架電するか（on_call_escalation_policy
+                        の call_depth を参照）。省略・null で無制限
+                    call_traversal:
                       type: string
                       enum:
-                      - all_members
-                      - on_duty_only
-                      description: 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-                        を参照）。省略すると all_members
+                      - depth_first
+                      - breadth_first
+                      description: ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy
+                        の call_traversal を参照）。省略すると depth_first
                     steps:
                       type: array
                       description: 'ステップ。配列の順がエスカレーションの順（position）になる。省略するとステップなし
@@ -6680,7 +6699,8 @@ paths:
                     - uuid
                     - name
                     - timezone
-                    - team_call_mode
+                    - call_depth
+                    - call_traversal
                     - steps
                     - time_slots
                     properties:
@@ -6691,16 +6711,26 @@ paths:
                       timezone:
                         type: string
                         description: 当番表を組む基準になるタイムゾーン（IANA 形式）
-                      team_call_mode:
+                      call_depth:
+                        type:
+                        - integer
+                        - 'null'
+                        minimum: 1
+                        maximum: 10
+                        description: |
+                          各ステップのチームで、当番から何人目まで架電するか。null は無制限（チームの全員）。
+                          何人目かはローテーションの順番で数え、不在の人は数えない。
+                          電話番号が無いなどで架電できない人も 1 人と数え、その下の人には架電しない
+                      call_traversal:
                         type: string
                         enum:
-                        - all_members
-                        - on_duty_only
+                        - depth_first
+                        - breadth_first
                         description: |
-                          各ステップのチームで誰に架電するか。
-                          all_members は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-                          on_duty_only は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-                          どちらでも、simultaneous_call のステップではチームの全員に同時に架電する
+                          ステップと「当番から何人目か」をたどる順番。
+                          depth_first（深さ優先）はステップごとに call_depth 人目まで架電してから、次のステップへ進む。
+                          breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2 人目に架電する。
+                          どちらでも、simultaneous_call のステップでは 1 回だけチームの全員に同時に架電する
                       steps:
                         type: array
                         description: エスカレーションの順番（position の昇順）
@@ -6853,7 +6883,8 @@ paths:
                     - uuid
                     - name
                     - timezone
-                    - team_call_mode
+                    - call_depth
+                    - call_traversal
                     - steps
                     - time_slots
                     properties:
@@ -6864,16 +6895,26 @@ paths:
                       timezone:
                         type: string
                         description: 当番表を組む基準になるタイムゾーン（IANA 形式）
-                      team_call_mode:
+                      call_depth:
+                        type:
+                        - integer
+                        - 'null'
+                        minimum: 1
+                        maximum: 10
+                        description: |
+                          各ステップのチームで、当番から何人目まで架電するか。null は無制限（チームの全員）。
+                          何人目かはローテーションの順番で数え、不在の人は数えない。
+                          電話番号が無いなどで架電できない人も 1 人と数え、その下の人には架電しない
+                      call_traversal:
                         type: string
                         enum:
-                        - all_members
-                        - on_duty_only
+                        - depth_first
+                        - breadth_first
                         description: |
-                          各ステップのチームで誰に架電するか。
-                          all_members は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-                          on_duty_only は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-                          どちらでも、simultaneous_call のステップではチームの全員に同時に架電する
+                          ステップと「当番から何人目か」をたどる順番。
+                          depth_first（深さ優先）はステップごとに call_depth 人目まで架電してから、次のステップへ進む。
+                          breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2 人目に架電する。
+                          どちらでも、simultaneous_call のステップでは 1 回だけチームの全員に同時に架電する
                       steps:
                         type: array
                         description: エスカレーションの順番（position の昇順）
@@ -6945,7 +6986,8 @@ paths:
                   uuid: 8f14e45f-ceea-467a-9f8a-5f0b1d3c9a21
                   name: バックエンド一次対応
                   timezone: Asia/Tokyo
-                  team_call_mode: all_members
+                  call_depth: 
+                  call_traversal: depth_first
                   steps:
                   - uuid: 3c6e0b8a-9c15-4f2d-b1a7-2e4d6f8a0b13
                     position: 0
@@ -7040,13 +7082,21 @@ paths:
                     timezone:
                       type: string
                       description: 時間帯の基準になるタイムゾーン（IANA 形式）。POST で省略すると Asia/Tokyo
-                    team_call_mode:
+                    call_depth:
+                      type:
+                      - integer
+                      - 'null'
+                      minimum: 1
+                      maximum: 10
+                      description: 各ステップのチームで、当番から何人目まで架電するか（on_call_escalation_policy
+                        の call_depth を参照）。null で無制限。省略すると変更しない
+                    call_traversal:
                       type: string
                       enum:
-                      - all_members
-                      - on_duty_only
-                      description: 各ステップのチームで誰に架電するか（on_call_escalation_policy の team_call_mode
-                        を参照）。省略すると変更しない
+                      - depth_first
+                      - breadth_first
+                      description: ステップと「当番から何人目か」をたどる順番（on_call_escalation_policy
+                        の call_traversal を参照）。省略すると変更しない
                     steps:
                       type: array
                       description: 'ステップ。送ると丸ごと置き換える。配列の順がエスカレーションの順（position）になる
@@ -7111,7 +7161,8 @@ paths:
                     - uuid
                     - name
                     - timezone
-                    - team_call_mode
+                    - call_depth
+                    - call_traversal
                     - steps
                     - time_slots
                     properties:
@@ -7122,16 +7173,26 @@ paths:
                       timezone:
                         type: string
                         description: 当番表を組む基準になるタイムゾーン（IANA 形式）
-                      team_call_mode:
+                      call_depth:
+                        type:
+                        - integer
+                        - 'null'
+                        minimum: 1
+                        maximum: 10
+                        description: |
+                          各ステップのチームで、当番から何人目まで架電するか。null は無制限（チームの全員）。
+                          何人目かはローテーションの順番で数え、不在の人は数えない。
+                          電話番号が無いなどで架電できない人も 1 人と数え、その下の人には架電しない
+                      call_traversal:
                         type: string
                         enum:
-                        - all_members
-                        - on_duty_only
+                        - depth_first
+                        - breadth_first
                         description: |
-                          各ステップのチームで誰に架電するか。
-                          all_members は当番から順にチームの全員に架電し、全員が出なければ次のステップへ進む。
-                          on_duty_only は当番だけに架電し、出なければ（架電できなくても）次のステップへ進む。
-                          どちらでも、simultaneous_call のステップではチームの全員に同時に架電する
+                          ステップと「当番から何人目か」をたどる順番。
+                          depth_first（深さ優先）はステップごとに call_depth 人目まで架電してから、次のステップへ進む。
+                          breadth_first（幅優先）は全ステップの当番に架電してから、全ステップの 2 人目に架電する。
+                          どちらでも、simultaneous_call のステップでは 1 回だけチームの全員に同時に架電する
                       steps:
                         type: array
                         description: エスカレーションの順番（position の昇順）
@@ -7438,6 +7499,7 @@ paths:
                                 - start_at
                                 - end_at
                                 - override
+                                - simultaneous_call_users
                                 properties:
                                   escalation_policy_step:
                                     type: object
@@ -7652,6 +7714,53 @@ paths:
                                           - string
                                           - 'null'
                                     - type: 'null'
+                                  simultaneous_call_users:
+                                    type: array
+                                    description: |
+                                      全員に同時に架電するステップ（escalation_policy_step.simultaneous_call が true）で、この時間帯に電話がかかる人。
+                                      ローテーションの順に並び、不在の人は含まない。代役がいるときは、本来の当番の代わりに代役が入る。
+                                      全員に同時でないステップでは空配列になる。
+                                    items:
+                                      type: object
+                                      required:
+                                      - sub
+                                      - nickname
+                                      - picture
+                                      - status
+                                      - slack_user
+                                      - phone_verified
+                                      - created_at
+                                      properties:
+                                        sub:
+                                          type: string
+                                        nickname:
+                                          type: string
+                                        picture:
+                                          type: string
+                                        status:
+                                          type: string
+                                          enum:
+                                          - active
+                                          - inactive
+                                          - invited
+                                          - invitation_pending
+                                          - invitation_failed
+                                          - deactivated
+                                        slack_user:
+                                          oneOf:
+                                          - type: object
+                                            required:
+                                            - key
+                                            properties:
+                                              key:
+                                                type: string
+                                          - type: 'null'
+                                        phone_verified:
+                                          type: boolean
+                                          description: 電話番号の認証が済んでいるか。オンコールのローテーションに入れられるのは認証済みのユーザーだけ。
+                                        created_at:
+                                          type: string
+                                          format: date-time
               example:
                 schedule:
                   escalation_policy:
