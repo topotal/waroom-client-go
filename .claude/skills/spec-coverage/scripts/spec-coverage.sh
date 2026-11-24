@@ -19,7 +19,10 @@ cd "$repo_root"
 url=${OPENAPI_URL:-https://static.waroom.com/openapi/v0.yaml}
 out=${1:-$(mktemp -t waroom-openapi.XXXXXX).yaml}
 
-curl -sfSL --max-time 30 "$url" -o "$out"
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+curl -sfSL --max-time 30 -D "$tmp/headers" "$url" -o "$out"
 
 # operations: operationId<TAB>tag<TAB>method<TAB>path<TAB>summary
 # Relies on the layout of the published spec: paths at 2 spaces, methods at 4, fields at 6.
@@ -57,9 +60,6 @@ list_wrapped() {
 
 spec_version() { awk '/^info:/{f=1;next} f&&/^[^ ]/{exit} f&&/^  version:/{v=$2; gsub(/["\047]/,"",v); print v; exit}'; }
 
-tmp=$(mktemp -d)
-trap 'rm -rf "$tmp"' EXIT
-
 list_ops "$out" > "$tmp/pub"
 list_ops api/openapi.yaml > "$tmp/local"
 list_wrapped > "$tmp/wrapped"
@@ -67,7 +67,12 @@ list_wrapped > "$tmp/wrapped"
 echo "# spec: $url"
 echo "# fetched: $out"
 echo "# version: published $(spec_version < "$out") / repo spec $(spec_version < api/openapi.yaml)"
-echo "# repo spec: api/openapi.yaml"
+echo "# repo spec: api/openapi.yaml (synced in $(git log -1 --format=%h -- api/openapi.yaml))"
+header() { tr -d "\r" < "$tmp/headers" | awk -v k="$1" 'tolower($0) ~ "^" k ":" { v = substr($0, length(k) + 3) } END { print (v == "" ? "-" : v) }'; }
+echo "# last-modified: $(header last-modified)"
+echo "# etag: $(header etag | tr -d "\"")"
+echo "# x-amz-version-id: $(header x-amz-version-id)"
+echo "# sha256: published $(shasum -a 256 "$out" | cut -d" " -f1) / repo spec $(shasum -a 256 api/openapi.yaml | cut -d" " -f1)"
 echo "# operations: published $(wc -l < "$tmp/pub" | tr -d " ") / repo spec $(wc -l < "$tmp/local" | tr -d " ") / wrapped $(cut -f1 "$tmp/wrapped" | sort -u | wc -l | tr -d " ")"
 echo
 printf 'status\ttag\tmethod\tpath\toperationId\twrapper\tsummary\n'

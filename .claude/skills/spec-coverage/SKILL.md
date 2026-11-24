@@ -1,11 +1,11 @@
 ---
 name: spec-coverage
-description: Fetch the published Waroom OpenAPI spec (https://static.waroom.com/openapi/v0.yaml) and compare its operations with the ones wrapped in the waroom/ package, then list what is unimplemented, not planned, and implemented. After confirmation, create one GitHub issue per wrapper Service candidate. Use when asked to find unimplemented API operations, check spec coverage, turn new backend APIs into issues, or "spec-coverage".
+description: Fetch the published Waroom OpenAPI spec (https://static.waroom.com/openapi/v0.yaml) and compare its operations with the ones wrapped in the waroom/ package, then list what is unimplemented, not planned, and implemented. After confirmation, create one GitHub issue per wrapper Service candidate, then refresh the tracking issue (Planned API operations). Use when asked to find unimplemented API operations, check spec coverage, turn new backend APIs into issues, or "spec-coverage".
 ---
 
 # spec-coverage
 
-Find the operations in the published Waroom public API spec that the `waroom/` package does not wrap yet, and file an issue per candidate.
+Find the operations in the published Waroom public API spec that the `waroom/` package does not wrap yet, file an issue per candidate, and keep the tracking issue (`<!-- spec-coverage: tracking -->`, "Planned API operations") up to date.
 
 ## Background
 
@@ -44,7 +44,7 @@ mkdir -p temp
 
 (`temp/` is gitignored. `OPENAPI_URL=...` overrides the URL, e.g. `file://` for a local copy.)
 
-The script prints a TSV of `status tag method path operationId wrapper summary`:
+The script first prints `#` header lines (version, the commit that last synced `api/openapi.yaml`, the response's last-modified / etag / x-amz-version-id, sha256 of both specs, operation counts) used by step 6, then a TSV of `status tag method path operationId wrapper summary`:
 
 | status | meaning |
 | --- | --- |
@@ -173,4 +173,55 @@ gh issue create --title '<title>' --body-file temp/issue-<service>.md \
   --label api-candidate --label software-squad --label enhancement
 ```
 
-Finally, report the URLs of the created issues, and mention that `/implement-candidate <number>` implements one.
+Add each created issue as a sub-issue of the tracking issue (step 6):
+
+```sh
+gh api --method POST 'repos/{owner}/{repo}/issues/<tracking>/sub_issues' \
+  -F sub_issue_id="$(gh api 'repos/{owner}/{repo}/issues/<number>' -q .id)"
+```
+
+Report the URLs of the created issues, and mention that `/implement-candidate <number>` implements one.
+
+### 6. Update the tracking issue
+
+Every run ends by refreshing the tracking issue, even when there is nothing to file (a spec sync alone changes its Coverage section). The tracking issue is the **open** issue whose body starts with `<!-- spec-coverage: tracking -->` and whose `author_association` is `OWNER`, `MEMBER` or `COLLABORATOR`:
+
+```sh
+gh api --paginate 'repos/{owner}/{repo}/issues?state=open&per_page=100' \
+  -q '.[] | select(.pull_request | not)
+      | select(.body // "" | startswith("<!-- spec-coverage: tracking -->"))
+      | {number, author_association}'
+```
+
+If there is none (or more than one trusted), tell the user and stop; do not create one without asking.
+
+Rewrite only the `## Coverage (checked <YYYY-MM-DD>)` and `## Candidates` sections. Keep the text above them as it is.
+
+```markdown
+## Coverage (checked <YYYY-MM-DD>)
+
+| | |
+| --- | --- |
+| spec | https://static.waroom.com/openapi/v0.yaml |
+| version | published `<version>` / `api/openapi.yaml` `<version>` |
+| last-modified | <last-modified> |
+| etag | `<etag>` |
+| x-amz-version-id | `<x-amz-version-id>` |
+| sha256 (published) | `<sha256>` |
+| sha256 (`api/openapi.yaml`) | `<sha256>` (synced in #<PR>) |
+| operations | published N / `api/openapi.yaml` N / wrapped N |
+| unimplemented | N (has issue N / no issue N) |
+| not planned | N |
+
+## Candidates
+
+| issue | service | methods | status |
+| --- | --- | --- | --- |
+| #<n> | `<Service>` | <Method>, <Method> | <status> |
+```
+
+- Coverage values come from the script's `#` header lines. `synced in #<PR>` is the merged PR of the commit printed in `# repo spec: ... (synced in <sha>)`: `gh pr list --state merged --search <sha> --json number -q '.[].number'`
+- Candidates has one row per sub-issue (`gh api 'repos/{owner}/{repo}/issues/<tracking>/sub_issues' -q '.[].number'`). Keep the existing row order (it is the priority order) and append new sub-issues at the end
+- status: `✅ implemented (#<PR>)` for closed as completed with every op wrapped (PR from `gh issue view <n> --json closedByPullRequestsReferences -q '.closedByPullRequestsReferences[].number'`; keep the PR already in the row if the lookup returns nothing), `🚧 open` for open, `⛔ not planned — <reason>` for closed as not planned, `⚠️ closed but not wrapped` for the inconsistency in step 3
+
+Write the new body to `temp/issue-<tracking>.md`, show the user the `diff` against the current body, then apply it with `gh issue edit <tracking> --body-file temp/issue-<tracking>.md`. If the diff is empty apart from the checked date, still apply it (the date records when coverage was last confirmed).
