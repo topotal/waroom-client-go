@@ -25,7 +25,7 @@ func listEscalationPolicies() {
 	}
 
 	for _, policy := range res {
-		fmt.Println(policy.UUID, policy.Name, policy.Timezone, policy.TeamCallMode)
+		fmt.Println(policy.UUID, policy.Name, policy.Timezone, policy.CallDepth, policy.CallTraversal)
 		for _, step := range policy.Steps {
 			fmt.Printf("  step %d (%s): %s\n", step.Position, step.StepType, step.Team.Name)
 		}
@@ -46,7 +46,8 @@ func createEscalationPolicy(teamUUID string) {
 			{DayOfWeek: 1, StartTime: "09:00", EndTime: "18:00"},
 		},
 	}
-	req.TeamCallMode.SetTo("on_duty_only")
+	req.CallDepth.SetTo(1)
+	req.CallTraversal.SetTo("breadth_first")
 
 	policy, err := c.OnCallEscalationPolicies.Create(ctx, req)
 	if err != nil {

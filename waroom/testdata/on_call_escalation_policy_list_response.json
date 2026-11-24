@@ -4,7 +4,8 @@
     "uuid": "770e8400-e29b-41d4-a716-446655440001",
     "name": "Primary escalation",
     "timezone": "Asia/Tokyo",
-    "team_call_mode": "all_members",
+    "call_depth": null,
+    "call_traversal": "depth_first",
     "steps": [
       {
         "uuid": "770e8400-e29b-41d4-a716-446655440011",
@@ -42,7 +43,8 @@
     "uuid": "770e8400-e29b-41d4-a716-446655440002",
     "name": "Night shift",
     "timezone": "UTC",
-    "team_call_mode": "on_duty_only",
+    "call_depth": 1,
+    "call_traversal": "breadth_first",
     "steps": [],
     "time_slots": [
       {

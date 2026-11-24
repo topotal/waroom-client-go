@@ -80,7 +80,8 @@ func TestOnCallEscalationPolicyService_List(t *testing.T) {
 	assert.Equal(t, testEscalationPolicyUUID, policies[0].UUID)
 	assert.Equal(t, "Primary escalation", policies[0].Name)
 	assert.Equal(t, "Asia/Tokyo", policies[0].Timezone)
-	assert.Equal(t, "all_members", string(policies[0].TeamCallMode))
+	assert.True(t, policies[0].CallDepth.IsNull())
+	assert.Equal(t, "depth_first", string(policies[0].CallTraversal))
 	require.Len(t, policies[0].Steps, 2)
 	assert.Equal(t, 1, policies[0].Steps[1].Position)
 	assert.Equal(t, "fallback", string(policies[0].Steps[1].StepType))
@@ -92,7 +93,10 @@ func TestOnCallEscalationPolicyService_List(t *testing.T) {
 	assert.Equal(t, "18:00", policies[0].TimeSlots[0].EndTime)
 
 	assert.Equal(t, "Night shift", policies[1].Name)
-	assert.Equal(t, "on_duty_only", string(policies[1].TeamCallMode))
+	depth, ok := policies[1].CallDepth.Get()
+	require.True(t, ok)
+	assert.Equal(t, 1, depth)
+	assert.Equal(t, "breadth_first", string(policies[1].CallTraversal))
 	assert.Empty(t, policies[1].Steps)
 }
 
@@ -124,7 +128,8 @@ func TestOnCallEscalationPolicyService_Get(t *testing.T) {
 	require.NotNil(t, policy)
 	assert.Equal(t, testEscalationPolicyUUID, policy.UUID)
 	assert.Equal(t, "Primary escalation", policy.Name)
-	assert.Equal(t, "all_members", string(policy.TeamCallMode))
+	assert.True(t, policy.CallDepth.IsNull())
+	assert.Equal(t, "depth_first", string(policy.CallTraversal))
 	require.Len(t, policy.Steps, 2)
 	assert.Equal(t, "primary", string(policy.Steps[0].StepType))
 	assert.Equal(t, "880e8400-e29b-41d4-a716-446655440001", policy.Steps[0].Team.UUID)
@@ -158,7 +163,8 @@ func TestOnCallEscalationPolicyService_Create(t *testing.T) {
 			"escalation_policy": {
 				"name":           "Primary escalation",
 				"timezone":       "Asia/Tokyo",
-				"team_call_mode": "all_members",
+				"call_depth":     float64(2),
+				"call_traversal": "depth_first",
 				"steps": []any{
 					map[string]any{"team_uuid": "880e8400-e29b-41d4-a716-446655440001"},
 					map[string]any{"team_uuid": "880e8400-e29b-41d4-a716-446655440002", "step_type": "fallback", "simultaneous_call": true},
@@ -188,7 +194,8 @@ func TestOnCallEscalationPolicyService_Create(t *testing.T) {
 			{DayOfWeek: 1, StartTime: "09:00", EndTime: "18:00"},
 		},
 	}
-	req.TeamCallMode.SetTo("all_members")
+	req.CallDepth.SetTo(2)
+	req.CallTraversal.SetTo("depth_first")
 
 	policy, err := client.OnCallEscalationPolicies.Create(context.Background(), req)
 
@@ -227,7 +234,8 @@ func TestOnCallEscalationPolicyService_Update(t *testing.T) {
 		assert.Equal(t, map[string]map[string]any{
 			"escalation_policy": {
 				"name":           "Primary escalation",
-				"team_call_mode": "on_duty_only",
+				"call_depth":     nil,
+				"call_traversal": "breadth_first",
 				"steps": []any{
 					map[string]any{"team_uuid": "880e8400-e29b-41d4-a716-446655440001", "step_type": "primary"},
 				},
@@ -244,7 +252,8 @@ func TestOnCallEscalationPolicyService_Update(t *testing.T) {
 		Name:  NewOptString("Primary escalation"),
 		Steps: []UpdateOnCallEscalationPolicyStep{step},
 	}
-	req.TeamCallMode.SetTo("on_duty_only")
+	req.CallDepth.SetToNull()
+	req.CallTraversal.SetTo("breadth_first")
 
 	policy, err := client.OnCallEscalationPolicies.Update(context.Background(), req, UpdateOnCallEscalationPolicyParams{UUID: testEscalationPolicyUUID})
 
@@ -334,6 +343,7 @@ func TestOnCallEscalationPolicyService_GetSchedule(t *testing.T) {
 	assert.Equal(t, "alice", onDuty.Nickname)
 	assert.True(t, onDuty.PhoneVerified)
 	assert.True(t, entry.Override.IsNull())
+	assert.Empty(t, entry.SimultaneousCallUsers)
 	jst := time.FixedZone("", 9*60*60)
 	assert.True(t, time.Date(2026, 11, 23, 9, 0, 0, 0, jst).Equal(entry.StartAt))
 	assert.True(t, time.Date(2026, 11, 23, 18, 0, 0, 0, jst).Equal(entry.EndAt))

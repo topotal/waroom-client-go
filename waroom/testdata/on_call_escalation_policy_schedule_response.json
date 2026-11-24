@@ -36,7 +36,8 @@
             },
             "start_at": "2026-11-23T09:00:00+09:00",
             "end_at": "2026-11-23T18:00:00+09:00",
-            "override": null
+            "override": null,
+            "simultaneous_call_users": []
           }
         ]
       },
