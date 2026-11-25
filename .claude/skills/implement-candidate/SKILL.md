@@ -71,7 +71,7 @@ mkdir -p temp
 - Look at what else the sync changed: `git diff --stat api/openapi.yaml internal/ogen` and the script's `removed` rows. If the sync breaks existing wrappers (`go build` fails, or `removed` is non-empty), or changes existing operations' request / response shapes, **stop and show the user the impact**. Ask whether to fix the existing wrappers in this PR or to land a separate `chore: sync api/openapi.yaml` PR first. Do not silently rewrite existing public methods.
 - Operations added by the sync that are not in this issue stay generated but unwrapped; that is expected (spec-coverage reports them as `spec-only`).
 
-The `OAS Auto Committer` workflow reruns `task gen` on the PR and commits any diff, so commit the regenerated `internal/ogen/` yourself to keep the PR reviewable in one go.
+Commit the regenerated `internal/ogen/` together with `api/openapi.yaml`. The `Check Generated Code` workflow reruns `task gen` on the PR and fails if `internal/ogen/` differs.
 
 ## 3. Read the generated API
 

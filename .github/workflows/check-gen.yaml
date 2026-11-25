@@ -1,0 +1,41 @@
+name: Check Generated Code
+
+# Fails when internal/ogen/ is out of date with api/openapi.yaml. Runs without secrets, so it also works on fork PRs.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-gen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: aquaproj/aqua-installer@611554c6f0137ba41c8dd15aca8bee82504ea461 # v4.1.1
+        with:
+          aqua_version: v2.66.1
+
+      - run: task gen
+
+      # git status also catches files that task gen added or removed
+      - name: Check internal/ogen/ is up to date
+        run: |
+          if [ -n "$(git status --porcelain --untracked-files=all -- internal/ogen)" ]; then
+            git status --short --untracked-files=all -- internal/ogen
+            git diff -- internal/ogen
+            echo "::error::internal/ogen/ is out of date with api/openapi.yaml. Run 'task gen' locally and commit the result."
+            exit 1
+          fi
