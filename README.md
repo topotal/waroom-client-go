@@ -34,6 +34,10 @@ func main() {
 }
 ```
 
+`NewClient` reads the API key from `WithAPIKey` or the `WAROOM_API_KEY` environment variable, and sends requests to the production API (`https://api.app.waroom.com`, `waroom.DefaultBaseURL`). Use `waroom.WithBaseURL` to target another host.
+
+For debugging, `waroom.WithRequestDump()` and `waroom.WithResponseDump()` write the HTTP traffic to stderr. Credential headers such as `Authorization` are redacted in the request dump.
+
 ## Available services
 
 Access each service through a field on `*waroom.Client` (e.g. `client.Incidents.List(ctx, ...)`).

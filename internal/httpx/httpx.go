@@ -41,23 +41,66 @@ func WithUA(ua string) func(http.RoundTripper) http.RoundTripper {
 	}
 }
 
-func WithRequestDump() func(http.RoundTripper) http.RoundTripper {
+// sensitiveHeaders are the request headers whose values WithRequestDump
+// replaces with redactedValue. Dumps end up in bug reports, so they must
+// never contain credentials.
+var sensitiveHeaders = []string{
+	"Authorization",
+	"Proxy-Authorization",
+	"Cookie",
+	"X-Api-Key",
+}
+
+const redactedValue = "[REDACTED]"
+
+// redactHeader returns a copy of h with the values of sensitiveHeaders
+// redacted. The auth scheme (e.g. "Bearer") is kept so the dump still shows
+// how the request authenticated.
+func redactHeader(h http.Header) http.Header {
+	out := h.Clone()
+	for _, name := range sensitiveHeaders {
+		vals := out.Values(name)
+		if len(vals) == 0 {
+			continue
+		}
+		redacted := make([]string, len(vals))
+		for i, v := range vals {
+			if scheme, _, ok := strings.Cut(v, " "); ok && name != "Cookie" {
+				redacted[i] = scheme + " " + redactedValue
+			} else {
+				redacted[i] = redactedValue
+			}
+		}
+		out[http.CanonicalHeaderKey(name)] = redacted
+	}
+	return out
+}
+
+// WithRequestDump dumps each outgoing request (headers and body) to w.
+// Credential headers are redacted; see sensitiveHeaders.
+func WithRequestDump(w io.Writer) func(http.RoundTripper) http.RoundTripper {
 	return func(nextTripper http.RoundTripper) http.RoundTripper {
 		return roundTripperFunc(func(r *http.Request) (*http.Response, error) {
-			println("Tripper Dump Request:", r.Method, r.URL.String())
-			b, err := httputil.DumpRequest(r, true) // 2つ目の引数はbodyをダンプするかどうか
+			_, _ = fmt.Fprintln(w, "Tripper Dump Request:", r.Method, r.URL.String())
+
+			// Dump a shallow copy carrying the redacted headers. DumpRequest
+			// consumes the body and replaces it with an equivalent reader,
+			// so hand that reader back to the original request.
+			dr := *r
+			dr.Header = redactHeader(r.Header)
+			b, err := httputil.DumpRequest(&dr, true)
+			r.Body = dr.Body
 			if err != nil {
-				fmt.Println(err)
+				_, _ = fmt.Fprintln(w, err)
 			} else {
-				fmt.Println(string(b))
+				_, _ = fmt.Fprintln(w, string(b))
 			}
-			println("---")
+			_, _ = fmt.Fprintln(w, "---")
 
 			if nextTripper == nil {
 				return http.DefaultTransport.RoundTrip(r)
 			}
 			return nextTripper.RoundTrip(r)
-
 		})
 	}
 }

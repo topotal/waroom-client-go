@@ -3,6 +3,7 @@ package waroom
 import (
 	"context"
 	"errors"
+	"io"
 	"net/http"
 	"os"
 	"time"
@@ -20,14 +21,22 @@ type config struct {
 	RequestDump  bool
 	ResponseDump bool
 	APIKey       string
+	// dumpWriter receives request and response dumps. Tests override it.
+	dumpWriter io.Writer
 }
 
-func WithBaseURL(u string) Option          { return func(c *config) { c.BaseURL = u } }
+// WithBaseURL overrides the API host. It defaults to DefaultBaseURL
+// (https://api.app.waroom.com, the production API).
+func WithBaseURL(u string) Option { return func(c *config) { c.BaseURL = u } }
+
 func WithHTTPClient(h *http.Client) Option { return func(c *config) { c.HTTPClient = h } }
 func WithUserAgent(ua string) Option       { return func(c *config) { c.UserAgent = ua } }
-func WithRequestDump() Option              { return func(c *config) { c.RequestDump = true } }
-func WithResponseDump() Option             { return func(c *config) { c.ResponseDump = true } }
-func WithAPIKey(apiKey string) Option      { return func(c *config) { c.APIKey = apiKey } }
+
+// WithRequestDump writes every request (headers and body) to stderr for
+// debugging. Credential headers such as Authorization are redacted.
+func WithRequestDump() Option         { return func(c *config) { c.RequestDump = true } }
+func WithResponseDump() Option        { return func(c *config) { c.ResponseDump = true } }
+func WithAPIKey(apiKey string) Option { return func(c *config) { c.APIKey = apiKey } }
 
 type Client struct {
 	raw    *gen.Client
@@ -59,8 +68,9 @@ type service struct {
 }
 
 // The API spec includes the /api/v0 prefix in each path, so the base URL
-// contains the host only.
-const DefaultBaseURL = "https://api.staging.waroom.com"
+// contains the host only. DefaultBaseURL is the production API host from the
+// spec's servers; use WithBaseURL to target another environment.
+const DefaultBaseURL = "https://api.app.waroom.com"
 const DefaultUserAgent = "waroom-sdk-go/0.0.1"
 
 func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper) http.RoundTripper) http.RoundTripper {
@@ -81,6 +91,7 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 		UserAgent:    DefaultUserAgent,
 		RequestDump:  false,
 		ResponseDump: false,
+		dumpWriter:   os.Stderr,
 	}
 	for _, opt := range opts {
 		opt(cfg)
@@ -91,7 +102,7 @@ func NewClient(ctx context.Context, opts ...Option) (*Client, error) {
 
 	trippers = append(trippers, httpx.WithUA(cfg.UserAgent))
 	if cfg.RequestDump {
-		trippers = append(trippers, httpx.WithRequestDump())
+		trippers = append(trippers, httpx.WithRequestDump(cfg.dumpWriter))
 	}
 
 	if cfg.ResponseDump {
