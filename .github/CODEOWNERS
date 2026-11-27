@@ -1,6 +1,11 @@
-# Reviews are open to everyone in the org; release-related files need a releaser.
-# The last matching pattern wins.
-*                               @topotal/all
+# Release-related files need a releaser. The last matching pattern wins.
+#
+# No default owner for now, so that authors can merge their own PRs while
+# development settles (GitHub never counts the author's own approval, even when
+# they are in @topotal/all). Release PRs are opened by the tagpr bot, so a
+# releaser can still approve them. Restore the line below once development is
+# stable or outside contributions start, to require a review on every PR.
+# *                             @topotal/all
 
 # Only the tagpr release PR changes the version file, so release PRs need a releaser.
 /waroom/sdk_version.go          @topotal/waroom-ecosystem-releasers
