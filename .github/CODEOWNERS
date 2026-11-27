@@ -13,11 +13,8 @@
 # Release pipeline: tagging and GoReleaser.
 /.tagpr                         @topotal/waroom-ecosystem-releasers
 /.goreleaser.yaml               @topotal/waroom-ecosystem-releasers
-/.github/release.yml            @topotal/waroom-ecosystem-releasers
-/.github/workflows/release.yaml @topotal/waroom-ecosystem-releasers
 
-# Also uses the App key in the release environment.
-/.github/workflows/sync-openapi.yaml @topotal/waroom-ecosystem-releasers
-
-# Ownership changes themselves.
-/.github/CODEOWNERS             @topotal/waroom-ecosystem-releasers
+# Everything under .github/: workflows, local actions, and this file. Any workflow
+# on main can declare `environment: release` and read the App key, so every
+# workflow change needs a releaser, not just release.yaml and sync-openapi.yaml.
+/.github/                       @topotal/waroom-ecosystem-releasers
