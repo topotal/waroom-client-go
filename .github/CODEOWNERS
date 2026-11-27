@@ -1,0 +1,15 @@
+# Reviews are open to everyone in the org; release-related files need a releaser.
+# The last matching pattern wins.
+*                               @topotal/all
+
+# Only the tagpr release PR changes the version file, so release PRs need a releaser.
+/waroom/sdk_version.go          @topotal/waroom-ecosystem-releasers
+
+# Release pipeline: tagging and GoReleaser.
+/.tagpr                         @topotal/waroom-ecosystem-releasers
+/.goreleaser.yaml               @topotal/waroom-ecosystem-releasers
+/.github/release.yml            @topotal/waroom-ecosystem-releasers
+/.github/workflows/release.yaml @topotal/waroom-ecosystem-releasers
+
+# Ownership changes themselves.
+/.github/CODEOWNERS             @topotal/waroom-ecosystem-releasers
