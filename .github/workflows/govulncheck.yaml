@@ -1,0 +1,35 @@
+name: govulncheck
+
+# Fails when the code calls a function with a known vulnerability. The weekly run
+# catches advisories published after the last change. Runs without secrets, so it
+# also works on fork PRs.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 1" # Mon 09:00 JST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  govulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+        with:
+          persist-credentials: false
+
+      # This is a library, so users build it with their own Go. Scan with the
+      # latest stable Go so that only vulnerabilities in our code and module
+      # dependencies are reported, not standard library ones fixed in later
+      # patch releases of the go.mod version.
+      - uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
+        with:
+          go-version: stable
+          cache: true
+
+      - run: go run golang.org/x/vuln/cmd/govulncheck@v1.10.0 ./...
