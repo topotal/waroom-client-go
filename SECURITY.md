@@ -44,4 +44,6 @@ We will acknowledge your report within 5 business days (Japan time).
 After confirming the vulnerability, we will work on a fix and coordinate the disclosure timing with you.
 We publish a GitHub Security Advisory after a fixed version is released. Please do not disclose the vulnerability publicly until the advisory is published.
 
-If you wish, we will credit you as the reporter in the advisory.
+## Acknowledgments
+
+If you wish, we will credit you as the reporter in the GitHub Security Advisory.
