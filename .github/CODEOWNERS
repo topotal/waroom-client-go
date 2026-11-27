@@ -16,5 +16,8 @@
 /.github/release.yml            @topotal/waroom-ecosystem-releasers
 /.github/workflows/release.yaml @topotal/waroom-ecosystem-releasers
 
+# Also uses the App key in the release environment.
+/.github/workflows/sync-openapi.yaml @topotal/waroom-ecosystem-releasers
+
 # Ownership changes themselves.
 /.github/CODEOWNERS             @topotal/waroom-ecosystem-releasers
