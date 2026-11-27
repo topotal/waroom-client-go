@@ -1,10 +1,10 @@
 # tagpr configuration (git config format). See https://github.com/Songmu/tagpr
 #
-# - versionFile = -: tag-only releases; this library keeps no version file.
+# - versionFile: the release PR bumps waroom/sdk_version.go (also used in the User-Agent).
 # - release = false: GoReleaser publishes the GitHub Release (.github/workflows/release.yaml).
 [tagpr]
 	vPrefix = true
 	releaseBranch = main
-	versionFile = -
+	versionFile = waroom/sdk_version.go
 	changelog = true
 	release = false

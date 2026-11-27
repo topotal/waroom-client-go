@@ -71,7 +71,7 @@ type service struct {
 // contains the host only. DefaultBaseURL is the production API host from the
 // spec's servers; use WithBaseURL to target another environment.
 const DefaultBaseURL = "https://api.app.waroom.com"
-const DefaultUserAgent = "waroom-sdk-go/0.0.1"
+const DefaultUserAgent = "waroom-sdk-go/" + Version
 
 func buildTripperChain(rt http.RoundTripper, trippers ...func(http.RoundTripper) http.RoundTripper) http.RoundTripper {
 	for i := len(trippers) - 1; i >= 0; i-- {
