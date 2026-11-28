@@ -47,7 +47,7 @@ func createOnCallTeam(name, color, userSub string) {
 				Timezone:         "Asia/Tokyo",
 				StartedAt:        "2026-01-05T10:00:00+09:00",
 				ShiftHandoffTime: "10:00",
-				ShiftHandoffWday: waroom.NewOptNillInt(1),
+				ShiftHandoffWday: waroom.NewOptNilInt(1),
 				IntervalDays:     waroom.NewOptInt(7),
 				Participants: []waroom.CreateOnCallTeamParticipantReq{
 					{UserSub: userSub, Position: 0},
