@@ -190,7 +190,7 @@ func newCreateOnCallTeamReq() CreateOnCallTeamReq {
 				Timezone:         "Asia/Tokyo",
 				StartedAt:        "2026-11-02T10:00:00+09:00",
 				ShiftHandoffTime: "10:00",
-				ShiftHandoffWday: NewOptNillInt(1),
+				ShiftHandoffWday: NewOptNilInt(1),
 				IntervalDays:     NewOptInt(7),
 				Participants: []CreateOnCallTeamParticipantReq{
 					{UserSub: "auth0|alice", Position: 0},

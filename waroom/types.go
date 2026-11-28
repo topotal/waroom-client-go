@@ -19,7 +19,10 @@ type OptBool = gen.OptBool
 func NewOptString(v string) OptString        { return gen.NewOptString(v) }
 func NewOptDateTime(v time.Time) OptDateTime { return gen.NewOptDateTime(v) }
 func NewOptInt(v int) OptInt                 { return gen.NewOptInt(v) }
-func NewOptNillInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
+// NewOptNilInt returns a new OptNilInt with the value set to v.
+func NewOptNilInt(v int) OptNilInt          { return gen.NewOptNilInt(v) }
+// Deprecated: use NewOptNilInt. Kept so existing callers keep compiling.
+func NewOptNillInt(v int) OptNilInt          { return NewOptNilInt(v) }
 func NewOptNilString(v string) OptNilString  { return gen.NewOptNilString(v) }
 func NewOptBool(v bool) OptBool              { return gen.NewOptBool(v) }
 
